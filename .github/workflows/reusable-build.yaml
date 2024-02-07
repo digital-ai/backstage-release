@@ -1,0 +1,31 @@
+name: Build & test npm module
+
+on:
+  workflow_call:
+    inputs:
+      plugin-path:
+        required: true
+        type: string
+
+jobs:
+  build_job:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:    
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+    - name: Install dependencies
+      working-directory: ${{ inputs.plugin-path }}
+      run: yarn install
+    - name: Run tsc
+      working-directory: ${{ inputs.plugin-path }}
+      run: yarn tsc
+    - name: Build
+      working-directory: ${{ inputs.plugin-path }}
+      run: yarn build
+    - name: Run tests  
+      working-directory: ${{ inputs.plugin-path }}
+      run: yarn test
