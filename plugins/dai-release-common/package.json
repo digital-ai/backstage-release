@@ -1,5 +1,5 @@
 {
-  "name": "@internal/plugin-dai-release-common",
+  "name": "@digital-ai/plugin-dai-release-common",
   "description": "Common functionalities for the dai-release plugin",
   "version": "0.1.0",
   "main": "src/index.ts",
