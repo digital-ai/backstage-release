@@ -1,0 +1,78 @@
+name: Pull requests for dai-release plugins
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    paths-ignore:
+      # Ignore changes to READMEs and other Markdown.
+      - 'plugins/**/**/README*'
+      - 'plugins/**/**/*.md'
+
+jobs:
+  ci-workflow:
+    name: Build, test all plugins
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://npm.pkg.github.com'
+    - name: dai-release-common - Install dependencies
+      working-directory: ./plugins/dai-release-common
+      run: yarn install
+    - name: dai-release-common - Run tsc
+      working-directory: ./plugins/dai-release-common
+      run: yarn tsc
+    - name: dai-release-common - Run lint
+      working-directory: ./plugins/dai-release-common
+      run: yarn lint  
+    - name: dai-release-common - Build
+      working-directory: ./plugins/dai-release-common
+      run: yarn build
+    - name: dai-release-common - Run tests  
+      working-directory: ./plugins/dai-release-common
+      run: yarn test
+    - name: dai-release-common - Link
+      working-directory: ./plugins/dai-release-common
+      run: yarn link
+    - name: dai-release-backend - Use local link
+      working-directory: ./plugins/dai-release-backend
+      run: yarn link "@digital-ai/plugin-dai-release-common"
+    - name: dai-release-backend - Install dependencies
+      working-directory: ./plugins/dai-release-backend
+      run: yarn install
+    - name: dai-release-backend - Run tsc
+      working-directory: ./plugins/dai-release-backend
+      run: yarn tsc
+    - name: dai-release-backend - Run lint
+      working-directory: ./plugins/dai-release-backend
+      run: yarn lint    
+    - name: dai-release-backend - Build
+      working-directory: ./plugins/dai-release-backend
+      run: yarn build
+    - name: dai-release-backend - Run tests  
+      working-directory: ./plugins/dai-release-backend
+      run: yarn test
+    - name: dai-release - Use local link
+      working-directory: ./plugins/dai-release
+      run: yarn link "@digital-ai/plugin-dai-release-common"
+    - name: dai-release - Install dependencies
+      working-directory: ./plugins/dai-release
+      run: yarn install
+    - name: dai-release - Run tsc
+      working-directory: ./plugins/dai-release
+      run: yarn tsc
+    - name: dai-release - Run lint
+      working-directory: ./plugins/dai-release
+      run: yarn lint      
+    - name: dai-release - Build
+      working-directory: ./plugins/dai-release
+      run: yarn build
+    - name: dai-release - Run tests  
+      working-directory: ./plugins/dai-release
+      run: yarn test
