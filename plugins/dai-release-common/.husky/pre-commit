@@ -1,0 +1,3 @@
+cd plugins/dai-release-common
+
+yarn lint-staged
