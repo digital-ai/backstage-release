@@ -1,15 +1,15 @@
-import React from 'react';
-import { Typography, Grid } from '@material-ui/core';
 import {
-  InfoCard,
-  Header,
-  Page,
   Content,
   ContentHeader,
+  Header,
   HeaderLabel,
+  InfoCard,
+  Page,
   SupportButton,
 } from '@backstage/core-components';
+import { Grid, Typography } from '@material-ui/core';
 import { ExampleFetchComponent } from '../ExampleFetchComponent';
+import React from 'react';
 
 export const ExampleComponent = () => (
   <Page themeId="tool">
