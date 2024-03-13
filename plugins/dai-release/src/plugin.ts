@@ -1,15 +1,21 @@
+import { DaiReleaseApiClient, daiReleaseApiRef } from './api';
 import {
+  createApiFactory,
   createPlugin,
   createRoutableExtension,
+  discoveryApiRef,
 } from '@backstage/core-plugin-api';
-
-import { rootRouteRef } from './routes';
+import { daiReleaseContentRouteRef } from './routes';
 
 export const daiReleasePlugin = createPlugin({
   id: 'dai-release',
-  routes: {
-    root: rootRouteRef,
-  },
+  apis: [
+    createApiFactory({
+      api: daiReleaseApiRef,
+      deps: { discoveryApi: discoveryApiRef },
+      factory: ({ discoveryApi }) => new DaiReleaseApiClient({ discoveryApi }),
+    }),
+  ],
 });
 
 export const DaiReleasePage = daiReleasePlugin.provide(
@@ -17,6 +23,6 @@ export const DaiReleasePage = daiReleasePlugin.provide(
     name: 'DaiReleasePage',
     component: () =>
       import('./components/ExampleComponent').then(m => m.ExampleComponent),
-    mountPoint: rootRouteRef,
+    mountPoint: daiReleaseContentRouteRef,
   }),
 );
