@@ -22,7 +22,7 @@ export const DaiReleasePage = daiReleasePlugin.provide(
   createRoutableExtension({
     name: 'DaiReleasePage',
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import('./components/HomePageComponent').then(m => m.HomePageComponent),
     mountPoint: daiReleaseContentRouteRef,
   }),
 );
