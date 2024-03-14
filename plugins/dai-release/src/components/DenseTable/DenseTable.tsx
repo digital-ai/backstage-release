@@ -106,7 +106,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => '',
+      render: () => '',
       searchable: true,
       sorting: true,
     };
@@ -117,7 +117,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => '',
+      render: () => '',
       searchable: true,
       sorting: true,
     };
