@@ -1,15 +1,13 @@
 import {
-  RELEASE_OVERVIEW_API_PATH,
-  getCredentials,
-  getReleaseApiHost,
-} from './apiConfig';
-import {
   ReleaseList,
   ReleaseStatus,
 } from '@digital-ai/plugin-dai-release-common';
+import {
+  getCredentials,
+  getReleaseApiHost,
+} from './apiConfig';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import { parseErrorResponse } from './responseUtil';
 
 export class ReleaseOverviewApi {
   private readonly logger: Logger;
@@ -64,36 +62,128 @@ export class ReleaseOverviewApi {
         onlyMine: false,
       },
     ];
-    const response = await fetch(
-      `${apiUrl}${RELEASE_OVERVIEW_API_PATH}?page=${pageNumber}&numberbypage=${resultsPerPage}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${authCredentials}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      },
-    );
-    if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
-    // const data: ReleaseOverviewResults =
-    await response.json();
+    // const response = await fetch(
+    //   `${apiUrl}${RELEASE_OVERVIEW_API_PATH}?page=${pageNumber}&numberbypage=${resultsPerPage}`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       Authorization: `Basic ${authCredentials}`,
+    //       'Content-Type': 'application/json',
+    //       Accept: 'application/json',
+    //     },
+    //     body: JSON.stringify(requestBody),
+    //   },
+    // );
+    // if (!response.ok) {
+    //   await parseErrorResponse(this.logger, response);
+    // }
+    // // const data: ReleaseOverviewResults =
+    // await response.json();
+
+    requestBody.toString()
 
     return {
       page: 1,
       releases: [
         {
-          id: 'releaseid',
-          title: 'releasetitle',
-          folder: 'foldername',
+          id: authCredentials,
+          title: 'releasetitle1',
+          folder: resultsPerPage,
           status: ReleaseStatus.FAILED,
           startDate: 1710227982252,
           endDate: 1710864041856,
-          releaseRedirectUri: 'release redirect url',
-          currentPhase: 'currentPhase',
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle2',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle3',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle4',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle5',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle6',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle7',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle8',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle9',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
+        },
+        {
+          id: authCredentials,
+          title: 'releasetitle10',
+          folder: resultsPerPage,
+          status: ReleaseStatus.FAILED,
+          startDate: 1710227982252,
+          endDate: 1710864041856,
+          releaseRedirectUri: apiUrl,
+          currentPhase: pageNumber,
         },
       ],
     };

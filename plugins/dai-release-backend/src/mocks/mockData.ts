@@ -1,7 +1,7 @@
 import { ConfigReader } from '@backstage/config';
 
 export const config = new ConfigReader({
-  daiDeploy: {
+  daiRelease: {
     host: 'http://localhost',
     username: 'admin',
     password: 'admin',
@@ -9,7 +9,7 @@ export const config = new ConfigReader({
 });
 
 export const configWithEmptyHost = new ConfigReader({
-  daiDeploy: {
+  daiRelease: {
     host: '',
     username: 'admin',
     password: 'admin',
@@ -17,7 +17,7 @@ export const configWithEmptyHost = new ConfigReader({
 });
 
 export const configWithEmptyUsername = new ConfigReader({
-  daiDeploy: {
+  daiRelease: {
     host: 'http://localhost',
     username: '',
     password: 'admin',
@@ -25,7 +25,7 @@ export const configWithEmptyUsername = new ConfigReader({
 });
 
 export const configWithEmptyPassword = new ConfigReader({
-  daiDeploy: {
+  daiRelease: {
     host: 'http://localhost',
     username: 'admin',
     password: '',
