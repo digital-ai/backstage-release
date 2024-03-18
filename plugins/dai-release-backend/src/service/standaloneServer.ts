@@ -1,7 +1,10 @@
+import {
+  createServiceBuilder,
+  loadBackendConfig,
+} from '@backstage/backend-common';
 import { Logger } from 'winston';
 import { Server } from 'http';
 import { createRouter } from './router';
-import { createServiceBuilder } from '@backstage/backend-common';
 
 export interface ServerOptions {
   port: number;
@@ -13,8 +16,11 @@ export async function startStandaloneServer(
   options: ServerOptions,
 ): Promise<Server> {
   const logger = options.logger.child({ service: 'dai-release-backend' });
+  const config = await loadBackendConfig({ logger, argv: process.argv });
+
   logger.debug('Starting application server...');
   const router = await createRouter({
+    config,
     logger,
   });
 

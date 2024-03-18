@@ -1,3 +1,4 @@
+import { config } from '../mocks/mockData';
 import { createRouter } from './router';
 import express from 'express';
 import { getVoidLogger } from '@backstage/backend-common';
@@ -8,6 +9,7 @@ describe('createRouter', () => {
 
   beforeAll(async () => {
     const router = await createRouter({
+      config,
       logger: getVoidLogger(),
     });
     app = express().use(router);
