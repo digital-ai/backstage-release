@@ -178,7 +178,7 @@ export const DenseTable = ({
       onRowsPerPageChange={onRowsPerPageChange}
       emptyContent={
         <Typography color="textSecondary" className={classes.empty}>
-          No tasks available
+          No releases available
         </Typography>
       }
     />

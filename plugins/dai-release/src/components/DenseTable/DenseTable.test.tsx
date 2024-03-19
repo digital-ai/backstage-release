@@ -30,7 +30,7 @@ describe('DenseTable', () => {
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
     );
-    expect(rendered.getByText('No tasks available')).toBeInTheDocument();
+    expect(rendered.getByText('No releases available')).toBeInTheDocument();
     expect(rendered.getByText('5 rows')).toBeInTheDocument();
     expect(rendered.queryAllByText('0-0 of 0').length > 0).toBeTruthy();
   });

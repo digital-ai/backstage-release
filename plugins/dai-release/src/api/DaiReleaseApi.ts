@@ -7,5 +7,10 @@ export const daiReleaseApiRef = createApiRef<DaiReleaseApi>({
 
 /** @public */
 export interface DaiReleaseApi {
-  getReleases(): Promise<any>;
+  getReleases(
+    page: number,
+    rowsPerPage: number,
+    orderBy: string,
+    orderDirection: string,
+  ): Promise<any>;
 }
