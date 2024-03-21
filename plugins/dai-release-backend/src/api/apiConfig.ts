@@ -5,7 +5,8 @@ export const RELEASE_COUNT_API_PATH = '/api/v1/releases/count';
 export const RELEASE_TAGS_API_PATH = '/releases/tags';
 export const RELEASE_RISK_CONFIG_API_PATH = '/api/v1/risks/config';
 export const RELEASE_TAGS_ARCHIVED_API_PATH = '/releases/tags/archived';
-export const RELEASE_FOLDERS_LIST_API_PATH = '/api/v1/folders/list';
+export const RELEASE_FOLDERS_LIST_API_PATH =
+  '/api/v1/folders/list?depth=1000&permissions=false&resultsPerPage=1000000';
 export const RELEASE_DETAILS_REDIRECT_PATH = '/#/releases/';
 
 export const getCredentials = (config: Config) => {
@@ -35,11 +36,11 @@ export const getEncodedQueryVal = (queryString?: string): string => {
 };
 
 export const getReleaseDetailsRedirectUri = (
-    config: Config,
-    releaseId: string,
+  config: Config,
+  releaseId: string,
 ): string => {
-  const parts = releaseId.split("/");
+  const parts = releaseId.split('/');
   parts.shift();
-  const releaseIdUrl = parts.join("-");
+  const releaseIdUrl = parts.join('-');
   return `${getReleaseApiHost(config)}${RELEASE_DETAILS_REDIRECT_PATH}${releaseIdUrl}`;
 };
