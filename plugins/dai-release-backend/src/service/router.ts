@@ -38,6 +38,7 @@ export async function createRouter(
     const beginDate = getEncodedQueryVal(req.query.beginDate?.toString());
     const endDate = getEncodedQueryVal(req.query.endDate?.toString());
     const orderBy = getEncodedQueryVal(req.query.orderBy?.toString());
+    const orderDirection = getEncodedQueryVal(req.query.orderDirection?.toString());
     const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
@@ -54,6 +55,7 @@ export async function createRouter(
       beginDate,
       endDate,
       orderBy,
+      orderDirection,
       pageNumber,
       resultsPerPage,
     );
