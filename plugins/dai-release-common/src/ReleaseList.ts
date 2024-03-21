@@ -9,7 +9,7 @@ import { ReleaseStatus } from './ReleaseOverview';
 
 /** @public */
 export type ReleaseList = {
-  page: number;
+  total: number;
   releases: Release[];
 };
 
@@ -21,5 +21,4 @@ export type Release = {
   startDate: number;
   endDate: number;
   releaseRedirectUri: string;
-  currentPhase: string;
 };

@@ -22,17 +22,6 @@ export enum ReleaseKind {
   WORKFLOW = 'workflow',
 }
 
-export enum FlagStatus {
-  OK = 'OK',
-  ATTENTION_NEEDED = 'ATTENTION_NEEDED',
-  AT_RISK = 'AT_RISK',
-}
-
-export type Flag = {
-  status: FlagStatus;
-  comment: string | null;
-};
-
 export type ReleaseOverview = {
   id: string;
   type: string;
@@ -40,18 +29,5 @@ export type ReleaseOverview = {
   startDate: number;
   endDate: number;
   status: ReleaseStatus;
-  plannedDuration: number;
-  archived: boolean;
-  riskScore: number;
-  totalTasks: number | null;
-  totalRemainingTasks: number | null;
-  calculatedProgressPercent: number | null;
-  flag: Flag;
   kind: ReleaseKind;
-  currentPhase: string;
-};
-
-export type ReleaseOverviewResults = {
-  page: number;
-  cis: ReleaseOverview[];
 };
