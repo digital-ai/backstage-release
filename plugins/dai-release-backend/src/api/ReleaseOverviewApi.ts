@@ -1,9 +1,9 @@
 import {
-  RELEASE_OVERVIEW_API_PATH,
-  getCredentials,
-  getReleaseApiHost, getReleaseDetailsRedirectUri,
+    RELEASE_COUNT_API_PATH,
+    RELEASE_OVERVIEW_API_PATH,
+    getCredentials, getReleaseApiHost, getReleaseDetailsRedirectUri,
 } from './apiConfig';
-import {Release, ReleaseOverview} from "@digital-ai/plugin-dai-release-common";
+import {Release, ReleaseCountResults, ReleaseOverview} from "@digital-ai/plugin-dai-release-common";
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import {
@@ -94,9 +94,30 @@ export class ReleaseOverviewApi {
         }),
     );
 
+    const countData: ReleaseCountResults = await this.getReleasesCount(apiUrl, authCredentials, requestBody);
+
     return {
-      total: Number(1),// TODO
+      total: countData.all.total,
       releases: releases
     };
   }
+
+    async getReleasesCount(apiUrl: string, authCredentials: string, requestBody: object): Promise<ReleaseCountResults> {
+        const response = await fetch(
+            `${apiUrl}${RELEASE_COUNT_API_PATH}`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Basic ${authCredentials}`,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            },
+        );
+        if (!response.ok) {
+            await parseErrorResponse(this.logger, response);
+        }
+        return await response.json();
+    }
 }
