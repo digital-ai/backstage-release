@@ -3,7 +3,8 @@ import {
   config,
   configWithEmptyHost,
   configWithEmptyPassword,
-  configWithEmptyUsername, releasesBackendApiResponse,
+  configWithEmptyUsername,
+  releasesBackendApiResponse,
 } from '../mocks/mockData';
 import {
   error401ResponseHandler,
@@ -12,8 +13,8 @@ import {
   error500ResponseHandler,
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
-import {ReleaseList} from "@digital-ai/plugin-dai-release-common";
-import {ReleaseOverviewApi} from "./ReleaseOverviewApi";
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
+import { ReleaseOverviewApi } from './ReleaseOverviewApi';
 import { getVoidLogger } from '@backstage/backend-common';
 
 function configureMockServer(): SetupServerApi {
@@ -50,20 +51,22 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow(
       "Error: Invalid type in config for key 'daiRelease.host' in 'mock-config', got empty-string, wanted string",
     );
@@ -77,20 +80,22 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow(
       "Error: Invalid type in config for key 'daiRelease.username' in 'mock-config', got empty-string, wanted string",
     );
@@ -104,20 +109,22 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow(
       "Error: Invalid type in config for key 'daiRelease.password' in 'mock-config', got empty-string, wanted string",
     );
@@ -129,28 +136,25 @@ describe('Backend API tests for Releases', () => {
       getVoidLogger(),
     );
 
-    const releaseList: ReleaseList =
-      await releaseOverviewApi.getReleases("true",
-          "true",
-          "true",
-          "true",
-          "true",
-          "true",
-          "true",
-          "",
-          "",
-          "",
-          "risk",
-          "",
-          "0",
-          "100");
+    const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      '',
+      '',
+      '',
+      'risk',
+      '',
+      '0',
+      '100',
+    );
 
-    expect(releaseList.total).toEqual(
-        releasesBackendApiResponse.total
-    );
-    expect(releaseList.releases).toEqual(
-        releasesBackendApiResponse.releases
-    );
+    expect(releaseList.total).toEqual(releasesBackendApiResponse.total);
+    expect(releaseList.releases).toEqual(releasesBackendApiResponse.releases);
   });
 
   it('Get 401 response from releases from Release API', async () => {
@@ -163,21 +167,25 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
-    ).rejects.toThrow('Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release');
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
+    ).rejects.toThrow(
+      'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
+    );
   });
 
   it('Get 403 response from releases from Release API', async () => {
@@ -189,21 +197,23 @@ describe('Backend API tests for Releases', () => {
     );
 
     await expect(
-        async () =>
-        await releaseOverviewApi.getReleases("true",
-            "true",
-            "true",
-            "true",
-            "true",
-            "true",
-            "true",
-            "",
-            "",
-            "",
-            "risk",
-            "",
-            "0",
-            "100"),
+      async () =>
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow(
       'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
     );
@@ -219,46 +229,22 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
-  });
-
-  it('Get 404 response from getReleases from Release API', async () => {
-    server.resetHandlers(...error404ResponseHandler);
-
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
-      getVoidLogger(),
-    );
-    await expect(
-      async () =>
-          await releaseOverviewApi.getReleases("true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "true",
-              "",
-              "",
-              "",
-              "risk",
-              "",
-              "0",
-              "100"),
-    ).rejects.toThrow('Release service request not found');
   });
 });

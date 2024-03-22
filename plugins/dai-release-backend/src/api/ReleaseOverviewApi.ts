@@ -70,22 +70,14 @@ export class ReleaseOverviewApi {
       onlyArchived: false,
       onlyMine: false,
     };
-    const response = await fetch(
-      `${apiUrl}${RELEASE_OVERVIEW_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${authCredentials}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      },
+
+    const data: ReleaseOverview[] = await this.getReleasesList(
+      apiUrl,
+      authCredentials,
+      requestBody,
+      pageNumber,
+      resultsPerPage,
     );
-    if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
-    const data: ReleaseOverview[] = await response.json();
 
     const folderIdTitleMap: Map<string, string> =
       await this.getFolderIdAndTitleMap(apiUrl, authCredentials);
@@ -113,6 +105,31 @@ export class ReleaseOverviewApi {
       total: countData.all.total,
       releases: releases,
     };
+  }
+
+  async getReleasesList(
+    apiUrl: string,
+    authCredentials: string,
+    requestBody: object,
+    pageNumber: string,
+    resultsPerPage: string,
+  ) {
+    const response = await fetch(
+      `${apiUrl}${RELEASE_OVERVIEW_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${authCredentials}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    return await response.json();
   }
 
   async getReleasesCount(
@@ -167,7 +184,6 @@ export class ReleaseOverviewApi {
 
     function iterateFol(folder: Folder, map: Map<string, string>) {
       map.set(folder.id, folder.title);
-      // Iterate over the children recursively
       folder.children.forEach(child => iterateFol(child, map));
     }
     return folderIdTitleMap;

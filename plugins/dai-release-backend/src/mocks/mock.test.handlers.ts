@@ -7,19 +7,13 @@ import {
 
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search/overview', () => {
-    return new HttpResponse(
-      JSON.stringify(releasesOverviewReleaseApiResponse)
-    );
+    return new HttpResponse(JSON.stringify(releasesOverviewReleaseApiResponse));
   }),
   http.post('http://localhost/api/v1/releases/count', () => {
-    return new HttpResponse(
-      JSON.stringify(releasesCountReleaseApiResponse)
-    );
+    return new HttpResponse(JSON.stringify(releasesCountReleaseApiResponse));
   }),
   http.get('http://localhost/api/v1/folders/list', () => {
-    return new HttpResponse(
-        JSON.stringify(folderListReleaseApiResponse)
-    );
+    return new HttpResponse(JSON.stringify(folderListReleaseApiResponse));
   }),
 ];
 

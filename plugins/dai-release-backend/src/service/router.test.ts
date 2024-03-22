@@ -1,7 +1,4 @@
-import {
-  config,
-  releasesBackendApiResponse
-} from '../mocks/mockData';
+import { config, releasesBackendApiResponse } from '../mocks/mockData';
 import {
   error403ResponseHandler,
   error404ResponseHandler,
@@ -72,7 +69,7 @@ describe('createRouter', () => {
       const response = await request(app).get('/releases');
       console.log(response.body.error.message);
       expect(response.body.error.message).toEqual(
-          'Release service request not found',
+        'Release service request not found',
       );
     });
 
@@ -81,7 +78,7 @@ describe('createRouter', () => {
       const response = await request(app).get('/releases');
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
-          'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
+        'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
       );
     });
 
@@ -90,9 +87,8 @@ describe('createRouter', () => {
       const response = await request(app).get('/releases');
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
-          'failed to fetch data, status 500',
+        'failed to fetch data, status 500',
       );
     });
   });
-
 });
