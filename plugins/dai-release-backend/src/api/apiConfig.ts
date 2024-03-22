@@ -2,9 +2,6 @@ import { Config } from '@backstage/config';
 
 export const RELEASE_OVERVIEW_API_PATH = '/api/v1/releases/search/overview';
 export const RELEASE_COUNT_API_PATH = '/api/v1/releases/count';
-export const RELEASE_TAGS_API_PATH = '/releases/tags';
-export const RELEASE_RISK_CONFIG_API_PATH = '/api/v1/risks/config';
-export const RELEASE_TAGS_ARCHIVED_API_PATH = '/releases/tags/archived';
 export const RELEASE_FOLDERS_LIST_API_PATH =
   '/api/v1/folders/list?depth=1000&permissions=false&resultsPerPage=1000000';
 export const RELEASE_DETAILS_REDIRECT_PATH = '/#/releases/';
