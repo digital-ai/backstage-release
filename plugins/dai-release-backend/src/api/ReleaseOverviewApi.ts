@@ -102,7 +102,7 @@ export class ReleaseOverviewApi {
     );
 
     return {
-      total: countData.all.total,
+      total: countData.live.total,
       releases: releases,
     };
   }
