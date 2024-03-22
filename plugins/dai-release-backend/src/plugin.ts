@@ -6,12 +6,12 @@ import { createRouter } from './service/router';
 import { loggerToWinstonLogger } from '@backstage/backend-common';
 
 /**
- * Digital.ai Deploy backend plugin
+ * Digital.ai Release backend plugin
  *
  * @public
  */
 export const daiReleasePlugin = createBackendPlugin({
-  pluginId: 'dai-deploy',
+  pluginId: 'dai-release',
   register(env) {
     env.registerInit({
       deps: {
