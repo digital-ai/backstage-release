@@ -219,6 +219,32 @@ describe('Backend API tests for Releases', () => {
     );
   });
 
+  it('Get 404 response from getReleases from Release API', async () => {
+    server.resetHandlers(...error404ResponseHandler);
+
+    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
+        config,
+        getVoidLogger(),
+    );
+    await expect(
+        async () =>
+            await releaseOverviewApi.getReleases("true",
+                "true",
+                "true",
+                "true",
+                "true",
+                "true",
+                "true",
+                "",
+                "",
+                "",
+                "risk",
+                "",
+                "0",
+                "100"),
+    ).rejects.toThrow('Release service request not found');
+  });
+
   it('Get 500 response from getReleases from Release API', async () => {
     server.resetHandlers(...error500ResponseHandler);
 
