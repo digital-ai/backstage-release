@@ -46,19 +46,19 @@ export const error404ResponseHandler = [
 
 export const error403ResponseHandler = [
   http.post('http://localhost/api/v1/releases/search/overview', () => {
-    return new HttpResponse('You do not have report#view permission', {
+    return new HttpResponse('You do not have release#view permission', {
       status: 403,
       statusText: 'forbidden',
     });
   }),
   http.post('http://localhost/api/v1/releases/count', () => {
-    return new HttpResponse('You do not have report#view permission', {
+    return new HttpResponse('You do not have release#view permission', {
       status: 403,
       statusText: 'forbidden',
     });
   }),
   http.get('http://localhost/api/v1/folders/list', () => {
-    return new HttpResponse('You do not have report#view permission', {
+    return new HttpResponse('You do not have release#view permission', {
       status: 403,
       statusText: 'forbidden',
     });
