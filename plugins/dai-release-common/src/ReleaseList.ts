@@ -5,8 +5,6 @@
  * @packageDocumentation
  */
 
-import { ReleaseStatus } from './ReleaseOverview';
-
 /** @public */
 export type ReleaseList = {
   total: number;
@@ -16,8 +14,8 @@ export type ReleaseList = {
 export type Release = {
   id: string;
   title: string;
-  folder: string;
-  status: ReleaseStatus;
+  folder?: string;
+  status: string;
   startDate: number;
   endDate: number;
   releaseRedirectUri: string;

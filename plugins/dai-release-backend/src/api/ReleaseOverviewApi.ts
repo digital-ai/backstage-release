@@ -98,7 +98,7 @@ export class ReleaseOverviewApi {
         folder: this.getFolderTitle(folderIdTitleMap, d.id),
         status: d.status,
         startDate: d.startDate,
-        endDate: d.startDate,
+        endDate: d.endDate,
         releaseRedirectUri: getReleaseDetailsRedirectUri(this.config, d.id),
       }),
     );

@@ -5,8 +5,6 @@
  * @packageDocumentation
  */
 
-import { ReleaseStatus } from './ReleaseOverview';
-
 /** @public */
 export type ReleaseCountResults = {
   live: ReleaseCountResult;
@@ -20,5 +18,5 @@ export type ReleaseCountResult = {
 };
 
 export type StatusCount = {
-  [key in ReleaseStatus]: number;
+  [key: string]: number;
 };

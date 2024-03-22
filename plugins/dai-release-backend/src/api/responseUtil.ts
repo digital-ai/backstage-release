@@ -16,14 +16,14 @@ export async function parseErrorResponse(logger: Logger, response: Response) {
   if (response.status === 401) {
     logger?.error(`Inside 401`);
     throw new AuthenticationError(
-      `Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai release`,
+      `Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release`,
     );
   } else if (response.status === 403) {
     throw new NotAllowedError(
-      `Permission Denied: The configured release User lacks necessary permission in Digital.ai release`,
+      `Permission Denied: The configured release User lacks necessary permission in Digital.ai Release`,
     );
   } else if (response.status === 404) {
-    throw new NotFoundError(`release service request not found`);
+    throw new NotFoundError(`Release service request not found`);
   }
   throw new Error(
     `failed to fetch data, status ${response.status} ${response.statusText}`,
