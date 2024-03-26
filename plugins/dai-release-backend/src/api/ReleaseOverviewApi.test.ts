@@ -1,7 +1,9 @@
 import { SetupServerApi, setupServer } from 'msw/node';
 import {
   config,
-  configWithEmptyHost, configWithEmptyToken, configWithMissingToken,
+  configWithEmptyHost,
+  configWithEmptyToken,
+  configWithMissingToken,
   releasesBackendApiResponse,
 } from '../mocks/mockData';
 import {
@@ -101,30 +103,30 @@ describe('Backend API tests for Releases', () => {
 
   it('Should throw error if config token is missing', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        configWithMissingToken,
-        getVoidLogger(),
+      configWithMissingToken,
+      getVoidLogger(),
     );
 
     await expect(
-        async () =>
-            await releaseOverviewApi.getReleases(
-                'true',
-                'true',
-                'true',
-                'true',
-                'true',
-                'true',
-                'true',
-                '',
-                '',
-                '',
-                'risk',
-                '',
-                '0',
-                '100',
-            ),
+      async () =>
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow(
-        "Error: Missing required config value at 'daiRelease.token",
+      "Error: Missing required config value at 'daiRelease.token",
     );
   });
 
@@ -221,25 +223,27 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error404ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        config,
-        getVoidLogger(),
+      config,
+      getVoidLogger(),
     );
     await expect(
-        async () =>
-            await releaseOverviewApi.getReleases("true",
-                "true",
-                "true",
-                "true",
-                "true",
-                "true",
-                "true",
-                "",
-                "",
-                "",
-                "risk",
-                "",
-                "0",
-                "100"),
+      async () =>
+        await releaseOverviewApi.getReleases(
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          'true',
+          '',
+          '',
+          '',
+          'risk',
+          '',
+          '0',
+          '100',
+        ),
     ).rejects.toThrow('Release service request not found');
   });
 

@@ -97,7 +97,7 @@ export class ReleaseOverviewApi {
 
     const countData: ReleaseCountResults = await this.getReleasesCount(
       apiUrl,
-        accessToken,
+      accessToken,
       requestBody,
     );
 
@@ -152,10 +152,7 @@ export class ReleaseOverviewApi {
     return await response.json();
   }
 
-  async getFoldersList(
-    apiUrl: string,
-    accessToken: string,
-  ): Promise<Folder[]> {
+  async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
     const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
       method: 'GET',
       headers: {
@@ -181,11 +178,17 @@ export class ReleaseOverviewApi {
     const folderIdTitleMap = new Map<string, string>();
 
     foldersList.forEach(folder => {
-      iterateFol(folder, folderIdTitleMap, "")
+      iterateFol(folder, folderIdTitleMap, '');
     });
 
-    function iterateFol(folder: Folder, map: Map<string, string>, parentTitle: string) {
-      const titleWithPath = parentTitle ? `${parentTitle} > ${folder.title}` : folder.title;
+    function iterateFol(
+      folder: Folder,
+      map: Map<string, string>,
+      parentTitle: string,
+    ) {
+      const titleWithPath = parentTitle
+        ? `${parentTitle} > ${folder.title}`
+        : folder.title;
       map.set(folder.id, titleWithPath);
       folder.children.forEach(child => iterateFol(child, map, titleWithPath));
     }
