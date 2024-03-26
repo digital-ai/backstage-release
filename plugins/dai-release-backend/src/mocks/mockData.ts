@@ -192,7 +192,7 @@ export const releasesBackendApiResponse: ReleaseList = {
     {
       id: 'Applications/Folder2/Folder2/Folder1/Release2',
       title: 'Welcome release',
-      folder: 'Subfolders',
+      folder: 'Digital.ai - Official > Workflows > Subfolders',
       status: 'IN_PROGRESS',
       startDate: 1710940430763,
       endDate: 1711555250637,
