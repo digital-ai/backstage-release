@@ -180,11 +180,14 @@ export class ReleaseOverviewApi {
     );
     const folderIdTitleMap = new Map<string, string>();
 
-    foldersList.forEach(folder => iterateFol(folder, folderIdTitleMap));
+    foldersList.forEach(folder => {
+      iterateFol(folder, folderIdTitleMap, "")
+    });
 
-    function iterateFol(folder: Folder, map: Map<string, string>) {
-      map.set(folder.id, folder.title);
-      folder.children.forEach(child => iterateFol(child, map));
+    function iterateFol(folder: Folder, map: Map<string, string>, parentTitle: string) {
+      const titleWithPath = parentTitle ? `${parentTitle} > ${folder.title}` : folder.title;
+      map.set(folder.id, titleWithPath);
+      folder.children.forEach(child => iterateFol(child, map, titleWithPath));
     }
     return folderIdTitleMap;
   }
