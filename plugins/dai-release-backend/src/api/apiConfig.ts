@@ -8,10 +8,8 @@ export const RELEASE_DETAILS_REDIRECT_PATH = '/#/releases/';
 
 export const getCredentials = (config: Config) => {
   try {
-    const username = config.getString('daiRelease.username');
-    const password = config.getString('daiRelease.password');
-
-    return btoa(`${username}:${password}`);
+    const accessToken = config.getString('daiRelease.token');
+    return `${accessToken}`;
   } catch (error: unknown) {
     throw new Error(`Error: ${(error as Error).message}`);
   }

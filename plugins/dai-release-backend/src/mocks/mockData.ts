@@ -9,32 +9,27 @@ import { ConfigReader } from '@backstage/config';
 export const config = new ConfigReader({
   daiRelease: {
     host: 'http://localhost',
-    username: 'admin',
-    password: 'admin',
+    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },
 });
 
 export const configWithEmptyHost = new ConfigReader({
   daiRelease: {
     host: '',
-    username: 'admin',
-    password: 'admin',
+    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },
 });
 
-export const configWithEmptyUsername = new ConfigReader({
+export const configWithEmptyToken = new ConfigReader({
   daiRelease: {
     host: 'http://localhost',
-    username: '',
-    password: 'admin',
+    token: '',
   },
 });
 
-export const configWithEmptyPassword = new ConfigReader({
+export const configWithMissingToken = new ConfigReader({
   daiRelease: {
     host: 'http://localhost',
-    username: 'admin',
-    password: '',
   },
 });
 

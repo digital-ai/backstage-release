@@ -49,7 +49,7 @@ export class ReleaseOverviewApi {
     this.logger?.debug(
       `Calling Release Overview api, start from: ${beginDate} to: ${endDate}, in order of ${orderBy}`,
     );
-    const authCredentials = getCredentials(this.config);
+    const accessToken = getCredentials(this.config);
     const apiUrl = getReleaseApiHost(this.config);
 
     const requestBody = {
@@ -73,14 +73,14 @@ export class ReleaseOverviewApi {
 
     const data: ReleaseOverview[] = await this.getReleasesList(
       apiUrl,
-      authCredentials,
+      accessToken,
       requestBody,
       pageNumber,
       resultsPerPage,
     );
 
     const folderIdTitleMap: Map<string, string> =
-      await this.getFolderIdAndTitleMap(apiUrl, authCredentials);
+      await this.getFolderIdAndTitleMap(apiUrl, accessToken);
 
     const releases: Release[] = [];
     data.forEach(d =>
@@ -97,7 +97,7 @@ export class ReleaseOverviewApi {
 
     const countData: ReleaseCountResults = await this.getReleasesCount(
       apiUrl,
-      authCredentials,
+        accessToken,
       requestBody,
     );
 
@@ -109,7 +109,7 @@ export class ReleaseOverviewApi {
 
   async getReleasesList(
     apiUrl: string,
-    authCredentials: string,
+    accessToken: string,
     requestBody: object,
     pageNumber: string,
     resultsPerPage: string,
@@ -119,7 +119,7 @@ export class ReleaseOverviewApi {
       {
         method: 'POST',
         headers: {
-          Authorization: `Basic ${authCredentials}`,
+          'x-release-personal-token': `${accessToken}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
@@ -134,13 +134,13 @@ export class ReleaseOverviewApi {
 
   async getReleasesCount(
     apiUrl: string,
-    authCredentials: string,
+    accessToken: string,
     requestBody: object,
   ): Promise<ReleaseCountResults> {
     const response = await fetch(`${apiUrl}${RELEASE_COUNT_API_PATH}`, {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${authCredentials}`,
+        'x-release-personal-token': `${accessToken}`,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
@@ -154,12 +154,12 @@ export class ReleaseOverviewApi {
 
   async getFoldersList(
     apiUrl: string,
-    authCredentials: string,
+    accessToken: string,
   ): Promise<Folder[]> {
     const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
       method: 'GET',
       headers: {
-        Authorization: `Basic ${authCredentials}`,
+        'x-release-personal-token': `${accessToken}`,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },

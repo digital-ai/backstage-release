@@ -1,9 +1,7 @@
 import { SetupServerApi, setupServer } from 'msw/node';
 import {
   config,
-  configWithEmptyHost,
-  configWithEmptyPassword,
-  configWithEmptyUsername,
+  configWithEmptyHost, configWithEmptyToken, configWithMissingToken,
   releasesBackendApiResponse,
 } from '../mocks/mockData';
 import {
@@ -72,9 +70,9 @@ describe('Backend API tests for Releases', () => {
     );
   });
 
-  it('Should throw error if config username is empty', async () => {
+  it('Should throw error if config token is empty', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      configWithEmptyUsername,
+      configWithEmptyToken,
       getVoidLogger(),
     );
 
@@ -97,36 +95,36 @@ describe('Backend API tests for Releases', () => {
           '100',
         ),
     ).rejects.toThrow(
-      "Error: Invalid type in config for key 'daiRelease.username' in 'mock-config', got empty-string, wanted string",
+      "Error: Invalid type in config for key 'daiRelease.token' in 'mock-config', got empty-string, wanted string",
     );
   });
 
-  it('Should throw error if config password is empty', async () => {
+  it('Should throw error if config token is missing', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      configWithEmptyPassword,
-      getVoidLogger(),
+        configWithMissingToken,
+        getVoidLogger(),
     );
 
     await expect(
-      async () =>
-        await releaseOverviewApi.getReleases(
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          '',
-          '',
-          '',
-          'risk',
-          '',
-          '0',
-          '100',
-        ),
+        async () =>
+            await releaseOverviewApi.getReleases(
+                'true',
+                'true',
+                'true',
+                'true',
+                'true',
+                'true',
+                'true',
+                '',
+                '',
+                '',
+                'risk',
+                '',
+                '0',
+                '100',
+            ),
     ).rejects.toThrow(
-      "Error: Invalid type in config for key 'daiRelease.password' in 'mock-config', got empty-string, wanted string",
+        "Error: Missing required config value at 'daiRelease.token",
     );
   });
 
