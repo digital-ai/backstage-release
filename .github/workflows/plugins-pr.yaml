@@ -75,4 +75,4 @@ jobs:
       run: yarn build
     - name: dai-release - Run tests  
       working-directory: ./plugins/dai-release
-      run: yarn test
+      run: yarn test --transformIgnorePatterns "node_modules/(?!(.*))"
