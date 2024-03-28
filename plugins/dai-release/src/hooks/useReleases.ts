@@ -3,7 +3,7 @@ import { useApi } from '@backstage/core-plugin-api';
 import { useAsyncRetry } from 'react-use';
 import { useState } from 'react';
 
-export function useCurrentDeployments(): {
+export function useReleases(): {
   loading: boolean | false | true;
   error: undefined | Error;
   items: any | undefined;

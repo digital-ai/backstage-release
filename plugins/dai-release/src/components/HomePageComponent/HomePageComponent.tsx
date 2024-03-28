@@ -25,7 +25,7 @@ export const HomePageComponent = () => (
         </Grid>
         <Grid item>
           <DenseTable
-            page={1}
+            page={0}
             columns={defaultColumns}
             loading={false}
             pageSize={10}

@@ -156,7 +156,7 @@ export const DenseTable = ({
       isLoading={loading}
       actions={[
         {
-          icon: () => <SyncIcon fontSize="default" />,
+          icon: () => <SyncIcon fontSize="medium" />,
           tooltip: 'Refresh Data',
           isFreeAction: true,
           onClick: () => retry(),
