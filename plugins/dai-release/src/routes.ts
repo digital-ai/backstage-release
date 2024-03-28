@@ -1,5 +1,5 @@
 import { createRouteRef } from '@backstage/core-plugin-api';
 
-export const rootRouteRef = createRouteRef({
-  id: 'dai-release',
+export const daiReleaseContentRouteRef = createRouteRef({
+  id: 'dai-release-content',
 });

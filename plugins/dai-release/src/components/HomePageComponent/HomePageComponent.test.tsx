@@ -2,15 +2,14 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
-import { ExampleComponent } from './ExampleComponent';
+import { HomePageComponent } from './HomePageComponent';
 import React from 'react';
 import { rest } from 'msw';
 import { screen } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 
-describe('ExampleComponent', () => {
+describe('HomePageComponent', () => {
   const server = setupServer();
-  // Enable sane handlers for network requests
   setupRequestMockHandlers(server);
 
   // setup mock response
@@ -20,10 +19,8 @@ describe('ExampleComponent', () => {
     );
   });
 
-  it('should render', async () => {
-    await renderInTestApp(<ExampleComponent />);
-    expect(
-      screen.getByText('Welcome to Digital.ai Release!'),
-    ).toBeInTheDocument();
+  it('should render the home page', async () => {
+    await renderInTestApp(<HomePageComponent />);
+    expect(screen.getByText('Digital.ai Release')).toBeInTheDocument();
   });
 });
