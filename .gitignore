@@ -1,0 +1,8 @@
+# IntelliJ
+.idea/
+.shelf/
+*.iml
+*.ipr
+*.iws
+*.log
+s101plugin.state
