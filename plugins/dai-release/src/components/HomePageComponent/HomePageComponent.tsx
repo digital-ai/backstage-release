@@ -2,6 +2,7 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid } from '@material-ui/core';
 import React from 'react';
+import { SearchFilter } from '../SearchFilter';
 
 const data = [
   {
@@ -19,6 +20,9 @@ export const HomePageComponent = () => (
     <Header title="Digital.ai Release" />
     <Content>
       <Grid container spacing={3} direction="column">
+        <Grid item>
+          <SearchFilter></SearchFilter>
+        </Grid>
         <Grid item>
           <DenseTable
             page={1}
