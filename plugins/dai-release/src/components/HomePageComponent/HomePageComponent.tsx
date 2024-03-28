@@ -21,7 +21,7 @@ export const HomePageComponent = () => (
       <Grid container spacing={3} direction="column">
         <Grid item>
           <DenseTable
-            page={1}
+            page={0}
             columns={defaultColumns}
             loading={false}
             pageSize={10}
