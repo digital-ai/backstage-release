@@ -2,8 +2,8 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
-import { SearchFilter } from './SearchFilter';
 import React from 'react';
+import { SearchFilter } from './SearchFilter';
 import { rest } from 'msw';
 import { screen } from '@testing-library/react';
 import { setupServer } from 'msw/node';

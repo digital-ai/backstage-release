@@ -21,7 +21,7 @@ export const HomePageComponent = () => (
     <Content>
       <Grid container spacing={3} direction="column">
         <Grid item>
-          <SearchFilter></SearchFilter>
+          <SearchFilter />
         </Grid>
         <Grid item>
           <DenseTable

@@ -1,18 +1,16 @@
-import { Grid, makeStyles, Paper, TextField } from '@material-ui/core';
+import { Grid, Paper, TextField, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import {
-  Checkbox,
-  FormControl,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import ListItemText from '@mui/material/ListItemText';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 export const SearchFilter = () => {
   const [start] = useState();
@@ -79,9 +77,9 @@ export const SearchFilter = () => {
               label="Title"
               variant="outlined"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                console.log(event);
+                global.console.log(event);
               }}
-              size={'small'}
+              size="small"
               InputProps={{
                 classes: {
                   root: classes.inputRoot,
@@ -110,7 +108,7 @@ export const SearchFilter = () => {
                   },
                 }}
                 label="Start"
-                ampm={true}
+                ampm
                 value={start}
               />
             </LocalizationProvider>
@@ -135,7 +133,7 @@ export const SearchFilter = () => {
                   },
                 }}
                 label="To"
-                ampm={true}
+                ampm
                 value={end}
               />
             </LocalizationProvider>
@@ -163,7 +161,7 @@ export const SearchFilter = () => {
                 {statuses.map(data => (
                   <MenuItem key={data.status} value={data.status}>
                     <Checkbox
-                      size={'small'}
+                      size="small"
                       checked={statusList.indexOf(data.status) > -1}
                     />
                     <i
@@ -201,10 +199,10 @@ export const SearchFilter = () => {
                 }
                 inputProps={{ size: 'small' }}
               >
-                <MenuItem value={'start_date'} className={classes.inputRoot}>
+                <MenuItem value="start_date" className={classes.inputRoot}>
                   Start Date
                 </MenuItem>
-                <MenuItem value={'end_date'} className={classes.inputRoot}>
+                <MenuItem value="end_date" className={classes.inputRoot}>
                   End Date
                 </MenuItem>
               </Select>
