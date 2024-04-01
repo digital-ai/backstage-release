@@ -19,8 +19,11 @@ describe('HomePageComponent', () => {
     );
   });
 
-  it('should render the home page', async () => {
+  it('should render the search filter elements', async () => {
     await renderInTestApp(<SearchFilter />);
-    expect(screen.getByText('Digital.ai Release')).toBeInTheDocument();
+    expect(screen.getByLabelText('Order by')).toBeInTheDocument();
+    expect(screen.getByLabelText('Title')).toBeInTheDocument();
+    expect(screen.getByLabelText('Start')).toBeInTheDocument();
+    expect(screen.getByLabelText('To')).toBeInTheDocument();
   });
 });
