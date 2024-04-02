@@ -1,9 +1,9 @@
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import moment from "moment";
-import {beginDateFormat, endDateFormat} from "../utils/dateTimeUtils";
-import {ReleaseList} from "@digital-ai/plugin-dai-release-common/dist-types/src";
+import moment from 'moment';
+import { beginDateFormat, endDateFormat } from '../utils/dateTimeUtils';
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common/';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -19,19 +19,19 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     orderDirection: string,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
-/*    const now = new Date();
+    /*    const now = new Date();
     queryString.append(
         'beginDate',
         moment(now).subtract(7, 'days').format(beginDateFormat),
     );
     queryString.append('endDate', moment(now).format(endDateFormat));*/
 
-    queryString.append('failing',encodeURIComponent(true))
-    queryString.append('planned',encodeURIComponent(true))
-    queryString.append('completed',encodeURIComponent(true))
-    queryString.append('paused',encodeURIComponent(true))
-    queryString.append('aborted',encodeURIComponent(true))
-    queryString.append('failing',encodeURIComponent(true))
+    queryString.append('failing', encodeURIComponent(true));
+    queryString.append('planned', encodeURIComponent(true));
+    queryString.append('completed', encodeURIComponent(true));
+    queryString.append('paused', encodeURIComponent(true));
+    queryString.append('aborted', encodeURIComponent(true));
+    queryString.append('failing', encodeURIComponent(true));
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);
