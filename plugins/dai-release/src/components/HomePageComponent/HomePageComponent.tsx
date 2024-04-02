@@ -1,38 +1,48 @@
-import { Content, Header, Page } from '@backstage/core-components';
+import {Content, Header, Page, ResponseErrorPanel} from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid } from '@material-ui/core';
 import React from 'react';
+import {useReleases} from "../../hooks";
 
-const data = [
-  {
-    title: '',
-    folder: '',
-    status: '',
-    startDate: '',
-    completionDate: '',
-    duration: '',
-  },
-];
+export const HomePageComponent = () => {
+  const {
+    items,
+    loading,
+    error,
+    retry,
+    page,
+    setPage,
+    rowsPerPage,
+    setRowsPerPage,
+    setOrderBy,
+    setOrderDirection,
+  } = useReleases();
 
-export const HomePageComponent = () => (
-  <Page themeId="home">
-    <Header title="Digital.ai Release" />
-    <Content>
-      <Grid container spacing={3} direction="column">
-        <Grid item>
-          <DenseTable
-            page={0}
-            columns={defaultColumns}
-            loading={false}
-            pageSize={10}
-            tableData={data}
-            totalCount={10}
-            onPageChange={() => {}}
-            onRowsPerPageChange={() => {}}
-            retry={() => {}}
-          />
-        </Grid>
-      </Grid>
-    </Content>
-  </Page>
-);
+  if (error) {
+    return <ResponseErrorPanel error={error} />;
+  }
+  return (
+      <Page themeId="home">
+        <Header title="Digital.ai Release" />
+        <Content>
+          <Grid container spacing={3} direction="column">
+            <Grid item>
+              <DenseTable
+                  page={page}
+                  pageSize={rowsPerPage}
+                  loading={loading}
+                  totalCount={items?.totalCount ?? 100}
+                  tableData={items?.releases || []}
+                  onRowsPerPageChange={setRowsPerPage}
+                  onPageChange={setPage}
+                  columns={defaultColumns}
+                  retry={retry}
+                  onOrderDirection={setOrderDirection}
+                  onOrderBy={setOrderBy}
+              />
+            </Grid>
+          </Grid>
+        </Content>
+      </Page>
+  );
+}

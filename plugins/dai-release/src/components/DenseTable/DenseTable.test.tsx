@@ -23,9 +23,16 @@ describe('DenseTable', () => {
       pageSize: 5,
       tableData: [],
       totalCount: 0,
-      onPageChange: () => {},
-      onRowsPerPageChange: () => {},
-      retry: () => {},
+      onPageChange: () => {
+      },
+      onRowsPerPageChange: () => {
+      },
+      retry: () => {
+      },
+      onOrderBy: () => {
+      },
+      onOrderDirection: () => {
+      },
     });
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
@@ -52,6 +59,8 @@ describe('DenseTable', () => {
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
       retry: () => {},
+      onOrderBy: () => {},
+      onOrderDirection: () => {},
     });
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
@@ -66,15 +75,17 @@ describe('DenseTable', () => {
 });
 
 async function renderContent(args: {
-  tableData: any[];
-  loading: boolean;
-  page: number;
-  pageSize: number;
-  totalCount: number;
-  onPageChange: (page: number) => void;
-  onRowsPerPageChange: (rows: number) => void;
-  retry: () => void;
+  onOrderBy: () => void;
   columns: TableColumn[];
+  onOrderDirection: () => void;
+  onRowsPerPageChange: () => void;
+  pageSize: number;
+  onPageChange: () => void;
+  tableData: { firstName: string; lastName: string }[];
+  page: number;
+  loading: boolean;
+  totalCount: number;
+  retry: () => void
 }) {
   return await renderInTestApp(
     <TestApiProvider apis={[]}>
@@ -88,7 +99,8 @@ async function renderContent(args: {
         onPageChange={args.onPageChange}
         onRowsPerPageChange={args.onRowsPerPageChange}
         retry={args.retry}
-      />
+        onOrderBy={args.onOrderBy}
+        onOrderDirection={args.onOrderDirection}/>
     </TestApiProvider>,
   );
 }

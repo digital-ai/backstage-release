@@ -1,4 +1,5 @@
 import { createApiRef } from '@backstage/core-plugin-api';
+import {ReleaseList} from "@digital-ai/plugin-dai-release-common/dist-types/src";
 
 /** @public */
 export const daiReleaseApiRef = createApiRef<DaiReleaseApi>({
@@ -12,5 +13,5 @@ export interface DaiReleaseApi {
     rowsPerPage: number,
     orderBy: string,
     orderDirection: string,
-  ): Promise<any>;
+  ): Promise<{ items: ReleaseList }>;
 }
