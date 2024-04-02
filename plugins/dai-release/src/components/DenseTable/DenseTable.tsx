@@ -1,10 +1,14 @@
-import { Link, Table, TableColumn } from '@backstage/core-components';
+import {Link, LinkButton, Table, TableColumn} from '@backstage/core-components';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
+import LaunchIcon from '@material-ui/icons/Launch';
+import {IconButton} from "@mui/material";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import moment from 'moment';
 
 type DenseTableProps = {
   tableData: any[];
@@ -16,6 +20,8 @@ type DenseTableProps = {
   onRowsPerPageChange: (rows: number) => void;
   columns: TableColumn[];
   retry: () => void;
+  onOrderDirection: (order: string) => void;
+  onOrderBy: (orderBy: number) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -31,6 +37,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function calculateDuration(startTime: number, endTime?: number): String {
+  if (endTime === undefined) {
+    return ''; // Return null if end time is not provided
+  }
+  const durationMs = endTime - startTime;
+  const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  let formattedDuration = '';
+  if (days > 0) {
+    formattedDuration += `${days}d `;
+  } else {
+    formattedDuration += `0d `
+  }
+  if (hours > 0) {
+    formattedDuration += `${hours}h `;
+  } else {
+    formattedDuration += `0h `;
+  }
+  if (minutes > 0) {
+    formattedDuration += `${minutes}m`;
+  } else {
+      formattedDuration += `0m`;
+  }
+  return formattedDuration
+}
+
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
     return {
@@ -42,7 +76,7 @@ export const columnFactories = Object.freeze({
         <Link to={row.releaseId}>{row.title}</Link>
       ),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createFolderColumns(): TableColumn {
@@ -53,7 +87,7 @@ export const columnFactories = Object.freeze({
       headerStyle: headerStyle,
       render: (row: Partial<any>) => capitalize(row.folder),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createStatusColumns(): TableColumn {
@@ -64,7 +98,7 @@ export const columnFactories = Object.freeze({
       headerStyle: headerStyle,
       render: (row: Partial<any>) => capitalize(row.status),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createStartDateColumns(): TableColumn {
@@ -81,34 +115,42 @@ export const columnFactories = Object.freeze({
   createEndDateColumns(): TableColumn {
     return {
       title: 'End Date',
-      field: 'completionDate',
+      field: 'endDate',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => formatTimestamp(row.completionDate),
+      render: (row: Partial<any>) => formatTimestamp(row.endDate),
       searchable: true,
       sorting: true,
     };
   },
+
   createDurationColumns(): TableColumn {
     return {
       title: 'Duration',
       field: 'duration',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => row.duration,
+      render: (row: Partial<any>) => (
+          calculateDuration(row.startDate, row.endDate)
+      ),
       searchable: true,
       sorting: true,
     };
   },
-  createDotsColumns(): TableColumn {
+
+  createViewColumns(): TableColumn {
     return {
-      title: 'Actions',
-      field: '',
+      title: 'View',
+      field: 'releaseId',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: () => '',
-      searchable: true,
-      sorting: true,
+      render: (row: Partial<any>) => (
+          <LinkButton to={`${row.releaseRedirectUri}`}>
+            <LaunchIcon />
+          </LinkButton>
+      ),
+      searchable: false,
+      sorting: false,
     };
   },
   createAdditionalDataColumns(): TableColumn {
@@ -117,9 +159,18 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: () => '',
+      render: (row: Partial<any>) => (
+          <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              size="small"
+          >
+            <MoreVertIcon />
+          </IconButton>
+      ),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
 });
@@ -131,7 +182,7 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createStartDateColumns(),
   columnFactories.createEndDateColumns(),
   columnFactories.createDurationColumns(),
-  columnFactories.createDotsColumns(),
+  columnFactories.createViewColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
@@ -145,6 +196,8 @@ export const DenseTable = ({
   onRowsPerPageChange,
   columns,
   retry,
+  onOrderDirection,
+  onOrderBy
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
@@ -181,6 +234,10 @@ export const DenseTable = ({
           No releases available
         </Typography>
       }
+      onOrderChange={(orderBy, orderDirection) => {
+        onOrderBy(orderBy);
+        onOrderDirection(orderDirection);
+      }}
     />
   );
 };

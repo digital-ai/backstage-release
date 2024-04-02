@@ -17,11 +17,11 @@ export function useReleases(): {
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [orderBy, setOrderBy] = useState(7);
+  const [orderBy, setOrderBy] = useState(3);
   const [orderDirection, setOrderDirection] = useState('desc');
   const api = useApi(daiReleaseApiRef);
   const direction = orderDirection === '' ? 'desc' : orderDirection;
-  const sortColumn = orderBy !== -1 ? '' : 'begin';
+  const sortColumn = orderBy !== -1 ? 'start_date' : 'end_date';
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
     return api.getReleases(page, rowsPerPage, sortColumn, direction);

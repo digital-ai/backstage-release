@@ -57,7 +57,7 @@ export async function createRouter(
       beginDate,
       endDate,
       orderBy,
-      orderDirection,
+      orderDirection.toUpperCase(),
       pageNumber,
       resultsPerPage,
     );
