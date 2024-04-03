@@ -37,32 +37,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function calculateDuration(startTime: number, endTime?: number): String {
+function calculateDuration(startTime: number, endTime?: number) : string {
   if (endTime === undefined) {
-    return ''; // Return null if end time is not provided
+    return '';
   }
-  const durationMs = endTime - startTime;
-  const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  let formattedDuration = '';
-  if (days > 0) {
-    formattedDuration += `${days}d `;
-  } else {
-    formattedDuration += `0d `
-  }
-  if (hours > 0) {
-    formattedDuration += `${hours}h `;
-  } else {
-    formattedDuration += `0h `;
-  }
-  if (minutes > 0) {
-    formattedDuration += `${minutes}m`;
-  } else {
-      formattedDuration += `0m`;
-  }
+  const durationMs = endTime - startTime
+  const duration = moment.duration(durationMs,'ms')
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+  // Format the duration
+  const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
   return formattedDuration
+}
+
+enum releaseColumn {
+  'start_date' = 3,
+  'end_date' = 4,
 }
 
 export const columnFactories = Object.freeze({
@@ -73,7 +64,7 @@ export const columnFactories = Object.freeze({
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-        <Link to={row.releaseId}>{row.title}</Link>
+          <Link to={row.releaseRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
       sorting: false,
@@ -96,7 +87,9 @@ export const columnFactories = Object.freeze({
       field: 'status',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => capitalize(row.status),
+      render: (row: Partial<any>) => (
+        capitalize(row.status.replace('_', ' '))
+    ),
       searchable: true,
       sorting: false,
     };
@@ -112,6 +105,7 @@ export const columnFactories = Object.freeze({
       sorting: true,
     };
   },
+
   createEndDateColumns(): TableColumn {
     return {
       title: 'End Date',
@@ -133,26 +127,11 @@ export const columnFactories = Object.freeze({
       render: (row: Partial<any>) => (
           calculateDuration(row.startDate, row.endDate)
       ),
-      searchable: true,
-      sorting: true,
-    };
-  },
-
-  createViewColumns(): TableColumn {
-    return {
-      title: 'View',
-      field: 'releaseId',
-      cellStyle: cellStyle,
-      headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-          <LinkButton to={`${row.releaseRedirectUri}`}>
-            <LaunchIcon />
-          </LinkButton>
-      ),
       searchable: false,
       sorting: false,
     };
   },
+
   createAdditionalDataColumns(): TableColumn {
     return {
       title: 'Additional Data',
@@ -169,7 +148,7 @@ export const columnFactories = Object.freeze({
             <MoreVertIcon />
           </IconButton>
       ),
-      searchable: true,
+      searchable: false,
       sorting: false,
     };
   },
@@ -182,7 +161,6 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createStartDateColumns(),
   columnFactories.createEndDateColumns(),
   columnFactories.createDurationColumns(),
-  columnFactories.createViewColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
