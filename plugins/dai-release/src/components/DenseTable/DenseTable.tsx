@@ -9,6 +9,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import {IconButton} from "@mui/material";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment';
+import Popover from '@mui/material/Popover';
 
 type DenseTableProps = {
   tableData: any[];
@@ -51,9 +52,46 @@ function calculateDuration(startTime: number, endTime?: number) : string {
   return formattedDuration
 }
 
-enum releaseColumn {
-  'start_date' = 3,
-  'end_date' = 4,
+function additionDataPopover() {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+      <div>
+        <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            size="small"
+            onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+          <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+          >
+            <Typography sx={{ p: 2 }}>Additional Data!!</Typography>
+          </Popover>
+
+  </div>
+  );
 }
 
 export const columnFactories = Object.freeze({
@@ -134,19 +172,12 @@ export const columnFactories = Object.freeze({
 
   createAdditionalDataColumns(): TableColumn {
     return {
-      title: 'Additional Data',
+      title: '',
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-          <IconButton
-              aria-label="more"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              size="small"
-          >
-            <MoreVertIcon />
-          </IconButton>
+          additionDataPopover()
       ),
       searchable: false,
       sorting: false,
