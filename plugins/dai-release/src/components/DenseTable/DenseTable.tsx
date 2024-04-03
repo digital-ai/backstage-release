@@ -1,4 +1,4 @@
-import {LinkButton, Table, TableColumn} from '@backstage/core-components';
+import {Link, LinkButton, Table, TableColumn} from '@backstage/core-components';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function calculateDuration(startTime: number, endTime?: number) : string{
+function calculateDuration(startTime: number, endTime?: number) : string {
   if (endTime === undefined) {
     return '';
   }
@@ -51,6 +51,11 @@ function calculateDuration(startTime: number, endTime?: number) : string{
   return formattedDuration
 }
 
+enum releaseColumn {
+  'start_date' = 3,
+  'end_date' = 4,
+}
+
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
     return {
@@ -59,7 +64,7 @@ export const columnFactories = Object.freeze({
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-        row.title
+          <Link to={row.releaseRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
       sorting: false,
@@ -82,7 +87,9 @@ export const columnFactories = Object.freeze({
       field: 'status',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => capitalize(row.status),
+      render: (row: Partial<any>) => (
+        capitalize(row.status.replace('_', ' '))
+    ),
       searchable: true,
       sorting: false,
     };
@@ -98,6 +105,7 @@ export const columnFactories = Object.freeze({
       sorting: true,
     };
   },
+
   createEndDateColumns(): TableColumn {
     return {
       title: 'End Date',
@@ -124,21 +132,6 @@ export const columnFactories = Object.freeze({
     };
   },
 
-  createViewColumns(): TableColumn {
-    return {
-      title: 'View',
-      field: 'releaseId',
-      cellStyle: cellStyle,
-      headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-          <LinkButton to={`${row.releaseRedirectUri}`}>
-            <LaunchIcon />
-          </LinkButton>
-      ),
-      searchable: false,
-      sorting: false,
-    };
-  },
   createAdditionalDataColumns(): TableColumn {
     return {
       title: 'Additional Data',
@@ -168,7 +161,6 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createStartDateColumns(),
   columnFactories.createEndDateColumns(),
   columnFactories.createDurationColumns(),
-  columnFactories.createViewColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
