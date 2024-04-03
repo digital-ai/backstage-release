@@ -1,8 +1,9 @@
-import {Content, Header, Page, ResponseErrorPanel} from '@backstage/core-components';
+import {Content, Header, Page} from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid } from '@material-ui/core';
 import React from 'react';
 import {useReleases} from "../../hooks";
+import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
 
 export const HomePageComponent = () => {
   const {
@@ -19,7 +20,7 @@ export const HomePageComponent = () => {
   } = useReleases();
 
   if (error) {
-    return <ResponseErrorPanel error={error} />;
+    return <ReleaseResponseErrorPanel error={error} />;
   }
   return (
       <Page themeId="home">
