@@ -1,4 +1,4 @@
-import {Link, LinkButton, Table, TableColumn} from '@backstage/core-components';
+import {LinkButton, Table, TableColumn} from '@backstage/core-components';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
