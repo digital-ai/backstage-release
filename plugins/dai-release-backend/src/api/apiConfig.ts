@@ -30,6 +30,10 @@ export const getEncodedQueryVal = (queryString?: string): string => {
   );
 };
 
+export const getBoolQueryVal = (queryString?: string): boolean => {
+  return queryString != undefined && queryString == 'true';
+};
+
 export const getReleaseDetailsRedirectUri = (
   config: Config,
   releaseId: string,

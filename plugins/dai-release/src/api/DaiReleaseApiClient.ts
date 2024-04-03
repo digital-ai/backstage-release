@@ -26,12 +26,12 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     );
     queryString.append('endDate', moment(now).format(endDateFormat));*/
 
-    queryString.append('failing', encodeURIComponent(true));
-    queryString.append('planned', encodeURIComponent(true));
-    queryString.append('completed', encodeURIComponent(true));
-    queryString.append('paused', encodeURIComponent(true));
-    queryString.append('aborted', encodeURIComponent(true));
-    queryString.append('failing', encodeURIComponent(true));
+    queryString.append('failing', 'true');
+    queryString.append('planned', 'true');
+    queryString.append('completed', 'true');
+    queryString.append('paused', 'true');
+    queryString.append('aborted', 'true');
+    queryString.append('failing', 'true');
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);
