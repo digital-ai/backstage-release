@@ -31,7 +31,7 @@ export const HomePageComponent = () => {
                   page={page}
                   pageSize={rowsPerPage}
                   loading={loading}
-                  totalCount={items?.totalCount ?? 100}
+                  totalCount={items?.total ?? 100}
                   tableData={items?.releases || []}
                   onRowsPerPageChange={setRowsPerPage}
                   onPageChange={setPage}

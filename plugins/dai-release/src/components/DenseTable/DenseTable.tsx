@@ -37,31 +37,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function calculateDuration(startTime: number, endTime?: number): String {
+function calculateDuration(startTime: number, endTime?: number) : string{
   if (endTime === undefined) {
-    return ''; // Return null if end time is not provided
+    return '';
   }
-  const durationMs = endTime - startTime;
-  const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  let formattedDuration = '';
-  if (days > 0) {
-    formattedDuration += `${days}d `;
-  } else {
-    formattedDuration += `0d `
-  }
-  if (hours > 0) {
-    formattedDuration += `${hours}h `;
-  } else {
-    formattedDuration += `0h `;
-  }
-  if (minutes > 0) {
-    formattedDuration += `${minutes}m`;
-  } else {
-      formattedDuration += `0m`;
-  }
+  const durationMs = endTime - startTime
+  const duration = moment.duration(durationMs,'ms')
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+  // Format the duration
+  const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
   return formattedDuration
 }
 
@@ -73,7 +59,7 @@ export const columnFactories = Object.freeze({
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-        <Link to={row.releaseId}>{row.title}</Link>
+        row.title
       ),
       searchable: true,
       sorting: false,
@@ -133,8 +119,8 @@ export const columnFactories = Object.freeze({
       render: (row: Partial<any>) => (
           calculateDuration(row.startDate, row.endDate)
       ),
-      searchable: true,
-      sorting: true,
+      searchable: false,
+      sorting: false,
     };
   },
 
@@ -169,7 +155,7 @@ export const columnFactories = Object.freeze({
             <MoreVertIcon />
           </IconButton>
       ),
-      searchable: true,
+      searchable: false,
       sorting: false,
     };
   },
