@@ -23,16 +23,11 @@ describe('DenseTable', () => {
       pageSize: 5,
       tableData: [],
       totalCount: 0,
-      onPageChange: () => {
-      },
-      onRowsPerPageChange: () => {
-      },
-      retry: () => {
-      },
-      onOrderBy: () => {
-      },
-      onOrderDirection: () => {
-      },
+      onPageChange: () => {},
+      onRowsPerPageChange: () => {},
+      retry: () => {},
+      onOrderBy: () => {},
+      onOrderDirection: () => {},
     });
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
@@ -85,7 +80,7 @@ async function renderContent(args: {
   page: number;
   loading: boolean;
   totalCount: number;
-  retry: () => void
+  retry: () => void;
 }) {
   return await renderInTestApp(
     <TestApiProvider apis={[]}>
@@ -100,7 +95,8 @@ async function renderContent(args: {
         onRowsPerPageChange={args.onRowsPerPageChange}
         retry={args.retry}
         onOrderBy={args.onOrderBy}
-        onOrderDirection={args.onOrderDirection}/>
+        onOrderDirection={args.onOrderDirection}
+      />
     </TestApiProvider>,
   );
 }

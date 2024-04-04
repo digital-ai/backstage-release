@@ -1,8 +1,11 @@
 /* eslint-disable jest/no-conditional-expect */
 
+import {
+  AuthenticationError,
+  NotAllowedError,
+} from '@backstage/errors';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
-import {AuthenticationError, NotAllowedError, ResponseError} from '@backstage/errors';
 import { releases } from '../mocks/mocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
@@ -70,46 +73,40 @@ describe('ReleaseApiClient', () => {
       }
     });
     it('should return AuthenticationError', async () => {
-          worker.use(
-              rest.get(
-                  'http://example.com/api/dai-release/releases',
-                  (_, res, ctx) =>
-                      res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
-              ),
-          );
-          try {
-              await client.getReleases(0, 1, '3', 'desc');
-          } catch (e) {
-              expect(e instanceof AuthenticationError).toBeTruthy();
-          }
+      worker.use(
+        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
+          res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      try {
+        await client.getReleases(0, 1, '3', 'desc');
+      } catch (e) {
+        expect(e instanceof AuthenticationError).toBeTruthy();
+      }
     });
     it('should return NotAllowedError', async () => {
-          worker.use(
-              rest.get(
-                  'http://example.com/api/dai-release/releases',
-                  (_, res, ctx) =>
-                      res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
-              ),
-          );
-          try {
-              await client.getReleases(0, 1, '3', 'desc');
-          } catch (e) {
-              expect(e instanceof NotAllowedError).toBeTruthy();
-          }
-     });
-     it('should return ServiceUnavailableError', async () => {
-          worker.use(
-              rest.get(
-                  'http://example.com/api/dai-release/releases',
-                  (_, res, ctx) =>
-                      res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
-              ),
-          );
-          try {
-              await client.getReleases( 0, 1, '5', 'desc');
-          } catch (e) {
-              expect(e instanceof NotAllowedError).toBeTruthy();
-          }
-     });
+      worker.use(
+        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
+          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      try {
+        await client.getReleases(0, 1, '3', 'desc');
+      } catch (e) {
+        expect(e instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+    it('should return ServiceUnavailableError', async () => {
+      worker.use(
+        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
+          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      try {
+        await client.getReleases(0, 1, '5', 'desc');
+      } catch (e) {
+        expect(e instanceof NotAllowedError).toBeTruthy();
+      }
+    });
   });
 });

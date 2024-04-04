@@ -1,15 +1,14 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
+import { IconButton, makeStyles } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Popover from '@mui/material/Popover';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
-import { makeStyles } from '@material-ui/core';
-import { IconButton } from '@mui/material';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import moment from 'moment';
-import Popover from '@mui/material/Popover';
 import { SearchFilter } from '../SearchFilter';
+import moment from 'moment';
 
 type DenseTableProps = {
   tableData: any[];
@@ -50,11 +49,10 @@ function calculateDuration(startTime: number, endTime?: number): string {
   const hours = duration.hours();
   const minutes = duration.minutes();
   // Format the duration
-  const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
-  return formattedDuration;
+  return `${days}d ${hours}h, ${minutes}m`;
 }
 
-function additionDataPopover() {
+export function additionDataPopover() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -176,7 +174,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => additionDataPopover(),
+      render: (_row: Partial<any>) => additionDataPopover(),
       searchable: false,
       sorting: false,
     };

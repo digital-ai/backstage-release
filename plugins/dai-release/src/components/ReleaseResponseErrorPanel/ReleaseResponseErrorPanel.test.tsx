@@ -5,8 +5,8 @@ import {
   ServiceUnavailableError,
 } from '@backstage/errors';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { ReleaseResponseErrorPanel } from './ReleaseResponseErrorPanel';
 import React from 'react';
+import { ReleaseResponseErrorPanel } from './ReleaseResponseErrorPanel';
 
 describe('ReleaseResponseErrorPanel', () => {
   it('should render the error panel with message', async () => {
