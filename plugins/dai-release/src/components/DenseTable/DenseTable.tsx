@@ -1,4 +1,9 @@
-import {Link, LinkButton, Table, TableColumn} from '@backstage/core-components';
+import {
+  Link,
+  LinkButton,
+  Table,
+  TableColumn,
+} from '@backstage/core-components';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
@@ -6,7 +11,7 @@ import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
 import LaunchIcon from '@material-ui/icons/Launch';
-import {IconButton} from "@mui/material";
+import { IconButton } from '@mui/material';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment';
 import Popover from '@mui/material/Popover';
@@ -38,22 +43,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function calculateDuration(startTime: number, endTime?: number) : string {
+function calculateDuration(startTime: number, endTime?: number): string {
   if (endTime === undefined) {
     return '';
   }
-  const durationMs = endTime - startTime
-  const duration = moment.duration(durationMs,'ms')
+  const durationMs = endTime - startTime;
+  const duration = moment.duration(durationMs, 'ms');
   const days = duration.days();
   const hours = duration.hours();
   const minutes = duration.minutes();
   // Format the duration
   const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
-  return formattedDuration
+  return formattedDuration;
 }
 
 function additionDataPopover() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -67,30 +74,29 @@ function additionDataPopover() {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-      <div>
-        <IconButton
-            aria-label="more"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            size="small"
-            onClick={handleClick}
-        >
-          <MoreVertIcon />
-        </IconButton>
-          <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-          >
-            <Typography sx={{ p: 2 }}>Additional Data!!</Typography>
-          </Popover>
-
-  </div>
+    <div>
+      <IconButton
+        aria-label="more"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        size="small"
+        onClick={handleClick}
+      >
+        <MoreVertIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Typography sx={{ p: 2 }}>Additional Data!!</Typography>
+      </Popover>
+    </div>
   );
 }
 
@@ -102,7 +108,7 @@ export const columnFactories = Object.freeze({
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-          <Link to={row.releaseRedirectUri}>{row.title}</Link>
+        <Link to={row.releaseRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
       sorting: false,
@@ -125,9 +131,7 @@ export const columnFactories = Object.freeze({
       field: 'status',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-        capitalize(row.status.replace('_', ' '))
-    ),
+      render: (row: Partial<any>) => capitalize(row.status.replace('_', ' ')),
       searchable: true,
       sorting: false,
     };
@@ -162,9 +166,8 @@ export const columnFactories = Object.freeze({
       field: 'duration',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-          calculateDuration(row.startDate, row.endDate)
-      ),
+      render: (row: Partial<any>) =>
+        calculateDuration(row.startDate, row.endDate),
       searchable: false,
       sorting: false,
     };
@@ -176,9 +179,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-          additionDataPopover()
-      ),
+      render: (row: Partial<any>) => additionDataPopover(),
       searchable: false,
       sorting: false,
     };
@@ -206,7 +207,7 @@ export const DenseTable = ({
   columns,
   retry,
   onOrderDirection,
-  onOrderBy
+  onOrderBy,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (

@@ -3,10 +3,11 @@ import { DiscoveryApi } from '@backstage/core-plugin-api';
 import {
   AuthenticationError,
   NotAllowedError,
-  NotFoundError, parseErrorResponseBody,
-  ServiceUnavailableError
+  NotFoundError,
+  parseErrorResponseBody,
+  ServiceUnavailableError,
 } from '@backstage/errors';
-import {ReleaseList} from "@digital-ai/plugin-dai-release-common/dist-types/src";
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common/dist-types/src';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -22,13 +23,13 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     orderDirection: string,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
-    queryString.append('failing',encodeURIComponent(true))
-    queryString.append('planned',encodeURIComponent(true))
-    queryString.append('completed',encodeURIComponent(true))
-    queryString.append('paused',encodeURIComponent(true))
-    queryString.append('aborted',encodeURIComponent(true))
-    queryString.append('inProgress',encodeURIComponent(true))
-    queryString.append('failed',encodeURIComponent(true))
+    queryString.append('failing', encodeURIComponent(true));
+    queryString.append('planned', encodeURIComponent(true));
+    queryString.append('completed', encodeURIComponent(true));
+    queryString.append('paused', encodeURIComponent(true));
+    queryString.append('aborted', encodeURIComponent(true));
+    queryString.append('inProgress', encodeURIComponent(true));
+    queryString.append('failed', encodeURIComponent(true));
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);
@@ -62,7 +63,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         throw new ServiceUnavailableError(`Release Service Unavailable`);
       }
       throw new Error(
-          `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
+        `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
       );
     }
 
