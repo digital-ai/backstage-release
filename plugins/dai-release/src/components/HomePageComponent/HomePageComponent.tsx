@@ -6,10 +6,12 @@ import { useReleases } from '../../hooks';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { useObservable } from 'react-use';
 import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
-import releaseLogoBlack from '../../assets/digital.ai-release-no-echo-fc-dark-RGB-sm.png';
-import releaseLogoWhite from '../../assets/digital.ai-release-no-echo-fc-light-RGB-sm.png';
+import releaseLogoBlack from '../../assets/releaseLogoBlack.png';
+import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 
-const useStyles = makeStyles(theme => ({
+
+
+const useStyles = makeStyles(() => ({
   logoStyle: {
     width: '300px'
    ,

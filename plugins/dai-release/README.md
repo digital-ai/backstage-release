@@ -19,16 +19,24 @@ To get the Dai Release to Shows List of Releases you'll need to do the following
    yarn --cwd packages/app add @digital-ai/plugin-dai-release
    ```
 
-2. dfs
+2. Add the `DaiReleasePage` extension to your `App.tsx`:
 
 Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component exported from the plugin, for example:
 
 ```tsx
 // In packages/app/src/App.tsx
-import {DaiReleasePage} from '@digital-ai/plugin-dai-release';
+import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 
 const routes = (
      <FlatRoutes>
         {/* ...other routes */}
         <Route path="/dai-release" element={<DaiReleasePage/>}/>
+```
+
+3. Add Digital.ai Release to your app Sidebar:
+
+```tsx```
+   import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
+
+   <SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
 ```

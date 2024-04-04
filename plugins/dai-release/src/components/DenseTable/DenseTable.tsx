@@ -1,6 +1,5 @@
 import {
   Link,
-  LinkButton,
   Table,
   TableColumn,
 } from '@backstage/core-components';
@@ -10,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
-import LaunchIcon from '@material-ui/icons/Launch';
 import { IconButton } from '@mui/material';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment';
@@ -179,7 +177,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => additionDataPopover(),
+      render: (_row: Partial<any>) => additionDataPopover(),
       searchable: false,
       sorting: false,
     };

@@ -5,7 +5,6 @@ import { DiscoveryApi } from '@backstage/core-plugin-api';
 import {
   AuthenticationError,
   NotAllowedError,
-  ResponseError,
 } from '@backstage/errors';
 import { releases } from '../mocks/mocks';
 import { rest } from 'msw';
