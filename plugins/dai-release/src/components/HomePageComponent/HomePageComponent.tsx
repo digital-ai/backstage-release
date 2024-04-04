@@ -2,7 +2,6 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid } from '@material-ui/core';
 import React from 'react';
-import { SearchFilter } from '../SearchFilter';
 import { useReleases } from '../../hooks';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 
@@ -18,6 +17,8 @@ export const HomePageComponent = () => {
     setRowsPerPage,
     setOrderBy,
     setOrderDirection,
+    searchTile,
+    setSearchTitle,
   } = useReleases();
 
   if (error) {
@@ -28,9 +29,6 @@ export const HomePageComponent = () => {
       <Header title="Digital.ai Release" />
       <Content>
         <Grid container spacing={3} direction="column">
-          <Grid>
-            <SearchFilter />
-          </Grid>
           <Grid item>
             <DenseTable
               page={page}
@@ -44,6 +42,8 @@ export const HomePageComponent = () => {
               retry={retry}
               onOrderDirection={setOrderDirection}
               onOrderBy={setOrderBy}
+              searchTile={searchTile}
+              setSearchTitle={setSearchTitle}
             />
           </Grid>
         </Grid>

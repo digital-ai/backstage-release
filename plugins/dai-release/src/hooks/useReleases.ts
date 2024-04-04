@@ -18,18 +18,27 @@ export function useReleases(): {
   setRowsPerPage: (pageSize: number) => void;
   setOrderDirection: (order: string) => void;
   setOrderBy: (orderBy: number) => void;
+  searchTile: string;
+  setSearchTitle: (title: string) => void;
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState(3);
   const [orderDirection, setOrderDirection] = useState('desc');
+  const [searchTile, setSearchTitle] = useState('');
   const api = useApi(daiReleaseApiRef);
   const direction = orderDirection === '' ? 'desc' : orderDirection;
   const sortColumn = orderBy !== -1 ? releaseOrderBy[orderBy] : 'start_date';
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
-    return api.getReleases(page, rowsPerPage, sortColumn, direction);
-  }, [api, page, rowsPerPage, orderBy, orderDirection]);
+    return api.getReleases(
+      page,
+      rowsPerPage,
+      sortColumn,
+      direction,
+      searchTile,
+    );
+  }, [api, page, rowsPerPage, orderBy, orderDirection, searchTile]);
 
   return {
     items: value?.items,
@@ -42,5 +51,7 @@ export function useReleases(): {
     setRowsPerPage,
     setOrderDirection,
     setOrderBy,
+    searchTile,
+    setSearchTitle,
   };
 }

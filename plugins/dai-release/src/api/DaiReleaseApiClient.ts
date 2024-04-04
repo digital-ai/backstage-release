@@ -21,19 +21,21 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     rowsPerPage: number,
     orderBy: string,
     orderDirection: string,
+    searchTile: string,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
-    queryString.append('failing', 'true');
-    queryString.append('planned', 'true');
-    queryString.append('completed', 'true');
-    queryString.append('paused', 'true');
-    queryString.append('aborted', 'true');
-    queryString.append('inProgress', 'true');
-    queryString.append('failed', 'true');
+    queryString.append('failing', encodeURIComponent(true));
+    queryString.append('planned', encodeURIComponent(true));
+    queryString.append('completed', encodeURIComponent(true));
+    queryString.append('paused', encodeURIComponent(true));
+    queryString.append('aborted', encodeURIComponent(true));
+    queryString.append('inProgress', encodeURIComponent(true));
+    queryString.append('failed', encodeURIComponent(true));
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);
     queryString.append('orderDirection', orderDirection);
+    queryString.append('title', searchTile.toString());
     const urlSegment = `releases?${queryString}`;
     const items = await this.get<ReleaseList>(urlSegment);
     return { items };

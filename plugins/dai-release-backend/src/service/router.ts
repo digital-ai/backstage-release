@@ -4,7 +4,7 @@ import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
-import { getBoolQueryVal, getEncodedQueryVal } from '../api/apiConfig';
+import { getEncodedQueryVal } from '../api/apiConfig';
 
 export interface RouterOptions {
   config: Config;
@@ -27,13 +27,13 @@ export async function createRouter(
   });
 
   router.get('/releases', async (req, res) => {
-    const failing = getBoolQueryVal(req.query.failing?.toString());
-    const planned = getBoolQueryVal(req.query.planned?.toString());
-    const completed = getBoolQueryVal(req.query.completed?.toString());
-    const paused = getBoolQueryVal(req.query.paused?.toString());
-    const aborted = getBoolQueryVal(req.query.aborted?.toString());
-    const inProgress = getBoolQueryVal(req.query.inProgress?.toString());
-    const failed = getBoolQueryVal(req.query.failed?.toString());
+    const failing = getEncodedQueryVal(req.query.failing?.toString());
+    const planned = getEncodedQueryVal(req.query.planned?.toString());
+    const completed = getEncodedQueryVal(req.query.completed?.toString());
+    const paused = getEncodedQueryVal(req.query.paused?.toString());
+    const aborted = getEncodedQueryVal(req.query.aborted?.toString());
+    const inProgress = getEncodedQueryVal(req.query.inProgress?.toString());
+    const failed = getEncodedQueryVal(req.query.failed?.toString());
     const title = getEncodedQueryVal(req.query.title?.toString());
     const beginDate = getEncodedQueryVal(req.query.beginDate?.toString());
     const endDate = getEncodedQueryVal(req.query.endDate?.toString());

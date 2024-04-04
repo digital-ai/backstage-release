@@ -31,13 +31,13 @@ export class ReleaseOverviewApi {
   }
 
   async getReleases(
-    failing: boolean,
-    planned: boolean,
-    completed: boolean,
-    paused: boolean,
-    aborted: boolean,
-    inProgress: boolean,
-    failed: boolean,
+    failing: string,
+    planned: string,
+    completed: string,
+    paused: string,
+    aborted: string,
+    inProgress: string,
+    failed: string,
     title: string,
     beginDate: string,
     endDate: string,

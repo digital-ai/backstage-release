@@ -1,5 +1,5 @@
 import { Grid, Paper, TextField, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Checkbox from '@mui/material/Checkbox';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -12,12 +12,15 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-export const SearchFilter = () => {
-  const [start] = useState();
-  const [end] = useState();
-  const [orderBy, setOrderBy] = useState('');
-  const [statusList, setStatusList] = React.useState<string[]>([]);
+type SearchFilterProps = {
+  searchTile: string;
+  OnSearchByTitle: (title: string) => void;
+};
 
+export const SearchFilter = ({
+  searchTile,
+  OnSearchByTitle,
+}: SearchFilterProps) => {
   const statuses = [
     { status: 'Aborted', color: 'rgb(102, 115, 133)' },
     { status: 'Completed', color: 'rgb(73, 133, 0)' },
@@ -52,17 +55,17 @@ export const SearchFilter = () => {
   }));
   const classes = useStyles();
 
-  const onStatusChange = (event: SelectChangeEvent<typeof statusList>) => {
-    const {
-      target: { value },
-    } = event;
-    setStatusList(typeof value === 'string' ? value.split(',') : value);
-  };
-  const orderByChange = (event: SelectChangeEvent) => {
-    setOrderBy(event.target.value);
-  };
+  // const onStatusChange = (event: SelectChangeEvent<typeof statusList>) => {
+  //   const {
+  //     target: { value },
+  //   } = event;
+  //   setStatusList(typeof value === 'string' ? value.split(',') : value);
+  // };
+  // const orderByChange = (event: SelectChangeEvent) => {
+  //   setOrderBy(event.target.value);
+  // };
   return (
-    <Paper elevation={1}>
+    <Paper elevation={1} style={{ paddingTop: '15px', paddingBottom: '15px' }}>
       <FormControl sx={{ mx: 1, my: 1.5 }}>
         <Grid
           container
@@ -76,8 +79,9 @@ export const SearchFilter = () => {
               id="outlined-basic"
               label="Title"
               variant="outlined"
+              value={searchTile}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                global.console.log(event);
+                OnSearchByTitle(event.target.value);
               }}
               size="small"
               InputProps={{
@@ -109,7 +113,7 @@ export const SearchFilter = () => {
                 }}
                 label="Start"
                 ampm
-                value={start}
+                //value={start}
               />
             </LocalizationProvider>
           </Grid>
@@ -134,7 +138,7 @@ export const SearchFilter = () => {
                 }}
                 label="To"
                 ampm
-                value={end}
+                //value={end}
               />
             </LocalizationProvider>
           </Grid>
@@ -150,19 +154,19 @@ export const SearchFilter = () => {
                 labelId="status-multiple-checkbox-label"
                 id="status-multiple-checkbox"
                 multiple
-                value={statusList}
-                onChange={onStatusChange}
+                value={[]}
+                // onChange={onStatusChange}
                 input={
                   <OutlinedInput label="Tag" className={classes.inputRoot} />
                 }
-                renderValue={selected => selected.join(', ')}
+                //renderValue={selected => selected.join(', ')}
                 inputProps={{ size: 'small' }}
               >
                 {statuses.map(data => (
                   <MenuItem key={data.status} value={data.status}>
                     <Checkbox
                       size="small"
-                      checked={statusList.indexOf(data.status) > -1}
+                      //checked={statusList.indexOf(data.status) > -1}
                     />
                     <i
                       className={classes.statusIcon}
@@ -188,9 +192,9 @@ export const SearchFilter = () => {
               <Select
                 labelId="orderby-select-label-id"
                 id="orderby-select-label"
-                value={orderBy}
+                //value={orderBy}
                 label="Order by"
-                onChange={orderByChange}
+                //onChange={orderByChange}
                 input={
                   <OutlinedInput
                     label="Order by"

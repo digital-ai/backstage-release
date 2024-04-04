@@ -13,5 +13,6 @@ export interface DaiReleaseApi {
     rowsPerPage: number,
     orderBy: string,
     orderDirection: string,
+    searchTile: string,
   ): Promise<{ items: ReleaseList }>;
 }
