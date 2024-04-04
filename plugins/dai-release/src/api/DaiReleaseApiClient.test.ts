@@ -1,11 +1,11 @@
 /* eslint-disable jest/no-conditional-expect */
 
-import { DaiReleaseApiClient } from './DaiReleaseApiClient';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
 import {
   AuthenticationError,
   NotAllowedError,
 } from '@backstage/errors';
+import { DaiReleaseApiClient } from './DaiReleaseApiClient';
+import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { releases } from '../mocks/mocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';

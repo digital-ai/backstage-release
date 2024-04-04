@@ -1,14 +1,14 @@
+import { DaiReleaseApiClient, daiReleaseApiRef } from '../../api';
+import { DiscoveryApi, discoveryApiRef } from '@backstage/core-plugin-api';
 import {
+  TestApiProvider,
   renderInTestApp,
   setupRequestMockHandlers,
-  TestApiProvider,
 } from '@backstage/test-utils';
 import { HomePageComponent } from './HomePageComponent';
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { DiscoveryApi, discoveryApiRef } from '@backstage/core-plugin-api';
-import { DaiReleaseApiClient, daiReleaseApiRef } from '../../api';
 
 describe('HomePageComponent', () => {
   const server = setupServer();

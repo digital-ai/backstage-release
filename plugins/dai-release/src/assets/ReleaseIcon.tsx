@@ -3,8 +3,8 @@ import React, { FunctionComponent } from 'react';
 export const ReleaseSvgIcon: FunctionComponent = () => {
     return (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_2416_25713)">
-                <g clip-path="url(#clip1_2416_25713)">
+            <g clipPath="url(#clip0_2416_25713)">
+                <g clipPath="url(#clip1_2416_25713)">
                     <path
                         d="M20 32C26.6274 32 32 26.6274 32 20C32 13.3726 26.6274 8 20 8C13.3726 8 8 13.3726 8 20C8 26.6274 13.3726 32 20 32Z"
                         fill="#279FEA"/>
