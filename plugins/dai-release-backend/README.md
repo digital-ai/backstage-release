@@ -1,6 +1,7 @@
 # Digital.ai Release Backend
 
 ## Setup
+
 The following sections will help you get the (Digital.ai) Dai Release Backend plugin setup and running.
 
 ### Configuration
@@ -16,7 +17,7 @@ daiRelease:
 Configuration Details:
 
 - `host` will be your release application host.
-- `token`  environment variable must be set, that is your release application api token. Create an account with read permission and use that.
+- `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
 
 ### Up and Running
 
@@ -42,7 +43,7 @@ Here's how to get the backend up and running:
    ): Promise<Router> {
      return createRouter({
        logger: env.logger,
-       config: env.config      
+       config: env.config,
      });
    }
    ```
