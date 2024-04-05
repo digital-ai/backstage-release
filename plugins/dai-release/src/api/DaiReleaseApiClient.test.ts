@@ -1,9 +1,6 @@
 /* eslint-disable jest/no-conditional-expect */
 
-import {
-  AuthenticationError,
-  NotAllowedError,
-} from '@backstage/errors';
+import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { releases } from '../mocks/mocks';

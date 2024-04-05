@@ -1,12 +1,6 @@
-import {
-  Link,
-  Table,
-  TableColumn,
-} from '@backstage/core-components';
-import { IconButton } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Popover from '@mui/material/Popover';
+import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
+import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
@@ -53,49 +47,6 @@ function calculateDuration(startTime: number, endTime?: number): string {
   // Format the duration
   const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
   return formattedDuration;
-}
-
-export function additionDataPopover() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
-  return (
-    <div>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        size="small"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Typography sx={{ p: 2 }}>Additional Data!!</Typography>
-      </Popover>
-    </div>
-  );
 }
 
 export const columnFactories = Object.freeze({
@@ -177,7 +128,7 @@ export const columnFactories = Object.freeze({
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (_row: Partial<any>) => additionDataPopover(),
+      render: (_row: Partial<any>) => <ReleasePopOverComponent />,
       searchable: false,
       sorting: false,
     };

@@ -35,8 +35,8 @@ const routes = (
 
 3. Add Digital.ai Release to your app Sidebar:
 
-```tsx```
-   import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
+`tsx`
+import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 
    <SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
 ```
