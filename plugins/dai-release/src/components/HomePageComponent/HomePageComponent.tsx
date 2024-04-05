@@ -50,6 +50,7 @@ export const HomePageComponent = () => {
             className={classes.logoStyle}
           />
         }
+        pageTitleOverride="Digital.ai Release"
       />
       <Content>
         <Grid container spacing={3} direction="column">

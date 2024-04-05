@@ -29,7 +29,9 @@ describe('HomePageComponent', () => {
 
   it('should render the home page', async () => {
     const rendered = await renderContent();
-    expect(rendered.getByText('Digital.ai Release')).toBeInTheDocument();
+    const image = rendered.getByAltText('Release logo') as HTMLImageElement;
+    expect(image).toBeInTheDocument();
+    expect(image.src).toContain('releaseLogoBlack');
   });
 });
 
