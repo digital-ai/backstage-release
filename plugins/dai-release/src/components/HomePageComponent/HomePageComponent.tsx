@@ -30,10 +30,15 @@ export const HomePageComponent = () => {
     setPage,
     rowsPerPage,
     setRowsPerPage,
-    setOrderBy,
     setOrderDirection,
     searchTile,
     setSearchTitle,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    orderBy,
+    setOrderBy,
   } = useReleases();
 
   if (error) {
@@ -66,9 +71,14 @@ export const HomePageComponent = () => {
               columns={defaultColumns}
               retry={retry}
               onOrderDirection={setOrderDirection}
-              onOrderBy={setOrderBy}
               searchTile={searchTile}
               setSearchTitle={setSearchTitle}
+              fromDate={fromDate}
+              setFromDate={setFromDate}
+              toDate={toDate}
+              setToDate={setToDate}
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
             />
           </Grid>
         </Grid>

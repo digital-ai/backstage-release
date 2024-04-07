@@ -8,6 +8,7 @@ import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { SearchFilter } from '../SearchFilter';
 import moment from 'moment';
+import dayjs from 'dayjs';
 
 type DenseTableProps = {
   tableData: any[];
@@ -20,9 +21,14 @@ type DenseTableProps = {
   columns: TableColumn[];
   retry: () => void;
   onOrderDirection: (order: string) => void;
-  onOrderBy: (orderBy: number) => void;
   searchTile: string;
   setSearchTitle: (title: string) => void;
+  fromDate: dayjs.Dayjs | null;
+  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
+  toDate: dayjs.Dayjs | null;
+  setToDate: (toDate: dayjs.Dayjs | null) => void;
+  orderBy: string;
+  setOrderBy: (orderBy: string) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -158,9 +164,14 @@ export const DenseTable = ({
   columns,
   retry,
   onOrderDirection,
-  onOrderBy,
   searchTile,
   setSearchTitle,
+  fromDate,
+  setFromDate,
+  toDate,
+  setToDate,
+  orderBy,
+  setOrderBy,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
@@ -169,7 +180,13 @@ export const DenseTable = ({
         Toolbar: () => (
           <SearchFilter
             searchTile={searchTile}
-            OnSearchByTitle={setSearchTitle}
+            onSearchByTitle={setSearchTitle}
+            fromDate={fromDate}
+            onFromDateChange={setFromDate}
+            toDate={toDate}
+            onToDateChange={setToDate}
+            orderBy={orderBy}
+            onOrderByChange={setOrderBy}
           />
         ),
       }}
@@ -206,7 +223,7 @@ export const DenseTable = ({
         </Typography>
       }
       onOrderChange={(orderBy, orderDirection) => {
-        onOrderBy(orderBy);
+        //onOrderBy(orderBy);
         onOrderDirection(orderDirection);
       }}
     />

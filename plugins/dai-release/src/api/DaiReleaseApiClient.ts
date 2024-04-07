@@ -8,6 +8,8 @@ import {
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
+import dayjs from 'dayjs';
+import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -22,6 +24,8 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     orderBy: string,
     orderDirection: string,
     searchTile: string,
+    fromDate: dayjs.Dayjs | null,
+    toDate: dayjs.Dayjs | null,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
     queryString.append('failing', encodeURIComponent(true));
@@ -36,6 +40,9 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('orderBy', orderBy);
     queryString.append('orderDirection', orderDirection);
     queryString.append('title', searchTile.toString());
+    queryString.append('fromDate', convertUnixTimestamp(fromDate).toString());
+    queryString.append('toDate', convertUnixTimestamp(toDate).toString());
+
     const urlSegment = `releases?${queryString}`;
     const items = await this.get<ReleaseList>(urlSegment);
     return { items };

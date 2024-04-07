@@ -39,15 +39,15 @@ export class ReleaseOverviewApi {
     inProgress: string,
     failed: string,
     title: string,
-    beginDate: string,
-    endDate: string,
+    fromDate: string,
+    toDate: string,
     orderBy: string,
     orderDirection: string,
     pageNumber: string,
     resultsPerPage: string,
   ): Promise<ReleaseList> {
     this.logger?.debug(
-      `Calling Release Overview api, start from: ${beginDate} to: ${endDate}, in order of ${orderBy}`,
+      `Calling Release Overview api, start from: ${fromDate} to: ${toDate}, in order of ${orderBy}`,
     );
     const accessToken = getCredentials(this.config);
     const apiUrl = getReleaseApiHost(this.config);
@@ -62,8 +62,8 @@ export class ReleaseOverviewApi {
       failed: failed,
       title: title,
       tags: [],
-      /*  from: beginDate,
-      to: endDate,*/
+      from: fromDate,
+      to: toDate,
       orderBy: orderBy,
       orderDirection: orderDirection,
       onlyFlagged: false,

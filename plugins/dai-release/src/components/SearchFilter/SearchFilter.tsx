@@ -9,17 +9,29 @@ import ListItemText from '@mui/material/ListItemText';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-import { SelectChangeEvent } from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import dayjs from 'dayjs';
 
 type SearchFilterProps = {
   searchTile: string;
-  OnSearchByTitle: (title: string) => void;
+  onSearchByTitle: (title: string) => void;
+  fromDate: dayjs.Dayjs | null;
+  onFromDateChange: (startDate: dayjs.Dayjs | null) => void;
+  toDate: dayjs.Dayjs | null;
+  onToDateChange: (toDate: dayjs.Dayjs | null) => void;
+  orderBy: string;
+  onOrderByChange: (orderBy: string) => void;
 };
 
 export const SearchFilter = ({
   searchTile,
-  OnSearchByTitle,
+  onSearchByTitle,
+  fromDate,
+  onFromDateChange,
+  toDate,
+  onToDateChange,
+  orderBy,
+  onOrderByChange,
 }: SearchFilterProps) => {
   const statuses = [
     { status: 'Aborted', color: 'rgb(102, 115, 133)' },
@@ -81,7 +93,7 @@ export const SearchFilter = ({
               variant="outlined"
               value={searchTile}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                OnSearchByTitle(event.target.value);
+                onSearchByTitle(event.target.value);
               }}
               size="small"
               InputProps={{
@@ -113,7 +125,8 @@ export const SearchFilter = ({
                 }}
                 label="Start"
                 ampm
-                //value={start}
+                value={fromDate}
+                onAccept={onFromDateChange}
               />
             </LocalizationProvider>
           </Grid>
@@ -138,7 +151,8 @@ export const SearchFilter = ({
                 }}
                 label="To"
                 ampm
-                //value={end}
+                value={toDate}
+                onAccept={onToDateChange}
               />
             </LocalizationProvider>
           </Grid>
@@ -192,9 +206,11 @@ export const SearchFilter = ({
               <Select
                 labelId="orderby-select-label-id"
                 id="orderby-select-label"
-                //value={orderBy}
+                value={orderBy}
                 label="Order by"
-                //onChange={orderByChange}
+                onChange={(event: SelectChangeEvent) => {
+                  onOrderByChange(event.target.value);
+                }}
                 input={
                   <OutlinedInput
                     label="Order by"
@@ -202,6 +218,7 @@ export const SearchFilter = ({
                   />
                 }
                 inputProps={{ size: 'small' }}
+                defaultValue={'start_date'}
               >
                 <MenuItem value="start_date" className={classes.inputRoot}>
                   Start Date
