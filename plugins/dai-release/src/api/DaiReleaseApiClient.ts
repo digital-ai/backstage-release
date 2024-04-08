@@ -1,8 +1,13 @@
-import { beginDateFormat, endDateFormat } from '../utils/dateTimeUtils';
+import {
+  AuthenticationError,
+  NotAllowedError,
+  NotFoundError,
+  ServiceUnavailableError,
+  parseErrorResponseBody,
+} from '@backstage/errors';
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
-import { ResponseError } from '@backstage/errors';
-import moment from 'moment';
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common/dist-types/src';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -16,22 +21,21 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     rowsPerPage: number,
     orderBy: string,
     orderDirection: string,
-  ): Promise<any> {
+  ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
-    const now = new Date();
-    const order = `${orderBy}:${orderDirection}`;
-    queryString.append(
-      'beginDate',
-      moment(now).subtract(7, 'days').format(beginDateFormat),
-    );
-    queryString.append('endDate', moment(now).format(endDateFormat));
-    queryString.append('order', order);
-    queryString.append('pageNumber', (page + 1).toString());
+    queryString.append('failing', encodeURIComponent(true));
+    queryString.append('planned', encodeURIComponent(true));
+    queryString.append('completed', encodeURIComponent(true));
+    queryString.append('paused', encodeURIComponent(true));
+    queryString.append('aborted', encodeURIComponent(true));
+    queryString.append('inProgress', encodeURIComponent(true));
+    queryString.append('failed', encodeURIComponent(true));
+    queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
-    queryString.append('taskSet', 'ALL');
-
+    queryString.append('orderBy', orderBy);
+    queryString.append('orderDirection', orderDirection);
     const urlSegment = `releases?${queryString}`;
-    const items = await this.get<any>(urlSegment);
+    const items = await this.get<ReleaseList>(urlSegment);
     return { items };
   }
 
@@ -48,7 +52,19 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     });
 
     if (!response.ok) {
-      throw await ResponseError.fromResponse(response);
+      const data = await parseErrorResponseBody(response);
+      if (response.status === 401) {
+        throw new AuthenticationError(data.error.message);
+      } else if (response.status === 403) {
+        throw new NotAllowedError(data.error.message);
+      } else if (response.status === 404) {
+        throw new NotFoundError(data.error.message);
+      } else if (response.status === 500) {
+        throw new ServiceUnavailableError(`Release Service Unavailable`);
+      }
+      throw new Error(
+        `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
+      );
     }
 
     return (await response.json()) as Promise<T>;

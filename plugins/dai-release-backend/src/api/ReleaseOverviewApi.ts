@@ -62,8 +62,8 @@ export class ReleaseOverviewApi {
       failed: failed,
       title: title,
       tags: [],
-      from: beginDate,
-      to: endDate,
+      /*  from: beginDate,
+      to: endDate,*/
       orderBy: orderBy,
       orderDirection: orderDirection,
       onlyFlagged: false,

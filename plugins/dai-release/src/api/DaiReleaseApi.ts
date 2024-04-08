@@ -1,3 +1,4 @@
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common/dist-types/src';
 import { createApiRef } from '@backstage/core-plugin-api';
 
 /** @public */
@@ -12,5 +13,5 @@ export interface DaiReleaseApi {
     rowsPerPage: number,
     orderBy: string,
     orderDirection: string,
-  ): Promise<any>;
+  ): Promise<{ items: ReleaseList }>;
 }

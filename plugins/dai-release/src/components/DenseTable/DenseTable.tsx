@@ -1,10 +1,12 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
+import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 
 type DenseTableProps = {
   tableData: any[];
@@ -16,6 +18,8 @@ type DenseTableProps = {
   onRowsPerPageChange: (rows: number) => void;
   columns: TableColumn[];
   retry: () => void;
+  onOrderDirection: (order: string) => void;
+  onOrderBy: (orderBy: number) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -31,6 +35,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function calculateDuration(startTime: number, endTime?: number): string {
+  if (endTime === undefined) {
+    return '';
+  }
+  const durationMs = endTime - startTime;
+  const duration = moment.duration(durationMs, 'ms');
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+  // Format the duration
+  const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
+  return formattedDuration;
+}
+
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
     return {
@@ -39,10 +57,10 @@ export const columnFactories = Object.freeze({
       cellStyle: cellStyle,
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-        <Link to={row.releaseId}>{row.title}</Link>
+        <Link to={row.releaseRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createFolderColumns(): TableColumn {
@@ -53,7 +71,7 @@ export const columnFactories = Object.freeze({
       headerStyle: headerStyle,
       render: (row: Partial<any>) => capitalize(row.folder),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createStatusColumns(): TableColumn {
@@ -62,9 +80,9 @@ export const columnFactories = Object.freeze({
       field: 'status',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => capitalize(row.status),
+      render: (row: Partial<any>) => capitalize(row.status.replace('_', ' ')),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
   createStartDateColumns(): TableColumn {
@@ -78,48 +96,41 @@ export const columnFactories = Object.freeze({
       sorting: true,
     };
   },
+
   createEndDateColumns(): TableColumn {
     return {
       title: 'End Date',
-      field: 'completionDate',
+      field: 'endDate',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => formatTimestamp(row.completionDate),
+      render: (row: Partial<any>) => formatTimestamp(row.endDate),
       searchable: true,
       sorting: true,
     };
   },
+
   createDurationColumns(): TableColumn {
     return {
       title: 'Duration',
       field: 'duration',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => row.duration,
-      searchable: true,
-      sorting: true,
+      render: (row: Partial<any>) =>
+        calculateDuration(row.startDate, row.endDate),
+      searchable: false,
+      sorting: false,
     };
   },
-  createDotsColumns(): TableColumn {
-    return {
-      title: 'Actions',
-      field: '',
-      cellStyle: cellStyle,
-      headerStyle: headerStyle,
-      render: () => '',
-      searchable: true,
-      sorting: true,
-    };
-  },
+
   createAdditionalDataColumns(): TableColumn {
     return {
-      title: 'Additional Data',
+      title: '',
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: () => '',
-      searchable: true,
-      sorting: true,
+      render: (_row: Partial<any>) => <ReleasePopOverComponent />,
+      searchable: false,
+      sorting: false,
     };
   },
 });
@@ -131,7 +142,6 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createStartDateColumns(),
   columnFactories.createEndDateColumns(),
   columnFactories.createDurationColumns(),
-  columnFactories.createDotsColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
@@ -145,6 +155,8 @@ export const DenseTable = ({
   onRowsPerPageChange,
   columns,
   retry,
+  onOrderDirection,
+  onOrderBy,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
@@ -181,6 +193,10 @@ export const DenseTable = ({
           No releases available
         </Typography>
       }
+      onOrderChange={(orderBy, orderDirection) => {
+        onOrderBy(orderBy);
+        onOrderDirection(orderDirection);
+      }}
     />
   );
 };
