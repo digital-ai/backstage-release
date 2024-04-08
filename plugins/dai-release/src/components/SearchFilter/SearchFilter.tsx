@@ -1,4 +1,10 @@
-import { Grid, Paper, TextField, makeStyles } from '@material-ui/core';
+import {
+  Grid,
+  Paper,
+  TextField,
+  makeStyles,
+  IconButton,
+} from '@material-ui/core';
 import React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Checkbox from '@mui/material/Checkbox';
@@ -6,32 +12,39 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { ClearIcon, LocalizationProvider } from '@mui/x-date-pickers';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import dayjs from 'dayjs';
+import SyncIcon from '@material-ui/icons/Sync';
 
 type SearchFilterProps = {
   searchTile: string;
-  onSearchByTitle: (title: string) => void;
   fromDate: dayjs.Dayjs | null;
-  onFromDateChange: (startDate: dayjs.Dayjs | null) => void;
   toDate: dayjs.Dayjs | null;
-  onToDateChange: (toDate: dayjs.Dayjs | null) => void;
   orderBy: string;
+  statusTags: string[];
+  retry: () => void;
+  onSearchByTitle: (title: string) => void;
+  onFromDateChange: (startDate: dayjs.Dayjs | null) => void;
+  onToDateChange: (toDate: dayjs.Dayjs | null) => void;
   onOrderByChange: (orderBy: string) => void;
+  onStatusTagChange: (statusTags: string[]) => void;
 };
 
 export const SearchFilter = ({
   searchTile,
-  onSearchByTitle,
   fromDate,
-  onFromDateChange,
   toDate,
-  onToDateChange,
   orderBy,
+  statusTags,
+  retry,
+  onSearchByTitle,
+  onFromDateChange,
+  onToDateChange,
   onOrderByChange,
+  onStatusTagChange,
 }: SearchFilterProps) => {
   const statuses = [
     { status: 'Aborted', color: 'rgb(102, 115, 133)' },
@@ -42,6 +55,7 @@ export const SearchFilter = ({
     { status: 'Paused', color: 'rgb(102, 115, 133)' },
     { status: 'Planned', color: 'rgb(102, 115, 133)' },
   ];
+
   const useStyles = makeStyles(theme => ({
     statusIcon: {
       borderRadius: '50%',
@@ -64,18 +78,32 @@ export const SearchFilter = ({
       height: '16px',
       width: '16px',
     },
+    clearIconSize: {
+      height: '15px',
+      width: '15px',
+    },
+    clearIconButton: {
+      height: '11px',
+      float: 'right',
+      width: '0',
+    },
+    statusTagLabel: {
+      float: 'left',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      width: '140px',
+    },
   }));
   const classes = useStyles();
 
-  // const onStatusChange = (event: SelectChangeEvent<typeof statusList>) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setStatusList(typeof value === 'string' ? value.split(',') : value);
-  // };
-  // const orderByChange = (event: SelectChangeEvent) => {
-  //   setOrderBy(event.target.value);
-  // };
+  const onStatusChange = (event: SelectChangeEvent<typeof statusTags>) => {
+    const {
+      target: { value },
+    } = event;
+    onStatusTagChange(typeof value === 'string' ? value.split(',') : value);
+  };
+
   return (
     <Paper elevation={1} style={{ paddingTop: '15px', paddingBottom: '15px' }}>
       <FormControl sx={{ mx: 1, my: 1.5 }}>
@@ -122,6 +150,9 @@ export const SearchFilter = ({
                   openPickerIcon: {
                     classes: { root: classes.openCalenderPickerIcon },
                   },
+                  digitalClockSectionItem: {
+                    classes: { root: classes.inputLabelRoot },
+                  },
                 }}
                 label="Start"
                 ampm
@@ -148,6 +179,9 @@ export const SearchFilter = ({
                   openPickerIcon: {
                     classes: { root: classes.openCalenderPickerIcon },
                   },
+                  digitalClockSectionItem: {
+                    classes: { root: classes.inputLabelRoot },
+                  },
                 }}
                 label="To"
                 ampm
@@ -165,22 +199,40 @@ export const SearchFilter = ({
                 Tag
               </InputLabel>
               <Select
+                renderValue={selected => (
+                  <>
+                    <span className={classes.statusTagLabel}>
+                      {selected.join(', ')}
+                    </span>
+                    {selected && (
+                      <IconButton
+                        size="small"
+                        className={classes.clearIconButton}
+                        onMouseDown={event => {
+                          event.stopPropagation();
+                        }}
+                        onClick={() => onStatusTagChange([])}
+                      >
+                        <ClearIcon className={classes.clearIconSize} />
+                      </IconButton>
+                    )}
+                  </>
+                )}
                 labelId="status-multiple-checkbox-label"
                 id="status-multiple-checkbox"
                 multiple
-                value={[]}
-                // onChange={onStatusChange}
+                value={statusTags}
+                onChange={onStatusChange}
                 input={
                   <OutlinedInput label="Tag" className={classes.inputRoot} />
                 }
-                //renderValue={selected => selected.join(', ')}
                 inputProps={{ size: 'small' }}
               >
                 {statuses.map(data => (
                   <MenuItem key={data.status} value={data.status}>
                     <Checkbox
                       size="small"
-                      //checked={statusList.indexOf(data.status) > -1}
+                      checked={statusTags.indexOf(data.status) > -1}
                     />
                     <i
                       className={classes.statusIcon}
@@ -228,6 +280,13 @@ export const SearchFilter = ({
                 </MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item>
+            <SyncIcon
+              fontSize="medium"
+              onClick={retry}
+              style={{ cursor: 'pointer' }}
+            />
           </Grid>
         </Grid>
       </FormControl>

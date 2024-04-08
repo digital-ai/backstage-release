@@ -16,19 +16,21 @@ type DenseTableProps = {
   page: number;
   pageSize: number;
   totalCount: number;
-  onPageChange: (page: number) => void;
-  onRowsPerPageChange: (rows: number) => void;
   columns: TableColumn[];
   retry: () => void;
-  onOrderDirection: (order: string) => void;
   searchTile: string;
-  setSearchTitle: (title: string) => void;
   fromDate: dayjs.Dayjs | null;
-  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
   toDate: dayjs.Dayjs | null;
-  setToDate: (toDate: dayjs.Dayjs | null) => void;
   orderBy: string;
+  statusTags: string[];
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
+  onOrderDirection: (order: string) => void;
+  setSearchTitle: (title: string) => void;
+  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
+  setToDate: (toDate: dayjs.Dayjs | null) => void;
   setOrderBy: (orderBy: string) => void;
+  setStatusTags: (statusTags: string[]) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -62,7 +64,7 @@ export const columnFactories = Object.freeze({
     return {
       title: 'Title',
       field: 'title',
-      cellStyle: cellStyle,
+      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
         <Link to={row.releaseRedirectUri}>{row.title}</Link>
@@ -159,35 +161,42 @@ export const DenseTable = ({
   page,
   pageSize,
   totalCount,
-  onPageChange,
-  onRowsPerPageChange,
   columns,
   retry,
-  onOrderDirection,
   searchTile,
-  setSearchTitle,
   fromDate,
-  setFromDate,
   toDate,
-  setToDate,
   orderBy,
+  statusTags,
+  onPageChange,
+  onRowsPerPageChange,
+  //onOrderDirection,
+  setSearchTitle,
+  setFromDate,
+  setToDate,
   setOrderBy,
+  setStatusTags,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
     <Table
       components={{
         Toolbar: () => (
-          <SearchFilter
-            searchTile={searchTile}
-            onSearchByTitle={setSearchTitle}
-            fromDate={fromDate}
-            onFromDateChange={setFromDate}
-            toDate={toDate}
-            onToDateChange={setToDate}
-            orderBy={orderBy}
-            onOrderByChange={setOrderBy}
-          />
+          <>
+            <SearchFilter
+              searchTile={searchTile}
+              fromDate={fromDate}
+              toDate={toDate}
+              orderBy={orderBy}
+              statusTags={statusTags}
+              onSearchByTitle={setSearchTitle}
+              onFromDateChange={setFromDate}
+              onToDateChange={setToDate}
+              onOrderByChange={setOrderBy}
+              onStatusTagChange={setStatusTags}
+              retry={retry}
+            />
+          </>
         ),
       }}
       columns={columns}
@@ -222,10 +231,10 @@ export const DenseTable = ({
           No releases available
         </Typography>
       }
-      onOrderChange={(orderBy, orderDirection) => {
-        //onOrderBy(orderBy);
-        onOrderDirection(orderDirection);
-      }}
+      // onOrderChange={(orderBy, orderDirection) => {
+      //   //onOrderBy(orderBy);
+      //   onOrderDirection(orderDirection);
+      // }}
     />
   );
 };

@@ -18,6 +18,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     this.discoveryApi = options.discoveryApi;
   }
 
+  private isStatusChecked(statusTags: string[], tag: string) {
+    return encodeURIComponent(statusTags.indexOf(tag) > -1);
+  }
+
   async getReleases(
     page: number,
     rowsPerPage: number,
@@ -26,15 +30,22 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     searchTile: string,
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
+    statusTags: string[],
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
-    queryString.append('failing', encodeURIComponent(true));
-    queryString.append('planned', encodeURIComponent(true));
-    queryString.append('completed', encodeURIComponent(true));
-    queryString.append('paused', encodeURIComponent(true));
-    queryString.append('aborted', encodeURIComponent(true));
-    queryString.append('inProgress', encodeURIComponent(true));
-    queryString.append('failed', encodeURIComponent(true));
+    queryString.append('failing', this.isStatusChecked(statusTags, 'Failing'));
+    queryString.append('planned', this.isStatusChecked(statusTags, 'Planned'));
+    queryString.append(
+      'completed',
+      this.isStatusChecked(statusTags, 'Completed'),
+    );
+    queryString.append('paused', this.isStatusChecked(statusTags, 'Paused'));
+    queryString.append('aborted', this.isStatusChecked(statusTags, 'Aborted'));
+    queryString.append(
+      'inProgress',
+      this.isStatusChecked(statusTags, 'In progress'),
+    );
+    queryString.append('failed', this.isStatusChecked(statusTags, 'Failed'));
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);

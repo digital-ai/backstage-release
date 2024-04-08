@@ -10,18 +10,20 @@ export function useReleases(): {
   items: any | undefined;
   retry: () => void;
   page: any;
-  setPage: (page: number) => void;
   rowsPerPage: any;
+  searchTile: string;
+  fromDate: dayjs.Dayjs | null;
+  toDate: dayjs.Dayjs | null;
+  orderBy: string;
+  statusTags: string[];
+  setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setOrderDirection: (order: string) => void;
-  searchTile: string;
   setSearchTitle: (title: string) => void;
-  fromDate: dayjs.Dayjs | null;
   setFromDate: (fromDate: dayjs.Dayjs | null) => void;
-  toDate: dayjs.Dayjs | null;
   setToDate: (toDate: dayjs.Dayjs | null) => void;
-  orderBy: string;
   setOrderBy: (orderBy: string) => void;
+  setStatusTags: (statusTags: string[]) => void;
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -30,6 +32,7 @@ export function useReleases(): {
   const [searchTile, setSearchTitle] = useState('');
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
+  const [statusTags, setStatusTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
   const direction = orderDirection === '' ? 'desc' : orderDirection;
@@ -43,6 +46,7 @@ export function useReleases(): {
       searchTile,
       fromDate,
       toDate,
+      statusTags,
     );
   }, [
     api,
@@ -53,6 +57,7 @@ export function useReleases(): {
     searchTile,
     fromDate,
     toDate,
+    statusTags,
   ]);
 
   return {
@@ -61,17 +66,19 @@ export function useReleases(): {
     error,
     retry,
     page,
-    setPage,
     rowsPerPage,
+    searchTile,
+    fromDate,
+    toDate,
+    orderBy,
+    statusTags,
+    setPage,
     setRowsPerPage,
     setOrderDirection,
-    searchTile,
     setSearchTitle,
-    fromDate,
     setFromDate,
-    toDate,
     setToDate,
-    orderBy,
     setOrderBy,
+    setStatusTags,
   };
 }

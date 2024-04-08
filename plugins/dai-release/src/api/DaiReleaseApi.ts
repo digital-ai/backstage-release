@@ -17,5 +17,6 @@ export interface DaiReleaseApi {
     searchTile: string,
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
+    statusTags: string[],
   ): Promise<{ items: ReleaseList }>;
 }
