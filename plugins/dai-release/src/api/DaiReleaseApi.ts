@@ -1,4 +1,4 @@
-import { ReleaseList } from '@digital-ai/plugin-dai-release-common/dist-types/src';
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 
 /** @public */
