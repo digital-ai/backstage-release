@@ -7,7 +7,7 @@ import {
 } from '@backstage/errors';
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
-import { ReleaseList } from '@digital-ai/plugin-dai-release-common/dist-types/src';
+import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
