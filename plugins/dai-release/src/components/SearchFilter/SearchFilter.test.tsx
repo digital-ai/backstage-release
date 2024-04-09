@@ -5,10 +5,10 @@ import {
 import React from 'react';
 import { SearchFilter } from './SearchFilter';
 import { rest } from 'msw';
-import { screen } from '@testing-library/react';
 import { setupServer } from 'msw/node';
+import dayjs from 'dayjs';
 
-describe('HomePageComponent', () => {
+describe('SearchFilter', () => {
   const server = setupServer();
   setupRequestMockHandlers(server);
 
@@ -20,10 +20,80 @@ describe('HomePageComponent', () => {
   });
 
   it('should render the search filter elements', async () => {
-    await renderInTestApp(<SearchFilter />);
-    expect(screen.getByLabelText('Order by')).toBeInTheDocument();
-    expect(screen.getByLabelText('Title')).toBeInTheDocument();
-    expect(screen.getByLabelText('Start')).toBeInTheDocument();
-    expect(screen.getByLabelText('To')).toBeInTheDocument();
+    const rendered = await renderContent({
+      searchTitle: '',
+      fromDate: null,
+      toDate: null,
+      statusTags: [],
+      orderBy: '',
+      onPageChange: () => {},
+      onRowsPerPageChange: () => {},
+      onOrderDirection: () => {},
+      onSearchTitle: () => {},
+      onFromDateChange: () => {},
+      onToDateChange: () => {},
+      onOrderByChange: () => {},
+      onStatusTagChange: () => {},
+      retry: () => {},
+    });
+    expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
+    expect(rendered.getByLabelText('Title')).toBeInTheDocument();
+    expect(rendered.getByLabelText('Start')).toBeInTheDocument();
+    expect(rendered.getByLabelText('To')).toBeInTheDocument();
+  });
+  it('should render the search filter elements with content', async () => {
+    const rendered = await renderContent({
+      searchTitle: 'Test',
+      fromDate: dayjs(new Date('04/09/2024 05:07 PM')),
+      toDate: dayjs(new Date('04/09/2024 05:07 PM')),
+      statusTags: ['Failing'],
+      orderBy: 'start_date',
+      onPageChange: () => {},
+      onRowsPerPageChange: () => {},
+      onOrderDirection: () => {},
+      onSearchTitle: () => {},
+      onFromDateChange: () => {},
+      onToDateChange: () => {},
+      onOrderByChange: () => {},
+      onStatusTagChange: () => {},
+      retry: () => {},
+    });
+    expect(rendered.getByLabelText('Title')).toHaveValue('Test');
+    expect(rendered.getByLabelText('Start')).toHaveValue('04/09/2024 05:07 PM');
+    expect(rendered.getByLabelText('To')).toHaveValue('04/09/2024 05:07 PM');
+    expect(rendered.getByText('Failing')).toBeInTheDocument();
+    expect(rendered.getByText('Start Date')).toBeInTheDocument();
   });
 });
+async function renderContent(args: {
+  searchTitle: string;
+  fromDate: dayjs.Dayjs | null;
+  toDate: dayjs.Dayjs | null;
+  orderBy: string;
+  statusTags: string[];
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
+  onOrderDirection: (order: string) => void;
+  onSearchTitle: (title: string) => void;
+  onFromDateChange: (fromDate: dayjs.Dayjs | null) => void;
+  onToDateChange: (toDate: dayjs.Dayjs | null) => void;
+  onOrderByChange: (orderBy: string) => void;
+  onStatusTagChange: (statusTags: string[]) => void;
+  retry: () => void;
+}) {
+  return await renderInTestApp(
+    <SearchFilter
+      fromDate={args.fromDate}
+      orderBy={args.orderBy}
+      searchTitle={args.searchTitle}
+      onFromDateChange={args.onFromDateChange}
+      onSearchByTitle={args.onSearchTitle}
+      onStatusTagChange={args.onStatusTagChange}
+      onToDateChange={args.onToDateChange}
+      statusTags={args.statusTags}
+      toDate={args.toDate}
+      onOrderByChange={args.onOrderByChange}
+      retry={args.retry}
+    />,
+  );
+}

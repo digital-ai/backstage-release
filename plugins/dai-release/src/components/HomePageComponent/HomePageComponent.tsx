@@ -28,7 +28,7 @@ export const HomePageComponent = () => {
     retry,
     page,
     rowsPerPage,
-    searchTile,
+    searchTitle,
     fromDate,
     toDate,
     orderBy,
@@ -70,7 +70,7 @@ export const HomePageComponent = () => {
               tableData={items?.releases || []}
               columns={defaultColumns}
               retry={retry}
-              searchTile={searchTile}
+              searchTitle={searchTitle}
               fromDate={fromDate}
               toDate={toDate}
               orderBy={orderBy}

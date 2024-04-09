@@ -20,7 +20,7 @@ import dayjs from 'dayjs';
 import SyncIcon from '@material-ui/icons/Sync';
 
 type SearchFilterProps = {
-  searchTile: string;
+  searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
@@ -34,7 +34,7 @@ type SearchFilterProps = {
 };
 
 export const SearchFilter = ({
-  searchTile,
+  searchTitle,
   fromDate,
   toDate,
   orderBy,
@@ -119,7 +119,7 @@ export const SearchFilter = ({
               id="outlined-basic"
               label="Title"
               variant="outlined"
-              value={searchTile}
+              value={searchTitle}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 onSearchByTitle(event.target.value);
               }}

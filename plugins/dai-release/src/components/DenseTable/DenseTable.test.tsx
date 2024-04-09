@@ -1,7 +1,8 @@
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { DenseTable } from '../DenseTable';
+import { DenseTable } from './DenseTable';
 import React from 'react';
 import { TableColumn } from '@backstage/core-components';
+import dayjs from 'dayjs';
 
 describe('DenseTable', () => {
   const columns: TableColumn[] = [
@@ -23,11 +24,21 @@ describe('DenseTable', () => {
       pageSize: 5,
       tableData: [],
       totalCount: 0,
+      searchTitle: '',
+      fromDate: null,
+      toDate: null,
+      statusTags: [],
+      orderBy: '',
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
       retry: () => {},
       onOrderBy: () => {},
       onOrderDirection: () => {},
+      setSearchTitle: () => {},
+      setFromDate: () => {},
+      setToDate: () => {},
+      setOrderBy: () => {},
+      setStatusTags: () => {},
     });
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
@@ -51,11 +62,21 @@ describe('DenseTable', () => {
       pageSize: 5,
       tableData: data,
       totalCount: data.length,
+      searchTitle: '',
+      fromDate: null,
+      toDate: null,
+      statusTags: [],
+      orderBy: '',
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
       retry: () => {},
       onOrderBy: () => {},
       onOrderDirection: () => {},
+      setSearchTitle: () => {},
+      setFromDate: () => {},
+      setToDate: () => {},
+      setOrderBy: () => {},
+      setStatusTags: () => {},
     });
     columns.forEach(c =>
       expect(rendered.getByText(c.title as string)).toBeInTheDocument(),
@@ -72,15 +93,25 @@ describe('DenseTable', () => {
 async function renderContent(args: {
   onOrderBy: () => void;
   columns: TableColumn[];
-  onOrderDirection: () => void;
-  onRowsPerPageChange: () => void;
   pageSize: number;
-  onPageChange: () => void;
   tableData: { firstName: string; lastName: string }[];
   page: number;
   loading: boolean;
   totalCount: number;
   retry: () => void;
+  searchTitle: string;
+  fromDate: dayjs.Dayjs | null;
+  toDate: dayjs.Dayjs | null;
+  orderBy: string;
+  statusTags: string[];
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
+  onOrderDirection: (order: string) => void;
+  setSearchTitle: (title: string) => void;
+  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
+  setToDate: (toDate: dayjs.Dayjs | null) => void;
+  setOrderBy: (orderBy: string) => void;
+  setStatusTags: (statusTags: string[]) => void;
 }) {
   return await renderInTestApp(
     <TestApiProvider apis={[]}>
@@ -94,8 +125,17 @@ async function renderContent(args: {
         onPageChange={args.onPageChange}
         onRowsPerPageChange={args.onRowsPerPageChange}
         retry={args.retry}
-        onOrderBy={args.onOrderBy}
+        setOrderBy={args.onOrderBy}
         onOrderDirection={args.onOrderDirection}
+        fromDate={args.fromDate}
+        orderBy={args.orderBy}
+        searchTitle={args.searchTitle}
+        setFromDate={args.setFromDate}
+        setSearchTitle={args.setSearchTitle}
+        setStatusTags={args.setStatusTags}
+        setToDate={args.setToDate}
+        statusTags={args.statusTags}
+        toDate={args.toDate}
       />
     </TestApiProvider>,
   );

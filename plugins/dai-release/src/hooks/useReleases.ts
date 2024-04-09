@@ -11,7 +11,7 @@ export function useReleases(): {
   retry: () => void;
   page: any;
   rowsPerPage: any;
-  searchTile: string;
+  searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
@@ -29,7 +29,7 @@ export function useReleases(): {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('start_date');
   const [orderDirection, setOrderDirection] = useState('desc');
-  const [searchTile, setSearchTitle] = useState('');
+  const [searchTitle, setSearchTitle] = useState('');
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
   const [statusTags, setStatusTags] = useState<string[]>([]);
@@ -43,7 +43,7 @@ export function useReleases(): {
       rowsPerPage,
       orderBy,
       direction,
-      searchTile,
+      searchTitle,
       fromDate,
       toDate,
       statusTags,
@@ -54,7 +54,7 @@ export function useReleases(): {
     rowsPerPage,
     orderBy,
     orderDirection,
-    searchTile,
+    searchTitle,
     fromDate,
     toDate,
     statusTags,
@@ -67,7 +67,7 @@ export function useReleases(): {
     retry,
     page,
     rowsPerPage,
-    searchTile,
+    searchTitle: searchTitle,
     fromDate,
     toDate,
     orderBy,

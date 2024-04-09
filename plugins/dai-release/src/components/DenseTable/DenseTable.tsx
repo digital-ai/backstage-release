@@ -18,7 +18,7 @@ type DenseTableProps = {
   totalCount: number;
   columns: TableColumn[];
   retry: () => void;
-  searchTile: string;
+  searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
@@ -163,7 +163,7 @@ export const DenseTable = ({
   totalCount,
   columns,
   retry,
-  searchTile,
+  searchTitle,
   fromDate,
   toDate,
   orderBy,
@@ -184,7 +184,7 @@ export const DenseTable = ({
         Toolbar: () => (
           <>
             <SearchFilter
-              searchTile={searchTile}
+              searchTitle={searchTitle}
               fromDate={fromDate}
               toDate={toDate}
               orderBy={orderBy}
