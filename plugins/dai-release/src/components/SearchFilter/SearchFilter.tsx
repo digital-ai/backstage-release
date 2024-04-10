@@ -1,23 +1,23 @@
+import { ClearIcon, LocalizationProvider } from '@mui/x-date-pickers';
 import {
   Grid,
+  IconButton,
   Paper,
   TextField,
   makeStyles,
-  IconButton,
 } from '@material-ui/core';
-import React from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Checkbox from '@mui/material/Checkbox';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
-import { ClearIcon, LocalizationProvider } from '@mui/x-date-pickers';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import dayjs from 'dayjs';
+import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
+import dayjs from 'dayjs';
 
 type SearchFilterProps = {
   searchTitle: string;
@@ -270,7 +270,7 @@ export const SearchFilter = ({
                   />
                 }
                 inputProps={{ size: 'small' }}
-                defaultValue={'start_date'}
+                defaultValue="start_date"
               >
                 <MenuItem value="start_date" className={classes.inputRoot}>
                   Start Date

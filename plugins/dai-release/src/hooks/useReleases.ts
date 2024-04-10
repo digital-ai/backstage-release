@@ -1,8 +1,8 @@
 import { daiReleaseApiRef } from '../api';
+import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
 import { useAsyncRetry } from 'react-use';
 import { useState } from 'react';
-import dayjs from 'dayjs';
 
 export function useReleases(): {
   loading: boolean | false | true;

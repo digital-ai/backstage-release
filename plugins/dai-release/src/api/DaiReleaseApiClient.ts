@@ -8,8 +8,8 @@ import {
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
-import dayjs from 'dayjs';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
+import dayjs from 'dayjs';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;

@@ -4,9 +4,9 @@ import {
 } from '@backstage/test-utils';
 import React from 'react';
 import { SearchFilter } from './SearchFilter';
+import dayjs from 'dayjs';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import dayjs from 'dayjs';
 
 describe('SearchFilter', () => {
   const server = setupServer();

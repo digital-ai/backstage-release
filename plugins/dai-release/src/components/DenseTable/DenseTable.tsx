@@ -1,14 +1,14 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
-import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
+import { SearchFilter } from '../SearchFilter';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
-import { formatTimestamp } from '../../utils/dateTimeUtils';
-import { SearchFilter } from '../SearchFilter';
-import moment from 'moment';
 import dayjs from 'dayjs';
+import { formatTimestamp } from '../../utils/dateTimeUtils';
+import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 
 type DenseTableProps = {
   tableData: any[];
@@ -170,7 +170,7 @@ export const DenseTable = ({
   statusTags,
   onPageChange,
   onRowsPerPageChange,
-  //onOrderDirection,
+  // onOrderDirection,
   setSearchTitle,
   setFromDate,
   setToDate,

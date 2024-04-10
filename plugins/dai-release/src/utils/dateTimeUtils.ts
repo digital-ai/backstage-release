@@ -1,5 +1,5 @@
-import moment from 'moment';
 import dayjs from 'dayjs';
+import moment from 'moment';
 
 export const beginDateFormat = 'YYYY-MM-DDT00:00:00.000ZZ';
 export const endDateFormat = 'YYYY-MM-DDT23:59:59.999ZZ';
@@ -13,4 +13,6 @@ export const formatTimestamp = (arg: any) =>
   arg ? moment(arg).format(genericTimestampFormat) : '';
 
 export const convertUnixTimestamp = (datetime: dayjs.Dayjs | null) =>
-  datetime?.toDate() != undefined ? new Date(datetime?.toDate()).getTime() : '';
+  datetime?.toDate() !== undefined
+    ? new Date(datetime?.toDate()).getTime()
+    : '';

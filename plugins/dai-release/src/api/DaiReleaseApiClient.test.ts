@@ -70,10 +70,13 @@ describe('ReleaseApiClient', () => {
           },
         ),
       );
+      let err;
       try {
         await client.getReleases(0, 1, '5', 'desc', '', null, null, []);
       } catch (e) {
-        expect(e instanceof Error).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
       }
     });
     it('should return AuthenticationError', async () => {
@@ -84,10 +87,13 @@ describe('ReleaseApiClient', () => {
             res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
         ),
       );
+      let err;
       try {
         await client.getReleases(0, 1, '3', 'desc', '', null, null, []);
       } catch (e) {
-        expect(e instanceof AuthenticationError).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
       }
     });
     it('should return NotAllowedError', async () => {
@@ -98,10 +104,13 @@ describe('ReleaseApiClient', () => {
             res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
         ),
       );
+      let err;
       try {
         await client.getReleases(0, 1, '3', 'desc', '', null, null, []);
       } catch (e) {
-        expect(e instanceof NotAllowedError).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
       }
     });
   });
