@@ -27,11 +27,19 @@ export const HomePageComponent = () => {
     error,
     retry,
     page,
-    setPage,
     rowsPerPage,
+    searchTitle,
+    fromDate,
+    toDate,
+    orderBy,
+    statusTags,
+    setPage,
     setRowsPerPage,
+    setSearchTitle,
+    setFromDate,
+    setToDate,
     setOrderBy,
-    setOrderDirection,
+    setStatusTags,
   } = useReleases();
 
   if (error) {
@@ -59,12 +67,20 @@ export const HomePageComponent = () => {
               loading={loading}
               totalCount={items?.total ?? 100}
               tableData={items?.releases || []}
-              onRowsPerPageChange={setRowsPerPage}
-              onPageChange={setPage}
               columns={defaultColumns}
               retry={retry}
-              onOrderDirection={setOrderDirection}
-              onOrderBy={setOrderBy}
+              searchTitle={searchTitle}
+              fromDate={fromDate}
+              toDate={toDate}
+              orderBy={orderBy}
+              statusTags={statusTags}
+              onRowsPerPageChange={setRowsPerPage}
+              onPageChange={setPage}
+              setSearchTitle={setSearchTitle}
+              setFromDate={setFromDate}
+              setToDate={setToDate}
+              setOrderBy={setOrderBy}
+              setStatusTags={setStatusTags}
             />
           </Grid>
         </Grid>

@@ -1,9 +1,11 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
+import { SearchFilter } from '../SearchFilter';
 import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
+import dayjs from 'dayjs';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
@@ -14,12 +16,20 @@ type DenseTableProps = {
   page: number;
   pageSize: number;
   totalCount: number;
-  onPageChange: (page: number) => void;
-  onRowsPerPageChange: (rows: number) => void;
   columns: TableColumn[];
   retry: () => void;
-  onOrderDirection: (order: string) => void;
-  onOrderBy: (orderBy: number) => void;
+  searchTitle: string;
+  fromDate: dayjs.Dayjs | null;
+  toDate: dayjs.Dayjs | null;
+  orderBy: string;
+  statusTags: string[];
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
+  setSearchTitle: (title: string) => void;
+  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
+  setToDate: (toDate: dayjs.Dayjs | null) => void;
+  setOrderBy: (orderBy: string) => void;
+  setStatusTags: (statusTags: string[]) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -45,8 +55,7 @@ function calculateDuration(startTime: number, endTime?: number): string {
   const hours = duration.hours();
   const minutes = duration.minutes();
   // Format the duration
-  const formattedDuration = `${days}d ${hours}h, ${minutes}m`;
-  return formattedDuration;
+  return `${days}d ${hours}h, ${minutes}m`;
 }
 
 export const columnFactories = Object.freeze({
@@ -54,7 +63,7 @@ export const columnFactories = Object.freeze({
     return {
       title: 'Title',
       field: 'title',
-      cellStyle: cellStyle,
+      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
         <Link to={row.releaseRedirectUri}>{row.title}</Link>
@@ -151,16 +160,43 @@ export const DenseTable = ({
   page,
   pageSize,
   totalCount,
-  onPageChange,
-  onRowsPerPageChange,
   columns,
   retry,
-  onOrderDirection,
-  onOrderBy,
+  searchTitle,
+  fromDate,
+  toDate,
+  orderBy,
+  statusTags,
+  onPageChange,
+  onRowsPerPageChange,
+  setSearchTitle,
+  setFromDate,
+  setToDate,
+  setOrderBy,
+  setStatusTags,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
     <Table
+      components={{
+        Toolbar: () => (
+          <>
+            <SearchFilter
+              searchTitle={searchTitle}
+              fromDate={fromDate}
+              toDate={toDate}
+              orderBy={orderBy}
+              statusTags={statusTags}
+              onSearchByTitle={setSearchTitle}
+              onFromDateChange={setFromDate}
+              onToDateChange={setToDate}
+              onOrderByChange={setOrderBy}
+              onStatusTagChange={setStatusTags}
+              retry={retry}
+            />
+          </>
+        ),
+      }}
       columns={columns}
       data={tableData}
       page={page}
@@ -193,10 +229,6 @@ export const DenseTable = ({
           No releases available
         </Typography>
       }
-      onOrderChange={(orderBy, orderDirection) => {
-        onOrderBy(orderBy);
-        onOrderDirection(orderDirection);
-      }}
     />
   );
 };

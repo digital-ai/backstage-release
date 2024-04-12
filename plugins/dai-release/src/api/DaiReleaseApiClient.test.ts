@@ -1,5 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
-
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { DiscoveryApi } from '@backstage/core-plugin-api';
@@ -9,7 +7,7 @@ import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';
 
 const discoveryApi: DiscoveryApi = {
-  getBaseUrl: async () => 'http://example.com/api/dai-release',
+  getBaseUrl: async () => 'https://example.com/api/dai-release',
 };
 
 function checkParam(
@@ -29,13 +27,12 @@ describe('ReleaseApiClient', () => {
     it('should return valid response', async () => {
       worker.use(
         rest.get(
-          'http://example.com/api/dai-release/releases',
+          'https://example.com/api/dai-release/releases',
           (req, res, ctx) => {
             if (
               checkParam(req.url.searchParams, 'orderBy', 'end_date') &&
               checkParam(req.url.searchParams, 'pageNumber', '0') &&
-              checkParam(req.url.searchParams, 'resultsPerPage', '1') &&
-              checkParam(req.url.searchParams, 'orderDirection', 'desc')
+              checkParam(req.url.searchParams, 'resultsPerPage', '1')
             ) {
               return res(
                 ctx.status(200),
@@ -51,58 +48,67 @@ describe('ReleaseApiClient', () => {
         ),
       );
 
-      const response = await client.getReleases(0, 1, 'end_date', 'desc');
+      const response = await client.getReleases(
+        0,
+        1,
+        'end_date',
+        '',
+        null,
+        null,
+        [],
+      );
       expect(response !== undefined).toBeTruthy();
     });
     it('should return error', async () => {
       worker.use(
         rest.get(
-          'http://example.com/api/dai-release/releases',
+          'https://example.com/api/dai-release/release',
           (_, res, ctx) => {
             res(ctx.status(500), ctx.set('Content-Type', 'application/json'));
           },
         ),
       );
+      let err;
       try {
-        await client.getReleases(0, 1, '5', 'desc');
+        await client.getReleases(0, 1, '5', '', null, null, []);
       } catch (e) {
-        expect(e instanceof Error).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
       }
     });
     it('should return AuthenticationError', async () => {
       worker.use(
-        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
-          res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        rest.get(
+          'https://example.com/api/dai-release/releases',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
         ),
       );
+      let err;
       try {
-        await client.getReleases(0, 1, '3', 'desc');
+        await client.getReleases(0, 1, '3', '', null, null, []);
       } catch (e) {
-        expect(e instanceof AuthenticationError).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
       }
     });
     it('should return NotAllowedError', async () => {
       worker.use(
-        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
-          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        rest.get(
+          'https://example.com/api/dai-release/releases',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
         ),
       );
+      let err;
       try {
-        await client.getReleases(0, 1, '3', 'desc');
+        await client.getReleases(0, 1, '3', '', null, null, []);
       } catch (e) {
-        expect(e instanceof NotAllowedError).toBeTruthy();
-      }
-    });
-    it('should return ServiceUnavailableError', async () => {
-      worker.use(
-        rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
-          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
-        ),
-      );
-      try {
-        await client.getReleases(0, 1, '5', 'desc');
-      } catch (e) {
-        expect(e instanceof NotAllowedError).toBeTruthy();
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
       }
     });
   });

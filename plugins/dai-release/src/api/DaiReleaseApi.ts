@@ -1,5 +1,6 @@
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
+import dayjs from 'dayjs';
 
 /** @public */
 export const daiReleaseApiRef = createApiRef<DaiReleaseApi>({
@@ -12,6 +13,9 @@ export interface DaiReleaseApi {
     page: number,
     rowsPerPage: number,
     orderBy: string,
-    orderDirection: string,
+    searchTile: string,
+    fromDate: dayjs.Dayjs | null,
+    toDate: dayjs.Dayjs | null,
+    statusTags: string[],
   ): Promise<{ items: ReleaseList }>;
 }
