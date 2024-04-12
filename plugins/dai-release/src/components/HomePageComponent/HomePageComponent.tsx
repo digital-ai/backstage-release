@@ -35,7 +35,6 @@ export const HomePageComponent = () => {
     statusTags,
     setPage,
     setRowsPerPage,
-    setOrderDirection,
     setSearchTitle,
     setFromDate,
     setToDate,
@@ -77,7 +76,6 @@ export const HomePageComponent = () => {
               statusTags={statusTags}
               onRowsPerPageChange={setRowsPerPage}
               onPageChange={setPage}
-              onOrderDirection={setOrderDirection}
               setSearchTitle={setSearchTitle}
               setFromDate={setFromDate}
               setToDate={setToDate}

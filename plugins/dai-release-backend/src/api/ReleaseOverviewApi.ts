@@ -42,7 +42,6 @@ export class ReleaseOverviewApi {
     fromDate: string,
     toDate: string,
     orderBy: string,
-    orderDirection: string,
     pageNumber: string,
     resultsPerPage: string,
   ): Promise<ReleaseList> {
@@ -65,7 +64,6 @@ export class ReleaseOverviewApi {
       from: fromDate,
       to: toDate,
       orderBy: orderBy,
-      orderDirection: orderDirection,
       onlyFlagged: false,
       onlyArchived: false,
       onlyMine: false,

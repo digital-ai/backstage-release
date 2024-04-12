@@ -1,4 +1,8 @@
-import { ClearIcon, LocalizationProvider } from '@mui/x-date-pickers';
+import {
+  ClearIcon,
+  DateTimePicker,
+  LocalizationProvider,
+} from '@mui/x-date-pickers';
 import {
   Grid,
   IconButton,
@@ -9,7 +13,6 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Checkbox from '@mui/material/Checkbox';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';

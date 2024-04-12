@@ -32,8 +32,7 @@ describe('ReleaseApiClient', () => {
             if (
               checkParam(req.url.searchParams, 'orderBy', 'end_date') &&
               checkParam(req.url.searchParams, 'pageNumber', '0') &&
-              checkParam(req.url.searchParams, 'resultsPerPage', '1') &&
-              checkParam(req.url.searchParams, 'orderDirection', 'desc')
+              checkParam(req.url.searchParams, 'resultsPerPage', '1')
             ) {
               return res(
                 ctx.status(200),
@@ -53,7 +52,6 @@ describe('ReleaseApiClient', () => {
         0,
         1,
         'end_date',
-        'desc',
         '',
         null,
         null,
@@ -72,7 +70,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '5', 'desc', '', null, null, []);
+        await client.getReleases(0, 1, '5', '', null, null, []);
       } catch (e) {
         err = e;
       } finally {
@@ -89,7 +87,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', 'desc', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, []);
       } catch (e) {
         err = e;
       } finally {
@@ -106,7 +104,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', 'desc', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, []);
       } catch (e) {
         err = e;
       } finally {

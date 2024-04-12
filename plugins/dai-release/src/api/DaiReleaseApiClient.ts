@@ -26,7 +26,6 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     page: number,
     rowsPerPage: number,
     orderBy: string,
-    orderDirection: string,
     searchTile: string,
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
@@ -49,7 +48,6 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('orderBy', orderBy);
-    queryString.append('orderDirection', orderDirection);
     queryString.append('title', searchTile.toString());
     queryString.append('fromDate', convertUnixTimestamp(fromDate).toString());
     queryString.append('toDate', convertUnixTimestamp(toDate).toString());

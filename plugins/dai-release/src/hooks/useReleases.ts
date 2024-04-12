@@ -18,7 +18,6 @@ export function useReleases(): {
   statusTags: string[];
   setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
-  setOrderDirection: (order: string) => void;
   setSearchTitle: (title: string) => void;
   setFromDate: (fromDate: dayjs.Dayjs | null) => void;
   setToDate: (toDate: dayjs.Dayjs | null) => void;
@@ -28,21 +27,18 @@ export function useReleases(): {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('start_date');
-  const [orderDirection, setOrderDirection] = useState('desc');
   const [searchTitle, setSearchTitle] = useState('');
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
   const [statusTags, setStatusTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
-  const direction = orderDirection === '' ? 'desc' : orderDirection;
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
     return api.getReleases(
       page,
       rowsPerPage,
       orderBy,
-      direction,
       searchTitle,
       fromDate,
       toDate,
@@ -53,7 +49,6 @@ export function useReleases(): {
     page,
     rowsPerPage,
     orderBy,
-    orderDirection,
     searchTitle,
     fromDate,
     toDate,
@@ -74,7 +69,6 @@ export function useReleases(): {
     statusTags,
     setPage,
     setRowsPerPage,
-    setOrderDirection,
     setSearchTitle,
     setFromDate,
     setToDate,

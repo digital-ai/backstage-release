@@ -33,7 +33,6 @@ describe('DenseTable', () => {
       onRowsPerPageChange: () => {},
       retry: () => {},
       onOrderBy: () => {},
-      onOrderDirection: () => {},
       setSearchTitle: () => {},
       setFromDate: () => {},
       setToDate: () => {},
@@ -71,7 +70,6 @@ describe('DenseTable', () => {
       onRowsPerPageChange: () => {},
       retry: () => {},
       onOrderBy: () => {},
-      onOrderDirection: () => {},
       setSearchTitle: () => {},
       setFromDate: () => {},
       setToDate: () => {},
@@ -106,7 +104,6 @@ async function renderContent(args: {
   statusTags: string[];
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
-  onOrderDirection: (order: string) => void;
   setSearchTitle: (title: string) => void;
   setFromDate: (fromDate: dayjs.Dayjs | null) => void;
   setToDate: (toDate: dayjs.Dayjs | null) => void;
@@ -126,7 +123,6 @@ async function renderContent(args: {
         onRowsPerPageChange={args.onRowsPerPageChange}
         retry={args.retry}
         setOrderBy={args.onOrderBy}
-        onOrderDirection={args.onOrderDirection}
         fromDate={args.fromDate}
         orderBy={args.orderBy}
         searchTitle={args.searchTitle}

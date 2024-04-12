@@ -25,7 +25,6 @@ type DenseTableProps = {
   statusTags: string[];
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
-  onOrderDirection: (order: string) => void;
   setSearchTitle: (title: string) => void;
   setFromDate: (fromDate: dayjs.Dayjs | null) => void;
   setToDate: (toDate: dayjs.Dayjs | null) => void;
@@ -170,7 +169,6 @@ export const DenseTable = ({
   statusTags,
   onPageChange,
   onRowsPerPageChange,
-  // onOrderDirection,
   setSearchTitle,
   setFromDate,
   setToDate,
@@ -231,10 +229,6 @@ export const DenseTable = ({
           No releases available
         </Typography>
       }
-      // onOrderChange={(orderBy, orderDirection) => {
-      //   //onOrderBy(orderBy);
-      //   onOrderDirection(orderDirection);
-      // }}
     />
   );
 };

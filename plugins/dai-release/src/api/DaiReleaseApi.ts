@@ -13,7 +13,6 @@ export interface DaiReleaseApi {
     page: number,
     rowsPerPage: number,
     orderBy: string,
-    orderDirection: string,
     searchTile: string,
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,

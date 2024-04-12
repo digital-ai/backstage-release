@@ -28,7 +28,6 @@ describe('SearchFilter', () => {
       orderBy: '',
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
-      onOrderDirection: () => {},
       onSearchTitle: () => {},
       onFromDateChange: () => {},
       onToDateChange: () => {},
@@ -50,7 +49,6 @@ describe('SearchFilter', () => {
       orderBy: 'start_date',
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
-      onOrderDirection: () => {},
       onSearchTitle: () => {},
       onFromDateChange: () => {},
       onToDateChange: () => {},
@@ -73,7 +71,6 @@ async function renderContent(args: {
   statusTags: string[];
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
-  onOrderDirection: (order: string) => void;
   onSearchTitle: (title: string) => void;
   onFromDateChange: (fromDate: dayjs.Dayjs | null) => void;
   onToDateChange: (toDate: dayjs.Dayjs | null) => void;
