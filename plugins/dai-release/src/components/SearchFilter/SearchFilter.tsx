@@ -1,15 +1,5 @@
-import {
-  ClearIcon,
-  DateTimePicker,
-  LocalizationProvider,
-} from '@mui/x-date-pickers';
-import {
-  Grid,
-  IconButton,
-  Paper,
-  TextField,
-  makeStyles,
-} from '@material-ui/core';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { Grid, Paper, TextField, makeStyles } from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Checkbox from '@mui/material/Checkbox';
@@ -21,6 +11,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import React from 'react';
 import SyncIcon from '@material-ui/icons/Sync';
 import dayjs from 'dayjs';
+import { Button } from '@mui/material';
+import { ClearAllOutlined, SelectAll } from '@material-ui/icons';
 
 type SearchFilterProps = {
   searchTitle: string;
@@ -81,21 +73,17 @@ export const SearchFilter = ({
       height: '16px',
       width: '16px',
     },
-    clearIconSize: {
-      height: '15px',
-      width: '15px',
-    },
-    clearIconButton: {
-      height: '11px',
-      float: 'right',
-      width: '0',
-    },
     statusTagLabel: {
       float: 'left',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       width: '140px',
+    },
+    selectButton: {
+      fontSize: '10px',
+      textTransform: 'none',
+      color: 'inherit',
     },
   }));
   const classes = useStyles();
@@ -117,7 +105,7 @@ export const SearchFilter = ({
           justifyContent="flex-start"
           alignItems="center"
         >
-          <Grid item lg={2}>
+          <Grid item>
             <TextField
               id="outlined-basic"
               label="Title"
@@ -157,7 +145,7 @@ export const SearchFilter = ({
                     classes: { root: classes.inputLabelRoot },
                   },
                 }}
-                label="Start"
+                label="From"
                 ampm
                 value={fromDate}
                 onAccept={onFromDateChange}
@@ -199,27 +187,13 @@ export const SearchFilter = ({
                 className={classes.inputRoot}
                 id="status-multiple-checkbox-label"
               >
-                Tag
+                Status
               </InputLabel>
               <Select
                 renderValue={selected => (
-                  <>
-                    <span className={classes.statusTagLabel}>
-                      {selected.join(', ')}
-                    </span>
-                    {selected && (
-                      <IconButton
-                        size="small"
-                        className={classes.clearIconButton}
-                        onMouseDown={event => {
-                          event.stopPropagation();
-                        }}
-                        onClick={() => onStatusTagChange([])}
-                      >
-                        <ClearIcon className={classes.clearIconSize} />
-                      </IconButton>
-                    )}
-                  </>
+                  <span className={classes.statusTagLabel}>
+                    {selected.join(', ')}
+                  </span>
                 )}
                 labelId="status-multiple-checkbox-label"
                 id="status-multiple-checkbox"
@@ -227,10 +201,37 @@ export const SearchFilter = ({
                 value={statusTags}
                 onChange={onStatusChange}
                 input={
-                  <OutlinedInput label="Tag" className={classes.inputRoot} />
+                  <OutlinedInput label="Status" className={classes.inputRoot} />
                 }
                 inputProps={{ size: 'small' }}
               >
+                <MenuItem style={{ gap: '5px' }}>
+                  <Button
+                    variant="text"
+                    size="small"
+                    startIcon={<SelectAll />}
+                    onClick={event => {
+                      event.stopPropagation();
+                      const statusValues = statuses.map(item => item.status);
+                      onStatusTagChange(statusValues);
+                    }}
+                    className={classes.selectButton}
+                  >
+                    Select All
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    startIcon={<ClearAllOutlined />}
+                    onClick={event => {
+                      event.stopPropagation();
+                      onStatusTagChange([]);
+                    }}
+                    className={classes.selectButton}
+                  >
+                    Clear All
+                  </Button>
+                </MenuItem>
                 {statuses.map(data => (
                   <MenuItem key={data.status} value={data.status}>
                     <Checkbox
@@ -284,7 +285,7 @@ export const SearchFilter = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item>
+          <Grid item style={{display: "flex", paddingLeft: "15px"}}>
             <SyncIcon
               fontSize="medium"
               onClick={retry}
