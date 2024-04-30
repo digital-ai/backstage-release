@@ -27,7 +27,6 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { logger, config, permissions } = options;
-
   const releaseOverviewApi = ReleaseOverviewApi.fromConfig(config, logger);
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
@@ -47,10 +46,9 @@ export async function createRouter(
     const token = getBearerTokenFromAuthorizationHeader(
       req.header('authorization'),
     );
-
     if (permissions) {
       const decision = await permissions.authorize(
-        [{ permission: daiReleaseViewPermission, resourceRef: req.body.id }],
+        [{ permission: daiReleaseViewPermission }],
         { token },
       );
       const { result } = decision[0];

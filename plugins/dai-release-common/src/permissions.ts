@@ -1,4 +1,3 @@
-import { RESOURCE_TYPE_CATALOG_ENTITY } from '@backstage/plugin-catalog-common/alpha';
 import { createPermission } from '@backstage/plugin-permission-common';
 
 /**
@@ -9,9 +8,8 @@ import { createPermission } from '@backstage/plugin-permission-common';
 export const daiReleaseViewPermission = createPermission({
   name: 'daiRelease.view',
   attributes: {
-    action: 'update',
+    action: 'read',
   },
-  resourceType: RESOURCE_TYPE_CATALOG_ENTITY,
 });
 
 /**
