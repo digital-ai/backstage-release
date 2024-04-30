@@ -1,25 +1,42 @@
+import {
+  AuthorizeResult,
+  PermissionEvaluator,
+} from '@backstage/plugin-permission-common';
+import {
+  daiReleasePermissions,
+  daiReleaseViewPermission,
+} from '@digital-ai/plugin-dai-release-common';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
+import { NotAllowedError } from '@backstage/errors';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
+import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
+import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { getEncodedQueryVal } from '../api/apiConfig';
 
 export interface RouterOptions {
   config: Config;
   logger: Logger;
+  permissions?: PermissionEvaluator;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config } = options;
+  const { logger, config, permissions } = options;
 
   const releaseOverviewApi = ReleaseOverviewApi.fromConfig(config, logger);
 
+  const permissionIntegrationRouter = createPermissionIntegrationRouter({
+    permissions: daiReleasePermissions,
+  });
+
   const router = Router();
   router.use(express.json());
+  router.use(permissionIntegrationRouter);
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
@@ -27,6 +44,23 @@ export async function createRouter(
   });
 
   router.get('/releases', async (req, res) => {
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+
+    if (permissions) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission, resourceRef: req.body.id }],
+        { token },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+
     const failing = getEncodedQueryVal(req.query.failing?.toString());
     const planned = getEncodedQueryVal(req.query.planned?.toString());
     const completed = getEncodedQueryVal(req.query.completed?.toString());

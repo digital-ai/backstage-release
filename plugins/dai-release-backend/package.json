@@ -27,14 +27,19 @@
   "dependencies": {
     "@backstage/backend-common": "^0.19.5",
     "@backstage/backend-plugin-api": "^0.6.12",
+    "@backstage/catalog-model": "^1.4.4",
     "@backstage/config": "^1.1.0",
     "@backstage/errors": "^1.2.3",
+    "@backstage/plugin-auth-node": "^0.4.8",
+    "@backstage/plugin-permission-common": "^0.7.12",
+    "@backstage/plugin-permission-node": "^0.7.24",
+    "@digital-ai/plugin-dai-deploy-common": "^0.1.0",
     "@digital-ai/plugin-dai-release-common": "^0.1.0",
     "@types/express": "*",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
-    "winston": "^3.2.1",
     "node-fetch": "^2.6.7",
+    "winston": "^3.2.1",
     "yn": "^4.0.0"
   },
   "devDependencies": {
@@ -43,8 +48,8 @@
     "@types/supertest": "^2.0.12",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "prettier": "3.2.5",
     "msw": "^2.2.1",
+    "prettier": "3.2.5",
     "supertest": "^6.2.4"
   },
   "files": [

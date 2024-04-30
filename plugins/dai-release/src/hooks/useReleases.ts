@@ -33,7 +33,6 @@ export function useReleases(): {
   const [statusTags, setStatusTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
-
   const { value, loading, error, retry } = useAsyncRetry(async () => {
     return api.getReleases(
       page,

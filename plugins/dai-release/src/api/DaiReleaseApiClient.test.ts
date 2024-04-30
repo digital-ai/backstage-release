@@ -1,6 +1,6 @@
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
+import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { releases } from '../mocks/mocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
@@ -9,6 +9,10 @@ import { setupServer } from 'msw/node';
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'https://example.com/api/dai-release',
 };
+
+const identityApi = {
+  getCredentials: jest.fn(),
+} as unknown as IdentityApi;
 
 function checkParam(
   params: URLSearchParams,
@@ -19,9 +23,15 @@ function checkParam(
 }
 
 describe('ReleaseApiClient', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(identityApi, 'getCredentials')
+      .mockImplementation(async () => ({ token: 'token' }));
+  });
+
   const worker = setupServer();
   setupRequestMockHandlers(worker);
-  const client = new DaiReleaseApiClient({ discoveryApi });
+  const client = new DaiReleaseApiClient({ discoveryApi, identityApi });
 
   describe('getReleases', () => {
     it('should return valid response', async () => {

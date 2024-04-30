@@ -29,6 +29,7 @@
     "@backstage/core-components": "^0.13.5",
     "@backstage/core-plugin-api": "^1.6.0",
     "@backstage/errors": "^1.2.3",
+    "@backstage/plugin-permission-react": "^0.4.20",
     "@backstage/theme": "^0.4.2",
     "@digital-ai/plugin-dai-release-common": "^0.1.0",
     "@emotion/react": "^11.11.4",
