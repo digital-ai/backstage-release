@@ -26,10 +26,6 @@ export const daiReleasePlugin = createBackendPlugin({
             logger: loggerToWinstonLogger(logger),
           }),
         );
-        httpRouter.addAuthPolicy({
-          allow: 'unauthenticated',
-          path: '/',
-        });
       },
     });
   },
