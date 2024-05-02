@@ -3,9 +3,9 @@ import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
+import { SearchFilter } from '../SearchFilter';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
-import { SearchFilter } from '../SearchFilter';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
