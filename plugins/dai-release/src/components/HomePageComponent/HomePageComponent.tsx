@@ -5,7 +5,7 @@ import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
-import {SearchFilter} from "../SearchFilter";
+import { SearchFilter } from '../SearchFilter';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
