@@ -44,6 +44,7 @@ Here's how to get the backend up and running:
      return createRouter({
        logger: env.logger,
        config: env.config,
+       permissions: env.permissions
      });
    }
    ```
@@ -161,7 +162,7 @@ class TestPermissionPolicy implements PermissionPolicy {
     if (isPermission(request.permission, daiReleaseViewPermission)) {
       if (
         user?.identity.ownershipEntityRefs.includes(
-          'group:default/backstage-admins',
+          'group:default/release-admins',
         )
       ) {
         return { result: AuthorizeResult.ALLOW };
@@ -189,4 +190,4 @@ import {
 } from "@digital-ai/plugin-dai-release-common";
 ```
 
-**Note:** The group "group:default/backstage-admins" is simply an example and does not exist. You can point this to any group you have in your catalog instead.
+**Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.
