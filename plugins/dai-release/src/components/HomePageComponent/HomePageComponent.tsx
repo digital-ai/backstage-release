@@ -5,6 +5,7 @@ import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
+import {SearchFilter} from "../SearchFilter";
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -53,6 +54,19 @@ export const HomePageComponent = () => {
       <Content>
         <Grid container spacing={3} direction="column">
           <Grid item>
+            <SearchFilter
+              searchTitle={searchTitle}
+              fromDate={fromDate}
+              toDate={toDate}
+              orderBy={orderBy}
+              statusTags={statusTags}
+              onSearchByTitle={setSearchTitle}
+              onFromDateChange={setFromDate}
+              onToDateChange={setToDate}
+              onOrderByChange={setOrderBy}
+              onStatusTagChange={setStatusTags}
+              retry={retry}
+            />
             <DenseTable
               page={page}
               pageSize={rowsPerPage}

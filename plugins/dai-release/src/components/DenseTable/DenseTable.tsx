@@ -1,7 +1,6 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
-import { SearchFilter } from '../SearchFilter';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import dayjs from 'dayjs';
@@ -132,42 +131,12 @@ export const DenseTable = ({
   pageSize,
   totalCount,
   columns,
-  retry,
-  searchTitle,
-  fromDate,
-  toDate,
-  orderBy,
-  statusTags,
   onPageChange,
   onRowsPerPageChange,
-  setSearchTitle,
-  setFromDate,
-  setToDate,
-  setOrderBy,
-  setStatusTags,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
     <Table
-      components={{
-        Toolbar: () => (
-          <>
-            <SearchFilter
-              searchTitle={searchTitle}
-              fromDate={fromDate}
-              toDate={toDate}
-              orderBy={orderBy}
-              statusTags={statusTags}
-              onSearchByTitle={setSearchTitle}
-              onFromDateChange={setFromDate}
-              onToDateChange={setToDate}
-              onOrderByChange={setOrderBy}
-              onStatusTagChange={setStatusTags}
-              retry={retry}
-            />
-          </>
-        ),
-      }}
       columns={columns}
       data={tableData}
       page={page}
@@ -182,8 +151,7 @@ export const DenseTable = ({
         padding: 'dense',
         showFirstLastPageButtons: true,
         showEmptyDataSourceMessage: !loading,
-        toolbar: true,
-        toolbarButtonAlignment: 'left',
+        toolbar: false,
       }}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}

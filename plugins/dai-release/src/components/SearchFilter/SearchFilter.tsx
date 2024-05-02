@@ -285,7 +285,7 @@ export const SearchFilter = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item style={{display: "flex", paddingLeft: "15px"}}>
+          <Grid item style={{ display: 'flex', paddingLeft: '15px' }}>
             <SyncIcon
               fontSize="medium"
               onClick={retry}
