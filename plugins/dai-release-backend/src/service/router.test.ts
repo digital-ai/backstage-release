@@ -1,3 +1,7 @@
+import {
+  AuthorizeResult,
+  PermissionEvaluator,
+} from '@backstage/plugin-permission-common';
 import { config, releasesBackendApiResponse } from '../mocks/mockData';
 import {
   error403ResponseHandler,
@@ -12,22 +16,42 @@ import request from 'supertest';
 import { setupServer } from 'msw/node';
 
 let app: express.Express;
+const permissionApi = {
+  authorize: jest.fn(),
+  authorizeConditional: jest.fn(),
+} as unknown as PermissionEvaluator;
 
-function configureMockServer() {
+function configureMockServer(permission: boolean) {
   const server = setupServer();
 
   beforeAll(async () => {
-    const router = await createRouter({
-      config,
-      logger: getVoidLogger(),
-    });
-    app = express().use(router);
+    if (permission) {
+      const router = await createRouter({
+        config,
+        logger: getVoidLogger(),
+        permissions: permissionApi,
+      });
+      app = express().use(router);
+    } else {
+      const router = await createRouter({
+        config,
+        logger: getVoidLogger(),
+      });
+      app = express().use(router);
+    }
     // Start the interception.
     server.listen();
   });
 
   beforeEach(() => {
     jest.resetAllMocks();
+    if (permission) {
+      jest.spyOn(permissionApi, 'authorize').mockImplementation(async () => [
+        {
+          result: AuthorizeResult.ALLOW,
+        },
+      ]);
+    }
   });
 
   afterEach(() => {
@@ -44,8 +68,8 @@ function configureMockServer() {
   return server;
 }
 
-describe('createRouter', () => {
-  const server = configureMockServer();
+describe('router api tests with permissions ALLOW', () => {
+  const server = configureMockServer(true);
   server.resetHandlers(...mockTestHandlers);
 
   describe('GET /health', () => {
@@ -59,7 +83,9 @@ describe('createRouter', () => {
 
   describe('GET /releases', () => {
     it('returns ok', async () => {
-      const response = await request(app).get('/releases');
+      const response = await request(app)
+        .get('/releases')
+        .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(releasesBackendApiResponse);
     });
@@ -89,6 +115,43 @@ describe('createRouter', () => {
       expect(response.body.error.message).toContain(
         'failed to fetch data, status 500',
       );
+    });
+  });
+});
+
+describe('router api tests - with permissions DENY', () => {
+  const server = configureMockServer(true);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.spyOn(permissionApi, 'authorize').mockImplementation(async () => [
+      {
+        result: AuthorizeResult.DENY,
+      },
+    ]);
+  });
+  server.resetHandlers(...mockTestHandlers);
+  describe('GET /releases', () => {
+    it('GET 403 from release for /releases', async () => {
+      server.resetHandlers(...error403ResponseHandler);
+      const response = await request(app).get('/releases');
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+});
+
+describe('router api tests - without permissions', () => {
+  const server = configureMockServer(false);
+  server.resetHandlers(...mockTestHandlers);
+  describe('GET /releases', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+        .get('/releases')
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(releasesBackendApiResponse);
     });
   });
 });
