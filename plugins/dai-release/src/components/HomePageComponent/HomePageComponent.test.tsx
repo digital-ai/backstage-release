@@ -45,7 +45,7 @@ describe('HomePageComponent', () => {
     const rendered = await renderContent();
     const image = rendered.getByAltText('Release logo') as HTMLImageElement;
     expect(image).toBeInTheDocument();
-    expect(image.src).toContain('releaseLogoBlack');
+    expect(image.src).toContain('releaseLogoWhite');
   });
 });
 

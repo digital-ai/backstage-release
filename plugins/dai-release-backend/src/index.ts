@@ -1,2 +1,2 @@
 export * from './service/router';
-export { daiReleasePlugin } from './plugin';
+export { daiReleasePlugin as default } from './plugin';

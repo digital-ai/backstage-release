@@ -180,7 +180,7 @@ export const releasesBackendApiResponse: ReleaseList = {
       title: 'Configure Release',
       folder: 'Deploy',
       status: 'PLANNED',
-      startDate: 1710827481135,
+      fromDate: 1710827481135,
       endDate: 1711468820908,
       releaseRedirectUri: 'http://localhost/#/releases/Folder1-Release1',
     },
@@ -189,7 +189,7 @@ export const releasesBackendApiResponse: ReleaseList = {
       title: 'Welcome release',
       folder: 'Digital.ai - Official > Workflows > Subfolders',
       status: 'IN_PROGRESS',
-      startDate: 1710940430763,
+      fromDate: 1710940430763,
       endDate: 1711555250637,
       releaseRedirectUri:
         'http://localhost/#/releases/Folder2-Folder2-Folder1-Release2',
