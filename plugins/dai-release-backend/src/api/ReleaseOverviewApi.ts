@@ -87,7 +87,7 @@ export class ReleaseOverviewApi {
         title: d.title,
         folder: this.getFolderTitle(folderIdTitleMap, d.id),
         status: d.status,
-        fromDate: d.startDate,
+        startDate: d.startDate,
         endDate: d.endDate,
         releaseRedirectUri: getReleaseDetailsRedirectUri(this.config, d.id),
       }),
