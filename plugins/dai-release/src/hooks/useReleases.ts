@@ -2,6 +2,7 @@ import { daiReleaseApiRef } from '../api';
 import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
 import { useAsyncRetry } from 'react-use';
+import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
 
 export function useReleases(): {
@@ -33,13 +34,15 @@ export function useReleases(): {
   const [statusTags, setStatusTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
+  // Use the debounced value of searchTitle, it will update the state in one second
+  const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
     return api.getReleases(
       page,
       rowsPerPage,
       orderBy,
-      searchTitle,
+      debouncedSearchTitle,
       fromDate,
       toDate,
       statusTags,
@@ -49,7 +52,7 @@ export function useReleases(): {
     page,
     rowsPerPage,
     orderBy,
-    searchTitle,
+    debouncedSearchTitle,
     fromDate,
     toDate,
     statusTags,

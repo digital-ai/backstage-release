@@ -37,7 +37,7 @@ describe('SearchFilter', () => {
     });
     expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
     expect(rendered.getByLabelText('Title')).toBeInTheDocument();
-    expect(rendered.getByLabelText('Start')).toBeInTheDocument();
+    expect(rendered.getByLabelText('From')).toBeInTheDocument();
     expect(rendered.getByLabelText('To')).toBeInTheDocument();
   });
   it('should render the search filter elements with content', async () => {
@@ -57,7 +57,7 @@ describe('SearchFilter', () => {
       retry: () => {},
     });
     expect(rendered.getByLabelText('Title')).toHaveValue('Test');
-    expect(rendered.getByLabelText('Start')).toHaveValue('04/09/2024 05:07 PM');
+    expect(rendered.getByLabelText('From')).toHaveValue('04/09/2024 05:07 PM');
     expect(rendered.getByLabelText('To')).toHaveValue('04/09/2024 05:07 PM');
     expect(rendered.getByText('Failing')).toBeInTheDocument();
     expect(rendered.getByText('Start Date')).toBeInTheDocument();

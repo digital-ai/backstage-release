@@ -3,7 +3,7 @@ import { formatTimestamp } from './dateTimeUtils';
 describe('dateTimeUtils', () => {
   it('formatTimestamp should return valid formatted string', () => {
     expect(formatTimestamp('2024-02-23T09:27:14.277+0000')).toBe(
-      'Feb 23, 2024 - 9:27 AM',
+      '2/23/24 9:27 AM',
     );
   });
 

@@ -16,7 +16,7 @@ export type Release = {
   title: string;
   folder?: string;
   status: string;
-  startDate: number;
+  fromDate: number;
   endDate: number;
   releaseRedirectUri: string;
 };

@@ -1,12 +1,10 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
-import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
 import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
-import releaseLogoBlack from '../../assets/releaseLogoBlack.png';
+import { SearchFilter } from '../SearchFilter';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
-import { useObservable } from 'react-use';
 import { useReleases } from '../../hooks';
 
 const useStyles = makeStyles(() => ({
@@ -16,11 +14,6 @@ const useStyles = makeStyles(() => ({
 }));
 export const HomePageComponent = () => {
   const classes = useStyles();
-  const appThemeApi = useApi(appThemeApiRef);
-  const themeId = useObservable(
-    appThemeApi.activeThemeId$(),
-    appThemeApi.getActiveThemeId(),
-  );
   const {
     items,
     loading,
@@ -51,7 +44,7 @@ export const HomePageComponent = () => {
       <Header
         title={
           <img
-            src={themeId === 'dark' ? releaseLogoWhite : releaseLogoBlack}
+            src={releaseLogoWhite}
             alt="Release logo"
             className={classes.logoStyle}
           />
@@ -61,6 +54,19 @@ export const HomePageComponent = () => {
       <Content>
         <Grid container spacing={3} direction="column">
           <Grid item>
+            <SearchFilter
+              searchTitle={searchTitle}
+              fromDate={fromDate}
+              toDate={toDate}
+              orderBy={orderBy}
+              statusTags={statusTags}
+              onSearchByTitle={setSearchTitle}
+              onFromDateChange={setFromDate}
+              onToDateChange={setToDate}
+              onOrderByChange={setOrderBy}
+              onStatusTagChange={setStatusTags}
+              retry={retry}
+            />
             <DenseTable
               page={page}
               pageSize={rowsPerPage}

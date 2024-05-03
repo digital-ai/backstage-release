@@ -1,14 +1,11 @@
 import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
-import { SearchFilter } from '../SearchFilter';
-import SyncIcon from '@material-ui/icons/Sync';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import dayjs from 'dayjs';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
-import moment from 'moment';
 
 type DenseTableProps = {
   tableData: any[];
@@ -44,19 +41,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
 }));
-
-function calculateDuration(startTime: number, endTime?: number): string {
-  if (endTime === undefined) {
-    return '';
-  }
-  const durationMs = endTime - startTime;
-  const duration = moment.duration(durationMs, 'ms');
-  const days = duration.days();
-  const hours = duration.hours();
-  const minutes = duration.minutes();
-  // Format the duration
-  return `${days}d ${hours}h, ${minutes}m`;
-}
 
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
@@ -94,15 +78,15 @@ export const columnFactories = Object.freeze({
       sorting: false,
     };
   },
-  createStartDateColumns(): TableColumn {
+  createFromDateColumns(): TableColumn {
     return {
       title: 'Start Date',
       field: 'startDate',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (row: Partial<any>) => formatTimestamp(row.startDate),
+      render: (row: Partial<any>) => formatTimestamp(row.fromDate),
       searchable: true,
-      sorting: true,
+      sorting: false,
     };
   },
 
@@ -114,19 +98,6 @@ export const columnFactories = Object.freeze({
       headerStyle: headerStyle,
       render: (row: Partial<any>) => formatTimestamp(row.endDate),
       searchable: true,
-      sorting: true,
-    };
-  },
-
-  createDurationColumns(): TableColumn {
-    return {
-      title: 'Duration',
-      field: 'duration',
-      cellStyle: cellStyle,
-      headerStyle: headerStyle,
-      render: (row: Partial<any>) =>
-        calculateDuration(row.startDate, row.endDate),
-      searchable: false,
       sorting: false,
     };
   },
@@ -148,9 +119,8 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createTitleColumns(),
   columnFactories.createFolderColumns(),
   columnFactories.createStatusColumns(),
-  columnFactories.createStartDateColumns(),
+  columnFactories.createFromDateColumns(),
   columnFactories.createEndDateColumns(),
-  columnFactories.createDurationColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
@@ -161,55 +131,17 @@ export const DenseTable = ({
   pageSize,
   totalCount,
   columns,
-  retry,
-  searchTitle,
-  fromDate,
-  toDate,
-  orderBy,
-  statusTags,
   onPageChange,
   onRowsPerPageChange,
-  setSearchTitle,
-  setFromDate,
-  setToDate,
-  setOrderBy,
-  setStatusTags,
 }: DenseTableProps) => {
   const classes = useStyles();
   return (
     <Table
-      components={{
-        Toolbar: () => (
-          <>
-            <SearchFilter
-              searchTitle={searchTitle}
-              fromDate={fromDate}
-              toDate={toDate}
-              orderBy={orderBy}
-              statusTags={statusTags}
-              onSearchByTitle={setSearchTitle}
-              onFromDateChange={setFromDate}
-              onToDateChange={setToDate}
-              onOrderByChange={setOrderBy}
-              onStatusTagChange={setStatusTags}
-              retry={retry}
-            />
-          </>
-        ),
-      }}
       columns={columns}
       data={tableData}
       page={page}
       totalCount={totalCount}
       isLoading={loading}
-      actions={[
-        {
-          icon: () => <SyncIcon fontSize="medium" />,
-          tooltip: 'Refresh Data',
-          isFreeAction: true,
-          onClick: () => retry(),
-        },
-      ]}
       options={{
         paging: true,
         search: true,
@@ -219,11 +151,11 @@ export const DenseTable = ({
         padding: 'dense',
         showFirstLastPageButtons: true,
         showEmptyDataSourceMessage: !loading,
-        toolbar: true,
-        toolbarButtonAlignment: 'left',
+        toolbar: false,
       }}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
+      style={{ minWidth: '950px', width: '100%' }}
       emptyContent={
         <Typography color="textSecondary" className={classes.empty}>
           No releases available
