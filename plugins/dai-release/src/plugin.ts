@@ -4,6 +4,7 @@ import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
+  identityApiRef,
 } from '@backstage/core-plugin-api';
 import { daiReleaseContentRouteRef } from './routes';
 
@@ -12,8 +13,9 @@ export const daiReleasePlugin = createPlugin({
   apis: [
     createApiFactory({
       api: daiReleaseApiRef,
-      deps: { discoveryApi: discoveryApiRef },
-      factory: ({ discoveryApi }) => new DaiReleaseApiClient({ discoveryApi }),
+      deps: { discoveryApi: discoveryApiRef, identityApi: identityApiRef },
+      factory: ({ discoveryApi, identityApi }) =>
+        new DaiReleaseApiClient({ discoveryApi, identityApi }),
     }),
   ],
 });

@@ -5,17 +5,27 @@ import {
   ServiceUnavailableError,
   parseErrorResponseBody,
 } from '@backstage/errors';
+import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { DaiReleaseApi } from './DaiReleaseApi';
-import { DiscoveryApi } from '@backstage/core-plugin-api';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
+  private readonly identityApi: IdentityApi;
 
-  public constructor(options: { discoveryApi: DiscoveryApi }) {
+  public constructor(options: {
+    discoveryApi: DiscoveryApi;
+    identityApi: IdentityApi;
+  }) {
     this.discoveryApi = options.discoveryApi;
+    this.identityApi = options.identityApi;
+  }
+
+  private async getToken() {
+    const { token } = await this.identityApi.getCredentials();
+    return token;
   }
 
   private isStatusChecked(statusTags: string[], tag: string) {
@@ -60,12 +70,14 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   private async get<T>(path: string): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
+    const idToken = await this.getToken();
 
     const response = await fetch(url.toString(), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        Authorization: `Bearer ${idToken}`,
       },
     });
 

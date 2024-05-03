@@ -8,3 +8,4 @@ export * from './Folder';
 export * from './ReleaseCountResults';
 export * from './ReleaseList';
 export * from './ReleaseOverview';
+export * from './permissions';

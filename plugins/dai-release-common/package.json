@@ -26,6 +26,11 @@
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write ."
   },
+  "dependencies": {
+    "@backstage/plugin-catalog-common": "^1.0.21",
+    "@backstage/plugin-permission-common": "^0.7.12",
+    "@backstage/plugin-permission-node": "^0.7.23"
+  },
   "devDependencies": {
     "@backstage/cli": "^0.22.13",
     "@spotify/prettier-config": "^15.0.0",

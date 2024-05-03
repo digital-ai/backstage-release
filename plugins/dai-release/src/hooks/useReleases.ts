@@ -34,6 +34,7 @@ export function useReleases(): {
   const [statusTags, setStatusTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
+
   // Use the debounced value of searchTitle, it will update the state in one second
   const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 

@@ -1,5 +1,9 @@
 import { DaiReleaseApiClient, daiReleaseApiRef } from '../../api';
-import { DiscoveryApi, discoveryApiRef } from '@backstage/core-plugin-api';
+import {
+  DiscoveryApi,
+  IdentityApi,
+  discoveryApiRef,
+} from '@backstage/core-plugin-api';
 import {
   TestApiProvider,
   renderInTestApp,
@@ -10,7 +14,17 @@ import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
+const identityApi = {
+  getCredentials: jest.fn(),
+} as unknown as IdentityApi;
+
 describe('HomePageComponent', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(identityApi, 'getCredentials')
+      .mockImplementation(async () => ({ token: 'token' }));
+  });
+
   const server = setupServer();
   setupRequestMockHandlers(server);
 
@@ -44,7 +58,10 @@ async function renderContent() {
     <TestApiProvider
       apis={[
         [discoveryApiRef, discoveryApi],
-        [daiReleaseApiRef, new DaiReleaseApiClient({ discoveryApi })],
+        [
+          daiReleaseApiRef,
+          new DaiReleaseApiClient({ discoveryApi, identityApi }),
+        ],
       ]}
     >
       <HomePageComponent />
