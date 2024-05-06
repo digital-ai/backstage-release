@@ -68,7 +68,9 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   }
 
   private async get<T>(path: string): Promise<T> {
-    const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
+    const baseUrl =
+      'http://localhost:7007/dai-release/releases' ??
+      `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();
 

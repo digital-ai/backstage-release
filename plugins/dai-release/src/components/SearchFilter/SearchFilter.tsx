@@ -1,5 +1,11 @@
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { Grid, Paper, TextField, makeStyles } from '@material-ui/core';
+import {
+  Grid,
+  Paper,
+  TextField,
+  makeStyles,
+  IconButton,
+} from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '@mui/material/Button';
@@ -10,10 +16,13 @@ import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import React from 'react';
+import React, { useState } from 'react';
 import SelectAll from '@material-ui/icons/SelectAll';
 import SyncIcon from '@material-ui/icons/Sync';
 import dayjs from 'dayjs';
+import Typography from '@mui/material/Typography';
+import { Close } from '@material-ui/icons';
+import { Drawer } from '@mui/material';
 
 type SearchFilterProps = {
   searchTitle: string;
@@ -65,7 +74,6 @@ export const SearchFilter = ({
     },
     datePickerInputRoot: {
       fontSize: '12px',
-      width: '180px',
     },
     inputLabelRoot: {
       fontSize: '12px',
@@ -86,8 +94,22 @@ export const SearchFilter = ({
       textTransform: 'none',
       color: 'inherit',
     },
+    drawerHeader: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    clearGrid: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    fullWidth: {
+      width: '100%',
+    },
   }));
   const classes = useStyles();
+  const [isOpen, toggleDrawer] = useState(true);
 
   const onStatusChange = (event: SelectChangeEvent<typeof statusTags>) => {
     const {
@@ -97,93 +119,35 @@ export const SearchFilter = ({
   };
 
   return (
-    <Paper elevation={1} style={{ paddingTop: '15px', paddingBottom: '15px' }}>
-      <FormControl sx={{ mx: 1, my: 1.5 }}>
+    <Drawer anchor="right" open={isOpen} onClose={() => toggleDrawer(false)}>
+      <Paper elevation={1} style={{ padding: '16px' }}>
+        <div className={classes.drawerHeader}>
+          <Typography variant="h6">Filters</Typography>
+          <IconButton
+            key="dismiss"
+            title="Close the Filter"
+            color="inherit"
+            size={'small'}
+            onClick={() => toggleDrawer(false)}
+          >
+            <Close fontSize={'inherit'} />
+          </IconButton>
+        </div>
+      </Paper>
+      <FormControl sx={{ mx: 2, my: 3 }}>
         <Grid
           container
-          spacing={1}
-          direction="row"
+          spacing={3}
+          direction="column"
           justifyContent="flex-start"
-          alignItems="center"
+          style={{ width: '300px' }}
         >
-          <Grid item>
-            <TextField
-              id="outlined-basic"
-              label="Title"
-              variant="outlined"
-              value={searchTitle}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onSearchByTitle(event.target.value);
-              }}
-              size="small"
-              InputProps={{
-                classes: {
-                  root: classes.inputRoot,
-                },
-              }}
-              InputLabelProps={{ classes: { root: classes.inputLabelRoot } }}
-            />
+          <Grid item className={classes.clearGrid}>
+            <span>Applied filters</span>
+            <Button variant="outlined">Clear all</Button>
           </Grid>
           <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                slotProps={{
-                  textField: {
-                    size: 'small',
-                    InputProps: {
-                      classes: {
-                        root: classes.datePickerInputRoot,
-                      },
-                    },
-                    InputLabelProps: {
-                      classes: { root: classes.inputLabelRoot },
-                    },
-                  },
-                  openPickerIcon: {
-                    classes: { root: classes.openCalenderPickerIcon },
-                  },
-                  digitalClockSectionItem: {
-                    classes: { root: classes.inputLabelRoot },
-                  },
-                }}
-                label="From"
-                ampm
-                value={fromDate}
-                onAccept={onFromDateChange}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                slotProps={{
-                  textField: {
-                    size: 'small',
-                    InputProps: {
-                      classes: {
-                        root: classes.datePickerInputRoot,
-                      },
-                    },
-                    InputLabelProps: {
-                      classes: { root: classes.inputLabelRoot },
-                    },
-                  },
-                  openPickerIcon: {
-                    classes: { root: classes.openCalenderPickerIcon },
-                  },
-                  digitalClockSectionItem: {
-                    classes: { root: classes.inputLabelRoot },
-                  },
-                }}
-                label="To"
-                ampm
-                value={toDate}
-                onAccept={onToDateChange}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item>
-            <FormControl sx={{ width: 204 }} size="small">
+            <FormControl fullWidth size="small">
               <InputLabel
                 className={classes.inputRoot}
                 id="status-multiple-checkbox-label"
@@ -253,7 +217,7 @@ export const SearchFilter = ({
             </FormControl>
           </Grid>
           <Grid item>
-            <FormControl sx={{ minWidth: 120 }} size="small">
+            <FormControl fullWidth size="small">
               <InputLabel
                 id="orderby-select-label-id"
                 className={classes.inputRoot}
@@ -286,6 +250,91 @@ export const SearchFilter = ({
               </Select>
             </FormControl>
           </Grid>
+          <Grid item>
+            <TextField
+              id="outlined-basic"
+              label="Title"
+              variant="outlined"
+              value={searchTitle}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onSearchByTitle(event.target.value);
+              }}
+              size="small"
+              InputProps={{
+                classes: {
+                  root: classes.inputRoot,
+                },
+              }}
+              InputLabelProps={{ classes: { root: classes.inputLabelRoot } }}
+              fullWidth
+            />
+          </Grid>
+          <Grid item>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    InputProps: {
+                      classes: {
+                        root: classes.datePickerInputRoot,
+                      },
+                    },
+                    InputLabelProps: {
+                      classes: { root: classes.inputLabelRoot },
+                    },
+                  },
+                  openPickerIcon: {
+                    classes: { root: classes.openCalenderPickerIcon },
+                  },
+                  digitalClockSectionItem: {
+                    classes: { root: classes.inputLabelRoot },
+                  },
+                  popper: {
+                    placement: 'left-start'
+                  }
+                }}
+                label="From"
+                ampm
+                value={fromDate}
+                onAccept={onFromDateChange}
+                className={classes.fullWidth}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    InputProps: {
+                      classes: {
+                        root: classes.datePickerInputRoot,
+                      },
+                    },
+                    InputLabelProps: {
+                      classes: { root: classes.inputLabelRoot },
+                    },
+                  },
+                  openPickerIcon: {
+                    classes: { root: classes.openCalenderPickerIcon },
+                  },
+                  digitalClockSectionItem: {
+                    classes: { root: classes.inputLabelRoot },
+                  },
+                  popper: {
+                    placement: 'left-start'
+                  }
+                }}
+                label="To"
+                ampm
+                value={toDate}
+                onAccept={onToDateChange}
+                className={classes.fullWidth}
+              />
+            </LocalizationProvider>
+          </Grid>
           <Grid item style={{ display: 'flex', paddingLeft: '15px' }}>
             <SyncIcon
               fontSize="medium"
@@ -295,6 +344,6 @@ export const SearchFilter = ({
           </Grid>
         </Grid>
       </FormControl>
-    </Paper>
+    </Drawer>
   );
 };

@@ -1,4 +1,4 @@
-import { Config } from '@backstage/config';
+import {Config} from "@backstage/config";
 
 export const RELEASE_OVERVIEW_API_PATH = '/api/v1/releases/search/overview';
 export const RELEASE_COUNT_API_PATH = '/api/v1/releases/count';
