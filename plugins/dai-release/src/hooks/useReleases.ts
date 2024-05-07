@@ -17,6 +17,7 @@ export function useReleases(): {
   toDate: dayjs.Dayjs | null;
   orderBy: string;
   statusTags: string[];
+  instanceKey: string;
   setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
@@ -24,6 +25,7 @@ export function useReleases(): {
   setToDate: (toDate: dayjs.Dayjs | null) => void;
   setOrderBy: (orderBy: string) => void;
   setStatusTags: (statusTags: string[]) => void;
+  setInstanceKey: (instanceKey: string) => void;
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -32,7 +34,7 @@ export function useReleases(): {
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
   const [statusTags, setStatusTags] = useState<string[]>([]);
-
+  const [instanceKey, setInstanceKey] = useState('');
   const api = useApi(daiReleaseApiRef);
 
   // Use the debounced value of searchTitle, it will update the state in one second
@@ -71,6 +73,7 @@ export function useReleases(): {
     toDate,
     orderBy,
     statusTags,
+    instanceKey,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -78,5 +81,6 @@ export function useReleases(): {
     setToDate,
     setOrderBy,
     setStatusTags,
+    setInstanceKey
   };
 }

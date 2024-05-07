@@ -2,14 +2,18 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
+import { FilterComponent } from '../FilterComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
-import { SearchFilter } from '../SearchFilter';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
+import { SearchHeaderComponent } from '../SearchHeaderComponent';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
     width: '300px',
+  },
+  layoutSec: {
+    paddingTop: '0',
   },
 }));
 export const HomePageComponent = () => {
@@ -26,6 +30,7 @@ export const HomePageComponent = () => {
     toDate,
     orderBy,
     statusTags,
+    instanceKey,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -33,6 +38,7 @@ export const HomePageComponent = () => {
     setToDate,
     setOrderBy,
     setStatusTags,
+    setInstanceKey,
   } = useReleases();
 
   if (error) {
@@ -51,10 +57,16 @@ export const HomePageComponent = () => {
         }
         pageTitleOverride="Digital.ai Release"
       />
-      <Content>
+      <Content className={classes.layoutSec}>
         <Grid container spacing={3} direction="column">
           <Grid item>
-            <SearchFilter
+            <SearchHeaderComponent
+              searchTitle={searchTitle}
+              onSearchByTitle={setSearchTitle}
+              instanceKey={instanceKey}
+              onSetInstanceKey={setInstanceKey}
+            />
+            <FilterComponent
               searchTitle={searchTitle}
               fromDate={fromDate}
               toDate={toDate}

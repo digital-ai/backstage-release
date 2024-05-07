@@ -3,12 +3,12 @@ import {
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
 import React from 'react';
-import { SearchFilter } from './SearchFilter';
+import { SearchHeaderComponent } from './SearchHeaderComponent';
 import dayjs from 'dayjs';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-describe('SearchFilter', () => {
+describe('FilterComponent', () => {
   const server = setupServer();
   setupRequestMockHandlers(server);
 
@@ -79,7 +79,7 @@ async function renderContent(args: {
   retry: () => void;
 }) {
   return await renderInTestApp(
-    <SearchFilter
+    <SearchHeaderComponent
       fromDate={args.fromDate}
       orderBy={args.orderBy}
       searchTitle={args.searchTitle}

@@ -1,0 +1,1 @@
+export { SearchHeaderComponent } from './SearchHeaderComponent';

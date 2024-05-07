@@ -24,7 +24,7 @@ import Typography from '@mui/material/Typography';
 import { Close } from '@material-ui/icons';
 import { Drawer } from '@mui/material';
 
-type SearchFilterProps = {
+type FilterComponentProps = {
   searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
@@ -38,7 +38,7 @@ type SearchFilterProps = {
   onStatusTagChange: (statusTags: string[]) => void;
 };
 
-export const SearchFilter = ({
+export const FilterComponent = ({
   searchTitle,
   fromDate,
   toDate,
@@ -50,7 +50,7 @@ export const SearchFilter = ({
   onToDateChange,
   onOrderByChange,
   onStatusTagChange,
-}: SearchFilterProps) => {
+}: FilterComponentProps) => {
   const statuses = [
     { status: 'Aborted', color: 'rgb(102, 115, 133)' },
     { status: 'Completed', color: 'rgb(73, 133, 0)' },
@@ -118,6 +118,14 @@ export const SearchFilter = ({
     onStatusTagChange(typeof value === 'string' ? value.split(',') : value);
   };
 
+  const clearAllState = () => {
+    onSearchByTitle("");
+    onFromDateChange(null);
+    onToDateChange(null);
+    onOrderByChange('start_date');
+    onStatusTagChange([])
+  }
+
   return (
     <Drawer anchor="right" open={isOpen} onClose={() => toggleDrawer(false)}>
       <Paper elevation={1} style={{ padding: '16px' }}>
@@ -144,7 +152,7 @@ export const SearchFilter = ({
         >
           <Grid item className={classes.clearGrid}>
             <span>Applied filters</span>
-            <Button variant="outlined">Clear all</Button>
+            <Button variant="outlined" onClick={() => clearAllState()}>Clear all</Button>
           </Grid>
           <Grid item>
             <FormControl fullWidth size="small">
