@@ -5,6 +5,14 @@
 
 This is a combination of 2 plugins - the frontend and the backend.
 
+### Support Info
+
+The plugin packages and provided steps are tested in the below versions.
+
+Backstage version: <= 1.23.0
+
+Backstage NPM package version: <= 0.5.11
+
 ## Setup
 
 The following section helps you add the Digital.ai Release frontend plugin.
