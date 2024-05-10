@@ -2,6 +2,14 @@
 
 It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
 
+### Supported Info:
+
+The plugin packages and provided steps are tested in the below versions.
+
+Backstage version: <= 1.23.0
+
+Backstage NPM package version: <= 0.5.11
+
 ## Setup
 
 ### Installing and Configuring the Backend Plugin
