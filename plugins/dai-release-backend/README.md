@@ -2,7 +2,7 @@
 
 It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
 
-### Supported Info:
+### Support Info:
 
 The plugin packages and provided steps are tested in the below versions.
 
