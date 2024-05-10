@@ -36,7 +36,7 @@ Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component e
 
 ```tsx
 // In packages/app/src/App.tsx
-import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
+import {DaiReleasePage} from '@digital-ai/plugin-dai-release';
 
 const routes = (
      <FlatRoutes>
