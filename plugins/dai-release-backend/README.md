@@ -1,39 +1,31 @@
 # Digital.ai Release Backend
 
+It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
+
+### Support Info:
+
+The plugin packages and provided steps are tested in the below versions.
+
+Backstage version: <= 1.23.0
+
+Backstage NPM package version: <= 0.5.11
+
 ## Setup
 
-The following sections will help you get the (Digital.ai) Dai Release Backend plugin setup and running.
+### Installing and Configuring the Backend Plugin
 
-### Configuration
+   The backend plugin needs to be added to your application. To do so:
 
-The Dai Release plugin requires the following YAML to be added to your `app-config.yaml`:
-
-```yaml
-daiRelease:
-  host: { HOST } #http://xl-release-nightly.xebialabs.com:4516
-  token: ${apiKey}
+####  1.  Run the following command from the Backstage root directory:
+```shell
+yarn --cwd packages/backend add @digital-ai/plugin-dai-release-backend
 ```
 
-Configuration Details:
-
-- `host` will be your release application host.
-- `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
-
-### Up and Running
-
-Here's how to get the backend up and running:
-
-1. First we need to add the `@digital-ai/plugin-dai-release-backend` package to your backend:
-
-   ```sh
-   # From your Backstage root directory
-   yarn --cwd packages/backend add @digital-ai/plugin-dai-release-backend
-   ```
-
-2. Then we will create a new file named `packages/backend/src/plugins/dai-release.ts`, and add the
-   following to it:
+#### 2. Create plugin file for release backend in the packages/backend/src/plugins/ directory.
 
    ```ts
+   // packages/backend/src/plugins/dai-release.ts
+
    import { createRouter } from '@digital-ai/plugin-dai-release-backend';
    import { Router } from 'express';
    import type { PluginEnvironment } from '../types';
@@ -49,9 +41,11 @@ Here's how to get the backend up and running:
    }
    ```
 
-3. Next we wire this into the overall backend router, edit `packages/backend/src/index.ts`:
+#### 3.  Modify your backend router to expose the APIs for release backend.
 
    ```ts
+   // packages/backend/src/index.ts
+
    import daiRelease from './plugins/dai-release';
    // ...
    async function main() {
@@ -63,8 +57,21 @@ Here's how to get the backend up and running:
      apiRouter.use('/dai-release', await daiRelease(daiReleaseEnv));
    ```
 
-4. Now run `yarn start-backend` from the repo root
-5. Finally open `http://localhost:7007/api/dai-release/health` in a browser and it should return `{"status":"ok"}`
+#### 4. Configure the release instance by adding the following to your app-config.yaml files.
+
+```yaml
+daiRelease:
+  host: { HOST } #http://xl-release-nightly.xebialabs.com:4516
+  token: ${apiKey}
+```
+Configuration Details:
+
+- `host` will be your release application host.
+- `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
+
+#### 5. Run yarn start-backend from the repo root directory.
+
+#### 6. Finally open http://localhost:7007/api/dai-release/health in a browser and returns {"status":"ok"}.
 
 #### New Backend System
 
@@ -191,3 +198,7 @@ import {
 ```
 
 **Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.
+
+## Links
+
+TODO - Update the documentation link
