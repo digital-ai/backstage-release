@@ -6,9 +6,9 @@ The following sections links will help you get the (Digital.ai) Dai Release plug
 
 ### Dai Release Backend
 
-Refer this wiki page [Dai Release backend plugin](https://github.com/digital-ai/backstage-release/wiki/DAI-Release-Plugin-%E2%80%90-Backend)
+Refer this wiki page [Dai Release backend plugin](https://github.com/digital-ai/backstage-release/wiki/DAI-Release-Backend-Plugin)
 
 ### Dai Release
 
-Refer this wiki page [Dai Deploy plugin](https://github.com/digital-ai/backstage-release/wiki/DAI-Release-Plugin-%E2%80%90-Frontend)
+Refer this wiki page [Dai Deploy plugin](https://github.com/digital-ai/backstage-release/wiki/DAI-Release-Frontend-Plugin)
 
