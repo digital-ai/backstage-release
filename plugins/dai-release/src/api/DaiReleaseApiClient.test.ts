@@ -66,6 +66,7 @@ describe('ReleaseApiClient', () => {
         null,
         null,
         [],
+        '',
       );
       expect(response !== undefined).toBeTruthy();
     });
@@ -80,7 +81,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '5', '', null, null, []);
+        await client.getReleases(0, 1, '5', '', null, null, [], '');
       } catch (e) {
         err = e;
       } finally {
@@ -97,7 +98,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, [], '');
       } catch (e) {
         err = e;
       } finally {
@@ -114,7 +115,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, [], '');
       } catch (e) {
         err = e;
       } finally {

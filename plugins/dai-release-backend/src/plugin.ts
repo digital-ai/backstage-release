@@ -28,6 +28,10 @@ export const daiReleasePlugin = createBackendPlugin({
             permissions,
           }),
         );
+        httpRouter.addAuthPolicy({
+          allow: 'unauthenticated',
+          path: '/',
+        });
       },
     });
   },

@@ -1,7 +1,7 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
 }));
 export const HomePageComponent = () => {
   const classes = useStyles();
+  const [showDrawer, onShowDrawer] = useState(false);
+
   const {
     items,
     loading,
@@ -30,7 +32,7 @@ export const HomePageComponent = () => {
     toDate,
     orderBy,
     statusTags,
-    instanceKey,
+    instance,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -38,7 +40,7 @@ export const HomePageComponent = () => {
     setToDate,
     setOrderBy,
     setStatusTags,
-    setInstanceKey,
+    setInstance,
   } = useReleases();
 
   if (error) {
@@ -62,22 +64,23 @@ export const HomePageComponent = () => {
           <Grid item>
             <SearchHeaderComponent
               searchTitle={searchTitle}
+              instance={instance}
+              retry={retry}
               onSearchByTitle={setSearchTitle}
-              instanceKey={instanceKey}
-              onSetInstanceKey={setInstanceKey}
+              onSetInstance={setInstance}
+              onShowDrawer={onShowDrawer}
             />
             <FilterComponent
-              searchTitle={searchTitle}
               fromDate={fromDate}
               toDate={toDate}
               orderBy={orderBy}
               statusTags={statusTags}
-              onSearchByTitle={setSearchTitle}
+              showDrawer={showDrawer}
               onFromDateChange={setFromDate}
               onToDateChange={setToDate}
               onOrderByChange={setOrderBy}
               onStatusTagChange={setStatusTags}
-              retry={retry}
+              onShowDrawer={onShowDrawer}
             />
             <DenseTable
               page={page}

@@ -74,6 +74,7 @@ export async function createRouter(
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
     );
+    const instanceName = getEncodedQueryVal(req.query.instanceName?.toString());
     const releases = await releaseOverviewApi.getReleases(
       failing,
       planned,
@@ -88,8 +89,29 @@ export async function createRouter(
       orderBy,
       pageNumber,
       resultsPerPage,
+      instanceName,
     );
     res.status(200).json(releases);
+  });
+
+  router.get('/instances', async (req, res) => {
+    const token = getBearerTokenFromAuthorizationHeader(
+      req.header('authorization'),
+    );
+    if (permissions) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { token },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instancesList = await releaseOverviewApi.getReleaseInstances();
+    res.status(200).json(instancesList);
   });
 
   router.use(errorHandler());

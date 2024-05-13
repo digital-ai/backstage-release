@@ -107,17 +107,12 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+
 daiRelease:
-  host: 'http://xl-release-nightly.xebialabs.com:5516'
-  token: 'rpa_df3600986f91b89c0764bec802bf1c2861c16d57'
-
-daiReleases:
-  prod:
-    displayName: ''
-    host: 'http://xl-release-nightly.xebialabs.com:5516'
-    token: 'rpa_a67859c50a3fc49640b8219becaf61f64c45c239'
-  qa:
-    displayName: ''
-    host: 'http://xl-release-nightly.xebialabs.com:5516'
-    token: 'rpa_a67859c50a3fc49640b8219becaf61f64c45c239'
-
+  instances:
+    - displayName: 'default'
+      host: 'http://xl-release-nightly.xebialabs.com:5516'
+      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'
+    - displayName: 'departmentFoo'
+      host: 'http://xl-release-nightly.xebialabs.com:5516'
+      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'

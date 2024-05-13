@@ -26,6 +26,7 @@ describe('FilterComponent', () => {
       toDate: null,
       statusTags: [],
       orderBy: '',
+      showDrawer: false,
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
       onSearchTitle: () => {},
@@ -33,7 +34,7 @@ describe('FilterComponent', () => {
       onToDateChange: () => {},
       onOrderByChange: () => {},
       onStatusTagChange: () => {},
-      retry: () => {},
+      onShowDrawer: () => {},
     });
     expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
     expect(rendered.getByLabelText('Title')).toBeInTheDocument();
@@ -47,6 +48,7 @@ describe('FilterComponent', () => {
       toDate: dayjs(new Date('04/09/2024 05:07 PM')),
       statusTags: ['Failing'],
       orderBy: 'start_date',
+      showDrawer: false,
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
       onSearchTitle: () => {},
@@ -54,7 +56,7 @@ describe('FilterComponent', () => {
       onToDateChange: () => {},
       onOrderByChange: () => {},
       onStatusTagChange: () => {},
-      retry: () => {},
+      onShowDrawer: () => {},
     });
     expect(rendered.getByLabelText('Title')).toHaveValue('Test');
     expect(rendered.getByLabelText('From')).toHaveValue('04/09/2024 05:07 PM');
@@ -69,6 +71,7 @@ async function renderContent(args: {
   toDate: dayjs.Dayjs | null;
   orderBy: string;
   statusTags: string[];
+  showDrawer: boolean;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onSearchTitle: (title: string) => void;
@@ -76,21 +79,20 @@ async function renderContent(args: {
   onToDateChange: (toDate: dayjs.Dayjs | null) => void;
   onOrderByChange: (orderBy: string) => void;
   onStatusTagChange: (statusTags: string[]) => void;
-  retry: () => void;
+  onShowDrawer: (showDrawer: boolean) => void;
 }) {
   return await renderInTestApp(
     <FilterComponent
       fromDate={args.fromDate}
       orderBy={args.orderBy}
-      searchTitle={args.searchTitle}
       onFromDateChange={args.onFromDateChange}
-      onSearchByTitle={args.onSearchTitle}
       onStatusTagChange={args.onStatusTagChange}
       onToDateChange={args.onToDateChange}
       statusTags={args.statusTags}
       toDate={args.toDate}
       onOrderByChange={args.onOrderByChange}
-      retry={args.retry}
+      showDrawer={args.showDrawer}
+      onShowDrawer={args.onShowDrawer}
     />,
   );
 }

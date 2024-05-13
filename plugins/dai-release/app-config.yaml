@@ -108,5 +108,10 @@ catalog:
     #   rules:
     #     - allow: [User, Group]
 daiRelease:
-  host: 'http://xl-release-nightly.xebialabs.com:5516'
-  token: 'rpa_df3600986f91b89c0764bec802bf1c2861c16d57'
+  instances:
+    - displayName: 'default'
+      host: 'http://xl-release-nightly.xebialabs.com:5516'
+      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'
+    - displayName: 'departmentFoo'
+      host: 'http://xl-release-nightly.xebialabs.com:5516'
+      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'

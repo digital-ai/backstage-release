@@ -65,6 +65,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          '',
         ),
     ).rejects.toThrow(
       "Error: Invalid type in config for key 'daiRelease.host' in 'mock-config', got empty-string, wanted string",
@@ -93,6 +94,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          '',
         ),
     ).rejects.toThrow(
       "Error: Invalid type in config for key 'daiRelease.token' in 'mock-config', got empty-string, wanted string",

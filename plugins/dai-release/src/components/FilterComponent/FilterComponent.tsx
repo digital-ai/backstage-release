@@ -1,11 +1,5 @@
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import {
-  Grid,
-  Paper,
-  TextField,
-  makeStyles,
-  IconButton,
-} from '@material-ui/core';
+import { Grid, Paper, makeStyles, IconButton } from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '@mui/material/Button';
@@ -16,40 +10,37 @@ import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import React, { useState } from 'react';
+import React from 'react';
 import SelectAll from '@material-ui/icons/SelectAll';
-import SyncIcon from '@material-ui/icons/Sync';
 import dayjs from 'dayjs';
 import Typography from '@mui/material/Typography';
 import { Close } from '@material-ui/icons';
 import { Drawer } from '@mui/material';
 
 type FilterComponentProps = {
-  searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
   statusTags: string[];
-  retry: () => void;
-  onSearchByTitle: (title: string) => void;
+  showDrawer: boolean;
   onFromDateChange: (startDate: dayjs.Dayjs | null) => void;
   onToDateChange: (toDate: dayjs.Dayjs | null) => void;
   onOrderByChange: (orderBy: string) => void;
   onStatusTagChange: (statusTags: string[]) => void;
+  onShowDrawer: (showDrawer: boolean) => void;
 };
 
 export const FilterComponent = ({
-  searchTitle,
   fromDate,
   toDate,
   orderBy,
   statusTags,
-  retry,
-  onSearchByTitle,
+  showDrawer,
   onFromDateChange,
   onToDateChange,
   onOrderByChange,
   onStatusTagChange,
+  onShowDrawer,
 }: FilterComponentProps) => {
   const statuses = [
     { status: 'Aborted', color: 'rgb(102, 115, 133)' },
@@ -109,7 +100,6 @@ export const FilterComponent = ({
     },
   }));
   const classes = useStyles();
-  const [isOpen, toggleDrawer] = useState(true);
 
   const onStatusChange = (event: SelectChangeEvent<typeof statusTags>) => {
     const {
@@ -119,15 +109,18 @@ export const FilterComponent = ({
   };
 
   const clearAllState = () => {
-    onSearchByTitle("");
     onFromDateChange(null);
     onToDateChange(null);
     onOrderByChange('start_date');
-    onStatusTagChange([])
-  }
+    onStatusTagChange([]);
+  };
 
   return (
-    <Drawer anchor="right" open={isOpen} onClose={() => toggleDrawer(false)}>
+    <Drawer
+      anchor="right"
+      open={showDrawer}
+      onClose={() => onShowDrawer(false)}
+    >
       <Paper elevation={1} style={{ padding: '16px' }}>
         <div className={classes.drawerHeader}>
           <Typography variant="h6">Filters</Typography>
@@ -136,7 +129,7 @@ export const FilterComponent = ({
             title="Close the Filter"
             color="inherit"
             size={'small'}
-            onClick={() => toggleDrawer(false)}
+            onClick={() => onShowDrawer(false)}
           >
             <Close fontSize={'inherit'} />
           </IconButton>
@@ -152,7 +145,9 @@ export const FilterComponent = ({
         >
           <Grid item className={classes.clearGrid}>
             <span>Applied filters</span>
-            <Button variant="outlined" onClick={() => clearAllState()}>Clear all</Button>
+            <Button variant="outlined" onClick={() => clearAllState()}>
+              Clear all
+            </Button>
           </Grid>
           <Grid item>
             <FormControl fullWidth size="small">
@@ -259,25 +254,6 @@ export const FilterComponent = ({
             </FormControl>
           </Grid>
           <Grid item>
-            <TextField
-              id="outlined-basic"
-              label="Title"
-              variant="outlined"
-              value={searchTitle}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                onSearchByTitle(event.target.value);
-              }}
-              size="small"
-              InputProps={{
-                classes: {
-                  root: classes.inputRoot,
-                },
-              }}
-              InputLabelProps={{ classes: { root: classes.inputLabelRoot } }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
                 slotProps={{
@@ -299,8 +275,8 @@ export const FilterComponent = ({
                     classes: { root: classes.inputLabelRoot },
                   },
                   popper: {
-                    placement: 'left-start'
-                  }
+                    placement: 'left-start',
+                  },
                 }}
                 label="From"
                 ampm
@@ -332,8 +308,8 @@ export const FilterComponent = ({
                     classes: { root: classes.inputLabelRoot },
                   },
                   popper: {
-                    placement: 'left-start'
-                  }
+                    placement: 'left-start',
+                  },
                 }}
                 label="To"
                 ampm
@@ -342,13 +318,6 @@ export const FilterComponent = ({
                 className={classes.fullWidth}
               />
             </LocalizationProvider>
-          </Grid>
-          <Grid item style={{ display: 'flex', paddingLeft: '15px' }}>
-            <SyncIcon
-              fontSize="medium"
-              onClick={retry}
-              style={{ cursor: 'pointer' }}
-            />
           </Grid>
         </Grid>
       </FormControl>
