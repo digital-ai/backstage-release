@@ -4,11 +4,10 @@ import {
 } from '@backstage/test-utils';
 import React from 'react';
 import { SearchHeaderComponent } from './SearchHeaderComponent';
-import dayjs from 'dayjs';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-describe('FilterComponent', () => {
+describe('SearchHeaderComponent', () => {
   const server = setupServer();
   setupRequestMockHandlers(server);
 
@@ -19,78 +18,63 @@ describe('FilterComponent', () => {
     );
   });
 
-  it('should render the search filter elements', async () => {
+  it('should render the search elements', async () => {
     const rendered = await renderContent({
       searchTitle: '',
-      fromDate: null,
-      toDate: null,
-      statusTags: [],
-      orderBy: '',
-      onPageChange: () => {},
-      onRowsPerPageChange: () => {},
-      onSearchTitle: () => {},
-      onFromDateChange: () => {},
-      onToDateChange: () => {},
-      onOrderByChange: () => {},
-      onStatusTagChange: () => {},
+      instance: '',
+      instanceList: [],
+      onSetInstance: () => {},
+      onShowDrawer: () => {},
+      onSearchByTitle: () => {},
       retry: () => {},
     });
-    expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
+    expect(rendered.getByLabelText('Choose Instance')).toBeInTheDocument();
     expect(rendered.getByLabelText('Title')).toBeInTheDocument();
-    expect(rendered.getByLabelText('From')).toBeInTheDocument();
-    expect(rendered.getByLabelText('To')).toBeInTheDocument();
   });
-  it('should render the search filter elements with content', async () => {
+  it('should render the search elements with content', async () => {
     const rendered = await renderContent({
       searchTitle: 'Test',
-      fromDate: dayjs(new Date('04/09/2024 05:07 PM')),
-      toDate: dayjs(new Date('04/09/2024 05:07 PM')),
-      statusTags: ['Failing'],
-      orderBy: 'start_date',
-      onPageChange: () => {},
-      onRowsPerPageChange: () => {},
-      onSearchTitle: () => {},
-      onFromDateChange: () => {},
-      onToDateChange: () => {},
-      onOrderByChange: () => {},
-      onStatusTagChange: () => {},
+      instance: 'default',
+      instanceList: [
+        {
+          displayName: 'default',
+          host: 'http://localhost:5516',
+          token: 'abcd',
+        },
+        {
+          displayName: 'secondary',
+          host: 'http://localhost2:5516',
+          token: 'abcd',
+        },
+      ],
+      onSetInstance: () => {},
+      onShowDrawer: () => {},
+      onSearchByTitle: () => {},
       retry: () => {},
     });
     expect(rendered.getByLabelText('Title')).toHaveValue('Test');
-    expect(rendered.getByLabelText('From')).toHaveValue('04/09/2024 05:07 PM');
-    expect(rendered.getByLabelText('To')).toHaveValue('04/09/2024 05:07 PM');
-    expect(rendered.getByText('Failing')).toBeInTheDocument();
-    expect(rendered.getByText('Start Date')).toBeInTheDocument();
+    expect(rendered.getByText('Choose Instance')).toBeInTheDocument();
+    expect(rendered.getByText('Choose Instance')).toHaveValue('default');
   });
 });
 async function renderContent(args: {
+  instance: string;
+  onShowDrawer: () => void;
+  instanceList: any[];
   searchTitle: string;
-  fromDate: dayjs.Dayjs | null;
-  toDate: dayjs.Dayjs | null;
-  orderBy: string;
-  statusTags: string[];
-  onPageChange: (page: number) => void;
-  onRowsPerPageChange: (rows: number) => void;
-  onSearchTitle: (title: string) => void;
-  onFromDateChange: (fromDate: dayjs.Dayjs | null) => void;
-  onToDateChange: (toDate: dayjs.Dayjs | null) => void;
-  onOrderByChange: (orderBy: string) => void;
-  onStatusTagChange: (statusTags: string[]) => void;
   retry: () => void;
+  onSetInstance: () => void;
+  onSearchByTitle: () => void;
 }) {
   return await renderInTestApp(
     <SearchHeaderComponent
-      fromDate={args.fromDate}
-      orderBy={args.orderBy}
       searchTitle={args.searchTitle}
-      onFromDateChange={args.onFromDateChange}
-      onSearchByTitle={args.onSearchTitle}
-      onStatusTagChange={args.onStatusTagChange}
-      onToDateChange={args.onToDateChange}
-      statusTags={args.statusTags}
-      toDate={args.toDate}
-      onOrderByChange={args.onOrderByChange}
+      instance={args.instance}
+      instanceList={args.instanceList}
       retry={args.retry}
+      onSearchByTitle={args.onSearchByTitle}
+      onSetInstance={args.onSetInstance}
+      onShowDrawer={args.onShowDrawer}
     />,
   );
 }

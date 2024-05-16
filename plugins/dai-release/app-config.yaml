@@ -111,7 +111,7 @@ daiRelease:
   instances:
     - displayName: 'default'
       host: 'http://xl-release-nightly.xebialabs.com:5516'
-      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'
+      token: 'rpa_299f152a32311c6f8a9090efca69bab4680d500b'
     - displayName: 'departmentFoo'
       host: 'http://xl-release-nightly.xebialabs.com:5516'
-      token: 'rpa_8995acb13195b1426286ffac7ed101f0181744ee'
+      token: 'rpa_299f152a32311c6f8a9090efca69bab4680d500b'

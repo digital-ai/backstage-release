@@ -1,37 +1,19 @@
 import {
   Folder,
   ReleaseCountResults,
+  ReleaseInstanceConfig,
   ReleaseList,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import { ConfigReader } from '@backstage/config';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
 
-export const config = new ConfigReader({
-  daiRelease: {
+export const releaseConfig = new ReleaseConfig([
+  {
+    displayName: 'default',
     host: 'http://localhost',
     token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },
-});
-
-export const configWithEmptyHost = new ConfigReader({
-  daiRelease: {
-    host: '',
-    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
-  },
-});
-
-export const configWithEmptyToken = new ConfigReader({
-  daiRelease: {
-    host: 'http://localhost',
-    token: '',
-  },
-});
-
-export const configWithMissingToken = new ConfigReader({
-  daiRelease: {
-    host: 'http://localhost',
-  },
-});
+]);
 
 export const releasesOverviewReleaseApiResponse: ReleaseOverview[] = [
   {
@@ -196,3 +178,11 @@ export const releasesBackendApiResponse: ReleaseList = {
     },
   ],
 };
+
+export const releaseInstanceConfigResponse: ReleaseInstanceConfig[] = [
+  {
+    displayName: 'default',
+    host: 'http://localhost',
+    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
+  },
+];

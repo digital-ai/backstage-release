@@ -22,22 +22,21 @@ export class ReleaseConfig {
 
       return new ReleaseConfig(instanceConfig);
     } catch (error: unknown) {
-      throw new Error(`Error: ${(error as Error).message}`);
+      throw new Error(
+        `Error: invalid values or missing property for daiRelease in config yaml`,
+      );
     }
   }
 
   public getInstanceConfig(instanceName: string): ReleaseInstanceConfig {
-    let instanceConfig;
-
-    if (instanceName && instanceName.trim() != '') {
-      // A name is provided, look it up.
-      instanceConfig = this.instances.find(c => c.displayName === instanceName);
-    } else {
-      //on initial load if the instance name not set from UI, take first instance from the config
-      instanceConfig = this.instances[0];
-    }
+    // A name is provided, look it up.
+    const instanceConfig = this.instances.find(
+      c => c.displayName === instanceName,
+    );
     if (!instanceConfig) {
-      throw new Error(`Couldn't find a release instance in the config`);
+      throw new Error(
+        `Couldn't find a release instance '${instanceName}' in the config`,
+      );
     }
     return instanceConfig;
   }

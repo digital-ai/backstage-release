@@ -1,11 +1,5 @@
 import { SetupServerApi, setupServer } from 'msw/node';
-import {
-  config,
-  configWithEmptyHost,
-  configWithEmptyToken,
-  configWithMissingToken,
-  releasesBackendApiResponse,
-} from '../mocks/mockData';
+import { releaseConfig, releasesBackendApiResponse } from '../mocks/mockData';
 import {
   error401ResponseHandler,
   error403ResponseHandler,
@@ -43,9 +37,9 @@ describe('Backend API tests for Releases', () => {
   const server = configureMockServer();
   server.resetHandlers(...mockTestHandlers);
 
-  it('Should throw error if config hostname is empty', async () => {
+  it('Should throw error if instance is not in config', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      configWithEmptyHost,
+      releaseConfig,
       getVoidLogger(),
     );
 
@@ -65,73 +59,16 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
-          '',
+          'default2',
         ),
     ).rejects.toThrow(
-      "Error: Invalid type in config for key 'daiRelease.host' in 'mock-config', got empty-string, wanted string",
-    );
-  });
-
-  it('Should throw error if config token is empty', async () => {
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      configWithEmptyToken,
-      getVoidLogger(),
-    );
-
-    await expect(
-      async () =>
-        await releaseOverviewApi.getReleases(
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          '',
-          '',
-          '',
-          'risk',
-          '0',
-          '100',
-          '',
-        ),
-    ).rejects.toThrow(
-      "Error: Invalid type in config for key 'daiRelease.token' in 'mock-config', got empty-string, wanted string",
-    );
-  });
-
-  it('Should throw error if config token is missing', async () => {
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      configWithMissingToken,
-      getVoidLogger(),
-    );
-
-    await expect(
-      async () =>
-        await releaseOverviewApi.getReleases(
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          'true',
-          '',
-          '',
-          '',
-          'risk',
-          '0',
-          '100',
-        ),
-    ).rejects.toThrow(
-      "Error: Missing required config value at 'daiRelease.token",
+      "Couldn't find a release instance 'default2' in the config",
     );
   });
 
   it('Should get releases from Release API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
+      releaseConfig,
       getVoidLogger(),
     );
 
@@ -149,6 +86,7 @@ describe('Backend API tests for Releases', () => {
       'risk',
       '0',
       '100',
+      'default',
     );
 
     expect(releaseList.total).toEqual(releasesBackendApiResponse.total);
@@ -159,7 +97,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error401ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
+      releaseConfig,
       getVoidLogger(),
     );
 
@@ -179,6 +117,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          'default',
         ),
     ).rejects.toThrow(
       'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
@@ -189,7 +128,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error403ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
+      releaseConfig,
       getVoidLogger(),
     );
 
@@ -209,6 +148,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          'default',
         ),
     ).rejects.toThrow(
       'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
@@ -219,7 +159,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error404ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
+      releaseConfig,
       getVoidLogger(),
     );
     await expect(
@@ -238,6 +178,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          'default',
         ),
     ).rejects.toThrow('Release service request not found');
   });
@@ -246,7 +187,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error500ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      config,
+      releaseConfig,
       getVoidLogger(),
     );
 
@@ -266,6 +207,7 @@ describe('Backend API tests for Releases', () => {
           'risk',
           '0',
           '100',
+          'default',
         ),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
   });

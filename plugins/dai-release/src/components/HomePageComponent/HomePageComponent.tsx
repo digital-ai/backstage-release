@@ -33,6 +33,7 @@ export const HomePageComponent = () => {
     orderBy,
     statusTags,
     instance,
+    instanceList,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -65,6 +66,7 @@ export const HomePageComponent = () => {
             <SearchHeaderComponent
               searchTitle={searchTitle}
               instance={instance}
+              instanceList={instanceList}
               retry={retry}
               onSearchByTitle={setSearchTitle}
               onSetInstance={setInstance}

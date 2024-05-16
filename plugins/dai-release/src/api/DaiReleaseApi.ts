@@ -20,7 +20,7 @@ export interface DaiReleaseApi {
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
     statusTags: string[],
-    instance: string,
+    instanceName: string,
   ): Promise<{ items: ReleaseList }>;
 
   getInstanceList(): Promise<ReleaseInstanceConfig[]>;

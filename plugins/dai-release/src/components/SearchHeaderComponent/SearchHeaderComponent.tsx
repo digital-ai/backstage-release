@@ -8,11 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import SyncIcon from '@material-ui/icons/Sync';
 import { SvgIcon } from '@mui/material';
-import { getInstanceList } from '../../hooks';
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 
 type FilterComponentProps = {
   searchTitle: string;
   instance: string;
+  instanceList: ReleaseInstanceConfig[] | undefined;
   retry: () => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
@@ -22,6 +23,7 @@ type FilterComponentProps = {
 export const SearchHeaderComponent = ({
   searchTitle,
   instance,
+  instanceList,
   retry,
   onSearchByTitle,
   onSetInstance,
@@ -39,8 +41,6 @@ export const SearchHeaderComponent = ({
     },
   }));
   const classes = useStyles();
-
-  const instanceList = getInstanceList();
 
   return (
     <FormControl fullWidth sx={{ my: 3 }}>
@@ -91,7 +91,6 @@ export const SearchHeaderComponent = ({
                   />
                 }
                 inputProps={{ size: 'small' }}
-                defaultValue={instanceList ? instanceList[0].displayName : ''}
               >
                 {instanceList?.map(data => (
                   <MenuItem

@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import {
   folderListReleaseApiResponse,
+  releaseInstanceConfigResponse,
   releasesCountReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
@@ -14,6 +15,9 @@ export const mockTestHandlers = [
   }),
   http.get('http://localhost/api/v1/folders/list', () => {
     return new HttpResponse(JSON.stringify(folderListReleaseApiResponse));
+  }),
+  http.get('http://localhost/api/v1/instances', () => {
+    return new HttpResponse(JSON.stringify(releaseInstanceConfigResponse));
   }),
 ];
 
@@ -31,6 +35,12 @@ export const error404ResponseHandler = [
     });
   }),
   http.get('http://localhost/api/v1/folders/list', () => {
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
+  http.get('http://localhost/api/v1/instances', () => {
     return new HttpResponse(JSON.stringify('[]'), {
       status: 404,
       statusText: 'Not found',
@@ -57,6 +67,12 @@ export const error403ResponseHandler = [
       statusText: 'forbidden',
     });
   }),
+  http.get('http://localhost/api/v1/instances', () => {
+    return new HttpResponse('You do not have release#view permission', {
+      status: 403,
+      statusText: 'forbidden',
+    });
+  }),
 ];
 
 export const error500ResponseHandler = [
@@ -78,6 +94,12 @@ export const error500ResponseHandler = [
       statusText: 'Unexpected error',
     });
   }),
+  http.get('http://localhost/api/v1/instances', () => {
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: 'Unexpected error',
+    });
+  }),
 ];
 
 export const error401ResponseHandler = [
@@ -94,6 +116,12 @@ export const error401ResponseHandler = [
     });
   }),
   http.get('http://localhost/api/v1/folders/list', () => {
+    return new HttpResponse(null, {
+      status: 401,
+      statusText: 'Unauthorized',
+    });
+  }),
+  http.get('http://localhost/api/v1/instances', () => {
     return new HttpResponse(null, {
       status: 401,
       statusText: 'Unauthorized',

@@ -66,8 +66,24 @@ describe('ReleaseApiClient', () => {
         null,
         null,
         [],
-        '',
+        'default',
       );
+      expect(response !== undefined).toBeTruthy();
+    });
+    it('should return instance list', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/instances',
+          (_req, res, ctx) => {
+            return res(
+              ctx.status(200),
+              ctx.set('Content-Type', 'application/json'),
+              ctx.json(releases),
+            );
+          },
+        ),
+      );
+      const response = await client.getInstanceList();
       expect(response !== undefined).toBeTruthy();
     });
     it('should return error', async () => {
@@ -81,7 +97,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '5', '', null, null, [], '');
+        await client.getReleases(0, 1, '5', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -98,7 +114,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, [], '');
+        await client.getReleases(0, 1, '3', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -115,7 +131,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, [], '');
+        await client.getReleases(0, 1, '3', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {

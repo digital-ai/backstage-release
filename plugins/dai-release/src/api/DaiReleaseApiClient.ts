@@ -43,7 +43,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
     statusTags: string[],
-    instance: string,
+    instanceName: string,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
     queryString.append('failing', this.isStatusChecked(statusTags, 'Failing'));
@@ -65,7 +65,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('title', searchTile.toString());
     queryString.append('fromDate', convertUnixTimestamp(fromDate).toString());
     queryString.append('toDate', convertUnixTimestamp(toDate).toString());
-    queryString.append('instance', instance.toString());
+    queryString.append('instanceName', instanceName.toString());
 
     const urlSegment = `releases?${queryString}`;
     const items = await this.get<ReleaseList>(urlSegment);

@@ -4,11 +4,12 @@ import { useApi } from '@backstage/core-plugin-api';
 import { useAsyncRetry } from 'react-use';
 import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 
 export function useReleases(): {
-  loading: boolean | false | true;
-  error: undefined | Error;
-  items: any | undefined;
+  loading: boolean;
+  error: Error | undefined;
+  items: any;
   retry: () => void;
   page: any;
   rowsPerPage: any;
@@ -18,6 +19,7 @@ export function useReleases(): {
   orderBy: string;
   statusTags: string[];
   instance: string;
+  instanceList: ReleaseInstanceConfig[] | undefined;
   setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
@@ -35,12 +37,23 @@ export function useReleases(): {
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
   const [statusTags, setStatusTags] = useState<string[]>([]);
   const [instance, setInstance] = useState('');
+  const [instanceList, setInstanceList] = useState<
+    ReleaseInstanceConfig[] | undefined
+  >([]);
+
   const api = useApi(daiReleaseApiRef);
 
   // Use the debounced value of searchTitle, it will update the state in one second
   const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
+    if (instance.trim() == '') {
+      api.getInstanceList().then(data => {
+        setInstance(data[0].displayName);
+        setInstanceList(data);
+      });
+      return;
+    }
     return api.getReleases(
       page,
       rowsPerPage,
@@ -76,6 +89,7 @@ export function useReleases(): {
     orderBy,
     statusTags,
     instance,
+    instanceList,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -85,12 +99,4 @@ export function useReleases(): {
     setStatusTags,
     setInstance,
   };
-}
-
-export function getInstanceList() {
-  const api = useApi(daiReleaseApiRef);
-  const { value } = useAsyncRetry(async () => {
-    return api.getInstanceList();
-  });
-  return value;
 }

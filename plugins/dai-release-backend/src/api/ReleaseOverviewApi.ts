@@ -11,7 +11,6 @@ import {
   ReleaseCountResults,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import { Config } from '@backstage/config';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
@@ -27,8 +26,8 @@ export class ReleaseOverviewApi {
     this.config = config;
   }
 
-  static fromConfig(config: Config, logger: Logger) {
-    return new ReleaseOverviewApi(logger, ReleaseConfig.fromConfig(config));
+  static fromConfig(config: ReleaseConfig, logger: Logger) {
+    return new ReleaseOverviewApi(logger, config);
   }
 
   async getReleases(

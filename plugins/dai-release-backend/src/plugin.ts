@@ -4,6 +4,7 @@ import {
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
 import { loggerToWinstonLogger } from '@backstage/backend-common';
+import { ReleaseConfig } from './service/releaseInstanceConfig';
 
 /**
  * Digital.ai Release backend plugin
@@ -21,17 +22,14 @@ export const daiReleasePlugin = createBackendPlugin({
         permissions: coreServices.permissions,
       },
       async init({ config, logger, httpRouter, permissions }) {
+        const instancesConfig = ReleaseConfig.fromConfig(config);
         httpRouter.use(
           await createRouter({
-            config,
+            config: instancesConfig,
             logger: loggerToWinstonLogger(logger),
             permissions,
           }),
         );
-        httpRouter.addAuthPolicy({
-          allow: 'unauthenticated',
-          path: '/',
-        });
       },
     });
   },
