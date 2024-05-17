@@ -1,31 +1,42 @@
 # Digital.ai Release Plugin
 
+   - Welcome to the Digital.ai (Dai) Release plugin for Backstage!
+   - With Dai Release Plugin you can monitor all your active releases and view the release flow.
+
+This is a combination of 2 plugins - the frontend and the backend.
+
+### Support Info
+
+The plugin packages and provided steps are tested in the below versions.
+
+Backstage version: <= 1.23.0
+
+Backstage NPM package version: <= 0.5.11
+
 ## Setup
 
-The following sections will help you get the (Digital.ai) Dai Release plugin setup and running.
+The following section helps you add the Digital.ai Release frontend plugin.
 
-### Dai Release Backend
+### Prerequisites
 
-You need to setup the [Dai Release backend plugin](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release-backend) before you move forward with any of these steps if you haven't already
+You need to set up the [Dai Release backend plugin](https://www.npmjs.com/package/@digital-ai/plugin-dai-release-backend) before you move forward with any of these steps.
 
-### Dai Release - Shows List of Releases
+### Installing and Configuring the Frontend Plugin
 
-To get the Dai Release to Shows List of Releases you'll need to do the following two steps:
+   The frontend plugin needs to be added to your application. To do so:
 
-1. First we need to add the `@digital-ai/plugin-dai-release` package to your frontend app:
+####   1. Run the following command from the Backstage root directory:
 
-   ```shell
-   # From your Backstage root directory
-   yarn --cwd packages/app add @digital-ai/plugin-dai-release
-   ```
-
-2. Add the `DaiReleasePage` extension to your `App.tsx`:
+```shell
+yarn --cwd packages/app add @digital-ai/plugin-dai-release
+```
+####   2. Add the `DaiReleasePage` extension to your `App.tsx`:
 
 Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component exported from the plugin, for example:
 
 ```tsx
 // In packages/app/src/App.tsx
-import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
+import {DaiReleasePage} from '@digital-ai/plugin-dai-release';
 
 const routes = (
      <FlatRoutes>
@@ -33,10 +44,14 @@ const routes = (
         <Route path="/dai-release" element={<DaiReleasePage/>}/>
 ```
 
-3. Add Digital.ai Release to your app Sidebar:
+####   3. Add Digital.ai Release to your app Sidebar:
 
-`tsx`
+```
 import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 
-   <SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
+<SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
 ```
+
+## Links
+
+TODO - Update the documentation link
