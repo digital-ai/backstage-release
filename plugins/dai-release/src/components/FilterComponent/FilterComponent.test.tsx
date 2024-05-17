@@ -21,7 +21,6 @@ describe('FilterComponent', () => {
 
   it('should render the search filter elements', async () => {
     const rendered = await renderContent({
-      searchTitle: '',
       fromDate: null,
       toDate: null,
       statusTags: [],
@@ -29,7 +28,6 @@ describe('FilterComponent', () => {
       showDrawer: true,
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
-      onSearchTitle: () => {},
       onFromDateChange: () => {},
       onToDateChange: () => {},
       onOrderByChange: () => {},
@@ -37,13 +35,11 @@ describe('FilterComponent', () => {
       onShowDrawer: () => {},
     });
     expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
-    expect(rendered.getByLabelText('Title')).toBeInTheDocument();
     expect(rendered.getByLabelText('From')).toBeInTheDocument();
     expect(rendered.getByLabelText('To')).toBeInTheDocument();
   });
   it('should render the search filter elements with content', async () => {
     const rendered = await renderContent({
-      searchTitle: 'Test',
       fromDate: dayjs(new Date('04/09/2024 05:07 PM')),
       toDate: dayjs(new Date('04/09/2024 05:07 PM')),
       statusTags: ['Failing'],
@@ -51,14 +47,12 @@ describe('FilterComponent', () => {
       showDrawer: true,
       onPageChange: () => {},
       onRowsPerPageChange: () => {},
-      onSearchTitle: () => {},
       onFromDateChange: () => {},
       onToDateChange: () => {},
       onOrderByChange: () => {},
       onStatusTagChange: () => {},
       onShowDrawer: () => {},
     });
-    expect(rendered.getByLabelText('Title')).toHaveValue('Test');
     expect(rendered.getByLabelText('From')).toHaveValue('04/09/2024 05:07 PM');
     expect(rendered.getByLabelText('To')).toHaveValue('04/09/2024 05:07 PM');
     expect(rendered.getByText('Failing')).toBeInTheDocument();
@@ -66,7 +60,6 @@ describe('FilterComponent', () => {
   });
 });
 async function renderContent(args: {
-  searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
@@ -74,7 +67,6 @@ async function renderContent(args: {
   showDrawer: boolean;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
-  onSearchTitle: (title: string) => void;
   onFromDateChange: (fromDate: dayjs.Dayjs | null) => void;
   onToDateChange: (toDate: dayjs.Dayjs | null) => void;
   onOrderByChange: (orderBy: string) => void;

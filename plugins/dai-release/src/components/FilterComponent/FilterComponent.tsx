@@ -92,7 +92,7 @@ export const FilterComponent = ({
     },
     clearGrid: {
       display: 'flex',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       alignItems: 'center',
     },
     fullWidth: {
@@ -145,7 +145,12 @@ export const FilterComponent = ({
         >
           <Grid item className={classes.clearGrid}>
             <span>Applied filters</span>
-            <Button variant="outlined" onClick={() => clearAllState()}>
+            <Button
+              variant="outlined"
+              onClick={() => clearAllState()}
+              size={'small'}
+              className={classes.inputLabelRoot}
+            >
               Clear all
             </Button>
           </Grid>

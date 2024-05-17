@@ -68,6 +68,8 @@ describe('ReleaseApiClient', () => {
         [],
         'default',
       );
+      console.log('ooooooooooooooooooooooooooooooo');
+      console.log(response);
       expect(response !== undefined).toBeTruthy();
     });
     it('should return instance list', async () => {

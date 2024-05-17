@@ -53,8 +53,10 @@ describe('SearchHeaderComponent', () => {
       retry: () => {},
     });
     expect(rendered.getByLabelText('Title')).toHaveValue('Test');
-    expect(rendered.getByText('Choose Instance')).toBeInTheDocument();
-    expect(rendered.getByText('Choose Instance')).toHaveValue('default');
+    expect(rendered.getByLabelText('Choose Instance')).toBeInTheDocument();
+    expect(rendered.getByLabelText('Choose Instance')).toHaveTextContent(
+      'default',
+    );
   });
 });
 async function renderContent(args: {
