@@ -1,6 +1,6 @@
 import {
   Folder,
-  ReleaseCountResults,
+  ReleaseCountResults, ReleaseFallBackOverview,
   ReleaseList,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
@@ -49,6 +49,27 @@ export const releasesOverviewReleaseApiResponse: ReleaseOverview[] = [
     title: 'Welcome release',
     startDate: 1710940430763,
     endDate: 1711555250637,
+    status: 'IN_PROGRESS',
+    kind: 'RELEASE',
+  },
+];
+
+export const releasesOverviewFallbackReleaseApiResponse: ReleaseFallBackOverview[] = [
+  {
+    id: 'Applications/Folder1/Release1',
+    type: 'xlrelease.Release',
+    title: 'Configure Release',
+    dueDate: "2024-05-22T17:00:58.698Z",
+    startDate : "2024-05-15T09:06:14.388Z",
+    status: 'PLANNED',
+    kind: 'RELEASE',
+  },
+  {
+    id: 'Applications/Folder2/Folder2/Folder1/Release2',
+    type: 'xlrelease.Release',
+    title: 'Welcome release',
+    dueDate: "2024-05-22T17:00:14.703Z",
+    startDate: "2024-05-15T09:06:14.934Z",
     status: 'IN_PROGRESS',
     kind: 'RELEASE',
   },
@@ -193,6 +214,31 @@ export const releasesBackendApiResponse: ReleaseList = {
       endDate: 1711555250637,
       releaseRedirectUri:
         'http://localhost/#/releases/Folder2-Folder2-Folder1-Release2',
+    },
+  ],
+};
+
+export const releasesFallbackBackendApiResponse: ReleaseList = {
+  total: 2,
+  releases: [
+    {
+      id: 'Applications/Folder1/Release1',
+      title: 'Configure Release',
+      folder: 'Deploy',
+      status: 'PLANNED',
+      fromDate: 1715763974388,
+      endDate: 1716397258698,
+      releaseRedirectUri: 'http://localhost/#/releases/Folder1-Release1',
+    },
+    {
+      id: 'Applications/Folder2/Folder2/Folder1/Release2',
+      title: 'Welcome release',
+      folder: 'Digital.ai - Official > Workflows > Subfolders',
+      status: 'IN_PROGRESS',
+      fromDate: 1715763974934,
+      endDate: 1716397214703,
+      releaseRedirectUri:
+          'http://localhost/#/releases/Folder2-Folder2-Folder1-Release2',
     },
   ],
 };

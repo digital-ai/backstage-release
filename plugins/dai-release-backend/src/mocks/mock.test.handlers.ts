@@ -1,7 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import {
   folderListReleaseApiResponse,
-  releasesCountReleaseApiResponse,
+  releasesCountReleaseApiResponse, releasesOverviewFallbackReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
 
@@ -127,3 +127,22 @@ export const error401ResponseHandler = [
     });
   }),
 ];
+
+export const mockTestHandlersfallBack = [
+  http.post('http://localhost/api/v1/releases/search/overview', () => {
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
+  http.post('http://localhost/api/v1/releases/search', () => {
+    return new HttpResponse(JSON.stringify(releasesOverviewFallbackReleaseApiResponse));
+  }),
+  http.post('http://localhost/api/v1/releases/count', () => {
+    return new HttpResponse(JSON.stringify(releasesCountReleaseApiResponse));
+  }),
+  http.get('http://localhost/api/v1/folders/list', () => {
+    return new HttpResponse(JSON.stringify(folderListReleaseApiResponse));
+  }),
+];
+
