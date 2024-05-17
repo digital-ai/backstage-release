@@ -2,7 +2,7 @@ name: Push to main on dai-release-common plugin
 
 on:
   push:
-    branches: [ "develop" ]  # need to map it to main branch
+    branches: [ "main" ]  # need to map it to main branch
 
 jobs:
   changes:
