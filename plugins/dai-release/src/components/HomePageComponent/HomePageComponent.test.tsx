@@ -11,9 +11,9 @@ import {
 } from '@backstage/test-utils';
 import { HomePageComponent } from './HomePageComponent';
 import React from 'react';
+import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 
 const identityApi = {
   getCredentials: jest.fn(),
