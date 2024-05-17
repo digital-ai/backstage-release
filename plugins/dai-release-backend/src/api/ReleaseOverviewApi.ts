@@ -2,13 +2,14 @@ import {
   RELEASE_COUNT_API_PATH,
   RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
+  RELEASE_OVERVIEW_EXISTING_API_PATH,
   getCredentials,
   getReleaseApiHost,
   getReleaseDetailsRedirectUri,
 } from './apiConfig';
 import {
   Release,
-  ReleaseCountResults,
+  ReleaseCountResults, ReleaseFallBackOverview,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
 import { Config } from '@backstage/config';
@@ -124,10 +125,63 @@ export class ReleaseOverviewApi {
         body: JSON.stringify(requestBody),
       },
     );
-    if (!response.ok) {
+    if (!response.ok && response.status === 404) {
+      this.logger?.error(
+          `Calling Release Fallback Overview api`,
+      );
+      return await this.getFallBackReleasesList(
+          apiUrl,
+          accessToken,
+          requestBody,
+          pageNumber,
+          resultsPerPage,
+      );
+    } else if (!response.ok){
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
+  }
+
+  async getFallBackReleasesList(
+      apiUrl: string,
+      accessToken: string,
+      requestBody: object,
+      pageNumber: string,
+      resultsPerPage: string,
+  ) {
+    const response = await fetch(
+        `${apiUrl}${RELEASE_OVERVIEW_EXISTING_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-release-personal-token': `${accessToken}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    function convertIsoToLongDatetime(dateString: string): number {
+      const date = new Date(dateString);
+      return date.getTime();
+    }
+    const fallBackOverviews: ReleaseFallBackOverview[] = await response.json()
+    const releasesOverview: ReleaseOverview[] = [];
+    fallBackOverviews.forEach(d =>
+        releasesOverview.push({
+          id: d.id,
+          title: d.title,
+          status: d.status,
+          startDate: convertIsoToLongDatetime(d.startDate),
+          endDate: convertIsoToLongDatetime(d.dueDate),
+          type: d.type,
+          kind:d.kind
+        }),
+    );
+    return releasesOverview;
   }
 
   async getReleasesCount(

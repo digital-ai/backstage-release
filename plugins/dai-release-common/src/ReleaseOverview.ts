@@ -15,3 +15,13 @@ export type ReleaseOverview = {
   status: string;
   kind: string;
 };
+
+export type ReleaseFallBackOverview = {
+  id: string;
+  type: string;
+  title: string;
+  startDate: string;
+  dueDate: string;
+  status: string;
+  kind: string;
+};
