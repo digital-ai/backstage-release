@@ -1,3 +1,5 @@
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+
 export const releases = {
   pages: 1,
   cis: [
@@ -393,3 +395,11 @@ export const releases = {
   kind: 'RELEASE',
   executionDuration: 10189193,
 };
+
+export const releaseInstanceConfigResponse: ReleaseInstanceConfig[] = [
+  {
+    displayName: 'default',
+    host: 'http://localhost',
+    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
+  },
+];
