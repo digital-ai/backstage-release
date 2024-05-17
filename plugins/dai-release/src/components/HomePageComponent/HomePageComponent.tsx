@@ -4,9 +4,9 @@ import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
+import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
-import { SearchHeaderComponent } from '../SearchHeaderComponent';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {

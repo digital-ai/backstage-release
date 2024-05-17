@@ -1,10 +1,12 @@
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { Grid, Paper, makeStyles, IconButton } from '@material-ui/core';
+import { Grid, IconButton, Paper, makeStyles } from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import ClearAllOutlined from '@material-ui/icons/ClearAllOutlined';
+import Close from '@material-ui/icons/Close';
+import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,10 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import React from 'react';
 import SelectAll from '@material-ui/icons/SelectAll';
-import dayjs from 'dayjs';
 import Typography from '@mui/material/Typography';
-import { Close } from '@material-ui/icons';
-import { Drawer } from '@mui/material';
+import dayjs from 'dayjs';
 
 type FilterComponentProps = {
   fromDate: dayjs.Dayjs | null;
@@ -128,10 +128,10 @@ export const FilterComponent = ({
             key="dismiss"
             title="Close the Filter"
             color="inherit"
-            size={'small'}
+            size="small"
             onClick={() => onShowDrawer(false)}
           >
-            <Close fontSize={'inherit'} />
+            <Close fontSize="inherit" />
           </IconButton>
         </div>
       </Paper>
@@ -148,7 +148,7 @@ export const FilterComponent = ({
             <Button
               variant="outlined"
               onClick={() => clearAllState()}
-              size={'small'}
+              size="small"
               className={classes.inputLabelRoot}
             >
               Clear all

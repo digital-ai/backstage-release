@@ -2,8 +2,8 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
-import React from 'react';
 import { FilterComponent } from './FilterComponent';
+import React from 'react';
 import dayjs from 'dayjs';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';

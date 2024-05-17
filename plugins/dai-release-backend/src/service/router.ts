@@ -8,6 +8,7 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
 import { NotAllowedError } from '@backstage/errors';
+import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
@@ -15,7 +16,6 @@ import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { getEncodedQueryVal } from '../api/apiConfig';
-import { ReleaseConfig } from './releaseInstanceConfig';
 
 export interface RouterOptions {
   config: ReleaseConfig;

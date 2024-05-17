@@ -2,9 +2,9 @@ import {
   coreServices,
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
+import { ReleaseConfig } from './service/releaseInstanceConfig';
 import { createRouter } from './service/router';
 import { loggerToWinstonLogger } from '@backstage/backend-common';
-import { ReleaseConfig } from './service/releaseInstanceConfig';
 
 /**
  * Digital.ai Release backend plugin

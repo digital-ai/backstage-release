@@ -1,14 +1,14 @@
-import { Grid, makeStyles, TextField } from '@material-ui/core';
-import FormControl from '@mui/material/FormControl';
-import React from 'react';
-import InputLabel from '@mui/material/InputLabel';
+import { Grid, TextField, makeStyles } from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import SyncIcon from '@material-ui/icons/Sync';
-import { SvgIcon } from '@mui/material';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import React from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+import SvgIcon from '@mui/material/SvgIcon';
+import SyncIcon from '@material-ui/icons/Sync';
+import Typography from '@mui/material/Typography';
 
 type FilterComponentProps = {
   searchTitle: string;
@@ -44,7 +44,7 @@ export const SearchHeaderComponent = ({
 
   return (
     <FormControl fullWidth sx={{ my: 3 }}>
-      <Grid container spacing={3} direction="row" alignItems={'center'}>
+      <Grid container spacing={3} direction="row" alignItems="center">
         <Grid item lg={4} md={4} sm={4}>
           <Typography
             variant="h5"
@@ -64,7 +64,7 @@ export const SearchHeaderComponent = ({
             spacing={3}
             direction="row"
             justifyContent="flex-end"
-            alignItems={'center'}
+            alignItems="center"
           >
             <Grid item className={classes.inputItem}>
               <FormControl fullWidth size="small">

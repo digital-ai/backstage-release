@@ -13,9 +13,9 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { parseErrorResponse } from './responseUtil';
-import { ReleaseConfig } from '../service/releaseInstanceConfig';
 
 export class ReleaseOverviewApi {
   private readonly logger: Logger;

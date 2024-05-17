@@ -1,10 +1,10 @@
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
 import { useAsyncRetry } from 'react-use';
 import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
-import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 
 export function useReleases(): {
   loading: boolean;
@@ -47,12 +47,12 @@ export function useReleases(): {
   const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
-    if (instance.trim() == '') {
+    if (instance.trim() === '') {
       api.getInstanceList().then(data => {
         setInstance(data[0].displayName);
         setInstanceList(data);
       });
-      return;
+      return null;
     }
     return api.getReleases(
       page,

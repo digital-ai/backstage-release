@@ -5,10 +5,10 @@ import {
   loadBackendConfig,
 } from '@backstage/backend-common';
 import { Logger } from 'winston';
+import { ReleaseConfig } from './releaseInstanceConfig';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { createRouter } from './router';
-import { ReleaseConfig } from './releaseInstanceConfig';
 
 export interface ServerOptions {
   port: number;
