@@ -126,8 +126,8 @@ export class ReleaseOverviewApi {
       },
     );
     if (!response.ok && response.status === 404) {
-      this.logger?.error(
-          `Calling Release Fallback Overview api`,
+      this.logger?.warn(
+          `Calling Fallback Release search API.`,
       );
       return await this.getFallBackReleasesList(
           apiUrl,

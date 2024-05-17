@@ -6,22 +6,19 @@
  */
 
 /** @public */
-export type ReleaseOverview = {
+
+export interface Overview  {
   id: string;
   type: string;
   title: string;
-  startDate: number;
-  endDate: number;
   status: string;
   kind: string;
 };
-
-export type ReleaseFallBackOverview = {
-  id: string;
-  type: string;
-  title: string;
+export interface ReleaseOverview extends Overview {
+  startDate: number;
+  endDate: number;
+};
+export interface ReleaseFallBackOverview extends Overview {
   startDate: string;
   dueDate: string;
-  status: string;
-  kind: string;
 };
