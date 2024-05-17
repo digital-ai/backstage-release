@@ -7,15 +7,33 @@ The following sections will help you get the (Digital.ai) Dai Release Backend pl
 ### Configuration
 
 The Dai Release plugin requires the following YAML to be added to your `app-config.yaml`:
+Dai Release plugin supports Digital-ai Release multi instance integration option.
+***Note: all values are mandatory, if any of the keys or values not entered application startup will fail
 
+For single instance setup: 
 ```yaml
 daiRelease:
-  host: { HOST } #http://xl-release-nightly.xebialabs.com:4516
-  token: ${apiKey}
+   instances:
+      - displayName: {name-of-first-instance} #
+        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
+        token: {token-of-first-instance}
+```
+
+For multi instance setup:
+```yaml
+daiRelease:
+   instances:
+      - displayName: {name-of-first-instance} #
+        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
+        token: {token-of-first-instance}
+      - displayName: {name-of-second-instance}
+        host: {host-of-second-instance} #http://digital-ai-2.release.com:4516
+        token: {token-of-second-instance}
 ```
 
 Configuration Details:
 
+- `displayName` will be used to display in UI for instance choosing
 - `host` will be your release application host.
 - `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
 
@@ -61,6 +79,7 @@ Here's how to get the backend up and running:
      // ...
      // Insert this line under the other lines that add their routers to apiRouter in the same way
      apiRouter.use('/dai-release', await daiRelease(daiReleaseEnv));
+   }
    ```
 
 4. Now run `yarn start-backend` from the repo root
