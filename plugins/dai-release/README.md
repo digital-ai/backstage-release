@@ -1,4 +1,4 @@
-# Digital.ai Release Plugin
+# Digital.ai Release Plugin 
 
    - Welcome to the Digital.ai (Dai) Release plugin for Backstage!
    - With Dai Release Plugin you can monitor all your active releases and view the release flow.
