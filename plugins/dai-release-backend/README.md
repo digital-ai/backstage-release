@@ -14,48 +14,47 @@ Backstage NPM package version: <= 0.5.11
 
 ### Installing and Configuring the Backend Plugin
 
-   The backend plugin needs to be added to your application. To do so:
+The backend plugin needs to be added to your application. To do so:
 
-####  1.  Run the following command from the Backstage root directory:
+#### 1. Run the following command from the Backstage root directory:
+
 ```shell
 yarn --cwd packages/backend add @digital-ai/plugin-dai-release-backend
 ```
 
 #### 2. Create plugin file for release backend in the packages/backend/src/plugins/ directory.
 
-   ```ts
-   // packages/backend/src/plugins/dai-release.ts
+```ts
+// packages/backend/src/plugins/dai-release.ts
 
-   import { createRouter } from '@digital-ai/plugin-dai-release-backend';
-   import { Router } from 'express';
-   import type { PluginEnvironment } from '../types';
+import { createRouter } from '@digital-ai/plugin-dai-release-backend';
+import { Router } from 'express';
+import type { PluginEnvironment } from '../types';
 
-   export default function createPlugin(
-     env: PluginEnvironment,
-   ): Promise<Router> {
-     return createRouter({
-       logger: env.logger,
-       config: env.config,
-       permissions: env.permissions
-     });
-   }
-   ```
+export default function createPlugin(env: PluginEnvironment): Promise<Router> {
+  return createRouter({
+    logger: env.logger,
+    config: env.config,
+    permissions: env.permissions,
+  });
+}
+```
 
-#### 3.  Modify your backend router to expose the APIs for release backend.
+#### 3. Modify your backend router to expose the APIs for release backend.
 
-   ```ts
-   // packages/backend/src/index.ts
+```ts
+// packages/backend/src/index.ts
 
-   import daiRelease from './plugins/dai-release';
-   // ...
-   async function main() {
-     // ...
-     // Add this line under the other lines that follow the useHotMemoize pattern
-     const daiReleaseEnv = useHotMemoize(module, () => createEnv('dai-release'));
-     // ...
-     // Insert this line under the other lines that add their routers to apiRouter in the same way
-     apiRouter.use('/dai-release', await daiRelease(daiReleaseEnv));
-   ```
+import daiRelease from './plugins/dai-release';
+// ...
+async function main() {
+  // ...
+  // Add this line under the other lines that follow the useHotMemoize pattern
+  const daiReleaseEnv = useHotMemoize(module, () => createEnv('dai-release'));
+  // ...
+  // Insert this line under the other lines that add their routers to apiRouter in the same way
+  apiRouter.use('/dai-release', await daiRelease(daiReleaseEnv));
+```
 
 #### 4. Configure the release instance by adding the following to your app-config.yaml files.
 
@@ -64,6 +63,7 @@ daiRelease:
   host: { HOST } #http://xl-release-nightly.xebialabs.com:4516
   token: ${apiKey}
 ```
+
 Configuration Details:
 
 - `host` will be your release application host.
@@ -90,6 +90,7 @@ In your `packages/backend/src/index.ts` make the following changes:
 
   backend.start();
 ```
+
 ## Permissions
 
 The DAI release plugin supports the [permissions framework](https://backstage.io/docs/permissions/overview), the following sections outline how you can use them with the assumption that you have the permissions framework setup and working.
@@ -192,9 +193,7 @@ yarn --cwd packages/backend add @backstage/plugin-dai-release-common
 You'll also need to add these imports:
 
 ```ts
-import {
-    daiReleaseViewPermission
-} from "@digital-ai/plugin-dai-release-common";
+import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common';
 ```
 
 **Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.

@@ -1,7 +1,8 @@
 import { HttpResponse, http } from 'msw';
 import {
   folderListReleaseApiResponse,
-  releasesCountReleaseApiResponse, releasesOverviewFallbackReleaseApiResponse,
+  releasesCountReleaseApiResponse,
+  releasesOverviewFallbackReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
 
@@ -136,7 +137,9 @@ export const mockTestHandlersfallBack = [
     });
   }),
   http.post('http://localhost/api/v1/releases/search', () => {
-    return new HttpResponse(JSON.stringify(releasesOverviewFallbackReleaseApiResponse));
+    return new HttpResponse(
+      JSON.stringify(releasesOverviewFallbackReleaseApiResponse),
+    );
   }),
   http.post('http://localhost/api/v1/releases/count', () => {
     return new HttpResponse(JSON.stringify(releasesCountReleaseApiResponse));
@@ -145,4 +148,3 @@ export const mockTestHandlersfallBack = [
     return new HttpResponse(JSON.stringify(folderListReleaseApiResponse));
   }),
 ];
-

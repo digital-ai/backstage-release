@@ -9,7 +9,8 @@ import {
 } from './apiConfig';
 import {
   Release,
-  ReleaseCountResults, ReleaseFallBackOverview,
+  ReleaseCountResults,
+  ReleaseFallBackOverview,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
 import { Config } from '@backstage/config';
@@ -126,40 +127,38 @@ export class ReleaseOverviewApi {
       },
     );
     if (!response.ok && response.status === 404) {
-      this.logger?.warn(
-          `Calling Fallback Release search API.`,
-      );
+      this.logger?.warn(`Calling Fallback Release search API.`);
       return await this.getFallBackReleasesList(
-          apiUrl,
-          accessToken,
-          requestBody,
-          pageNumber,
-          resultsPerPage,
+        apiUrl,
+        accessToken,
+        requestBody,
+        pageNumber,
+        resultsPerPage,
       );
-    } else if (!response.ok){
+    } else if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
   }
 
   async getFallBackReleasesList(
-      apiUrl: string,
-      accessToken: string,
-      requestBody: object,
-      pageNumber: string,
-      resultsPerPage: string,
+    apiUrl: string,
+    accessToken: string,
+    requestBody: object,
+    pageNumber: string,
+    resultsPerPage: string,
   ) {
     const response = await fetch(
-        `${apiUrl}${RELEASE_OVERVIEW_EXISTING_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
-        {
-          method: 'POST',
-          headers: {
-            'x-release-personal-token': `${accessToken}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify(requestBody),
+      `${apiUrl}${RELEASE_OVERVIEW_EXISTING_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+      {
+        method: 'POST',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
+        body: JSON.stringify(requestBody),
+      },
     );
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
@@ -168,18 +167,18 @@ export class ReleaseOverviewApi {
       const date = new Date(dateString);
       return date.getTime();
     }
-    const fallBackOverviews: ReleaseFallBackOverview[] = await response.json()
+    const fallBackOverviews: ReleaseFallBackOverview[] = await response.json();
     const releasesOverview: ReleaseOverview[] = [];
     fallBackOverviews.forEach(d =>
-        releasesOverview.push({
-          id: d.id,
-          title: d.title,
-          status: d.status,
-          startDate: convertIsoToLongDatetime(d.startDate),
-          endDate: convertIsoToLongDatetime(d.dueDate),
-          type: d.type,
-          kind:d.kind
-        }),
+      releasesOverview.push({
+        id: d.id,
+        title: d.title,
+        status: d.status,
+        startDate: convertIsoToLongDatetime(d.startDate),
+        endDate: convertIsoToLongDatetime(d.dueDate),
+        type: d.type,
+        kind: d.kind,
+      }),
     );
     return releasesOverview;
   }
