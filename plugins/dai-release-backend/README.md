@@ -1,4 +1,4 @@
-# Digital.ai Release Backend
+# Digital.ai Release Backend 
 
 It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
 
