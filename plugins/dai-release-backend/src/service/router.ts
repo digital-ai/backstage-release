@@ -6,6 +6,7 @@ import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
+import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import { NotAllowedError } from '@backstage/errors';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -16,7 +17,6 @@ import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { getEncodedQueryVal } from '../api/apiConfig';
-import { Config } from '@backstage/config';
 
 export interface RouterOptions {
   config: Config;

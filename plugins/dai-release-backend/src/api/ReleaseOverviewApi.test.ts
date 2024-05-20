@@ -1,4 +1,5 @@
 import { SetupServerApi, setupServer } from 'msw/node';
+import { config, releasesBackendApiResponse } from '../mocks/mockData';
 import {
   error401ResponseHandler,
   error403ResponseHandler,
@@ -6,11 +7,10 @@ import {
   error500ResponseHandler,
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
-import { config, releasesBackendApiResponse } from '../mocks/mockData';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
 import { getVoidLogger } from '@backstage/backend-common';
-import { ReleaseConfig } from '../service/releaseInstanceConfig';
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();

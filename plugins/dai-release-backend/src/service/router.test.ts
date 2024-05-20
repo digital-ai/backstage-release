@@ -3,16 +3,16 @@ import {
   PermissionEvaluator,
 } from '@backstage/plugin-permission-common';
 import {
+  config,
+  releaseInstanceConfigResponse,
+  releasesBackendApiResponse,
+} from '../mocks/mockData';
+import {
   error403ResponseHandler,
   error404ResponseHandler,
   error500ResponseHandler,
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
-import {
-  config,
-  releaseInstanceConfigResponse,
-  releasesBackendApiResponse,
-} from '../mocks/mockData';
 import { createRouter } from './router';
 import express from 'express';
 import { getVoidLogger } from '@backstage/backend-common';
