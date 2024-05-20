@@ -9,11 +9,13 @@ import { ConfigReader } from '@backstage/config';
 
 export const config = new ConfigReader({
   daiRelease: {
-    instances: {
-      name: 'default',
-      host: 'http://localhost',
-      token: 'rpa_299f152a32311c6f8a9090efca69bab4680d500b',
-    },
+    instances: [
+      {
+        name: 'default',
+        host: 'http://localhost',
+        token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
+      },
+    ],
   },
 });
 
