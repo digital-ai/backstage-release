@@ -13,6 +13,7 @@ import {
   ReleaseFallBackOverview,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
+import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Config } from '@backstage/config';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
@@ -163,10 +164,6 @@ export class ReleaseOverviewApi {
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
-    function convertIsoToLongDatetime(dateString: string): number {
-      const date = new Date(dateString);
-      return date.getTime();
-    }
     const fallBackOverviews: ReleaseFallBackOverview[] = await response.json();
     const releasesOverview: ReleaseOverview[] = [];
     fallBackOverviews.forEach(d =>
@@ -174,8 +171,8 @@ export class ReleaseOverviewApi {
         id: d.id,
         title: d.title,
         status: d.status,
-        startDate: convertIsoToLongDatetime(d.startDate),
-        endDate: convertIsoToLongDatetime(d.dueDate),
+        startDate: getStartOrScheduledDate(d),
+        endDate: getEndOrDueDate(d),
         type: d.type,
         kind: d.kind,
       }),

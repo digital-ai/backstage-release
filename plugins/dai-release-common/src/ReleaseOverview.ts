@@ -20,5 +20,7 @@ export interface ReleaseOverview extends Overview {
 }
 export interface ReleaseFallBackOverview extends Overview {
   startDate: string;
+  endDate: string;
   dueDate: string;
+  scheduledStartDate: string;
 }
