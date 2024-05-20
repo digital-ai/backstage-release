@@ -49,10 +49,10 @@ export function useReleases(): {
   const { value, loading, error, retry } = useAsyncRetry(async () => {
     if (instance.trim() === '') {
       api.getInstanceList().then(data => {
-        setInstance(data[0].displayName);
+        setInstance(data[0].name);
         setInstanceList(data);
       });
-      return null;
+      return;
     }
     return api.getReleases(
       page,

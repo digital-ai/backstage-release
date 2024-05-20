@@ -16,9 +16,10 @@ import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { getEncodedQueryVal } from '../api/apiConfig';
+import { Config } from '@backstage/config';
 
 export interface RouterOptions {
-  config: ReleaseConfig;
+  config: Config;
   logger: Logger;
   permissions?: PermissionEvaluator;
 }
@@ -27,7 +28,10 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { logger, config, permissions } = options;
-  const releaseOverviewApi = ReleaseOverviewApi.fromConfig(config, logger);
+  const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
 
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: daiReleasePermissions,

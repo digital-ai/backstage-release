@@ -6,10 +6,11 @@ import {
   error500ResponseHandler,
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
-import { releaseConfig, releasesBackendApiResponse } from '../mocks/mockData';
+import { config, releasesBackendApiResponse } from '../mocks/mockData';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
 import { getVoidLogger } from '@backstage/backend-common';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();
@@ -39,7 +40,7 @@ describe('Backend API tests for Releases', () => {
 
   it('Should throw error if instance is not in config', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
 
@@ -68,7 +69,7 @@ describe('Backend API tests for Releases', () => {
 
   it('Should get releases from Release API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
 
@@ -97,7 +98,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error401ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
 
@@ -128,7 +129,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error403ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
 
@@ -159,7 +160,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error404ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
     await expect(
@@ -187,7 +188,7 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error500ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      releaseConfig,
+      ReleaseConfig.fromConfig(config),
       getVoidLogger(),
     );
 

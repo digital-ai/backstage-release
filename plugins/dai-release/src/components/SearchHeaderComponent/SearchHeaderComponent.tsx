@@ -1,8 +1,7 @@
-import { Grid, TextField, makeStyles } from '@material-ui/core';
+import { Grid, MenuItem, TextField, makeStyles } from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import React from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
@@ -92,11 +91,11 @@ export const SearchHeaderComponent = ({
                 >
                   {instanceList?.map(data => (
                     <MenuItem
-                      value={data.displayName}
+                      value={data.name}
                       className={classes.inputRoot}
-                      key={data.displayName}
+                      key={data.name}
                     >
-                      {data.displayName}
+                      {data.name}
                     </MenuItem>
                   ))}
                 </Select>

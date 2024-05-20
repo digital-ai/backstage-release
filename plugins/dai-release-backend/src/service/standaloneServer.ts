@@ -5,7 +5,6 @@ import {
   loadBackendConfig,
 } from '@backstage/backend-common';
 import { Logger } from 'winston';
-import { ReleaseConfig } from './releaseInstanceConfig';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { createRouter } from './router';
@@ -32,7 +31,7 @@ export async function startStandaloneServer(
 
   logger.debug('Starting application server...');
   const router = await createRouter({
-    config: ReleaseConfig.fromConfig(config),
+    config: config,
     logger,
     permissions,
   });

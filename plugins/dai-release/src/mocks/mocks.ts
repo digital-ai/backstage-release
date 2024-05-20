@@ -398,7 +398,7 @@ export const releases = {
 
 export const releaseInstanceConfigResponse: ReleaseInstanceConfig[] = [
   {
-    displayName: 'default',
+    name: 'default',
     host: 'http://localhost',
     token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },

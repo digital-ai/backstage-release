@@ -9,7 +9,7 @@ import {
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
 import {
-  releaseConfig,
+  config,
   releaseInstanceConfigResponse,
   releasesBackendApiResponse,
 } from '../mocks/mockData';
@@ -31,14 +31,14 @@ function configureMockServer(permission: boolean) {
   beforeAll(async () => {
     if (permission) {
       const router = await createRouter({
-        config: releaseConfig,
+        config: config,
         logger: getVoidLogger(),
         permissions: permissionApi,
       });
       app = express().use(router);
     } else {
       const router = await createRouter({
-        config: releaseConfig,
+        config: config,
         logger: getVoidLogger(),
       });
       app = express().use(router);

@@ -1,6 +1,6 @@
 /** @public */
 export interface ReleaseInstanceConfig {
-  displayName: string;
+  name: string;
   host: string;
   token: string;
 }

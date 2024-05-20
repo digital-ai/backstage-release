@@ -68,7 +68,7 @@ For single instance setup:
 ```yaml
 daiRelease:
    instances:
-      - displayName: {name-of-first-instance} #
+      - name: {name-of-first-instance} #
         host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
         token: {token-of-first-instance}
 ```
@@ -77,17 +77,17 @@ For multi instance setup:
 ```yaml
 daiRelease:
    instances:
-      - displayName: {name-of-first-instance} #
+      - name: {name-of-first-instance} #
         host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
         token: {token-of-first-instance}
-      - displayName: {name-of-second-instance}
+      - name: {name-of-second-instance}
         host: {host-of-second-instance} #http://digital-ai-2.release.com:4516
         token: {token-of-second-instance}
 ```
 
 Configuration Details:
 
-- `displayName` will be used to display in UI for instance choosing
+- `name` will be used to display in UI for instance choosing
 - `host` will be your release application host.
 - `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
 

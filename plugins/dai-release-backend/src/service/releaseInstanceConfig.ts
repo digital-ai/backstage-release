@@ -15,7 +15,7 @@ export class ReleaseConfig {
       // load all named instance config
       const instanceConfig: ReleaseInstanceConfig[] =
         releaseConfig.getOptionalConfigArray('instances')?.map(c => ({
-          displayName: c.getString('displayName'),
+          name: c.getString('name'),
           host: c.getString('host'),
           token: c.getString('token'),
         })) || [];
@@ -30,9 +30,7 @@ export class ReleaseConfig {
 
   public getInstanceConfig(instanceName: string): ReleaseInstanceConfig {
     // A name is provided, look it up.
-    const instanceConfig = this.instances.find(
-      c => c.displayName === instanceName,
-    );
+    const instanceConfig = this.instances.find(c => c.name === instanceName);
     if (!instanceConfig) {
       throw new Error(
         `Couldn't find a release instance '${instanceName}' in the config`,

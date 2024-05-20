@@ -37,12 +37,12 @@ describe('SearchHeaderComponent', () => {
       instance: 'default',
       instanceList: [
         {
-          displayName: 'default',
+          name: 'default',
           host: 'http://localhost:5516',
           token: 'abcd',
         },
         {
-          displayName: 'secondary',
+          name: 'secondary',
           host: 'http://localhost2:5516',
           token: 'abcd',
         },

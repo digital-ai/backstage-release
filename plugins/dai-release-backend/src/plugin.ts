@@ -2,7 +2,6 @@ import {
   coreServices,
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
-import { ReleaseConfig } from './service/releaseInstanceConfig';
 import { createRouter } from './service/router';
 import { loggerToWinstonLogger } from '@backstage/backend-common';
 
@@ -22,10 +21,9 @@ export const daiReleasePlugin = createBackendPlugin({
         permissions: coreServices.permissions,
       },
       async init({ config, logger, httpRouter, permissions }) {
-        const instancesConfig = ReleaseConfig.fromConfig(config);
         httpRouter.use(
           await createRouter({
-            config: instancesConfig,
+            config: config,
             logger: loggerToWinstonLogger(logger),
             permissions,
           }),

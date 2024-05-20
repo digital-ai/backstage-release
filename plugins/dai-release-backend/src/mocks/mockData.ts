@@ -5,15 +5,17 @@ import {
   ReleaseList,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import { ReleaseConfig } from '../service/releaseInstanceConfig';
+import { ConfigReader } from '@backstage/config';
 
-export const releaseConfig = new ReleaseConfig([
-  {
-    displayName: 'default',
-    host: 'http://localhost',
-    token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
+export const config = new ConfigReader({
+  daiRelease: {
+    instances: {
+      name: 'default',
+      host: 'http://localhost',
+      token: 'rpa_299f152a32311c6f8a9090efca69bab4680d500b',
+    },
   },
-]);
+});
 
 export const releasesOverviewReleaseApiResponse: ReleaseOverview[] = [
   {
@@ -181,7 +183,7 @@ export const releasesBackendApiResponse: ReleaseList = {
 
 export const releaseInstanceConfigResponse: ReleaseInstanceConfig[] = [
   {
-    displayName: 'default',
+    name: 'default',
     host: 'http://localhost',
     token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },
