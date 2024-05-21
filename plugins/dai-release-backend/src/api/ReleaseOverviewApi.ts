@@ -2,6 +2,7 @@ import {
   RELEASE_COUNT_API_PATH,
   RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
+  RELEASE_OVERVIEW_EXISTING_API_PATH,
   getCredentials,
   getReleaseApiHost,
   getReleaseDetailsRedirectUri,
@@ -9,8 +10,10 @@ import {
 import {
   Release,
   ReleaseCountResults,
+  ReleaseFallBackOverview,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
+import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Config } from '@backstage/config';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
@@ -124,10 +127,57 @@ export class ReleaseOverviewApi {
         body: JSON.stringify(requestBody),
       },
     );
-    if (!response.ok) {
+    if (!response.ok && response.status === 404) {
+      this.logger?.warn(`Calling Fallback Release search API.`);
+      return await this.getFallBackReleasesList(
+        apiUrl,
+        accessToken,
+        requestBody,
+        pageNumber,
+        resultsPerPage,
+      );
+    } else if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
+  }
+
+  async getFallBackReleasesList(
+    apiUrl: string,
+    accessToken: string,
+    requestBody: object,
+    pageNumber: string,
+    resultsPerPage: string,
+  ) {
+    const response = await fetch(
+      `${apiUrl}${RELEASE_OVERVIEW_EXISTING_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+      {
+        method: 'POST',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    const fallBackOverviews: ReleaseFallBackOverview[] = await response.json();
+    const releasesOverview: ReleaseOverview[] = [];
+    fallBackOverviews.forEach(d =>
+      releasesOverview.push({
+        id: d.id,
+        title: d.title,
+        status: d.status,
+        startDate: getStartOrScheduledDate(d),
+        endDate: getEndOrDueDate(d),
+        type: d.type,
+        kind: d.kind,
+      }),
+    );
+    return releasesOverview;
   }
 
   async getReleasesCount(

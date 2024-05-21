@@ -2,10 +2,14 @@ import { HttpResponse, http } from 'msw';
 import {
   folderListReleaseApiResponse,
   releasesCountReleaseApiResponse,
+  releasesOverviewFallbackReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
 
 export const mockTestHandlers = [
+  http.post('http://localhost/api/v1/releases/search', () => {
+    return new HttpResponse(JSON.stringify(releasesOverviewReleaseApiResponse));
+  }),
   http.post('http://localhost/api/v1/releases/search/overview', () => {
     return new HttpResponse(JSON.stringify(releasesOverviewReleaseApiResponse));
   }),
@@ -19,6 +23,12 @@ export const mockTestHandlers = [
 
 export const error404ResponseHandler = [
   http.post('http://localhost/api/v1/releases/search/overview', () => {
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
+  http.post('http://localhost/api/v1/releases/search', () => {
     return new HttpResponse(JSON.stringify('[]'), {
       status: 404,
       statusText: 'Not found',
@@ -45,6 +55,12 @@ export const error403ResponseHandler = [
       statusText: 'forbidden',
     });
   }),
+  http.post('http://localhost/api/v1/releases/search', () => {
+    return new HttpResponse('You do not have release#view permission', {
+      status: 403,
+      statusText: 'forbidden',
+    });
+  }),
   http.post('http://localhost/api/v1/releases/count', () => {
     return new HttpResponse('You do not have release#view permission', {
       status: 403,
@@ -61,6 +77,12 @@ export const error403ResponseHandler = [
 
 export const error500ResponseHandler = [
   http.post('http://localhost/api/v1/releases/search/overview', () => {
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: 'Unexpected error',
+    });
+  }),
+  http.post('http://localhost/api/v1/releases/search', () => {
     return new HttpResponse(null, {
       status: 500,
       statusText: 'Unexpected error',
@@ -87,6 +109,12 @@ export const error401ResponseHandler = [
       statusText: 'Unauthorized',
     });
   }),
+  http.post('http://localhost/api/v1/releases/search', () => {
+    return new HttpResponse(null, {
+      status: 401,
+      statusText: 'Unauthorized',
+    });
+  }),
   http.post('http://localhost/api/v1/releases/count', () => {
     return new HttpResponse(null, {
       status: 401,
@@ -98,5 +126,25 @@ export const error401ResponseHandler = [
       status: 401,
       statusText: 'Unauthorized',
     });
+  }),
+];
+
+export const mockTestHandlersfallBack = [
+  http.post('http://localhost/api/v1/releases/search/overview', () => {
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
+  http.post('http://localhost/api/v1/releases/search', () => {
+    return new HttpResponse(
+      JSON.stringify(releasesOverviewFallbackReleaseApiResponse),
+    );
+  }),
+  http.post('http://localhost/api/v1/releases/count', () => {
+    return new HttpResponse(JSON.stringify(releasesCountReleaseApiResponse));
+  }),
+  http.get('http://localhost/api/v1/folders/list', () => {
+    return new HttpResponse(JSON.stringify(folderListReleaseApiResponse));
   }),
 ];

@@ -5,6 +5,7 @@ import {
   configWithEmptyToken,
   configWithMissingToken,
   releasesBackendApiResponse,
+  releasesFallbackBackendApiResponse,
 } from '../mocks/mockData';
 import {
   error401ResponseHandler,
@@ -12,6 +13,7 @@ import {
   error404ResponseHandler,
   error500ResponseHandler,
   mockTestHandlers,
+  mockTestHandlersfallBack,
 } from '../mocks/mock.test.handlers';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
@@ -266,5 +268,35 @@ describe('Backend API tests for Releases', () => {
           '100',
         ),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
+  });
+
+  it('Get response from getReleases from Release API - using search api for xlr version < 24.1', async () => {
+    server.resetHandlers(...mockTestHandlersfallBack);
+
+    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
+      config,
+      getVoidLogger(),
+    );
+
+    const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      'true',
+      '',
+      '',
+      '',
+      'risk',
+      '0',
+      '100',
+    );
+
+    expect(releaseList.total).toEqual(releasesFallbackBackendApiResponse.total);
+    expect(releaseList.releases).toEqual(
+      releasesFallbackBackendApiResponse.releases,
+    );
   });
 });
