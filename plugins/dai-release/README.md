@@ -1,7 +1,7 @@
 # Digital.ai Release Plugin
 
-   - Welcome to the Digital.ai (Dai) Release plugin for Backstage!
-   - With Dai Release Plugin you can monitor all your active releases and view the release flow.
+- Welcome to the Digital.ai (Dai) Release plugin for Backstage!
+- With Dai Release Plugin you can monitor all your active releases and view the release flow.
 
 This is a combination of 2 plugins - the frontend and the backend.
 
@@ -23,14 +23,15 @@ You need to set up the [Dai Release backend plugin](https://www.npmjs.com/packag
 
 ### Installing and Configuring the Frontend Plugin
 
-   The frontend plugin needs to be added to your application. To do so:
+The frontend plugin needs to be added to your application. To do so:
 
-####   1. Run the following command from the Backstage root directory:
+#### 1. Run the following command from the Backstage root directory:
 
 ```shell
 yarn --cwd packages/app add @digital-ai/plugin-dai-release
 ```
-####   2. Add the `DaiReleasePage` extension to your `App.tsx`:
+
+#### 2. Add the `DaiReleasePage` extension to your `App.tsx`:
 
 Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component exported from the plugin, for example:
 
@@ -44,7 +45,7 @@ const routes = (
         <Route path="/dai-release" element={<DaiReleasePage/>}/>
 ```
 
-####   3. Add Digital.ai Release to your app Sidebar:
+#### 3. Add Digital.ai Release to your app Sidebar:
 
 ```
 import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
