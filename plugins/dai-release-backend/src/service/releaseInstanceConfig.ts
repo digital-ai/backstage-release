@@ -9,23 +9,24 @@ export class ReleaseConfig {
    * @returns A ReleaseConfig that contains all configured Release instances.
    */
   static fromConfig(config: Config): ReleaseConfig {
-    try {
-      const releaseConfig = config.getConfig('daiRelease');
+    const releaseConfig = config.getConfig('daiRelease');
 
-      // load all named instance config
-      const instanceConfig: ReleaseInstanceConfig[] =
-        releaseConfig.getOptionalConfigArray('instances')?.map(c => ({
-          name: c.getString('name'),
-          host: c.getString('host'),
-          token: c.getString('token'),
-        })) || [];
-
-      return new ReleaseConfig(instanceConfig);
-    } catch (error: unknown) {
-      throw new Error(
-        `Error: invalid values or missing property for daiRelease in config yaml`,
-      );
+    function readValues(config: Config, keyName: string) {
+      // check the config values and overwrite to handle error in UI
+      return config.has(keyName) && config.get(keyName) != ''
+        ? config.getString(keyName)
+        : '';
     }
+
+    // load all named instance config
+    const instanceConfig: ReleaseInstanceConfig[] =
+      releaseConfig.getOptionalConfigArray('instances')?.map(c => ({
+        name: readValues(c, 'name'),
+        host: readValues(c, 'host'),
+        token: readValues(c, 'token'),
+      })) || [];
+
+    return new ReleaseConfig(instanceConfig);
   }
 
   public getInstanceConfig(instanceName: string): ReleaseInstanceConfig {

@@ -8,7 +8,7 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import { NotAllowedError } from '@backstage/errors';
+import { InputError, NotAllowedError } from '@backstage/errors';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
@@ -17,6 +17,7 @@ import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { getEncodedQueryVal } from '../api/apiConfig';
+import { validateInstanceRes } from '../api/responseUtil';
 
 export interface RouterOptions {
   config: Config;
@@ -115,6 +116,11 @@ export async function createRouter(
       }
     }
     const instancesList = await releaseOverviewApi.getReleaseInstances();
+    if (!validateInstanceRes(instancesList)) {
+      throw new InputError(
+        'Invalid or Missing DaiRelease instance configuration, verify your config yaml',
+      );
+    }
     res.status(200).json(instancesList);
   });
 

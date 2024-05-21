@@ -4,6 +4,7 @@ import {
   NotFoundError,
   ServiceUnavailableError,
   parseErrorResponseBody,
+  InputError,
 } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import {
@@ -100,6 +101,8 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         throw new NotFoundError(data.error.message);
       } else if (response.status === 500) {
         throw new ServiceUnavailableError(`Release Service Unavailable`);
+      } else if (response.status === 400) {
+        throw new InputError(data.error.message);
       }
       throw new Error(
         `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
