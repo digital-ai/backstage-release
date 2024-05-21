@@ -3,6 +3,7 @@ import {
   NotAllowedError,
   NotFoundError,
 } from '@backstage/errors';
+import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 
@@ -32,10 +33,17 @@ export async function parseErrorResponse(logger: Logger, response: Response) {
 }
 
 export function validateInstanceRes(instancesList: ReleaseInstanceConfig[]) {
-  if (instancesList && instancesList.length == 0) {
+  if (instancesList && instancesList.length === 0) {
     return false;
   }
   return instancesList.every(data => {
     return !(data.name === '' || data.host === '' || data.token === '');
   });
+}
+
+export function readValues(config: Config, keyName: string) {
+  // check the config values and overwrite to handle error in UI
+  return config.has(keyName) && config.get(keyName) !== ''
+    ? config.getString(keyName)
+    : '';
 }

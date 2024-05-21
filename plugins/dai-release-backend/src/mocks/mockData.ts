@@ -1,8 +1,8 @@
 import {
   Folder,
   ReleaseCountResults,
-  ReleaseInstanceConfig,
   ReleaseFallBackOverview,
+  ReleaseInstanceConfig,
   ReleaseList,
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';

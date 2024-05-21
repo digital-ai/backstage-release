@@ -1,7 +1,7 @@
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
-import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
+import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';

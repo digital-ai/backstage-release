@@ -1,5 +1,6 @@
 import { Config } from '@backstage/config';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+import { readValues } from '../api/responseUtil';
 
 export class ReleaseConfig {
   constructor(public readonly instances: ReleaseInstanceConfig[]) {}
@@ -10,13 +11,6 @@ export class ReleaseConfig {
    */
   static fromConfig(config: Config): ReleaseConfig {
     const releaseConfig = config.getConfig('daiRelease');
-
-    function readValues(config: Config, keyName: string) {
-      // check the config values and overwrite to handle error in UI
-      return config.has(keyName) && config.get(keyName) != ''
-        ? config.getString(keyName)
-        : '';
-    }
 
     // load all named instance config
     const instanceConfig: ReleaseInstanceConfig[] =

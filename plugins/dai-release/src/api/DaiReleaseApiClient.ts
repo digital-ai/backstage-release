@@ -1,10 +1,10 @@
 import {
   AuthenticationError,
+  InputError,
   NotAllowedError,
   NotFoundError,
   ServiceUnavailableError,
   parseErrorResponseBody,
-  InputError,
 } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import {
