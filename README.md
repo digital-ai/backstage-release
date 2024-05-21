@@ -1,4 +1,4 @@
-# Digital.ai Release Plugin
+# Digital.ai Release Plugin 
 
 ## Setup
 
