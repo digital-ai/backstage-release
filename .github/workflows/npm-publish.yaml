@@ -1,4 +1,4 @@
-name: Build & test npm module
+name: NPM publish
 
 on:
   workflow_call:
@@ -8,21 +8,24 @@ on:
         type: string
 
 jobs:
-  build_job:
-    name: Build & Test
+  npm-publish:
+    name: Publish Latest to NPM
     runs-on: ubuntu-latest
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          ref: ${{ github.ref_name }} # need to map it to main branch
+          fetch-depth: 0  # necessary to get newly created tag above
+          ref: ${{ github.ref_name }}
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
+          always-auth: true
           node-version: '18.x'
-          registry-url: 'https://npm.pkg.github.com'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@digital-ai'
       - name: Install dependencies
         working-directory: ${{ inputs.plugin-path }}
         run: yarn install
@@ -35,3 +38,6 @@ jobs:
       - name: Run tests
         working-directory: ${{ inputs.plugin-path }}
         run: yarn test
+      - name: Publish to registry
+        working-directory: ${{ inputs.plugin-path }}
+        run: yarn publish --access public
