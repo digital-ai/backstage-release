@@ -6,16 +6,9 @@ export const convertIsoToLongDatetime = (dateString: string) => {
 };
 
 export const getEndOrDueDate = (data: ReleaseFallBackOverview) => {
-  let date =
+  const date =
     convertIsoToLongDatetime(data.endDate) ||
     convertIsoToLongDatetime(data.dueDate);
-  if (
-    date &&
-    data.type === 'xlrelease.Release' &&
-    data.status === 'IN_PROGRESS'
-  ) {
-    date = Math.max(date, convertIsoToLongDatetime(new Date().toISOString()));
-  }
   return date;
 };
 
