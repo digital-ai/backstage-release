@@ -118,7 +118,7 @@ export async function createRouter(
     const instancesList = await releaseOverviewApi.getReleaseInstances();
     if (!validateInstanceRes(instancesList)) {
       throw new InputError(
-        'Invalid or Missing DaiRelease instance configuration, verify your config yaml',
+        'Invalid or Missing DaiRelease instance configuration',
       );
     }
     res.status(200).json(instancesList);
