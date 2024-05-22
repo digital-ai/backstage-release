@@ -23,7 +23,7 @@ export const daiReleasePlugin = createBackendPlugin({
       async init({ config, logger, httpRouter, permissions }) {
         httpRouter.use(
           await createRouter({
-            config,
+            config: config,
             logger: loggerToWinstonLogger(logger),
             permissions,
           }),

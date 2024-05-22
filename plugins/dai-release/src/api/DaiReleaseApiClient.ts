@@ -1,13 +1,17 @@
 import {
   AuthenticationError,
+  InputError,
   NotAllowedError,
   NotFoundError,
   ServiceUnavailableError,
   parseErrorResponseBody,
 } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
+import {
+  ReleaseInstanceConfig,
+  ReleaseList,
+} from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
-import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
 
@@ -40,6 +44,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
     statusTags: string[],
+    instanceName: string,
   ): Promise<{ items: ReleaseList }> {
     const queryString = new URLSearchParams();
     queryString.append('failing', this.isStatusChecked(statusTags, 'Failing'));
@@ -61,10 +66,15 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('title', searchTile.toString());
     queryString.append('fromDate', convertUnixTimestamp(fromDate).toString());
     queryString.append('toDate', convertUnixTimestamp(toDate).toString());
+    queryString.append('instanceName', instanceName.toString());
 
     const urlSegment = `releases?${queryString}`;
     const items = await this.get<ReleaseList>(urlSegment);
     return { items };
+  }
+
+  async getInstanceList(): Promise<ReleaseInstanceConfig[]> {
+    return await this.get<ReleaseInstanceConfig[]>('instances');
   }
 
   private async get<T>(path: string): Promise<T> {
@@ -91,6 +101,8 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         throw new NotFoundError(data.error.message);
       } else if (response.status === 500) {
         throw new ServiceUnavailableError(`Release Service Unavailable`);
+      } else if (response.status === 400) {
+        throw new InputError(data.error.message);
       }
       throw new Error(
         `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,

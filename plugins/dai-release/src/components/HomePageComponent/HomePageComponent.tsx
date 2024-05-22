@@ -1,9 +1,10 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
+import { FilterComponent } from '../FilterComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
-import { SearchFilter } from '../SearchFilter';
+import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleases } from '../../hooks';
 
@@ -11,9 +12,14 @@ const useStyles = makeStyles(() => ({
   logoStyle: {
     width: '300px',
   },
+  layoutSec: {
+    paddingTop: '0',
+  },
 }));
 export const HomePageComponent = () => {
   const classes = useStyles();
+  const [showDrawer, onShowDrawer] = useState(false);
+
   const {
     items,
     loading,
@@ -26,6 +32,8 @@ export const HomePageComponent = () => {
     toDate,
     orderBy,
     statusTags,
+    instance,
+    instanceList,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -33,6 +41,7 @@ export const HomePageComponent = () => {
     setToDate,
     setOrderBy,
     setStatusTags,
+    setInstance,
   } = useReleases();
 
   if (error) {
@@ -51,21 +60,29 @@ export const HomePageComponent = () => {
         }
         pageTitleOverride="Digital.ai Release"
       />
-      <Content>
+      <Content className={classes.layoutSec}>
         <Grid container spacing={3} direction="column">
           <Grid item>
-            <SearchFilter
+            <SearchHeaderComponent
               searchTitle={searchTitle}
+              instance={instance}
+              instanceList={instanceList}
+              retry={retry}
+              onSearchByTitle={setSearchTitle}
+              onSetInstance={setInstance}
+              onShowDrawer={onShowDrawer}
+            />
+            <FilterComponent
               fromDate={fromDate}
               toDate={toDate}
               orderBy={orderBy}
               statusTags={statusTags}
-              onSearchByTitle={setSearchTitle}
+              showDrawer={showDrawer}
               onFromDateChange={setFromDate}
               onToDateChange={setToDate}
               onOrderByChange={setOrderBy}
               onStatusTagChange={setStatusTags}
-              retry={retry}
+              onShowDrawer={onShowDrawer}
             />
             <DenseTable
               page={page}

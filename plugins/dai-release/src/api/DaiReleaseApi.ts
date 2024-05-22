@@ -1,4 +1,7 @@
-import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
+import {
+  ReleaseInstanceConfig,
+  ReleaseList,
+} from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 import dayjs from 'dayjs';
 
@@ -17,5 +20,8 @@ export interface DaiReleaseApi {
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
     statusTags: string[],
+    instanceName: string,
   ): Promise<{ items: ReleaseList }>;
+
+  getInstanceList(): Promise<ReleaseInstanceConfig[]>;
 }

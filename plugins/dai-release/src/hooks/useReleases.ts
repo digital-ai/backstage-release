@@ -1,3 +1,4 @@
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
@@ -6,9 +7,9 @@ import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
 
 export function useReleases(): {
-  loading: boolean | false | true;
-  error: undefined | Error;
-  items: any | undefined;
+  loading: boolean;
+  error: Error | undefined;
+  items: any;
   retry: () => void;
   page: any;
   rowsPerPage: any;
@@ -17,6 +18,8 @@ export function useReleases(): {
   toDate: dayjs.Dayjs | null;
   orderBy: string;
   statusTags: string[];
+  instance: string;
+  instanceList: ReleaseInstanceConfig[] | undefined;
   setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
@@ -24,6 +27,7 @@ export function useReleases(): {
   setToDate: (toDate: dayjs.Dayjs | null) => void;
   setOrderBy: (orderBy: string) => void;
   setStatusTags: (statusTags: string[]) => void;
+  setInstance: (instance: string) => void;
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -32,6 +36,10 @@ export function useReleases(): {
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
   const [statusTags, setStatusTags] = useState<string[]>([]);
+  const [instance, setInstance] = useState('');
+  const [instanceList, setInstanceList] = useState<
+    ReleaseInstanceConfig[] | undefined
+  >([]);
 
   const api = useApi(daiReleaseApiRef);
 
@@ -39,6 +47,12 @@ export function useReleases(): {
   const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 
   const { value, loading, error, retry } = useAsyncRetry(async () => {
+    if (instance.trim() === '') {
+      return api.getInstanceList().then(data => {
+        setInstance(data[0].name);
+        setInstanceList(data);
+      });
+    }
     return api.getReleases(
       page,
       rowsPerPage,
@@ -47,6 +61,7 @@ export function useReleases(): {
       fromDate,
       toDate,
       statusTags,
+      instance,
     );
   }, [
     api,
@@ -57,6 +72,7 @@ export function useReleases(): {
     fromDate,
     toDate,
     statusTags,
+    instance,
   ]);
 
   return {
@@ -71,6 +87,8 @@ export function useReleases(): {
     toDate,
     orderBy,
     statusTags,
+    instance,
+    instanceList,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -78,5 +96,6 @@ export function useReleases(): {
     setToDate,
     setOrderBy,
     setStatusTags,
+    setInstance,
   };
 }

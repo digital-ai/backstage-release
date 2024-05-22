@@ -58,14 +58,33 @@ async function main() {
 
 #### 4. Configure the release instance by adding the following to your app-config.yaml files.
 
+The Dai Release plugin requires the following YAML to be added to your `app-config.yaml`:
+Dai Release plugin supports Digital-ai Release multi instance integration option.
+***Note: all values are mandatory, if any of the keys or values not entered application startup will fail
+
+For single instance setup:
 ```yaml
 daiRelease:
-  host: { HOST } #http://xl-release-nightly.xebialabs.com:4516
-  token: ${apiKey}
+   instances:
+      - name: {name-of-first-instance} #
+        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
+        token: {token-of-first-instance}
+```
+For multi instance setup:
+```yaml
+daiRelease:
+   instances:
+      - name: {name-of-first-instance} #
+        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
+        token: {token-of-first-instance}
+      - name: {name-of-second-instance}
+        host: {host-of-second-instance} #http://digital-ai-2.release.com:4516
+        token: {token-of-second-instance}
 ```
 
 Configuration Details:
 
+- `name` will be used to display in UI for instance choosing
 - `host` will be your release application host.
 - `token` environment variable must be set, that is your release application api token. Create an account with read permission and use that.
 

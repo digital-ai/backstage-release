@@ -11,6 +11,7 @@ import {
 } from '@backstage/test-utils';
 import { HomePageComponent } from './HomePageComponent';
 import React from 'react';
+import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -36,6 +37,13 @@ describe('HomePageComponent', () => {
           ctx.status(200),
           ctx.set('Content-Type', 'application/json'),
           ctx.json({}),
+        ),
+      ),
+      rest.get('http://example.com/api/dai-release/instances', (_, res, ctx) =>
+        res(
+          ctx.status(200),
+          ctx.set('Content-Type', 'application/json'),
+          ctx.json(releaseInstanceConfigResponse),
         ),
       ),
     );

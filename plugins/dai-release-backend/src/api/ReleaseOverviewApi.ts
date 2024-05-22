@@ -14,22 +14,22 @@ import {
   ReleaseOverview,
 } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
-import { Config } from '@backstage/config';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { parseErrorResponse } from './responseUtil';
 
 export class ReleaseOverviewApi {
   private readonly logger: Logger;
-  private readonly config: Config;
+  private readonly config: ReleaseConfig;
 
-  private constructor(logger: Logger, config: Config) {
+  private constructor(logger: Logger, config: ReleaseConfig) {
     this.logger = logger;
     this.config = config;
   }
 
-  static fromConfig(config: Config, logger: Logger) {
+  static fromConfig(config: ReleaseConfig, logger: Logger) {
     return new ReleaseOverviewApi(logger, config);
   }
 
@@ -47,12 +47,14 @@ export class ReleaseOverviewApi {
     orderBy: string,
     pageNumber: string,
     resultsPerPage: string,
+    instanceName: string,
   ): Promise<ReleaseList> {
     this.logger?.debug(
       `Calling Release Overview api, start from: ${fromDate} to: ${toDate}, in order of ${orderBy}`,
     );
-    const accessToken = getCredentials(this.config);
-    const apiUrl = getReleaseApiHost(this.config);
+    const instanceConfig = this.config.getInstanceConfig(instanceName);
+    const accessToken = getCredentials(instanceConfig);
+    const apiUrl = getReleaseApiHost(instanceConfig);
 
     const requestBody = {
       failing: failing,
@@ -92,7 +94,7 @@ export class ReleaseOverviewApi {
         status: d.status,
         fromDate: d.startDate,
         endDate: d.endDate,
-        releaseRedirectUri: getReleaseDetailsRedirectUri(this.config, d.id),
+        releaseRedirectUri: getReleaseDetailsRedirectUri(instanceConfig, d.id),
       }),
     );
 
@@ -251,4 +253,8 @@ export class ReleaseOverviewApi {
       releaseId.substring(0, releaseId.lastIndexOf('/')),
     ) as string;
   };
+
+  async getReleaseInstances() {
+    return this.config.instances;
+  }
 }

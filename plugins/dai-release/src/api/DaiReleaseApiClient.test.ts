@@ -1,7 +1,7 @@
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
+import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
-import { releases } from '../mocks/mocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';
@@ -66,6 +66,7 @@ describe('ReleaseApiClient', () => {
         null,
         null,
         [],
+        'default',
       );
       expect(response !== undefined).toBeTruthy();
     });
@@ -80,7 +81,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '5', '', null, null, []);
+        await client.getReleases(0, 1, '5', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -97,7 +98,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -114,11 +115,51 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getReleases(0, 1, '3', '', null, null, []);
+        await client.getReleases(0, 1, '3', '', null, null, [], 'default');
       } catch (e) {
         err = e;
       } finally {
         expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+  });
+  describe('getInstanceList', () => {
+    it('should return instance list', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/instances',
+          (_req, res, ctx) => {
+            return res(
+              ctx.status(200),
+              ctx.set('Content-Type', 'application/json'),
+              ctx.json(releaseInstanceConfigResponse),
+            );
+          },
+        ),
+      );
+      const response = await client.getInstanceList();
+      expect(response !== undefined).toBeTruthy();
+    });
+
+    it('should return error from instance list', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/instances',
+          (_req, res, ctx) => {
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getInstanceList();
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
       }
     });
   });
