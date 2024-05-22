@@ -120,7 +120,6 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createFolderColumns(),
   columnFactories.createStatusColumns(),
   columnFactories.createFromDateColumns(),
-  columnFactories.createEndDateColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 

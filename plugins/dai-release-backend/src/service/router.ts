@@ -79,7 +79,7 @@ export async function createRouter(
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
     );
-    const instanceName = getEncodedQueryVal(req.query.instanceName?.toString());
+    const instanceName = req.query.instanceName?.toString() || '';
     const releases = await releaseOverviewApi.getReleases(
       failing,
       planned,

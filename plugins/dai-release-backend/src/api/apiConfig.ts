@@ -19,7 +19,7 @@ export const getCredentials = (config: ReleaseInstanceConfig) => {
 export const getReleaseApiHost = (config: ReleaseInstanceConfig): string => {
   try {
     const validHost = config.host;
-    return `${validHost}`;
+    return `${removeTrailingSlash(validHost)}`;
   } catch (error: unknown) {
     throw new Error(`Error: ${(error as Error).message}`);
   }
@@ -40,3 +40,7 @@ export const getReleaseDetailsRedirectUri = (
   const releaseIdUrl = parts.join('-');
   return `${getReleaseApiHost(config)}${RELEASE_DETAILS_REDIRECT_PATH}${releaseIdUrl}`;
 };
+
+function removeTrailingSlash(input: string): string {
+  return input.endsWith('/') ? input.slice(0, -1) : input;
+}
