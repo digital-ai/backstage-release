@@ -2,14 +2,6 @@
 
 It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
 
-### Support Info:
-
-The plugin packages and provided steps are tested in the below versions.
-
-Backstage version: <= 1.23.0
-
-Backstage NPM package version: <= 0.5.11
-
 ## Setup
 
 ### Installing and Configuring the Backend Plugin
@@ -220,3 +212,12 @@ import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common'
 ## Links
 
 TODO - Update the documentation link
+
+## Support Information
+
+Tested Version:
+
+| | Backstage | @backstage/create-app |
+|---|---------|-----------------------|
+|Legacy Backend System | 1.23.0 |  0.5.11 |
+|New Backend system | 1.26.0 | 0.5.14 |
