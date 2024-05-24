@@ -1,8 +1,6 @@
-name: Push to main on dai-release-common plugin
+name: Push to dai-release-common plugin changes
 
-on:
-  push:
-    branches: [ "main" ]  # need to map it to main branch
+on: workflow_call
 
 jobs:
   changes:

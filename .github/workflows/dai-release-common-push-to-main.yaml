@@ -1,0 +1,10 @@
+name: Push to develop on dai-release-common plugin
+
+on:
+  push:
+    branches: [ "main1" ]  # need to map it to develop branch
+
+jobs:
+  call-ci-workflow:
+    name: Run dai-release common push to develop changes
+    uses: ./.github/workflows/dai-release-common-push.yaml

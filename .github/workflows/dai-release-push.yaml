@@ -19,3 +19,10 @@ jobs:
     uses: ./.github/workflows/github-publish.yaml
     with:
       plugin-path: ./plugins/dai-release
+  npm-publish:
+    if: ${{ github.ref_name == 'main1'}}
+    needs: [ call-ci-workflow, version-tag, github-publish ]
+    uses: ./.github/workflows/npm-publish.yaml
+    secrets: inherit
+    with:
+      plugin-path: ./plugins/dai-release
