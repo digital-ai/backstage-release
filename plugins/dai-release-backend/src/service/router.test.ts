@@ -113,7 +113,7 @@ describe('router api tests with permissions ALLOW', () => {
         .query('instanceName=default');
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
-        'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
+        'Permission denied or the requested functionality is not supported',
       );
     });
 
