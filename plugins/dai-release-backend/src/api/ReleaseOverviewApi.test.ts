@@ -157,7 +157,7 @@ describe('Backend API tests for Releases', () => {
           'default',
         ),
     ).rejects.toThrow(
-      'Permission Denied: The configured release User lacks necessary permission in Digital.ai Release',
+      'Permission denied or the requested functionality is not supported',
     );
   });
 
