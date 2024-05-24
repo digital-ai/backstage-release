@@ -1,4 +1,4 @@
-name: Push to develop on dai-release-common plugin
+name: Push to dai-release-common plugin changes
 
 on: workflow_call
 
