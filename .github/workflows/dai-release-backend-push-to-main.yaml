@@ -20,7 +20,7 @@ jobs:
     with:
       plugin-path: ./plugins/dai-release-backend
   npm-publish:
-    needs: [ call-ci-workflow, version-tag ]
+    needs: [ call-ci-workflow, version-tag, github-publish ]
     uses: ./.github/workflows/npm-publish.yaml
     secrets: inherit
     with:
