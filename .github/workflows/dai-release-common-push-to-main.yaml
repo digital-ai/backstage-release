@@ -42,30 +42,36 @@ jobs:
     uses: ./.github/workflows/github-publish.yaml
     with:
       plugin-path: ./plugins/dai-release-common
+  npm-publish:
+    needs: [ call-ci-workflow, version-tag ]
+    uses: ./.github/workflows/npm-publish.yaml
+    secrets: inherit
+    with:
+      plugin-path: ./plugins/dai-release-common
   update-dependencies:
-    needs: [ call-ci-workflow, version-tag, github-publish ]
+    needs: [ call-ci-workflow, version-tag, github-publish, npm-publish ]
     uses: ./.github/workflows/update-dependency.yaml
 
   frontend-ci-workflow:
     needs: changes
     if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'false'}}
     name: Run dai-release plugin without dai-release-common changes.
-    uses: ./.github/workflows/dai-release-push.yaml
+    uses: ./.github/workflows/dai-release-push-to-main.yaml
 
   frontend-common-ci-workflow:
     needs: [changes, update-dependencies]
     if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'true' }}
     name: Run dai-release plugin with dai-release-common changes.
-    uses: ./.github/workflows/dai-release-push.yaml
+    uses: ./.github/workflows/dai-release-push-to-main.yaml
 
   backend-ci-workflow:
     needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'false'}}
     name: Run dai-release-backend plugin without dai-release-common changes.
-    uses: ./.github/workflows/dai-release-backend-push.yaml
+    uses: ./.github/workflows/dai-release-backend-push-to-main.yaml
 
   backend-common-ci-workflow:
     needs: [changes, update-dependencies]
     if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'true' }}
     name: Run dai-release-backend plugin with dai-release-common changes.
-    uses: ./.github/workflows/dai-release-backend-push.yaml
+    uses: ./.github/workflows/dai-release-backend-push-to-main.yaml
