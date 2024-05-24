@@ -31,6 +31,12 @@ export const getEncodedQueryVal = (queryString?: string): string => {
   );
 };
 
+export const getDecodedQueryVal = (queryString?: string): string => {
+  return decodeURIComponent(
+      queryString || queryString === 'undefined' ? queryString : '',
+  );
+};
+
 export const getReleaseDetailsRedirectUri = (
   config: ReleaseInstanceConfig,
   releaseId: string,

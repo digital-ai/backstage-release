@@ -257,9 +257,6 @@ export const FilterComponent = ({
                 <MenuItem value="start_date" className={classes.inputRoot}>
                   Start Date
                 </MenuItem>
-                <MenuItem value="end_date" className={classes.inputRoot}>
-                  End Date
-                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
