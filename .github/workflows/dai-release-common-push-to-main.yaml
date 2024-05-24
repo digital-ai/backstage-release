@@ -1,77 +1,10 @@
-name: Push to main on dai-release-common plugin
+name: Push to develop on dai-release-common plugin
 
 on:
   push:
-    branches: [ "main" ]  # need to map it to main branch
+    branches: [ "main1" ]  # need to map it to develop branch
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      common: ${{ steps.changes.outputs.common }}
-      backend: ${{ steps.changes.outputs.backend }}
-      frontend: ${{ steps.changes.outputs.frontend }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            common:
-              - 'plugins/dai-release-common/**'
-            backend:
-              - 'plugins/dai-release-backend/**'
-            frontend:
-              - 'plugins/dai-release/**'
-          base: ${{ github.ref_name }}
   call-ci-workflow:
-    needs: changes
-    if: ${{ needs.changes.outputs.common == 'true' }}
-    name: Run build & test for dai-release-common plugin
-    uses: ./.github/workflows/reusable-build.yaml
-    with:
-      plugin-path: ./plugins/dai-release-common
-  version-tag:
-    uses: ./.github/workflows/version.yaml
-    needs: [ call-ci-workflow ]
-    with:
-      plugin-path: ./plugins/dai-release-common
-      plugin: dai-release-common
-  github-publish:
-    needs: [ call-ci-workflow, version-tag ]
-    uses: ./.github/workflows/github-publish.yaml
-    with:
-      plugin-path: ./plugins/dai-release-common
-  npm-publish:
-    needs: [ call-ci-workflow, version-tag ]
-    uses: ./.github/workflows/npm-publish.yaml
-    secrets: inherit
-    with:
-      plugin-path: ./plugins/dai-release-common
-  update-dependencies:
-    needs: [ call-ci-workflow, version-tag, github-publish, npm-publish ]
-    uses: ./.github/workflows/update-dependency.yaml
-
-  frontend-ci-workflow:
-    needs: changes
-    if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'false'}}
-    name: Run dai-release plugin without dai-release-common changes.
-    uses: ./.github/workflows/dai-release-push-to-main.yaml
-
-  frontend-common-ci-workflow:
-    needs: [changes, update-dependencies]
-    if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'true' }}
-    name: Run dai-release plugin with dai-release-common changes.
-    uses: ./.github/workflows/dai-release-push-to-main.yaml
-
-  backend-ci-workflow:
-    needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'false'}}
-    name: Run dai-release-backend plugin without dai-release-common changes.
-    uses: ./.github/workflows/dai-release-backend-push-to-main.yaml
-
-  backend-common-ci-workflow:
-    needs: [changes, update-dependencies]
-    if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'true' }}
-    name: Run dai-release-backend plugin with dai-release-common changes.
-    uses: ./.github/workflows/dai-release-backend-push-to-main.yaml
+    name: Run dai-release common push to develop changes
+    uses: ./.github/workflows/dai-release-common-push.yaml
