@@ -217,6 +217,4 @@ import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common'
 
 **Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.
 
-## Links
 
-TODO - Update the documentation link
