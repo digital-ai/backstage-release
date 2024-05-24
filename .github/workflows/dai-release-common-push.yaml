@@ -43,6 +43,13 @@ jobs:
   update-dependencies:
     needs: [ call-ci-workflow, version-tag, github-publish ]
     uses: ./.github/workflows/update-dependency.yaml
+  npm-publish:
+    if: ${{ github.ref_name == 'main1'}}
+    needs: [ call-ci-workflow, version-tag, github-publish, update-dependencies ]
+    uses: ./.github/workflows/npm-publish.yaml
+    secrets: inherit
+    with:
+      plugin-path: ./plugins/dai-release-common
 
   frontend-ci-workflow:
     needs: changes
