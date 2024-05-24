@@ -2,7 +2,7 @@ name: Push to develop on dai-release-common plugin
 
 on:
   push:
-    branches: [ "main1" ]  # need to map it to develop branch
+    branches: [ "main-w" ]  # need to map it to develop branch
 
 jobs:
   call-ci-workflow:
