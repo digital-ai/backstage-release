@@ -53,6 +53,6 @@ import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 <SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
 ```
 
-## Links
+
 
 
