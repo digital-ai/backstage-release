@@ -3,8 +3,8 @@ name: Push to main or develop on dai-release-common plugin
 on:
   push:
     branches:
-      - main-z
       - develop-z
+      - main-z
 
 jobs:
   changes:
