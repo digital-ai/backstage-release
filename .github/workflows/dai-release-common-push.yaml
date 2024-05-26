@@ -1,8 +1,8 @@
-name: Push to dai-release-common plugin changes
+name: Push to main or develop on dai-release-common plugin
 
 on:
   push:
-    branches: [ "develop1", "main1" ]  # need to map it to develop branch
+    branches: [ "develop", "main" ]  # need to map it to main or develop branch
 
 jobs:
   changes:
@@ -46,7 +46,7 @@ jobs:
     needs: [ call-ci-workflow, version-tag, github-publish ]
     uses: ./.github/workflows/update-dependency.yaml
   npm-publish:
-    if: ${{ github.ref_name == 'main1'}}
+    if: ${{ github.ref_name == 'main'}}
     needs: [ call-ci-workflow, version-tag, github-publish, update-dependencies ]
     uses: ./.github/workflows/npm-publish.yaml
     secrets: inherit
