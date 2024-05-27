@@ -44,10 +44,6 @@ export const HomePageComponent = () => {
     setInstance,
   } = useReleases();
 
-  if (error) {
-    return <ReleaseResponseErrorPanel error={error} />;
-  }
-
   return (
     <Page themeId="home">
       <Header
@@ -68,6 +64,7 @@ export const HomePageComponent = () => {
               instance={instance}
               instanceList={instanceList}
               retry={retry}
+              error={error}
               onSearchByTitle={setSearchTitle}
               onSetInstance={setInstance}
               onShowDrawer={onShowDrawer}
@@ -84,27 +81,32 @@ export const HomePageComponent = () => {
               onStatusTagChange={setStatusTags}
               onShowDrawer={onShowDrawer}
             />
-            <DenseTable
-              page={page}
-              pageSize={rowsPerPage}
-              loading={loading}
-              totalCount={items?.total ?? 100}
-              tableData={items?.releases || []}
-              columns={defaultColumns}
-              retry={retry}
-              searchTitle={searchTitle}
-              fromDate={fromDate}
-              toDate={toDate}
-              orderBy={orderBy}
-              statusTags={statusTags}
-              onRowsPerPageChange={setRowsPerPage}
-              onPageChange={setPage}
-              setSearchTitle={setSearchTitle}
-              setFromDate={setFromDate}
-              setToDate={setToDate}
-              setOrderBy={setOrderBy}
-              setStatusTags={setStatusTags}
-            />
+
+            {error ? (
+              <ReleaseResponseErrorPanel error={error} />
+            ) : (
+              <DenseTable
+                page={page}
+                pageSize={rowsPerPage}
+                loading={loading}
+                totalCount={items?.total ?? 100}
+                tableData={items?.releases || []}
+                columns={defaultColumns}
+                retry={retry}
+                searchTitle={searchTitle}
+                fromDate={fromDate}
+                toDate={toDate}
+                orderBy={orderBy}
+                statusTags={statusTags}
+                onRowsPerPageChange={setRowsPerPage}
+                onPageChange={setPage}
+                setSearchTitle={setSearchTitle}
+                setFromDate={setFromDate}
+                setToDate={setToDate}
+                setOrderBy={setOrderBy}
+                setStatusTags={setStatusTags}
+              />
+            )}
           </Grid>
         </Grid>
       </Content>

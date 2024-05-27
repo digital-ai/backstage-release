@@ -13,7 +13,7 @@ describe('ReleaseResponseErrorPanel', () => {
     const error = new Error('test error');
     const rendered = renderContent(error);
     expect(
-      (await rendered).getByText(`Warning: ${error.message}`),
+      (await rendered).getByText(`Error: ${error.message}`),
     ).toBeInTheDocument();
   });
 
@@ -21,7 +21,7 @@ describe('ReleaseResponseErrorPanel', () => {
     const error = new ServiceUnavailableError(`Release Service Unavailable`);
     const rendered = renderContent(error);
     expect(
-      (await rendered).getByText(`Warning: Release Service Unavailable`),
+      (await rendered).getByText(`Error: Release Service Unavailable`),
     ).toBeInTheDocument();
   });
 
@@ -33,7 +33,7 @@ describe('ReleaseResponseErrorPanel', () => {
     const rendered = renderContent(error);
     expect(
       (await rendered).getByText(
-        `Warning: Access Denied: Missing or invalid Release Token. Unauthorized to Use Digital.ai Release`,
+        `Error: Access Denied: Missing or invalid Release Token. Unauthorized to Use Digital.ai Release`,
       ),
     ).toBeInTheDocument();
   });
@@ -45,7 +45,7 @@ describe('ReleaseResponseErrorPanel', () => {
     const rendered = renderContent(error);
     expect(
       (await rendered).getByText(
-        `Warning: Permission denied or the requested functionality is not supported`,
+        `Error: Permission denied or the requested functionality is not supported`,
       ),
     ).toBeInTheDocument();
   });
@@ -54,7 +54,7 @@ describe('ReleaseResponseErrorPanel', () => {
     const error = new NotFoundError('Release service request not found');
     const rendered = renderContent(error);
     expect(
-      (await rendered).getByText(`Warning: Release service request not found`),
+      (await rendered).getByText(`Error: Release service request not found`),
     ).toBeInTheDocument();
   });
 });
