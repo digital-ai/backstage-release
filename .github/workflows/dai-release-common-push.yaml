@@ -2,7 +2,9 @@ name: Push to main or develop on dai-release-common plugin
 
 on:
   push:
-    branches: [ "develop", "main" ]  # need to map it to main or develop branch
+    branches:
+      - main
+      - develop
 
 jobs:
   changes:
