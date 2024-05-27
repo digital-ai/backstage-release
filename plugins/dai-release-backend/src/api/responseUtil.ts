@@ -22,7 +22,7 @@ export async function parseErrorResponse(logger: Logger, response: Response) {
     );
   } else if (response.status === 403) {
     throw new NotAllowedError(
-      `Permission Denied: The configured release User lacks necessary permission in Digital.ai Release`,
+      `Permission denied or the requested functionality is not supported`,
     );
   } else if (response.status === 404) {
     throw new NotFoundError(`Release service request not found`);

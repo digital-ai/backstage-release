@@ -7,6 +7,7 @@ import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
+import {getDecodedQueryVal, getEncodedQueryVal} from '../api/apiConfig';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -16,7 +17,6 @@ import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
-import { getEncodedQueryVal } from '../api/apiConfig';
 import { validateInstanceRes } from '../api/responseUtil';
 
 export interface RouterOptions {
@@ -71,7 +71,7 @@ export async function createRouter(
     const aborted = getEncodedQueryVal(req.query.aborted?.toString());
     const inProgress = getEncodedQueryVal(req.query.inProgress?.toString());
     const failed = getEncodedQueryVal(req.query.failed?.toString());
-    const title = getEncodedQueryVal(req.query.title?.toString());
+    const title = getDecodedQueryVal(req.query.title?.toString());
     const fromDate = getEncodedQueryVal(req.query.fromDate?.toString());
     const toDate = getEncodedQueryVal(req.query.toDate?.toString());
     const orderBy = getEncodedQueryVal(req.query.orderBy?.toString());

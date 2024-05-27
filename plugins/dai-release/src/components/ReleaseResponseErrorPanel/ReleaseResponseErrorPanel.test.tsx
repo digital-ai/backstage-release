@@ -40,12 +40,12 @@ describe('ReleaseResponseErrorPanel', () => {
 
   it('should render the error panel for reports permission denied', async () => {
     const error = new NotAllowedError(
-      'Permission Denied: The configured Release User lacks necessary permission in Digital.ai Release',
+      'Permission denied or the requested functionality is not supported',
     );
     const rendered = renderContent(error);
     expect(
       (await rendered).getByText(
-        `Warning: Permission Denied: The configured Release User lacks necessary permission in Digital.ai Release`,
+        `Warning: Permission denied or the requested functionality is not supported`,
       ),
     ).toBeInTheDocument();
   });
