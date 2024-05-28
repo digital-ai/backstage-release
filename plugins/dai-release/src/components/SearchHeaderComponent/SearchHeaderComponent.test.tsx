@@ -23,6 +23,7 @@ describe('SearchHeaderComponent', () => {
       searchTitle: '',
       instance: '',
       instanceList: [],
+      error: undefined,
       onSetInstance: () => {},
       onShowDrawer: () => {},
       onSearchByTitle: () => {},
@@ -47,6 +48,7 @@ describe('SearchHeaderComponent', () => {
           token: 'abcd',
         },
       ],
+      error: undefined,
       onSetInstance: () => {},
       onShowDrawer: () => {},
       onSearchByTitle: () => {},
@@ -65,6 +67,7 @@ async function renderContent(args: {
   instanceList: any[];
   searchTitle: string;
   retry: () => void;
+  error: Error | undefined;
   onSetInstance: () => void;
   onSearchByTitle: () => void;
 }) {
@@ -74,6 +77,7 @@ async function renderContent(args: {
       instance={args.instance}
       instanceList={args.instanceList}
       retry={args.retry}
+      error={args.error}
       onSearchByTitle={args.onSearchByTitle}
       onSetInstance={args.onSetInstance}
       onShowDrawer={args.onShowDrawer}
