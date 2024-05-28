@@ -2,14 +2,6 @@
 
 It is a simple plugin that makes API requests to [Digital.ai](https://digital.ai/products/release/) Release
 
-### Support Info:
-
-The plugin packages and provided steps are tested in the below versions.
-
-Backstage version: <= 1.23.0
-
-Backstage NPM package version: <= 0.5.11
-
 ## Setup
 
 ### Installing and Configuring the Backend Plugin
@@ -218,5 +210,13 @@ import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common'
 **Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.
 
 ## Links
+For more information, see [Overview](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-overview.html) and [Adding Release to Your Backstage IDP](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html)
 
-TODO - Update the documentation link
+## Support Information
+
+Tested Version:
+
+| | Backstage | @backstage/create-app |
+|---|---------|-----------------------|
+|Legacy Backend System | 1.23.0 |  0.5.11 |
+|New Backend system | 1.26.0 | 0.5.14 |

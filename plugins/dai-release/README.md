@@ -5,14 +5,6 @@
 
 This is a combination of 2 plugins - the frontend and the backend.
 
-### Support Info
-
-The plugin packages and provided steps are tested in the below versions.
-
-Backstage version: <= 1.23.0
-
-Backstage NPM package version: <= 0.5.11
-
 ## Setup
 
 The following section helps you add the Digital.ai Release frontend plugin.
@@ -54,5 +46,13 @@ import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 ```
 
 ## Links
+For more information, see [Overview](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-overview.html) and [Adding Release to Your Backstage IDP](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html)
 
-TODO - Update the documentation link
+## Support Information
+
+Tested Version:
+
+| | Backstage | @backstage/create-app |
+|---|---------|-----------------------|
+|Legacy Backend System | 1.23.0 |  0.5.11 |
+|New Backend system | 1.26.0 | 0.5.14 |
