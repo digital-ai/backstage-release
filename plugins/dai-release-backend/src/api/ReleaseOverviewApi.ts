@@ -255,6 +255,6 @@ export class ReleaseOverviewApi {
   };
 
   async getReleaseInstances() {
-    return this.config.instances;
+    return this.config.getInstanceList();
   }
 }
