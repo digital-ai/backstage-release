@@ -11,7 +11,7 @@ export function ReleaseResponseErrorPanel(props: ReleaseErrorPanelProps) {
     <Page themeId="home">
       <Content noPadding>
         <Paper elevation={1}>
-          <WarningPanel severity="error" title={error.message} />
+          <WarningPanel title={error.message} />
         </Paper>
       </Content>
     </Page>

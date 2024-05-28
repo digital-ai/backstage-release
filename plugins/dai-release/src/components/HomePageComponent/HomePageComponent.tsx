@@ -82,7 +82,7 @@ export const HomePageComponent = () => {
               onShowDrawer={onShowDrawer}
             />
 
-            {error ? (
+            {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
               <DenseTable
