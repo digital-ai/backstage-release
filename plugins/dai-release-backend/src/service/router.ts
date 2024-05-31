@@ -7,7 +7,7 @@ import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
-import {getDecodedQueryVal, getEncodedQueryVal} from '../api/apiConfig';
+import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -33,7 +33,12 @@ export async function createRouter(
     ReleaseConfig.fromConfig(config),
     logger,
   );
-
+  if (config.subscribe) {
+    //  check for live yaml config change
+    config.subscribe(() => {
+      ReleaseConfig.fromConfig(config);
+    });
+  }
   const permissionIntegrationRouter = createPermissionIntegrationRouter({
     permissions: daiReleasePermissions,
   });
