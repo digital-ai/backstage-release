@@ -2,9 +2,9 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
+import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
-import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 
 export function useReleases(): {
   loading: boolean;
@@ -30,7 +30,7 @@ export function useReleases(): {
   setInstance: (instance: string) => void;
 } {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderBy, setOrderBy] = useState('start_date');
   const [searchTitle, setSearchTitle] = useState('');
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
@@ -66,9 +66,9 @@ export function useReleases(): {
       );
     },
     page,
+    setPage,
     [
       api,
-      page,
       rowsPerPage,
       orderBy,
       debouncedSearchTitle,
