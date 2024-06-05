@@ -1,10 +1,10 @@
 # Digital.ai Release Plugin
 
-It consists of three plugin packages.
+It consists of three plugins.
 
-* [Frontend Plugin](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release)
-* [Backend Plugin](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release-backend)
-* [Common Plugin](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release-common)
+* Frontend Plugins [(Source)](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release) [(Npm)](https://www.npmjs.com/package/@digital-ai/plugin-dai-release)
+* Backend Plugins [(Source)](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release-backend) [(Npm)](https://www.npmjs.com/package/@digital-ai/plugin-dai-release-backend)
+* Common Plugins [(Source)](https://github.com/digital-ai/backstage-release/tree/main/plugins/dai-release-common) [(Npm)](https://www.npmjs.com/package/@digital-ai/plugin-dai-release-common)
 
 The following sections will help you configure the digital.ai release plugin for backstage.
 
