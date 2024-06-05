@@ -146,7 +146,7 @@ export const DenseTable = ({
         search: true,
         showTitle: false,
         pageSize: pageSize,
-        pageSizeOptions: [5, 10, 20, 50],
+        pageSizeOptions: [1, 5, 10, 20, 50],
         padding: 'dense',
         showFirstLastPageButtons: true,
         showEmptyDataSourceMessage: !loading,
