@@ -4,6 +4,8 @@ import { readValues } from '../api/responseUtil';
 
 export class ReleaseConfig {
   constructor(public readonly instances: ReleaseInstanceConfig[]) {}
+  private static instanceList: ReleaseInstanceConfig[];
+
   /**
    * Read all Release instance configurations.
    * @param config - Root configuration
@@ -13,24 +15,29 @@ export class ReleaseConfig {
     const releaseConfig = config.getConfig('daiRelease');
 
     // load all named instance config
-    const instanceConfig: ReleaseInstanceConfig[] =
+    this.instanceList =
       releaseConfig.getOptionalConfigArray('instances')?.map(c => ({
         name: readValues(c, 'name'),
         host: readValues(c, 'host'),
         token: readValues(c, 'token'),
       })) || [];
-
-    return new ReleaseConfig(instanceConfig);
+    return new ReleaseConfig(this.instanceList);
   }
 
   public getInstanceConfig(instanceName: string): ReleaseInstanceConfig {
     // A name is provided, look it up.
-    const instanceConfig = this.instances.find(c => c.name === instanceName);
+    const instanceConfig = ReleaseConfig.instanceList.find(
+      c => c.name === instanceName,
+    );
     if (!instanceConfig) {
       throw new Error(
         `Couldn't find a release instance '${instanceName}' in the config`,
       );
     }
     return instanceConfig;
+  }
+
+  public getInstanceList(): ReleaseInstanceConfig[] {
+    return ReleaseConfig.instanceList;
   }
 }
