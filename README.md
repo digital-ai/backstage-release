@@ -22,5 +22,5 @@ The following sections will help you configure the digital.ai release plugin for
     * [Enabling Permissions](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#enabling-permissions)
         * [Secure Sidebar Option](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#secure-sidebar-option)
         * [Secure the dai-release Route](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#secure-the-dai-release-route)
-    * [Permission Policy](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#permission-policy)
+        * [Permission Policy](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#permission-policy)
     * [Support Information](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html#support-information)
