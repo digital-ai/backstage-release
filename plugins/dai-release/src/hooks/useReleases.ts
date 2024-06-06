@@ -2,7 +2,7 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import dayjs from 'dayjs';
 import { useApi } from '@backstage/core-plugin-api';
-import { useAsyncRetry } from 'react-use';
+import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
 import { useState } from 'react';
 
@@ -11,8 +11,8 @@ export function useReleases(): {
   error: Error | undefined;
   items: any;
   retry: () => void;
-  page: any;
-  rowsPerPage: any;
+  page: number;
+  rowsPerPage: number;
   searchTitle: string;
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
@@ -46,15 +46,29 @@ export function useReleases(): {
   // Use the debounced value of searchTitle, it will update the state in one second
   const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
 
-  const { value, loading, error, retry } = useAsyncRetry(async () => {
-    if (instance.trim() === '') {
-      return api.getInstanceList().then(data => {
-        setInstance(data[0].name);
-        setInstanceList(data);
-      });
-    }
-    return api.getReleases(
-      page,
+  const { value, loading, error, retry } = useAsyncRetryWithSelectiveDeps(
+    async () => {
+      if (instance.trim() === '') {
+        return api.getInstanceList().then(data => {
+          setInstance(data[0].name);
+          setInstanceList(data);
+        });
+      }
+      return api.getReleases(
+        page,
+        rowsPerPage,
+        orderBy,
+        debouncedSearchTitle,
+        fromDate,
+        toDate,
+        statusTags,
+        instance,
+      );
+    },
+    page,
+    setPage,
+    [
+      api,
       rowsPerPage,
       orderBy,
       debouncedSearchTitle,
@@ -62,18 +76,8 @@ export function useReleases(): {
       toDate,
       statusTags,
       instance,
-    );
-  }, [
-    api,
-    page,
-    rowsPerPage,
-    orderBy,
-    debouncedSearchTitle,
-    fromDate,
-    toDate,
-    statusTags,
-    instance,
-  ]);
+    ],
+  );
 
   return {
     items: value?.items,
