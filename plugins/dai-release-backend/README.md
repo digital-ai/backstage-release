@@ -211,12 +211,3 @@ import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common'
 
 ## Links
 For more information, see [Overview](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-overview.html) and [Adding Release to Your Backstage IDP](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html)
-
-## Support Information
-
-Tested Version:
-
-| | Backstage | @backstage/create-app |
-|---|---------|-----------------------|
-|Legacy Backend System | 1.23.0 |  0.5.11 |
-|New Backend system | 1.26.0 | 0.5.14 |
