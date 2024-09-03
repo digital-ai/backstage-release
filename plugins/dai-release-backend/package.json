@@ -43,14 +43,14 @@
     "prettier:fix": "prettier --write ."
   },
   "dependencies": {
-    "@backstage/backend-common": "^0.19.5",
-    "@backstage/backend-plugin-api": "^0.6.12",
-    "@backstage/catalog-model": "^1.4.4",
-    "@backstage/config": "^1.1.0",
-    "@backstage/errors": "^1.2.3",
-    "@backstage/plugin-auth-node": "^0.4.8",
-    "@backstage/plugin-permission-common": "^0.7.12",
-    "@backstage/plugin-permission-node": "^0.7.24",
+    "@backstage/backend-common": "^0.24.1",
+    "@backstage/backend-plugin-api": "^0.8.1",
+    "@backstage/catalog-model": "^1.6.0",
+    "@backstage/config": "^1.2.0",
+    "@backstage/errors": "^1.2.4",
+    "@backstage/plugin-auth-node": "^0.5.1",
+    "@backstage/plugin-permission-common": "^0.8.1",
+    "@backstage/plugin-permission-node": "^0.8.2",
     "@digital-ai/plugin-dai-release-common": "0.1.0",
     "@types/express": "*",
     "express": "^4.17.1",
@@ -60,7 +60,7 @@
     "yn": "^4.0.0"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.22.13",
+    "@backstage/cli": "^0.27.0",
     "@spotify/prettier-config": "^15.0.0",
     "@types/supertest": "^2.0.12",
     "husky": "^9.0.11",
