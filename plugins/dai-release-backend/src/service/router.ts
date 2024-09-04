@@ -1,5 +1,5 @@
 import {
-  HttpAuthService,
+  HttpAuthService, LoggerService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
 import { InputError, NotAllowedError } from '@backstage/errors';
@@ -10,7 +10,6 @@ import {
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
-import { Logger } from 'winston';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
@@ -21,7 +20,7 @@ import { validateInstanceRes } from '../api/responseUtil';
 
 export interface RouterOptions {
   config: Config;
-  logger: Logger;
+  logger: LoggerService;
   httpAuth: HttpAuthService;
   permissions?: PermissionsService;
 }

@@ -4,10 +4,10 @@ import {
   NotFoundError,
 } from '@backstage/errors';
 import { Config } from '@backstage/config';
-import { Logger } from 'winston';
+import { LoggerService } from "@backstage/backend-plugin-api";
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 
-export async function parseErrorResponse(logger: Logger, response: Response) {
+export async function parseErrorResponse(logger: LoggerService, response: Response) {
   logger?.error(
     `Error occurred while accessing release: status: ${response.status}, statusText: ${response.statusText} `,
   );

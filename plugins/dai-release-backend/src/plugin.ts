@@ -3,7 +3,6 @@ import {
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 
 /**
  * Digital.ai Release backend plugin
@@ -25,7 +24,7 @@ export const daiReleasePlugin = createBackendPlugin({
         httpRouter.use(
           await createRouter({
             config: config,
-            logger: loggerToWinstonLogger(logger),
+            logger: logger,
             httpAuth,
             permissions,
           }),
