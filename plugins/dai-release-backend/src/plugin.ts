@@ -18,13 +18,15 @@ export const daiReleasePlugin = createBackendPlugin({
         config: coreServices.rootConfig,
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
+        httpAuth: coreServices.httpAuth,
         permissions: coreServices.permissions,
       },
-      async init({ config, logger, httpRouter, permissions }) {
+      async init({ config, logger, httpRouter, httpAuth, permissions }) {
         httpRouter.use(
           await createRouter({
             config: config,
             logger: loggerToWinstonLogger(logger),
+            httpAuth,
             permissions,
           }),
         );

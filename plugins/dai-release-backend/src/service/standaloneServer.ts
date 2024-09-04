@@ -8,6 +8,7 @@ import { Logger } from 'winston';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { createRouter } from './router';
+import {coreServices} from "@backstage/backend-plugin-api";
 
 export interface ServerOptions {
   port: number;
@@ -28,11 +29,13 @@ export async function startStandaloneServer(
     discovery,
     tokenManager,
   });
+  const httpAuth = coreServices.httpAuth.T;
 
   logger.debug('Starting application server...');
   const router = await createRouter({
     config: config,
     logger,
+    httpAuth,
     permissions,
   });
 

@@ -1,6 +1,5 @@
 import {
   AuthorizeResult,
-  PermissionEvaluator,
 } from '@backstage/plugin-permission-common';
 import { InputError, NotAllowedError } from '@backstage/errors';
 import {
@@ -16,19 +15,21 @@ import Router from 'express-promise-router';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
-import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { validateInstanceRes } from '../api/responseUtil';
+import {HttpAuthService, PermissionsService} from "@backstage/backend-plugin-api";
 
 export interface RouterOptions {
   config: Config;
   logger: Logger;
-  permissions?: PermissionEvaluator;
+  httpAuth: HttpAuthService;
+  permissions?: PermissionsService;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, permissions } = options;
+  const { logger, config, httpAuth, permissions } = options;
+
   const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
     ReleaseConfig.fromConfig(config),
     logger,
@@ -53,13 +54,10 @@ export async function createRouter(
   });
 
   router.get('/releases', async (req, res) => {
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
-    );
     if (permissions) {
       const decision = await permissions.authorize(
-        [{ permission: daiReleaseViewPermission }],
-        { token },
+          [{permission: daiReleaseViewPermission}],
+          {credentials: await httpAuth.credentials(req)},
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {
@@ -105,13 +103,10 @@ export async function createRouter(
   });
 
   router.get('/instances', async (req, res) => {
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
-    );
     if (permissions) {
       const decision = await permissions.authorize(
-        [{ permission: daiReleaseViewPermission }],
-        { token },
+          [{permission: daiReleaseViewPermission}],
+          {credentials: await httpAuth.credentials(req)},
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {

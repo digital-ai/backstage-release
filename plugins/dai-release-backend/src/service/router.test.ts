@@ -1,6 +1,5 @@
 import {
   AuthorizeResult,
-  PermissionEvaluator,
 } from '@backstage/plugin-permission-common';
 import {
   config,
@@ -18,12 +17,14 @@ import express from 'express';
 import { getVoidLogger } from '@backstage/backend-common';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
+import { mockServices } from '@backstage/backend-test-utils';
+import {HttpAuthService, PermissionsService} from "@backstage/backend-plugin-api";
 
 let app: express.Express;
 const permissionApi = {
   authorize: jest.fn(),
   authorizeConditional: jest.fn(),
-} as unknown as PermissionEvaluator;
+} as unknown as PermissionsService;
 
 function configureMockServer(permission: boolean) {
   const server = setupServer();
@@ -33,6 +34,7 @@ function configureMockServer(permission: boolean) {
       const router = await createRouter({
         config: config,
         logger: getVoidLogger(),
+        httpAuth: { credentials: jest.fn().mockResolvedValue({}) } as unknown as HttpAuthService,
         permissions: permissionApi,
       });
       app = express().use(router);
@@ -40,6 +42,7 @@ function configureMockServer(permission: boolean) {
       const router = await createRouter({
         config: config,
         logger: getVoidLogger(),
+        httpAuth: mockServices.httpAuth.mock(),
       });
       app = express().use(router);
     }
