@@ -1,10 +1,10 @@
+import {RootLoggerService, coreServices} from '@backstage/backend-plugin-api';
 import {
-  HostDiscovery,
   ServerTokenManager,
   createServiceBuilder,
   loadBackendConfig,
 } from '@backstage/backend-common';
-import { LoggerService, coreServices } from '@backstage/backend-plugin-api';
+import { HostDiscovery } from '@backstage/backend-defaults/discovery';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { createRouter } from './router';
@@ -12,7 +12,7 @@ import { createRouter } from './router';
 export interface ServerOptions {
   port: number;
   enableCors: boolean;
-  logger: LoggerService;
+  logger: RootLoggerService;
 }
 
 export async function startStandaloneServer(
@@ -23,6 +23,7 @@ export async function startStandaloneServer(
   const tokenManager = ServerTokenManager.fromConfig(config, {
     logger,
   });
+
   const discovery = HostDiscovery.fromConfig(config);
   const permissions = ServerPermissionClient.fromConfig(config, {
     discovery,

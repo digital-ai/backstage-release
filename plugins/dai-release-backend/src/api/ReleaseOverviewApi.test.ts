@@ -15,7 +15,7 @@ import {
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
-import {mockServices} from "@backstage/backend-test-utils";
+import { mockServices } from "@backstage/backend-test-utils";
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();

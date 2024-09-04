@@ -10,11 +10,11 @@ import {
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
+import { MiddlewareFactory } from "@backstage/backend-defaults/rootHttpRouter";
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
-import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
 
@@ -124,6 +124,7 @@ export async function createRouter(
     res.status(200).json(instancesList);
   });
 
-  router.use(errorHandler());
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
   return router;
 }

@@ -15,7 +15,7 @@ export const daiReleasePlugin = createBackendPlugin({
     env.registerInit({
       deps: {
         config: coreServices.rootConfig,
-        logger: coreServices.logger,
+        logger: coreServices.rootLogger,
         httpRouter: coreServices.httpRouter,
         httpAuth: coreServices.httpAuth,
         permissions: coreServices.permissions,
