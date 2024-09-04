@@ -16,7 +16,6 @@ import {
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createRouter } from './router';
 import express from 'express';
-import { getVoidLogger } from '@backstage/backend-common';
 import { mockServices } from '@backstage/backend-test-utils';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
@@ -34,7 +33,7 @@ function configureMockServer(permission: boolean) {
     if (permission) {
       const router = await createRouter({
         config: config,
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         httpAuth: {
           credentials: jest.fn().mockResolvedValue({}),
         } as unknown as HttpAuthService,
@@ -44,7 +43,7 @@ function configureMockServer(permission: boolean) {
     } else {
       const router = await createRouter({
         config: config,
-        logger: getVoidLogger(),
+        logger: mockServices.logger.mock(),
         httpAuth: mockServices.httpAuth.mock(),
       });
       app = express().use(router);
