@@ -1,12 +1,14 @@
 import {
-  AuthorizeResult,
-} from '@backstage/plugin-permission-common';
+  HttpAuthService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 import { InputError, NotAllowedError } from '@backstage/errors';
 import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
+import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -16,7 +18,6 @@ import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
-import {HttpAuthService, PermissionsService} from "@backstage/backend-plugin-api";
 
 export interface RouterOptions {
   config: Config;
@@ -56,8 +57,8 @@ export async function createRouter(
   router.get('/releases', async (req, res) => {
     if (permissions) {
       const decision = await permissions.authorize(
-          [{permission: daiReleaseViewPermission}],
-          {credentials: await httpAuth.credentials(req)},
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {
@@ -105,8 +106,8 @@ export async function createRouter(
   router.get('/instances', async (req, res) => {
     if (permissions) {
       const decision = await permissions.authorize(
-          [{permission: daiReleaseViewPermission}],
-          {credentials: await httpAuth.credentials(req)},
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {

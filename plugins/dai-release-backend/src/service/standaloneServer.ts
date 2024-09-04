@@ -7,8 +7,8 @@ import {
 import { Logger } from 'winston';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
+import { coreServices } from '@backstage/backend-plugin-api';
 import { createRouter } from './router';
-import {coreServices} from "@backstage/backend-plugin-api";
 
 export interface ServerOptions {
   port: number;

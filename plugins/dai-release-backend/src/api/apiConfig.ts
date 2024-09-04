@@ -33,7 +33,7 @@ export const getEncodedQueryVal = (queryString?: string): string => {
 
 export const getDecodedQueryVal = (queryString?: string): string => {
   return decodeURIComponent(
-      queryString || queryString === 'undefined' ? queryString : '',
+    queryString || queryString === 'undefined' ? queryString : '',
   );
 };
 
