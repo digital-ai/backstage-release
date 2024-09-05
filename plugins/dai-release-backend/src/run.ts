@@ -1,10 +1,10 @@
-import { WinstonLogger } from "@backstage/backend-defaults/rootLogger";
+import { getRootLogger } from "@backstage/backend-common";
 import { startStandaloneServer } from './service/standaloneServer';
 import yn from 'yn';
 
 const port = process.env.PLUGIN_PORT ? Number(process.env.PLUGIN_PORT) : 7007;
 const enableCors = yn(process.env.PLUGIN_CORS, { default: false });
-const logger = WinstonLogger.create({});
+const logger = getRootLogger()
 
 startStandaloneServer({ port, enableCors, logger }).catch(err => {
   logger.error(err);
