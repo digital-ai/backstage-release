@@ -57,7 +57,7 @@
     "@types/express": "*",
     "express": "^4.19.2",
     "express-promise-router": "^4.1.1",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "yn": "^5.0.0"
   },
   "devDependencies": {
