@@ -1,12 +1,13 @@
 import { Content, Header, Page } from '@backstage/core-components';
-import { DenseTable, defaultColumns } from '../DenseTable';
+import { DenseTable } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
-import { FilterComponent } from '../FilterComponent';
+import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
-import { useReleases } from '../../hooks';
+import {defaultTemplateColumns} from "../DenseTable/DenseTable";
+import { useTemplates } from '../../hooks';
+
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -16,9 +17,8 @@ const useStyles = makeStyles(() => ({
     paddingTop: '0',
   },
 }));
-export const HomePageComponent = () => {
+export const TemplateHomePageComponent = () => {
   const classes = useStyles();
-  const [showDrawer, onShowDrawer] = useState(false);
 
   const {
     items,
@@ -28,21 +28,13 @@ export const HomePageComponent = () => {
     page,
     rowsPerPage,
     searchTitle,
-    fromDate,
-    toDate,
-    orderBy,
-    statusTags,
     instance,
     instanceList,
     setPage,
     setRowsPerPage,
     setSearchTitle,
-    setFromDate,
-    setToDate,
-    setOrderBy,
-    setStatusTags,
     setInstance,
-  } = useReleases();
+  } = useTemplates();
 
   return (
     <Page themeId="home">
@@ -60,9 +52,9 @@ export const HomePageComponent = () => {
         <Grid container spacing={3} direction="column">
           <Grid item>
             <SearchHeaderComponent
-              displayFilter={true}
-              titleName="Active Releases"
-              searchTitleTextField = "Title"
+              displayFilter={false}
+              searchTitleTextField ="Search by name"
+              titleName="Templates"
               searchTitle={searchTitle}
               instance={instance}
               instanceList={instanceList}
@@ -70,21 +62,7 @@ export const HomePageComponent = () => {
               error={error}
               onSearchByTitle={setSearchTitle}
               onSetInstance={setInstance}
-              onShowDrawer={onShowDrawer}
             />
-            <FilterComponent
-              fromDate={fromDate}
-              toDate={toDate}
-              orderBy={orderBy}
-              statusTags={statusTags}
-              showDrawer={showDrawer}
-              onFromDateChange={setFromDate}
-              onToDateChange={setToDate}
-              onOrderByChange={setOrderBy}
-              onStatusTagChange={setStatusTags}
-              onShowDrawer={onShowDrawer}
-            />
-
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
@@ -94,20 +72,12 @@ export const HomePageComponent = () => {
                 loading={loading}
                 totalCount={items?.total ?? 100}
                 tableData={items?.releases || []}
-                columns={defaultColumns}
+                columns={defaultTemplateColumns}
                 retry={retry}
                 searchTitle={searchTitle}
-                fromDate={fromDate}
-                toDate={toDate}
-                orderBy={orderBy}
-                statusTags={statusTags}
                 onRowsPerPageChange={setRowsPerPage}
                 onPageChange={setPage}
                 setSearchTitle={setSearchTitle}
-                setFromDate={setFromDate}
-                setToDate={setToDate}
-                setOrderBy={setOrderBy}
-                setStatusTags={setStatusTags}
               />
             )}
           </Grid>

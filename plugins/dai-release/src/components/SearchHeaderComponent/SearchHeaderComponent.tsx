@@ -12,17 +12,23 @@ import Typography from '@mui/material/Typography';
 import { useObservable } from 'react-use';
 
 type SearchHeaderComponentProps = {
+  titleName: string;
+  searchTitleTextField: string;
   searchTitle: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   retry: () => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
-  onShowDrawer: (showDrawer: boolean) => void;
+  onShowDrawer?: (showDrawer: boolean) => void;
+  displayFilter: boolean;
   error: Error | undefined;
 };
 
 export const SearchHeaderComponent = ({
+  displayFilter,
+  titleName,
+  searchTitleTextField,
   searchTitle,
   instance,
   instanceList,
@@ -58,7 +64,7 @@ export const SearchHeaderComponent = ({
             variant="h5"
             style={{ display: 'inline', marginRight: '10px' }}
           >
-            Active releases
+            {titleName}
           </Typography>
           <SyncIcon
             fontSize="small"
@@ -113,7 +119,7 @@ export const SearchHeaderComponent = ({
             <Grid item className={classes.inputItem}>
               <TextField
                 id="outlined-basic"
-                label="Title"
+                label={searchTitleTextField}
                 variant="outlined"
                 value={searchTitle}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +136,7 @@ export const SearchHeaderComponent = ({
                 fullWidth
               />
             </Grid>
+            {displayFilter && onShowDrawer && (
             <Grid item style={{ display: 'flex' }}>
               <SvgIcon onClick={() => !!error || onShowDrawer(true)}>
                 <svg
@@ -147,7 +154,7 @@ export const SearchHeaderComponent = ({
                   />
                 </svg>
               </SvgIcon>
-            </Grid>
+            </Grid> )}
           </Grid>
         </Grid>
       </Grid>

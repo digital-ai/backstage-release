@@ -1,4 +1,4 @@
-import { Link, Table, TableColumn } from '@backstage/core-components';
+import {Link, LinkButton, Table, TableColumn} from '@backstage/core-components';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import Typography from '@mui/material/Typography';
@@ -6,6 +6,7 @@ import capitalize from 'lodash/capitalize';
 import dayjs from 'dayjs';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
+import { createSvgIcon } from '@mui/material/utils';
 
 type DenseTableProps = {
   tableData: any[];
@@ -16,17 +17,17 @@ type DenseTableProps = {
   columns: TableColumn[];
   retry: () => void;
   searchTitle: string;
-  fromDate: dayjs.Dayjs | null;
-  toDate: dayjs.Dayjs | null;
-  orderBy: string;
-  statusTags: string[];
+  fromDate?: dayjs.Dayjs | null;
+  toDate?: dayjs.Dayjs | null;
+  orderBy?: string;
+  statusTags?: string[];
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   setSearchTitle: (title: string) => void;
-  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
-  setToDate: (toDate: dayjs.Dayjs | null) => void;
-  setOrderBy: (orderBy: string) => void;
-  setStatusTags: (statusTags: string[]) => void;
+  setFromDate?: (fromDate: dayjs.Dayjs | null) => void;
+  setToDate?: (toDate: dayjs.Dayjs | null) => void;
+  setOrderBy?: (orderBy: string) => void;
+  setStatusTags?: (statusTags: string[]) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',
@@ -41,6 +42,20 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
 }));
+
+const PlusIcon = createSvgIcon(
+    // credit: plus icon from https://heroicons.com
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>,
+    'Plus',
+);
 
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
@@ -113,6 +128,37 @@ export const columnFactories = Object.freeze({
       sorting: false,
     };
   },
+
+  createTemplateNameColumns(): TableColumn {
+    return {
+      title: 'Name',
+      field: 'name',
+      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
+      headerStyle: headerStyle,
+      render: (row: Partial<any>) => (
+          <Link to={row.releaseRedirectUri}>{row.name}</Link>
+      ),
+      searchable: true,
+      sorting: false,
+    };
+  },
+  createTemplateActionColumns(): TableColumn {
+    return {
+      title: 'Action',
+      field: 'name',
+      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
+      headerStyle: headerStyle,
+      render: (row: Partial<any>) => (
+          <div style={{ width: '150px', height: '40px'}}>
+          <LinkButton to={row.releaseRedirectUri} color="default" variant="outlined" style={{ width: '150px', height: '40px', textTransform: 'none' }}  startIcon={<PlusIcon />}>
+         {/* <PlusIcon style={{ marginRight: '3px'}}/> */} New Releases
+          </LinkButton>
+          </div>
+      ),
+      searchable: true,
+      sorting: false,
+    };
+  },
 });
 
 export const defaultColumns: TableColumn[] = [
@@ -120,6 +166,13 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createFolderColumns(),
   columnFactories.createStatusColumns(),
   columnFactories.createFromDateColumns(),
+  columnFactories.createAdditionalDataColumns(),
+];
+
+export const defaultTemplateColumns: TableColumn[] = [
+  columnFactories.createTemplateNameColumns(),
+  columnFactories.createFolderColumns(),
+  columnFactories.createTemplateActionColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
