@@ -46,7 +46,7 @@
     "prepare": "husky",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
-    "repofix": "backstage-cli repo fix --publish"
+    "fix": "backstage-cli repo fix"
   },
   "dependencies": {
     "@backstage/backend-common": "^0.24.1",
