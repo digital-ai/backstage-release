@@ -12,11 +12,15 @@
   },
   "backstage": {
     "role": "backend-plugin",
-    "pluginId": "dai-release-backend"
+    "pluginId": "dai-release",
+    "pluginPackages": [
+      "@digital-ai/plugin-dai-release-backend"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/digital-ai/backstage-release.git"
+    "url": "git://github.com/digital-ai/backstage-release.git",
+    "directory": "."
   },
   "bugs": {
     "url": "https://github.com/digital-ai/backstage-release/issues"
@@ -41,7 +45,8 @@
     "postpack": "backstage-cli package postpack",
     "prepare": "husky",
     "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "repofix": "backstage-cli repo fix --publish"
   },
   "dependencies": {
     "@backstage/backend-common": "^0.24.1",
