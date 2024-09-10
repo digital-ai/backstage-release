@@ -1,3 +1,4 @@
+import {AuthorizeResult, PermissionEvaluator} from '@backstage/plugin-permission-common';
 import {
   HttpAuthService, LoggerService,
   PermissionsService,
@@ -8,7 +9,6 @@ import {
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
-import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from "@backstage/backend-defaults/rootHttpRouter";
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -21,8 +21,8 @@ import { validateInstanceRes } from '../api/responseUtil';
 export interface RouterOptions {
   config: Config;
   logger: LoggerService;
-  httpAuth: HttpAuthService;
-  permissions?: PermissionsService;
+  permissions?: PermissionEvaluator;
+  httpAuth?: HttpAuthService;
 }
 
 export async function createRouter(
@@ -44,6 +44,8 @@ export async function createRouter(
     permissions: daiReleasePermissions,
   });
 
+  const getPermissionService: PermissionsService = permissions as PermissionsService;
+
   const router = Router();
   router.use(express.json());
   router.use(permissionIntegrationRouter);
@@ -55,7 +57,10 @@ export async function createRouter(
 
   router.get('/releases', async (req, res) => {
     if (permissions) {
-      const decision = await permissions.authorize(
+      if (!httpAuth) {
+        throw new NotAllowedError('HTTP Authentication service is not available');
+      }
+      const decision = await getPermissionService.authorize(
         [{ permission: daiReleaseViewPermission }],
         { credentials: await httpAuth.credentials(req) },
       );
@@ -104,7 +109,10 @@ export async function createRouter(
 
   router.get('/instances', async (req, res) => {
     if (permissions) {
-      const decision = await permissions.authorize(
+      if (!httpAuth) {
+        throw new NotAllowedError('HTTP Authentication service is not available');
+      }
+      const decision = await getPermissionService.authorize(
         [{ permission: daiReleaseViewPermission }],
         { credentials: await httpAuth.credentials(req) },
       );

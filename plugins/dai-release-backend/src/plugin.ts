@@ -25,8 +25,8 @@ export const daiReleasePlugin = createBackendPlugin({
           await createRouter({
             config: config,
             logger: logger,
-            httpAuth,
             permissions,
+            httpAuth,
           }),
         );
       },
