@@ -79,7 +79,7 @@ async function renderContent(args: {
 }) {
   return await renderInTestApp(
     <SearchHeaderComponent
-      displayFilter={true}
+      displayFilter
       titleName={args.titleName}
       searchTitleTextField={args.searchTitleTextField}
       searchTitle={args.searchTitle}

@@ -60,7 +60,7 @@ export const HomePageComponent = () => {
         <Grid container spacing={3} direction="column">
           <Grid item>
             <SearchHeaderComponent
-              displayFilter={true}
+              displayFilter
               titleName="Active Releases"
               searchTitleTextField = "Title"
               searchTitle={searchTitle}

@@ -1,11 +1,11 @@
 import { Content, Header, Page } from '@backstage/core-components';
-import { DenseTable } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
+import { DenseTable } from '../DenseTable';
 import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
-import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import {defaultTemplateColumns} from "../DenseTable/DenseTable";
+import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
 
 

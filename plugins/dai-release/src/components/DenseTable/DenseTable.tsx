@@ -3,10 +3,11 @@ import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
+import { createSvgIcon } from '@mui/material/utils';
 import dayjs from 'dayjs';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
-import { createSvgIcon } from '@mui/material/utils';
+
 
 type DenseTableProps = {
   tableData: any[];
