@@ -15,7 +15,7 @@ import {
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
-import { mockServices } from "@backstage/backend-test-utils";
+import { getVoidLogger } from '@backstage/backend-common';
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();
@@ -46,7 +46,7 @@ describe('Backend API tests for Releases', () => {
   it('Should throw error if instance is not in config', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     await expect(
@@ -75,7 +75,7 @@ describe('Backend API tests for Releases', () => {
   it('Should get releases from Release API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
@@ -104,7 +104,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     await expect(
@@ -135,7 +135,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     await expect(
@@ -166,7 +166,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
     await expect(
       async () =>
@@ -194,7 +194,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     await expect(
@@ -223,7 +223,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
+      getVoidLogger(),
     );
 
     const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
