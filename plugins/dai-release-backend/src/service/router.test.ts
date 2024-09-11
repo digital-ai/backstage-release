@@ -12,7 +12,7 @@ import {
 } from '../mocks/mock.test.handlers';
 import { createRouter } from './router';
 import express from 'express';
-import { getRootLogger } from "@backstage/backend-common";
+import { getVoidLogger } from '@backstage/backend-common';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
 
@@ -29,14 +29,14 @@ function configureMockServer(permission: boolean) {
     if (permission) {
       const router = await createRouter({
         config: config,
-        logger: getRootLogger(),
+        logger: getVoidLogger(),
         permissions: permissionApi,
       });
       app = express().use(router);
     } else {
       const router = await createRouter({
         config: config,
-        logger: getRootLogger(),
+        logger: getVoidLogger(),
       });
       app = express().use(router);
     }
