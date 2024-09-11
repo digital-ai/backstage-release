@@ -6,8 +6,7 @@ import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import {defaultTemplateColumns} from "../DenseTable/DenseTable";
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
-import { useTemplates } from '../../hooks';
-
+import {useTemplates} from '../../hooks';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -71,7 +70,7 @@ export const TemplateHomePageComponent = () => {
                 pageSize={rowsPerPage}
                 loading={loading}
                 totalCount={items?.total ?? 100}
-                tableData={items?.releases || []}
+                tableData={items?.templates || []}
                 columns={defaultTemplateColumns}
                 retry={retry}
                 searchTitle={searchTitle}

@@ -12,8 +12,10 @@ import {
   ReleaseList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
+import {TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
+import {mockTemplateList} from '../mocks/templatesMocks';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -75,6 +77,22 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   async getInstanceList(): Promise<ReleaseInstanceConfig[]> {
     return await this.get<ReleaseInstanceConfig[]>('instances');
+  }
+
+  async getTemplates(
+      page: number,
+      rowsPerPage: number,
+      searchTile: string,
+      instanceName: string,
+  ): Promise<{ items: TemplateList }> {
+    const queryString = new URLSearchParams();
+
+    queryString.append('pageNumber', page.toString());
+    queryString.append('resultsPerPage', rowsPerPage.toString());
+    queryString.append('title', searchTile.toString());
+    queryString.append('instanceName', instanceName.toString());
+    const items = mockTemplateList
+    return {items};
   }
 
   private async get<T>(path: string): Promise<T> {

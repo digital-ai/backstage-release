@@ -133,11 +133,11 @@ export const columnFactories = Object.freeze({
   createTemplateNameColumns(): TableColumn {
     return {
       title: 'Name',
-      field: 'name',
-      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
+      field: 'title',
+      cellStyle: { width: '1000px', display: 'block', lineHeight: '18px' },
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-          <Link to={row.releaseRedirectUri}>{row.name}</Link>
+          <Link to={row.newReleaseRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
       sorting: false,
@@ -146,20 +146,21 @@ export const columnFactories = Object.freeze({
   createTemplateActionColumns(): TableColumn {
     return {
       title: 'Action',
-      field: 'name',
+      field: '',
       cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
           <div style={{ width: '150px', height: '40px'}}>
-          <LinkButton to={row.releaseRedirectUri} color="default" variant="outlined" style={{ width: '150px', height: '40px', textTransform: 'none' }}  startIcon={<PlusIcon />}>
-         {/* <PlusIcon style={{ marginRight: '3px'}}/> */} New Releases
+          <LinkButton to={row.newReleaseRedirectUri} color="default" variant="outlined" style={{ width: '150px', height: '40px', textTransform: 'none' }}  startIcon={<PlusIcon />}>
+         New Releases
           </LinkButton>
           </div>
       ),
-      searchable: true,
+      searchable: false,
       sorting: false,
     };
   },
+
 });
 
 export const defaultColumns: TableColumn[] = [

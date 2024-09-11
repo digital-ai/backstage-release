@@ -116,6 +116,7 @@ export const SearchHeaderComponent = ({
                 </Select>
               </FormControl>
             </Grid>
+            {displayFilter && (
             <Grid item className={classes.inputItem}>
               <TextField
                 id="outlined-basic"
@@ -135,7 +136,7 @@ export const SearchHeaderComponent = ({
                 disabled={!!error}
                 fullWidth
               />
-            </Grid>
+            </Grid> )}
             {displayFilter && onShowDrawer && (
             <Grid item style={{ display: 'flex' }}>
               <SvgIcon onClick={() => !!error || onShowDrawer(true)}>
