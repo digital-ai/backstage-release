@@ -1,7 +1,8 @@
+import {AuthorizeResult, PermissionEvaluator} from '@backstage/plugin-permission-common';
 import {
-  AuthorizeResult, EvaluatorRequestOptions,
-  PermissionEvaluator,
-} from '@backstage/plugin-permission-common';
+  HttpAuthService, LoggerService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 import { InputError, NotAllowedError } from '@backstage/errors';
 import {
   daiReleasePermissions,
@@ -9,26 +10,26 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { Config } from '@backstage/config';
-import { Logger } from 'winston';
+import { MiddlewareFactory } from "@backstage/backend-defaults/rootHttpRouter";
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
-import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
-import { getBearerTokenFromAuthorizationHeader } from '@backstage/plugin-auth-node';
 import { validateInstanceRes } from '../api/responseUtil';
 
 export interface RouterOptions {
   config: Config;
-  logger: Logger;
+  logger: LoggerService;
   permissions?: PermissionEvaluator;
+  httpAuth?: HttpAuthService;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, config, permissions } = options;
+  const { logger, config, permissions, httpAuth } = options;
+
   const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
     ReleaseConfig.fromConfig(config),
     logger,
@@ -43,6 +44,8 @@ export async function createRouter(
     permissions: daiReleasePermissions,
   });
 
+  const getPermissionService: PermissionsService = permissions as PermissionsService;
+
   const router = Router();
   router.use(express.json());
   router.use(permissionIntegrationRouter);
@@ -53,16 +56,13 @@ export async function createRouter(
   });
 
   router.get('/releases', async (req, res) => {
-    const token = getBearerTokenFromAuthorizationHeader(
-      req.header('authorization'),
-    );
     if (permissions) {
-      const evaluatorRequestOptions: EvaluatorRequestOptions = {
-        credentials: token,
-      };
-      const decision = await permissions.authorize(
+      if (!httpAuth) {
+        throw new NotAllowedError('HTTP Authentication service is not available');
+      }
+      const decision = await getPermissionService.authorize(
         [{ permission: daiReleaseViewPermission }],
-          evaluatorRequestOptions,
+        { credentials: await httpAuth.credentials(req) },
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {
@@ -108,16 +108,13 @@ export async function createRouter(
   });
 
   router.get('/instances', async (req, res) => {
-    const token = getBearerTokenFromAuthorizationHeader(
-        req.header('authorization'),
-    );
     if (permissions) {
-      const evaluatorRequestOptions: EvaluatorRequestOptions = {
-        credentials: token,
-      };
-      const decision = await permissions.authorize(
+      if (!httpAuth) {
+        throw new NotAllowedError('HTTP Authentication service is not available');
+      }
+      const decision = await getPermissionService.authorize(
         [{ permission: daiReleaseViewPermission }],
-          evaluatorRequestOptions,
+        { credentials: await httpAuth.credentials(req) },
       );
       const { result } = decision[0];
       if (result === AuthorizeResult.DENY) {
@@ -135,6 +132,7 @@ export async function createRouter(
     res.status(200).json(instancesList);
   });
 
-  router.use(errorHandler());
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
   return router;
 }

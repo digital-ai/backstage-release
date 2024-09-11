@@ -15,21 +15,21 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
-import { Logger } from 'winston';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
+import { RootLoggerService } from "@backstage/backend-plugin-api";
 import { parseErrorResponse } from './responseUtil';
 
 export class ReleaseOverviewApi {
-  private readonly logger: Logger;
+  private readonly logger: RootLoggerService;
   private readonly config: ReleaseConfig;
 
-  private constructor(logger: Logger, config: ReleaseConfig) {
+  private constructor(logger: RootLoggerService, config: ReleaseConfig) {
     this.logger = logger;
     this.config = config;
   }
 
-  static fromConfig(config: ReleaseConfig, logger: Logger) {
+  static fromConfig(config: ReleaseConfig, logger: RootLoggerService) {
     return new ReleaseOverviewApi(logger, config);
   }
 
