@@ -1,19 +1,18 @@
 import {
+  HostDiscovery,
   ServerTokenManager,
   createServiceBuilder,
   loadBackendConfig,
 } from '@backstage/backend-common';
-import { HostDiscovery } from '@backstage/backend-defaults/discovery';
-import { LoggerService } from '@backstage/backend-plugin-api';
+import { Logger } from 'winston';
 import { Server } from 'http';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { createRouter } from './router';
-import { mockServices } from "@backstage/backend-test-utils";
 
 export interface ServerOptions {
   port: number;
   enableCors: boolean;
-  logger: LoggerService;
+  logger: Logger;
 }
 
 export async function startStandaloneServer(
@@ -30,14 +29,11 @@ export async function startStandaloneServer(
     discovery,
     tokenManager,
   });
-  const httpAuth = mockServices.httpAuth({pluginId: 'dai-release'});
-
 
   logger.debug('Starting application server...');
   const router = await createRouter({
     config: config,
     logger,
-    httpAuth,
     permissions,
   });
 
