@@ -3,12 +3,12 @@ import {
   RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
   RELEASE_OVERVIEW_EXISTING_API_PATH,
+  RELEASE_TEMPLATE_LIST_API_PATH,
+  getCreateReleaseRedirectUri,
   getCredentials,
   getReleaseApiHost,
   getReleaseDetailsRedirectUri,
-  RELEASE_TEMPLATE_LIST_API_PATH,
   getTemplateDetailsRedirectUri,
-  getCreateReleaseRedirectUri,
 } from './apiConfig';
 import {
   Release,
@@ -16,13 +16,13 @@ import {
   ReleaseFallBackOverview,
   ReleaseOverview, TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
+import {Template, TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { parseErrorResponse } from './responseUtil';
-import {Template, TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
 
 export class ReleaseOverviewApi {
   private readonly logger: Logger;
@@ -325,7 +325,6 @@ export class ReleaseOverviewApi {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-         //body: JSON.stringify(requestBody),
         },
     );
     if (!response.ok) {
