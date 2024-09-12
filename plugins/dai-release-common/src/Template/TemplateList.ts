@@ -18,3 +18,14 @@ export type Template = {
   newReleaseRedirectUri: string;
   titleRedirectUri: string;
 };
+
+/** @public */
+export type TemplateOverview = {
+  id: string;
+  type: string;
+  status: string;
+  kind: string;
+  title: string;
+  plannedDuration: number;
+  $scmTraceabilityDataId: number;
+};

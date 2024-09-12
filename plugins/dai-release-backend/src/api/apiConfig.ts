@@ -6,6 +6,9 @@ export const RELEASE_COUNT_API_PATH = '/api/v1/releases/count';
 export const RELEASE_FOLDERS_LIST_API_PATH =
   '/api/v1/folders/list?depth=1000&permissions=false&resultsPerPage=1000000';
 export const RELEASE_DETAILS_REDIRECT_PATH = '/#/releases/';
+export const TEMPLATE_DETAILS_REDIRECT_PATH = '/#/templates/';
+export const CREATE_RELEASE_REDIRECT_PATH = '/#/releases/create?fromTemplateId=';
+export const RELEASE_TEMPLATE_LIST_API_PATH = '/api/v1/templates';
 
 export const getCredentials = (config: ReleaseInstanceConfig) => {
   try {
@@ -45,6 +48,26 @@ export const getReleaseDetailsRedirectUri = (
   parts.shift();
   const releaseIdUrl = parts.join('-');
   return `${getReleaseApiHost(config)}${RELEASE_DETAILS_REDIRECT_PATH}${releaseIdUrl}`;
+};
+
+export const getTemplateDetailsRedirectUri = (
+    config: ReleaseInstanceConfig,
+    releaseId: string,
+): string => {
+  const parts = releaseId.split('/');
+  parts.shift();
+  const releaseIdUrl = parts.join('-');
+  return `${getReleaseApiHost(config)}${TEMPLATE_DETAILS_REDIRECT_PATH}${releaseIdUrl}`;
+};
+
+export const getCreateReleaseRedirectUri = (
+    config: ReleaseInstanceConfig,
+    releaseId: string,
+): string => {
+  const parts = releaseId.split('/');
+  parts.shift();
+  const releaseIdUrl = parts.join('-');
+  return `${getReleaseApiHost(config)}${CREATE_RELEASE_REDIRECT_PATH}${releaseIdUrl}`;
 };
 
 function removeTrailingSlash(input: string): string {

@@ -137,7 +137,7 @@ export const columnFactories = Object.freeze({
       cellStyle: { width: '1000px', display: 'block', lineHeight: '18px' },
       headerStyle: headerStyle,
       render: (row: Partial<any>) => (
-          <Link to={row.newReleaseRedirectUri}>{row.title}</Link>
+          <Link to={row.titleRedirectUri}>{row.title}</Link>
       ),
       searchable: true,
       sorting: false,

@@ -104,6 +104,39 @@ export async function createRouter(
     res.status(200).json(releases);
   });
 
+  router.get('/templates', async (req, res) => {
+    const token = getBearerTokenFromAuthorizationHeader(
+        req.header('authorization'),
+    );
+    if (permissions) {
+      const decision = await permissions.authorize(
+          [{ permission: daiReleaseViewPermission }],
+          { token },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+            'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+
+
+    const title = getDecodedQueryVal(req.query.title?.toString());
+    const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
+    const resultsPerPage = getEncodedQueryVal(
+        req.query.resultsPerPage?.toString(),
+    );
+    const instanceName = req.query.instanceName?.toString() || '';
+    const releases = await releaseOverviewApi.getTemplates(
+        title,
+        pageNumber,
+        resultsPerPage,
+        instanceName,
+    );
+    res.status(200).json(releases);
+  });
+
   router.get('/instances', async (req, res) => {
     const token = getBearerTokenFromAuthorizationHeader(
       req.header('authorization'),

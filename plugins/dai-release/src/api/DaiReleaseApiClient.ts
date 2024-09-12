@@ -91,8 +91,9 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('title', searchTile.toString());
     queryString.append('instanceName', instanceName.toString());
-    const items = mockTemplateList
-    return {items};
+   const urlSegment = `templates?${queryString}`;
+    const items = await this.get<TemplateList>(urlSegment);
+    return { items };
   }
 
   private async get<T>(path: string): Promise<T> {
