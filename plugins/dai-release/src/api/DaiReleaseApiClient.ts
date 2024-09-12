@@ -15,7 +15,6 @@ import { DaiReleaseApi } from './DaiReleaseApi';
 import {TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
-import {mockTemplateList} from '../mocks/templatesMocks';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
