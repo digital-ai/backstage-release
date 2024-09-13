@@ -62,7 +62,7 @@ export const HomePageComponent = () => {
             <SearchHeaderComponent
               displayFilter
               titleName="Active Releases"
-              searchTitleTextField = "Title"
+              searchTitleTextField="Title"
               searchTitle={searchTitle}
               instance={instance}
               instanceList={instanceList}

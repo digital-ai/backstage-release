@@ -2,7 +2,7 @@ import {
   ReleaseInstanceConfig,
   ReleaseList,
 } from '@digital-ai/plugin-dai-release-common';
-import {TemplateList} from "@digital-ai/plugin-dai-release-common";
+import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 import dayjs from 'dayjs';
 
@@ -27,9 +27,9 @@ export interface DaiReleaseApi {
   getInstanceList(): Promise<ReleaseInstanceConfig[]>;
 
   getTemplates(
-      page: number,
-      rowsPerPage: number,
-      searchTile: string,
-      instanceName: string,
+    page: number,
+    rowsPerPage: number,
+    searchTile: string,
+    instanceName: string,
   ): Promise<{ items: TemplateList }>;
 }

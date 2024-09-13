@@ -14,9 +14,10 @@ import {
   Release,
   ReleaseCountResults,
   ReleaseFallBackOverview,
-  ReleaseOverview, TemplateOverview,
+  ReleaseOverview,
+  TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import {Template, TemplateList} from "@digital-ai/plugin-dai-release-common";
+import { Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
@@ -263,41 +264,43 @@ export class ReleaseOverviewApi {
   }
 
   async getTemplates(
-      title: string,
-      pageNumber: string,
-      resultsPerPage: string,
-      instanceName: string,
+    title: string,
+    pageNumber: string,
+    resultsPerPage: string,
+    instanceName: string,
   ): Promise<TemplateList> {
     const instanceConfig = this.config.getInstanceConfig(instanceName);
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
 
-
     const data: TemplateOverview[] = await this.getTemplateList(
-        apiUrl,
-        title,
-        accessToken,
-        pageNumber,
-        resultsPerPage,
+      apiUrl,
+      title,
+      accessToken,
+      pageNumber,
+      resultsPerPage,
     );
 
     const folderIdTitleMap: Map<string, string> =
-        await this.getFolderIdAndTitleMap(apiUrl, accessToken);
+      await this.getFolderIdAndTitleMap(apiUrl, accessToken);
 
     const templates: Template[] = [];
     data.forEach(d =>
-        templates.push({
-          id: d.id,
-          title: d.title,
-          folder: this.getFolderTitle(folderIdTitleMap, d.id),
-          newReleaseRedirectUri: getCreateReleaseRedirectUri(instanceConfig, d.id),
-          titleRedirectUri: getTemplateDetailsRedirectUri(instanceConfig, d.id),
-        }),
+      templates.push({
+        id: d.id,
+        title: d.title,
+        folder: this.getFolderTitle(folderIdTitleMap, d.id),
+        newReleaseRedirectUri: getCreateReleaseRedirectUri(
+          instanceConfig,
+          d.id,
+        ),
+        titleRedirectUri: getTemplateDetailsRedirectUri(instanceConfig, d.id),
+      }),
     );
 
     const countData: TemplateOverview[] = await this.getTemplateListCount(
-        apiUrl,
-        accessToken,
+      apiUrl,
+      accessToken,
     );
 
     return {
@@ -307,22 +310,22 @@ export class ReleaseOverviewApi {
   }
 
   async getTemplateList(
-      apiUrl: string,
-      title: string,
-      accessToken: string,
-      pageNumber: string,
-      resultsPerPage: string,
+    apiUrl: string,
+    title: string,
+    accessToken: string,
+    pageNumber: string,
+    resultsPerPage: string,
   ) {
     const response = await fetch(
-        `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}&title=${title}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-release-personal-token': `${accessToken}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
+      `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}&title=${title}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
+      },
     );
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
@@ -330,25 +333,18 @@ export class ReleaseOverviewApi {
     return await response.json();
   }
 
-  async getTemplateListCount(
-      apiUrl: string,
-      accessToken: string,
-  ) {
-    const response = await fetch(
-        `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-release-personal-token': `${accessToken}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        },
-    );
+  async getTemplateListCount(apiUrl: string, accessToken: string) {
+    const response = await fetch(`${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}`, {
+      method: 'GET',
+      headers: {
+        'x-release-personal-token': `${accessToken}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
   }
-
 }

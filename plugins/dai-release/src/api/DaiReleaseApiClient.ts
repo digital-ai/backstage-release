@@ -12,7 +12,7 @@ import {
   ReleaseList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
-import {TemplateList} from "@digital-ai/plugin-dai-release-common";
+import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
 
@@ -79,10 +79,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   }
 
   async getTemplates(
-      page: number,
-      rowsPerPage: number,
-      searchTile: string,
-      instanceName: string,
+    page: number,
+    rowsPerPage: number,
+    searchTile: string,
+    instanceName: string,
   ): Promise<{ items: TemplateList }> {
     const queryString = new URLSearchParams();
 
@@ -90,7 +90,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('title', searchTile.toString());
     queryString.append('instanceName', instanceName.toString());
-   const urlSegment = `templates?${queryString}`;
+    const urlSegment = `templates?${queryString}`;
     const items = await this.get<TemplateList>(urlSegment);
     return { items };
   }

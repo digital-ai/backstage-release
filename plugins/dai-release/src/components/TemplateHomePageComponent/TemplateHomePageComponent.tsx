@@ -4,9 +4,9 @@ import { DenseTable } from '../DenseTable';
 import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
-import {defaultTemplateColumns} from "../DenseTable/DenseTable";
+import { defaultTemplateColumns } from '../DenseTable/DenseTable';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
-import {useTemplates} from '../../hooks';
+import { useTemplates } from '../../hooks';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -52,7 +52,7 @@ export const TemplateHomePageComponent = () => {
           <Grid item>
             <SearchHeaderComponent
               displayFilter={false}
-              searchTitleTextField ="Search by name"
+              searchTitleTextField="Search by name"
               titleName="Templates"
               searchTitle={searchTitle}
               instance={instance}

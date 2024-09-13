@@ -6,7 +6,7 @@ import {
   releasesOverviewFallbackReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
-import {templatesReleaseApiResponse} from "./mockTemplateData";
+import { templatesReleaseApiResponse } from './mockTemplateData';
 
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search', () => {

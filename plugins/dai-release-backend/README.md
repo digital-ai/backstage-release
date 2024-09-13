@@ -52,26 +52,29 @@ async function main() {
 
 The Dai Release plugin requires the following YAML to be added to your `app-config.yaml`:
 Dai Release plugin supports Digital-ai Release multi instance integration option.
-***Note: all values are mandatory, if any of the keys or values not entered application startup will fail
+\*\*\*Note: all values are mandatory, if any of the keys or values not entered application startup will fail
 
 For single instance setup:
+
 ```yaml
 daiRelease:
-   instances:
-      - name: {name-of-first-instance} #
-        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
-        token: {token-of-first-instance}
+  instances:
+    - name: { name-of-first-instance } #
+      host: { host-of-first-instance } #http://digital-ai-1.release.com:4516
+      token: { token-of-first-instance }
 ```
+
 For multi instance setup:
+
 ```yaml
 daiRelease:
-   instances:
-      - name: {name-of-first-instance} #
-        host: {host-of-first-instance} #http://digital-ai-1.release.com:4516
-        token: {token-of-first-instance}
-      - name: {name-of-second-instance}
-        host: {host-of-second-instance} #http://digital-ai-2.release.com:4516
-        token: {token-of-second-instance}
+  instances:
+    - name: { name-of-first-instance } #
+      host: { host-of-first-instance } #http://digital-ai-1.release.com:4516
+      token: { token-of-first-instance }
+    - name: { name-of-second-instance }
+      host: { host-of-second-instance } #http://digital-ai-2.release.com:4516
+      token: { token-of-second-instance }
 ```
 
 Configuration Details:
@@ -210,4 +213,5 @@ import { daiReleaseViewPermission } from '@digital-ai/plugin-dai-release-common'
 **Note:** The group "group:default/release-admins" is simply an example and might not exist. You can point this to any group you have in your catalog instead.
 
 ## Links
+
 For more information, see [Overview](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-overview.html) and [Adding Release to Your Backstage IDP](https://docs.digital.ai/bundle/devops-release-version-v.24.1/page/release/concept/release-backstage-plugin.html)

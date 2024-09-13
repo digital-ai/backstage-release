@@ -1,4 +1,7 @@
-import {ReleaseList, TemplateList} from '@digital-ai/plugin-dai-release-common';
+import {
+  ReleaseList,
+  TemplateList,
+} from '@digital-ai/plugin-dai-release-common';
 import { SetupServerApi, setupServer } from 'msw/node';
 import {
   config,
@@ -16,7 +19,7 @@ import {
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
 import { getVoidLogger } from '@backstage/backend-common';
-import {templateBackendPluginApiResponse} from "../mocks/mockTemplateData";
+import { templateBackendPluginApiResponse } from '../mocks/mockTemplateData';
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();
@@ -75,20 +78,15 @@ describe('Backend API tests for Releases', () => {
 
   it('Should throw error if instance is not in config for templates', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
 
     await expect(
-        async () =>
-            await releaseOverviewApi.getTemplates(
-                '',
-                '0',
-                '100',
-                'default2'
-            ),
+      async () =>
+        await releaseOverviewApi.getTemplates('', '0', '100', 'default2'),
     ).rejects.toThrow(
-        "Couldn't find a release instance 'default2' in the config",
+      "Couldn't find a release instance 'default2' in the config",
     );
   });
 
@@ -121,19 +119,21 @@ describe('Backend API tests for Releases', () => {
 
   it('Should get templates from Template API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
 
     const templateList: TemplateList = await releaseOverviewApi.getTemplates(
-        '',
-        '0',
-        '100',
-        'default',
+      '',
+      '0',
+      '100',
+      'default',
     );
 
     expect(templateList.total).toEqual(templateBackendPluginApiResponse.total);
-    expect(templateList.templates).toEqual(templateBackendPluginApiResponse.templates);
+    expect(templateList.templates).toEqual(
+      templateBackendPluginApiResponse.templates,
+    );
   });
 
   it('Get 401 response from releases from Release API', async () => {
@@ -171,20 +171,15 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error401ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
 
     await expect(
-        async () =>
-            await releaseOverviewApi.getTemplates(
-                '',
-                '0',
-                '100',
-                'default',
-            ),
+      async () =>
+        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
     ).rejects.toThrow(
-        'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
+      'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
     );
   });
 
@@ -223,20 +218,15 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error403ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
 
     await expect(
-        async () =>
-            await releaseOverviewApi.getTemplates(
-                '',
-                '0',
-                '100',
-                'default',
-            ),
+      async () =>
+        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
     ).rejects.toThrow(
-        'Permission denied or the requested functionality is not supported',
+      'Permission denied or the requested functionality is not supported',
     );
   });
 
@@ -272,17 +262,12 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error404ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
     await expect(
-        async () =>
-            await releaseOverviewApi.getTemplates(
-                '',
-                '0',
-                '100',
-                'default',
-            ),
+      async () =>
+        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
     ).rejects.toThrow('Release service request not found');
   });
 
@@ -319,18 +304,13 @@ describe('Backend API tests for Releases', () => {
     server.resetHandlers(...error500ResponseHandler);
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-        ReleaseConfig.fromConfig(config),
-        getVoidLogger(),
+      ReleaseConfig.fromConfig(config),
+      getVoidLogger(),
     );
 
     await expect(
-        async () =>
-            await releaseOverviewApi.getTemplates(
-                '',
-                '0',
-                '100',
-                'default',
-            ),
+      async () =>
+        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
   });
 
