@@ -12,7 +12,7 @@ import {
   ReleaseList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
-import {TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
+import {TemplateList} from "@digital-ai/plugin-dai-release-common";
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
 

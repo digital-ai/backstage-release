@@ -1,4 +1,4 @@
-import {TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
+import {TemplateList} from "@digital-ai/plugin-dai-release-common";
 
 export const templates = {
     page: 1,
