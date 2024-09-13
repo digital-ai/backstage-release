@@ -128,13 +128,13 @@ export async function createRouter(
         req.query.resultsPerPage?.toString(),
     );
     const instanceName = req.query.instanceName?.toString() || '';
-    const releases = await releaseOverviewApi.getTemplates(
+    const templates = await releaseOverviewApi.getTemplates(
         title,
         pageNumber,
         resultsPerPage,
         instanceName,
     );
-    res.status(200).json(releases);
+    res.status(200).json(templates);
   });
 
   router.get('/instances', async (req, res) => {

@@ -16,7 +16,7 @@ import {
   ReleaseFallBackOverview,
   ReleaseOverview, TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import {Template, TemplateList} from "@digital-ai/plugin-dai-release-common/dist-types/src/Template/TemplateList";
+import {Template, TemplateList} from "@digital-ai/plugin-dai-release-common";
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { Logger } from 'winston';
@@ -272,13 +272,10 @@ export class ReleaseOverviewApi {
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
 
-    const requestBody = {
-      title: title,
-      tags: [],
-    };
 
     const data: TemplateOverview[] = await this.getTemplateList(
         apiUrl,
+        title,
         accessToken,
         pageNumber,
         resultsPerPage,
@@ -298,26 +295,47 @@ export class ReleaseOverviewApi {
         }),
     );
 
-    const countData: ReleaseCountResults = await this.getReleasesCount(
+    const countData: TemplateOverview[] = await this.getTemplateListCount(
         apiUrl,
         accessToken,
-        requestBody,
     );
 
     return {
-      total: countData.live.total,
+      total: countData.length,
       templates: templates,
     };
   }
 
   async getTemplateList(
       apiUrl: string,
+      title: string,
       accessToken: string,
       pageNumber: string,
       resultsPerPage: string,
   ) {
     const response = await fetch(
-        `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+        `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}&title=${title}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-release-personal-token': `${accessToken}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    return await response.json();
+  }
+
+  async getTemplateListCount(
+      apiUrl: string,
+      accessToken: string,
+  ) {
+    const response = await fetch(
+        `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}`,
         {
           method: 'GET',
           headers: {
