@@ -521,7 +521,6 @@ export const templates = {
 };
 
 export const mockTemplateList: TemplateList = {
-  total: 3,
   templates: [
     {
       id: 'aatemp',

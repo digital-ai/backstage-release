@@ -17,10 +17,13 @@ type SearchHeaderComponentProps = {
   searchTitle: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
-  retry: () => void;
+  retry?: () => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
   onShowDrawer?: (showDrawer: boolean) => void;
+  onSetData?: (data: any) => void;
+  onSetHasMore?: (hasMore: boolean) =>  void;
+  onSetLoading?: (loading: boolean)=> void;
   displayFilter: boolean;
   error: Error | undefined;
 };
@@ -37,6 +40,9 @@ export const SearchHeaderComponent = ({
   onSearchByTitle,
   onSetInstance,
   onShowDrawer,
+  onSetData,
+  onSetHasMore,
+  onSetLoading
 }: SearchHeaderComponentProps) => {
   const useStyles = makeStyles(() => ({
     inputRoot: {
@@ -66,11 +72,13 @@ export const SearchHeaderComponent = ({
           >
             {titleName}
           </Typography>
-          <SyncIcon
-            fontSize="small"
-            style={{ cursor: error ? 'no-drop' : 'pointer' }}
-            onClick={() => !!error || retry()}
-          />
+          {retry && (
+              <SyncIcon
+                  fontSize="small"
+                  style={{ cursor: error ? 'no-drop' : 'pointer' }}
+                  onClick={() => !!error || retry()}
+              />
+          )}
         </Grid>
         <Grid item lg={8} md={8} sm={8}>
           <Grid
@@ -95,6 +103,15 @@ export const SearchHeaderComponent = ({
                   label="Choose Instance"
                   onChange={(event: SelectChangeEvent) => {
                     onSetInstance(event.target.value);
+                    if (onSetData) {
+                      onSetData([]);
+                    }
+                    if (onSetHasMore) {
+                      onSetHasMore(true);
+                    }
+                    if (onSetLoading) {
+                      onSetLoading(true);
+                    }
                   }}
                   input={
                     <OutlinedInput

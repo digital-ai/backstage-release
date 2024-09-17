@@ -326,19 +326,4 @@ export class ReleaseOverviewApi {
     }
     return await response.json();
   }
-
-  async getTemplateListCount(apiUrl: string, accessToken: string) {
-    const response = await fetch(`${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}`, {
-      method: 'GET',
-      headers: {
-        'x-release-personal-token': `${accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
-    return await response.json();
-  }
 }
