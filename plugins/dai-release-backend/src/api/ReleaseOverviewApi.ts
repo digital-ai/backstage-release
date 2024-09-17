@@ -298,13 +298,7 @@ export class ReleaseOverviewApi {
       }),
     );
 
-    const countData: TemplateOverview[] = await this.getTemplateListCount(
-      apiUrl,
-      accessToken,
-    );
-
     return {
-      total: countData.length,
       templates: templates,
     };
   }

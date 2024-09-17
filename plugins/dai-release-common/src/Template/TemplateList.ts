@@ -7,7 +7,6 @@
 
 /** @public */
 export type TemplateList = {
-  total: number;
   templates: Template[];
 };
 
