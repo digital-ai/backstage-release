@@ -45,12 +45,30 @@ const useStyles = makeStyles(() => ({
     commonCellStyle: {
         width: 'auto',
         whiteSpace: 'nowrap'
-    }
+    },
+    customLoadingIcon: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 2,
+}
 }));
 type ScrollableProps = {
     loading: boolean;
     loadMoreData: () => void
     data: any[];
+};
+export const CustomLoadingIcon = () => {
+    return (
+        <div className="custom-loading-icon">
+            <CircularProgress />
+        </div>
+    );
 };
 export const ScrollableTable = ({
                               loading,
@@ -66,10 +84,12 @@ export const ScrollableTable = ({
     const classes = useStyles();
 
     return (
-        <div>
-            {loading && <CircularProgress />}
-        <Paper component={Paper}>
-            <TableContainer style={{ height: '850px', overflow: 'auto', borderBottom: 'unset' }} onScroll={handleScroll}>
+        <div style={{ position: 'relative' }}>
+            {loading && <div className={classes.customLoadingIcon}>
+                <CircularProgress/>
+            </div>}
+            <Paper component={Paper}>
+                <TableContainer style={{height: '850px', overflow: 'auto', borderBottom: 'unset' }} onScroll={handleScroll}>
                 <Table stickyHeader  aria-label="sticky table">
                     <TableHead>
                         <TableRow>
