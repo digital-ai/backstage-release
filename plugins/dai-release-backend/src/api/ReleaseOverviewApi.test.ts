@@ -130,7 +130,6 @@ describe('Backend API tests for Releases', () => {
       'default',
     );
 
-    expect(templateList.total).toEqual(templateBackendPluginApiResponse.total);
     expect(templateList.templates).toEqual(
       templateBackendPluginApiResponse.templates,
     );

@@ -19,7 +19,6 @@ export const templatesReleaseApiResponse: TemplateOverview[] = [
 ];
 
 export const templateBackendPluginApiResponse: TemplateList = {
-  total: 2,
   templates: [
     {
       id: 'Applications/Folder1/Release1',
