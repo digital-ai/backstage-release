@@ -31,5 +31,6 @@ export interface DaiReleaseApi {
     rowsPerPage: number,
     searchTile: string,
     instanceName: string,
+    options?: { signal?: AbortSignal }
   ): Promise<{ items: TemplateList }>;
 }

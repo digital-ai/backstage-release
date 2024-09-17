@@ -83,6 +83,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     rowsPerPage: number,
     searchTile: string,
     instanceName: string,
+    options?: { signal?: AbortSignal }
   ): Promise<{ items: TemplateList }> {
     const queryString = new URLSearchParams();
 
@@ -91,11 +92,11 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('title', searchTile.toString());
     queryString.append('instanceName', instanceName.toString());
     const urlSegment = `templates?${queryString}`;
-    const items = await this.get<TemplateList>(urlSegment);
+    const items = await this.get<TemplateList>(urlSegment, options);
     return { items };
   }
 
-  private async get<T>(path: string): Promise<T> {
+  private async get<T>(path: string, options?: { signal?: AbortSignal }): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();
@@ -107,6 +108,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         Accept: 'application/json',
         Authorization: `Bearer ${idToken}`,
       },
+      signal: options?.signal,
     });
 
     if (!response.ok) {

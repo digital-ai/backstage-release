@@ -1,9 +1,10 @@
+/* eslint-disable consistent-return */
+import {useRef, useState} from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
-import {useRef, useState} from 'react';
 
 export function useTemplates(): {
   loading: boolean;
@@ -74,7 +75,8 @@ export function useTemplates(): {
 
       } catch (err) {
         // Check if error is due to abort, otherwise handle the error
-        if (err.name !== 'AbortError') {
+        const abortError = err as Error;
+        if (abortError.name !== 'AbortError') {
           setData([]);
           throw err;
         }
