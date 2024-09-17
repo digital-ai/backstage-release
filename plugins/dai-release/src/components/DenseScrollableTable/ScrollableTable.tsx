@@ -88,7 +88,7 @@ export const ScrollableTable = ({
             {loading && <div className={classes.customLoadingIcon}>
                 <CircularProgress/>
             </div>}
-            <Paper component={Paper}>
+            <Paper component={Paper} style={{boxShadow: 'unset'}}>
                 <TableContainer style={{height: '850px', overflow: 'auto', borderBottom: 'unset' }} onScroll={handleScroll}>
                 <Table stickyHeader  aria-label="sticky table">
                     <TableHead>
