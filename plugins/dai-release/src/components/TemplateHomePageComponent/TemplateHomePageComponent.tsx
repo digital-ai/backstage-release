@@ -1,6 +1,6 @@
 import { Content, Header} from '@backstage/core-components';
 import {Grid, makeStyles,} from '@material-ui/core';
-import React, {useEffect} from 'react';
+import React from 'react';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { ScrollableTable } from "../DenseScrollableTable/ScrollableTable";
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
