@@ -83,7 +83,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     rowsPerPage: number,
     searchTile: string,
     instanceName: string,
-    options?: { signal?: AbortSignal }
+    options?: { signal?: AbortSignal },
   ): Promise<{ items: TemplateList }> {
     const queryString = new URLSearchParams();
 
@@ -96,7 +96,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return { items };
   }
 
-  private async get<T>(path: string, options?: { signal?: AbortSignal }): Promise<T> {
+  private async get<T>(
+    path: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();

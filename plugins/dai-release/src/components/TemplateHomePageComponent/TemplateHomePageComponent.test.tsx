@@ -9,13 +9,15 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
-import {mockEmptyTemplateList, mockTemplateList} from "../../mocks/templatesMocks";
+import {
+  mockEmptyTemplateList,
+  mockTemplateList,
+} from '../../mocks/templatesMocks';
 import React from 'react';
 import { TemplateHomePageComponent } from './TemplateHomePageComponent';
 import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-
 
 const identityApi = {
   getCredentials: jest.fn(),
@@ -59,13 +61,13 @@ describe('TemplateHomePageComponent', () => {
   });
   it('should render the home page with no templates available', async () => {
     server.use(
-        rest.get('http://example.com/api/dai-release/templates', (_, res, ctx) =>
-            res(
-                ctx.status(200),
-                ctx.set('Content-Type', 'application/json'),
-                ctx.json(mockEmptyTemplateList),
-            ),
+      rest.get('http://example.com/api/dai-release/templates', (_, res, ctx) =>
+        res(
+          ctx.status(200),
+          ctx.set('Content-Type', 'application/json'),
+          ctx.json(mockEmptyTemplateList),
         ),
+      ),
     );
     const rendered = await renderContent();
     const image = rendered.getByAltText('Release logo') as HTMLImageElement;

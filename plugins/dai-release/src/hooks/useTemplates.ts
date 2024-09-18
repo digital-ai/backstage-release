@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
@@ -26,7 +26,8 @@ export function useTemplates(): {
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [searchTitle, setSearchTitle] = useState('');
   const [instance, setInstance] = useState('');
-  const [instanceList, setInstanceList] = useState<ReleaseInstanceConfig[] | undefined
+  const [instanceList, setInstanceList] = useState<
+    ReleaseInstanceConfig[] | undefined
   >([]);
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -61,7 +62,13 @@ export function useTemplates(): {
           });
         }
 
-        const result = await api.getTemplates(page, rowsPerPage, debouncedSearchTitle, instance, { signal: abortController.signal });
+        const result = await api.getTemplates(
+          page,
+          rowsPerPage,
+          debouncedSearchTitle,
+          instance,
+          { signal: abortController.signal },
+        );
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
@@ -72,7 +79,6 @@ export function useTemplates(): {
           setData((prevData: any) => [...prevData, ...result.items?.templates]);
           return result;
         }
-
       } catch (err) {
         // Check if error is due to abort, otherwise handle the error
         const abortError = err as Error;
@@ -103,6 +109,6 @@ export function useTemplates(): {
     setSearchTitle,
     setInstance,
     setHasMore,
-    setData
+    setData,
   };
 }
