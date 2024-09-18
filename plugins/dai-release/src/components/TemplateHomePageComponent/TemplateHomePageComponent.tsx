@@ -6,6 +6,7 @@ import { ScrollableTable } from "../DenseScrollableTable/ScrollableTable";
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -15,8 +16,17 @@ const useStyles = makeStyles(() => ({
     paddingTop: '0',
   },
 }));
+
+const useEmptyStyles = makeStyles(theme => ({
+  empty: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 export const TemplateHomePageComponent = () => {
   const classes = useStyles();
+  const emptyClasses = useEmptyStyles();
 
   const {
     loading,
@@ -75,6 +85,11 @@ export const TemplateHomePageComponent = () => {
                     loading={loading}
                     loadMoreData={loadMoreData}
                     data={data}
+                    emptyContent={
+                      <Typography color="textSecondary" className={emptyClasses.empty}>
+                        No templates available
+                      </Typography>
+                    }
                 />
             )}
           </Grid>

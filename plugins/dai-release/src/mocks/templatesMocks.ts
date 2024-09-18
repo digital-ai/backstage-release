@@ -545,3 +545,7 @@ export const mockTemplateList: TemplateList = {
     },
   ],
 };
+
+export const mockEmptyTemplateList: TemplateList = {
+  templates: [],
+};

@@ -56,24 +56,30 @@ const useStyles = makeStyles(() => ({
     top: 0,
     left: 0,
     zIndex: 2,
-}
+    },
+    defaultTableContainer: {
+        height: '850px',
+        overflow: 'auto',
+        borderBottom: 'unset'
+    },
+    emptyTableContent: {
+        overflow: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+    }
+
 }));
 type ScrollableProps = {
     loading: boolean;
     loadMoreData: () => void
     data: any[];
-};
-export const CustomLoadingIcon = () => {
-    return (
-        <div className="custom-loading-icon">
-            <CircularProgress />
-        </div>
-    );
+    emptyContent: any;
 };
 export const ScrollableTable = ({
                               loading,
                               loadMoreData,
                               data,
+                              emptyContent
                           }: ScrollableProps) => {
     const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
         const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
@@ -88,8 +94,8 @@ export const ScrollableTable = ({
             {loading && <div className={classes.customLoadingIcon}>
                 <CircularProgress/>
             </div>}
-            <Paper component={Paper} style={{boxShadow: 'unset'}}>
-                <TableContainer style={{height: '850px', overflow: 'auto', borderBottom: 'unset' }} onScroll={handleScroll}>
+            <Paper>
+                <TableContainer className={data.length === 0 ? classes.emptyTableContent : classes.defaultTableContainer} onScroll={handleScroll}>
                 <Table stickyHeader  aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -100,7 +106,7 @@ export const ScrollableTable = ({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row, index) => (
+                        {data.length > 0 && data.map((row, index) => (
                             <TableRow key={index}>
                                 <TableCell style={{ width: '1000px', lineHeight: '14px' }}> <Link to={row.titleRedirectUri}>{row.title}</Link></TableCell>
                                 <TableCell style={{ width: 'auto', whiteSpace: 'nowrap' }}>{capitalize(row.folder)}</TableCell>
@@ -120,6 +126,10 @@ export const ScrollableTable = ({
                                 <TableCell style={{ width: 'auto', whiteSpace: 'nowrap' }}><ReleasePopOverComponent /></TableCell>
                             </TableRow>
                         ))}
+                        {data.length ==0 &&
+                        <TableRow style={{height: '150px'}}>
+                            <TableCell colSpan={4} style={{lineHeight: '18px'}}>{data.length === 0 && !loading && emptyContent}</TableCell>
+                        </TableRow>}
                     </TableBody>
                 </Table>
             </TableContainer>
