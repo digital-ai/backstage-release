@@ -1,12 +1,14 @@
 import { Content, Header} from '@backstage/core-components';
 import {Grid, makeStyles,} from '@material-ui/core';
 import React from 'react';
+
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { ScrollableTable } from "../DenseScrollableTable/ScrollableTable";
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
+import Typography from "@mui/material/Typography";
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
-import Typography from "@mui/material/Typography";
+
 
 const useStyles = makeStyles(() => ({
   logoStyle: {

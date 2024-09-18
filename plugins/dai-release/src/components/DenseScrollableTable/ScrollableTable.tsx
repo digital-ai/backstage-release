@@ -126,7 +126,7 @@ export const ScrollableTable = ({
                                 <TableCell style={{ width: 'auto', whiteSpace: 'nowrap' }}><ReleasePopOverComponent /></TableCell>
                             </TableRow>
                         ))}
-                        {data.length ==0 &&
+                        {data.length ===0 &&
                         <TableRow style={{height: '150px'}}>
                             <TableCell colSpan={4} style={{lineHeight: '18px'}}>{data.length === 0 && !loading && emptyContent}</TableCell>
                         </TableRow>}

@@ -9,12 +9,13 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
+import {mockEmptyTemplateList, mockTemplateList} from "../../mocks/templatesMocks";
 import React from 'react';
 import { TemplateHomePageComponent } from './TemplateHomePageComponent';
 import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import {mockEmptyTemplateList, mockTemplateList} from "../../mocks/templatesMocks";
+
 
 const identityApi = {
   getCredentials: jest.fn(),
