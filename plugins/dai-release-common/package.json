@@ -1,7 +1,7 @@
 {
   "name": "@digital-ai/plugin-dai-release-common",
   "description": "Common functionalities for the dai-release plugin",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "MIT",
@@ -12,11 +12,16 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "common-library"
+    "role": "common-library",
+    "pluginId": "dai-release",
+    "pluginPackages": [
+      "@digital-ai/plugin-dai-release-common"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/digital-ai/backstage-release.git"
+    "url": "git://github.com/digital-ai/backstage-release.git",
+    "directory": "."
   },
   "bugs": {
     "url": "https://github.com/digital-ai/backstage-release/issues"
@@ -41,7 +46,8 @@
     "postpack": "backstage-cli package postpack",
     "prepare": "husky",
     "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "fix": "backstage-cli repo fix --publish"
   },
   "dependencies": {
     "@backstage/plugin-catalog-common": "^1.0.26",

@@ -18,8 +18,10 @@ import {
 } from '../mocks/mock.test.handlers';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
-import { getVoidLogger } from '@backstage/backend-common';
+import { mockServices } from "@backstage/backend-test-utils";
 import { templateBackendPluginApiResponse } from '../mocks/mockTemplateData';
+
+
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();
@@ -50,7 +52,7 @@ describe('Backend API tests for Releases', () => {
   it('Should throw error if instance is not in config', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -79,7 +81,7 @@ describe('Backend API tests for Releases', () => {
   it('Should throw error if instance is not in config for templates', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -93,7 +95,7 @@ describe('Backend API tests for Releases', () => {
   it('Should get releases from Release API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
@@ -120,7 +122,7 @@ describe('Backend API tests for Releases', () => {
   it('Should get templates from Template API', async () => {
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     const templateList: TemplateList = await releaseOverviewApi.getTemplates(
@@ -140,7 +142,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -171,7 +173,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -187,7 +189,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -218,7 +220,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -234,7 +236,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
     await expect(
       async () =>
@@ -262,7 +264,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
     await expect(
       async () =>
@@ -275,7 +277,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -304,7 +306,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     await expect(
@@ -318,7 +320,7 @@ describe('Backend API tests for Releases', () => {
 
     const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
       ReleaseConfig.fromConfig(config),
-      getVoidLogger(),
+      mockServices.logger.mock(),
     );
 
     const releaseList: ReleaseList = await releaseOverviewApi.getReleases(
