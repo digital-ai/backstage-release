@@ -18,10 +18,8 @@ import {
 } from '../mocks/mock.test.handlers';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseOverviewApi } from './ReleaseOverviewApi';
-import { mockServices } from "@backstage/backend-test-utils";
+import { mockServices } from '@backstage/backend-test-utils';
 import { templateBackendPluginApiResponse } from '../mocks/mockTemplateData';
-
-
 
 function configureMockServer(): SetupServerApi {
   const server = setupServer();
