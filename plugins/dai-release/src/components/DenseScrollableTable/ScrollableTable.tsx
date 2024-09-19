@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     borderBottom: '1px solid #d5d5d5',
     borderTop: '1px solid #d5d5d5',
     fontWeight: 700,
-    lineHeight: '18px',
+    padding: '8px 16px 8px 20px'
   },
   layoutSec: {
     paddingTop: '0',
