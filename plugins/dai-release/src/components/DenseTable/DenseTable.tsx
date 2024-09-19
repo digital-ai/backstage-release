@@ -1,14 +1,8 @@
-import {
-  Link,
-  LinkButton,
-  Table,
-  TableColumn,
-} from '@backstage/core-components';
+import { Link, Table, TableColumn } from '@backstage/core-components';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
-import { createSvgIcon } from '@mui/material/utils';
 import dayjs from 'dayjs';
 import { formatTimestamp } from '../../utils/dateTimeUtils';
 import { makeStyles } from '@material-ui/core';
@@ -47,24 +41,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
 }));
-
-const PlusIcon = createSvgIcon(
-  // credit: plus icon from https://heroicons.com
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 4.5v15m7.5-7.5h-15"
-    />
-  </svg>,
-  'Plus',
-);
 
 export const columnFactories = Object.freeze({
   createTitleColumns(): TableColumn {
@@ -137,43 +113,6 @@ export const columnFactories = Object.freeze({
       sorting: false,
     };
   },
-
-  createTemplateNameColumns(): TableColumn {
-    return {
-      title: 'Name',
-      field: 'title',
-      cellStyle: { width: '1000px', display: 'block', lineHeight: '18px' },
-      headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-        <Link to={row.titleRedirectUri}>{row.title}</Link>
-      ),
-      searchable: true,
-      sorting: false,
-    };
-  },
-  createTemplateActionColumns(): TableColumn {
-    return {
-      title: 'Action',
-      field: '',
-      cellStyle: { width: '180px', display: 'block', lineHeight: '18px' },
-      headerStyle: headerStyle,
-      render: (row: Partial<any>) => (
-        <div style={{ width: '150px', height: '40px' }}>
-          <LinkButton
-            to={row.newReleaseRedirectUri}
-            color="default"
-            variant="outlined"
-            style={{ width: '150px', height: '40px', textTransform: 'none' }}
-            startIcon={<PlusIcon />}
-          >
-            New Releases
-          </LinkButton>
-        </div>
-      ),
-      searchable: false,
-      sorting: false,
-    };
-  },
 });
 
 export const defaultColumns: TableColumn[] = [
@@ -181,13 +120,6 @@ export const defaultColumns: TableColumn[] = [
   columnFactories.createFolderColumns(),
   columnFactories.createStatusColumns(),
   columnFactories.createFromDateColumns(),
-  columnFactories.createAdditionalDataColumns(),
-];
-
-export const defaultTemplateColumns: TableColumn[] = [
-  columnFactories.createTemplateNameColumns(),
-  columnFactories.createFolderColumns(),
-  columnFactories.createTemplateActionColumns(),
   columnFactories.createAdditionalDataColumns(),
 ];
 
