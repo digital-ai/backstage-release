@@ -4,15 +4,16 @@ import {
   ScrollableTable,
   ScrollableTableColumn,
 } from '../DenseScrollableTable/ScrollableTable';
+import { PlusIcon } from '../../icon/icon';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
+
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
-import {PlusIcon} from "../../icon/icon";
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
