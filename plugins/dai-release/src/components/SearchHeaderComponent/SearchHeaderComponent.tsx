@@ -133,7 +133,6 @@ export const SearchHeaderComponent = ({
                 </Select>
               </FormControl>
             </Grid>
-            {displayFilter && (
               <Grid item className={classes.inputItem}>
                 <TextField
                   id="outlined-basic"
@@ -142,6 +141,15 @@ export const SearchHeaderComponent = ({
                   value={searchTitle}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     onSearchByTitle(event.target.value);
+                    if (onSetData) {
+                      onSetData([]);
+                    }
+                    if (onSetHasMore) {
+                      onSetHasMore(true);
+                    }
+                    if (onSetLoading) {
+                      onSetLoading(true);
+                    }
                   }}
                   size="small"
                   InputProps={{
@@ -156,7 +164,6 @@ export const SearchHeaderComponent = ({
                   fullWidth
                 />
               </Grid>
-            )}
             {displayFilter && onShowDrawer && (
               <Grid item style={{ display: 'flex' }}>
                 <SvgIcon onClick={() => !!error || onShowDrawer(true)}>
