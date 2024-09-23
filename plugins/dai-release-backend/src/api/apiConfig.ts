@@ -10,6 +10,9 @@ export const TEMPLATE_DETAILS_REDIRECT_PATH = '/#/templates/';
 export const CREATE_RELEASE_REDIRECT_PATH =
   '/#/releases/create?fromTemplateId=';
 export const RELEASE_TEMPLATE_LIST_API_PATH = '/api/v1/templates';
+export const RELEASE_TEMPLATE_GIT_CONFIG_PATH = '/api/v1/config/byTypeAndTitle';
+export const RELEASE_TEMPLATE_GIT_COMMIT_VERSIONING_PATH =
+  '/api/v1/folders/versioning';
 
 export const getCredentials = (config: ReleaseInstanceConfig) => {
   try {

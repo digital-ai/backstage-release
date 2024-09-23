@@ -18,6 +18,7 @@ import Router from 'express-promise-router';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
+import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
 
 export interface RouterOptions {
   config: Config;
@@ -32,6 +33,10 @@ export async function createRouter(
   const { logger, config, permissions, httpAuth } = options;
 
   const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+  const templatesOverviewApi = TemplatesOverviewApi.fromConfig(
     ReleaseConfig.fromConfig(config),
     logger,
   );
@@ -152,6 +157,28 @@ export async function createRouter(
       );
     }
     res.status(200).json(instancesList);
+  });
+
+  router.get('/meta-information', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+      const instanceName = req.query.instanceName?.toString() || '';
+      const folderId = req.query.folderId?.toString() || '';
+      const metaInformation = await templatesOverviewApi.getTemplateMetaInfo(
+        instanceName,
+        folderId,
+      );
+      res.status(200).json(metaInformation);
+    }
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });
