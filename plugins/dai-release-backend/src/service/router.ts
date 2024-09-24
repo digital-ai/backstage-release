@@ -159,7 +159,7 @@ export async function createRouter(
     res.status(200).json(instancesList);
   });
 
-  router.get('/meta-information', async (req, res) => {
+  router.get('/template/meta', async (req, res) => {
     if (permissions && httpAuth) {
       const decision = await permissions.authorize(
         [{ permission: daiReleaseViewPermission }],
@@ -171,14 +171,14 @@ export async function createRouter(
           'Access Denied: Unauthorized to access the Backstage Release plugin',
         );
       }
-      const instanceName = req.query.instanceName?.toString() || '';
-      const folderId = req.query.folderId?.toString() || '';
-      const metaInformation = await templatesOverviewApi.getTemplateMetaInfo(
-        instanceName,
-        folderId,
-      );
-      res.status(200).json(metaInformation);
     }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const folderId = req.query.folderId?.toString() || '';
+    const metaInformation = await templatesOverviewApi.getTemplateMetaInfo(
+      instanceName,
+      folderId,
+    );
+    res.status(200).json(metaInformation);
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });

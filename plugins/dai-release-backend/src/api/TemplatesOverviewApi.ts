@@ -27,6 +27,9 @@ export class TemplatesOverviewApi {
   }
 
   async getTemplateMetaInfo(instanceName: string, folderId: string) {
+    this.logger?.debug(
+      `Calling Template Overview api, instance: ${instanceName} folderId: ${folderId}`,
+    );
     const instanceConfig = this.config.getInstanceConfig(instanceName);
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
@@ -37,26 +40,26 @@ export class TemplatesOverviewApi {
     const commitVersioningData: TemplateCommitVersions =
       await this.getTemplateCommitVersions(folderId, accessToken, apiUrl);
 
-    // Extract the first element from gitConfigData
-    const gitConfig = gitConfigData[0];
+    if (gitConfigData && gitConfigData.length > 0) {
+      const gitConfig = gitConfigData[0];
+      // Extract the latest commit from commitVersioningData.versions based on commitTime
+      const latestCommit = commitVersioningData?.versions.reduce(
+        (latest, current) =>
+          current.commitTime > latest.commitTime ? current : latest,
+      );
 
-    // Extract the latest commit from commitVersioningData.versions based on commitTime
-    const latestCommit = commitVersioningData.versions.reduce(
-      (latest, current) =>
-        current.commitTime > latest.commitTime ? current : latest,
-    );
-
-    // Combine the extracted data into the desired format
-    const resultData: TemplateGitMetaInfo = {
-      folderId: gitConfig.folderId,
-      url: gitConfig.url,
-      name: latestCommit.name,
-      shortMessage: latestCommit.shortMessage,
-      committer: latestCommit.commiter,
-      commitTime: latestCommit.commitTime,
-      commitHash: latestCommit.commitHash,
-    };
-    return resultData;
+      // Combine the extracted data into the desired format
+      return {
+        folderId: gitConfig.folderId,
+        url: gitConfig.url,
+        name: latestCommit?.name,
+        shortMessage: latestCommit?.shortMessage,
+        committer: latestCommit?.commiter,
+        commitTime: latestCommit?.commitTime,
+        commitHash: latestCommit?.commitHash,
+      };
+    }
+    return {} as TemplateGitMetaInfo;
   }
 
   private async getTemplateFolderGitConfig(

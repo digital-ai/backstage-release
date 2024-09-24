@@ -19,7 +19,10 @@ import express from 'express';
 import { mockServices } from '@backstage/backend-test-utils';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
-import { templateBackendPluginApiResponse } from '../mocks/mockTemplateData';
+import {
+  templateBackendPluginApiResponse,
+  templateGitMetaInfoResponse,
+} from '../mocks/mockTemplateData';
 
 let app: express.Express;
 const permissionApi = {
@@ -269,6 +272,16 @@ describe('router api tests - without permissions', () => {
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(templateBackendPluginApiResponse);
+    });
+  });
+  describe('GET /template/meta', () => {
+    it('GET GIT meta information of template', async () => {
+      const response = await request(app)
+        .get('/template/meta')
+        .query('instanceName=default&folderId=Applications/Folder1')
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(templateGitMetaInfoResponse);
     });
   });
 });
