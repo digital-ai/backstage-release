@@ -84,7 +84,7 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-        await releaseOverviewApi.getTemplates('', '0', '100', 'default2'),
+        await releaseOverviewApi.getTemplates('',[], '0', '100', 'default2'),
     ).rejects.toThrow(
       "Couldn't find a release instance 'default2' in the config",
     );
@@ -125,6 +125,7 @@ describe('Backend API tests for Releases', () => {
 
     const templateList: TemplateList = await releaseOverviewApi.getTemplates(
       '',
+      [],
       '0',
       '100',
       'default',
@@ -176,7 +177,7 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
+        await releaseOverviewApi.getTemplates('',[], '0', '100', 'default'),
     ).rejects.toThrow(
       'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
     );
@@ -223,7 +224,7 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
+        await releaseOverviewApi.getTemplates('',[], '0', '100', 'default'),
     ).rejects.toThrow(
       'Permission denied or the requested functionality is not supported',
     );
@@ -266,7 +267,7 @@ describe('Backend API tests for Releases', () => {
     );
     await expect(
       async () =>
-        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
+        await releaseOverviewApi.getTemplates('',[], '0', '100', 'default'),
     ).rejects.toThrow('Release service request not found');
   });
 
@@ -309,7 +310,7 @@ describe('Backend API tests for Releases', () => {
 
     await expect(
       async () =>
-        await releaseOverviewApi.getTemplates('', '0', '100', 'default'),
+        await releaseOverviewApi.getTemplates('',[], '0', '100', 'default'),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
   });
 
