@@ -322,7 +322,6 @@ export class ReleaseOverviewApi {
         url += `&tag=${tag}`;
       });
     }
-    this.logger.info("Url : "+ url)
     const response = await fetch(
         url,
       {

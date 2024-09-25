@@ -119,7 +119,7 @@ describe('FilterComponent - Templates', () => {
     const tag2Icon = user2.querySelector('svg[data-testid="chip-icon-1"]');
     expect(tag2Icon).toBeInTheDocument();
 
-    //Check if the close icon is available
+    // Check if the close icon is available
     const clear = rendered.getByRole('button', { name: /Clear/i });
     clear.querySelector('svg[data-testid="CloseIcon"]')
   });
