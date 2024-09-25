@@ -1,6 +1,6 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollableTable,
   ScrollableTableColumn,
@@ -102,11 +102,18 @@ export const TemplateHomePageComponent = () => {
   };
 
   const [showDrawer, onShowDrawer] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
   const resetState = () => {
     setData([]);
     setHasMore(true);
     setLoading(true);
   };
+  useEffect(() => {
+    // Calculate the number of applied filters
+    const count =
+      (tags.length > 0 ? tags.length : 0) + (searchTitle.length > 0 ? 1 : 0);
+    setFilterCount(count);
+  }, [tags, searchTitle]);
 
   return (
     <div>
@@ -131,6 +138,7 @@ export const TemplateHomePageComponent = () => {
               instance={instance}
               instanceList={instanceList}
               error={error}
+              filterCount={filterCount}
               onSearchByTitle={setSearchTitle}
               onShowDrawer={onShowDrawer}
               onSetInstance={setInstance}

@@ -137,9 +137,7 @@ export const FilterComponent = ({
     const {
       target: { value },
     } = event;
-    if (onStatusTagChange) {
-      onStatusTagChange(typeof value === 'string' ? value.split(',') : value);
-    }
+    onStatusTagChange?.(typeof value === 'string' ? value.split(',') : value);
   };
 
   const [customValues, setCustomValues] = useState<string[]>([]); // State to store custom values
@@ -148,12 +146,8 @@ export const FilterComponent = ({
   // Handle change for selected custom values
   const handleChange = (_event: React.ChangeEvent<{}>, newValue: string[]) => {
     setCustomValues(newValue);
-    if (onSetTags) {
-      onSetTags(newValue);
-    }
-    if (resetState) {
-      resetState();
-    }
+    onSetTags?.(newValue);
+    resetState?.();
   };
 
   // Handle key down event to add a custom value when 'Enter' is pressed
@@ -162,9 +156,7 @@ export const FilterComponent = ({
       event.preventDefault();
       if (!customValues.includes(inputValue.trim())) {
         const newCustomValues = [...customValues, inputValue.trim()];
-        if (onSetTags) {
-          onSetTags(newCustomValues);
-        }
+        onSetTags?.(newCustomValues);
         setCustomValues(newCustomValues);
         setInputValue(''); // Clear the input field
       }
@@ -172,31 +164,15 @@ export const FilterComponent = ({
   };
 
   const clearAllState = () => {
-    if (onSetTags) {
-      onSetTags([]);
-    }
-    if (onSearchByTitle) {
-      onSearchByTitle('');
-    }
-    if (resetState) {
-      resetState();
-    }
-    if (onFromDateChange) {
-      onFromDateChange(null);
-    }
-    if (onToDateChange) {
-      onToDateChange(null);
-    }
-    if (onOrderByChange) {
-      onOrderByChange('start_date');
-    }
-    if (onStatusTagChange) {
-      onStatusTagChange([]);
-    }
-    if (setCustomValues) {
-      setCustomValues([]);
-      setInputValue('');
-    }
+    onSetTags?.([]);
+    onSearchByTitle?.('');
+    resetState?.();
+    onFromDateChange?.(null);
+    onToDateChange?.(null);
+    onOrderByChange?.('start_date');
+    onStatusTagChange?.([]);
+    setCustomValues?.([]);
+    setInputValue?.('');
   };
 
   return (

@@ -1,7 +1,7 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
 export const HomePageComponent = () => {
   const classes = useStyles();
   const [showDrawer, onShowDrawer] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
 
   const {
     items,
@@ -44,6 +45,14 @@ export const HomePageComponent = () => {
     setInstance,
   } = useReleases();
 
+  useEffect(() => {
+    // Calculate the number of applied filters
+    const count =
+      (fromDate === null ? 0 : 1) +
+      (toDate === null ? 0 : 1) +
+      (statusTags !== undefined ? statusTags.length : 0);
+    setFilterCount(count);
+  }, [fromDate, toDate, statusTags]);
   return (
     <Page themeId="home">
       <Header
@@ -66,6 +75,7 @@ export const HomePageComponent = () => {
               searchTitle={searchTitle}
               instance={instance}
               instanceList={instanceList}
+              filterCount={filterCount}
               retry={retry}
               error={error}
               onSearchByTitle={setSearchTitle}
