@@ -21,9 +21,8 @@ const useStyles = makeStyles(() => ({
   layoutSec: {
     paddingTop: '0',
   },
-  commonCellStyle: {
-    width: 'auto',
-    whiteSpace: 'nowrap',
+  cellStyle: {
+    padding: '8px 10px 8px 18px',
   },
   customLoadingIcon: {
     display: 'flex',
@@ -92,7 +91,11 @@ export const ScrollableTable = ({
           }
           onScroll={handleScroll}
         >
-          <Table stickyHeader aria-label="sticky table">
+          <Table
+            stickyHeader
+            aria-label="sticky table"
+            style={{ tableLayout: 'auto' }}
+          >
             <TableHead>
               <TableRow>
                 {columns.map(column => (
@@ -110,7 +113,11 @@ export const ScrollableTable = ({
                 data.map((row, index) => (
                   <TableRow key={index}>
                     {columns.map((column, colIndex) => (
-                      <TableCell key={colIndex} style={column.cellStyle}>
+                      <TableCell
+                        key={colIndex}
+                        style={column.cellStyle}
+                        className={classes.cellStyle}
+                      >
                         {column.render ? column.render(row) : ''}
                       </TableCell>
                     ))}

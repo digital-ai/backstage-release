@@ -26,6 +26,7 @@ describe('SearchHeaderComponent', () => {
       instance: '',
       instanceList: [],
       error: undefined,
+      filterCount: 0,
       onSetInstance: () => {},
       onShowDrawer: () => {},
       onSearchByTitle: () => {},
@@ -53,6 +54,7 @@ describe('SearchHeaderComponent', () => {
         },
       ],
       error: undefined,
+      filterCount: 3,
       onSetInstance: () => {},
       onShowDrawer: () => {},
       onSearchByTitle: () => {},
@@ -63,12 +65,15 @@ describe('SearchHeaderComponent', () => {
     expect(rendered.getByLabelText('Choose Instance')).toHaveTextContent(
       'default',
     );
+    const badge = rendered.getByTestId('badge-icon');
+    expect(badge).toHaveTextContent('3');
   });
 });
 async function renderContent(args: {
   titleName: string;
   searchTitleTextField: string;
   instance: string;
+  filterCount: number;
   onShowDrawer: () => void;
   instanceList: any[];
   searchTitle: string;
@@ -85,6 +90,7 @@ async function renderContent(args: {
       searchTitle={args.searchTitle}
       instance={args.instance}
       instanceList={args.instanceList}
+      filterCount={args.filterCount}
       retry={args.retry}
       error={args.error}
       onSearchByTitle={args.onSearchByTitle}
