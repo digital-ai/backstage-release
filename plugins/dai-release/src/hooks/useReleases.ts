@@ -17,7 +17,7 @@ export function useReleases(): {
   fromDate: dayjs.Dayjs | null;
   toDate: dayjs.Dayjs | null;
   orderBy: string;
-  statusTags: string[];
+  statusTags: string[] | undefined;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   setPage: (page: number) => void;
@@ -26,7 +26,7 @@ export function useReleases(): {
   setFromDate: (fromDate: dayjs.Dayjs | null) => void;
   setToDate: (toDate: dayjs.Dayjs | null) => void;
   setOrderBy: (orderBy: string) => void;
-  setStatusTags: (statusTags: string[]) => void;
+  setStatusTags: (statusTags: string[] | undefined) => void;
   setInstance: (instance: string) => void;
 } {
   const [page, setPage] = useState(0);
@@ -35,7 +35,7 @@ export function useReleases(): {
   const [searchTitle, setSearchTitle] = useState('');
   const [fromDate, setFromDate] = useState<dayjs.Dayjs | null>(null);
   const [toDate, setToDate] = useState<dayjs.Dayjs | null>(null);
-  const [statusTags, setStatusTags] = useState<string[]>([]);
+  const [statusTags, setStatusTags] = useState<string[] | undefined>([]);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined

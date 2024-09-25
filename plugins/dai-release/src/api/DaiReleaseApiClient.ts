@@ -83,6 +83,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     rowsPerPage: number,
     searchTile: string,
     instanceName: string,
+    _tags: string[],
     options?: { signal?: AbortSignal },
   ): Promise<{ items: TemplateList }> {
     const queryString = new URLSearchParams();
@@ -90,6 +91,9 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('pageNumber', page.toString());
     queryString.append('resultsPerPage', rowsPerPage.toString());
     queryString.append('title', searchTile.toString());
+    _tags.forEach(tag => {
+      queryString.append('tag', tag);
+    });
     queryString.append('instanceName', instanceName.toString());
     const urlSegment = `templates?${queryString}`;
     const items = await this.get<TemplateList>(urlSegment, options);

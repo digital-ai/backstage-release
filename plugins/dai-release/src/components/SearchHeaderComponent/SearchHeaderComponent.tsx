@@ -20,10 +20,8 @@ type SearchHeaderComponentProps = {
   retry?: () => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
-  onShowDrawer?: (showDrawer: boolean) => void;
-  onSetData?: (data: any) => void;
-  onSetHasMore?: (hasMore: boolean) => void;
-  onSetLoading?: (loading: boolean) => void;
+  onShowDrawer: (showDrawer: boolean) => void;
+  resetState?: () => void;
   displayFilter: boolean;
   error: Error | undefined;
 };
@@ -40,9 +38,7 @@ export const SearchHeaderComponent = ({
   onSearchByTitle,
   onSetInstance,
   onShowDrawer,
-  onSetData,
-  onSetHasMore,
-  onSetLoading,
+  resetState,
 }: SearchHeaderComponentProps) => {
   const useStyles = makeStyles(() => ({
     inputRoot: {
@@ -76,7 +72,7 @@ export const SearchHeaderComponent = ({
             <SyncIcon
               fontSize="small"
               style={{ cursor: error ? 'no-drop' : 'pointer' }}
-              onClick={() => !!error || retry()}
+              onClick={() => !!error || retry() }
             />
           )}
         </Grid>
@@ -103,14 +99,8 @@ export const SearchHeaderComponent = ({
                   label="Choose Instance"
                   onChange={(event: SelectChangeEvent) => {
                     onSetInstance(event.target.value);
-                    if (onSetData) {
-                      onSetData([]);
-                    }
-                    if (onSetHasMore) {
-                      onSetHasMore(true);
-                    }
-                    if (onSetLoading) {
-                      onSetLoading(true);
+                    if (resetState) {
+                      resetState();
                     }
                   }}
                   input={
@@ -133,6 +123,7 @@ export const SearchHeaderComponent = ({
                 </Select>
               </FormControl>
             </Grid>
+            {displayFilter && (
               <Grid item className={classes.inputItem}>
                 <TextField
                   id="outlined-basic"
@@ -141,14 +132,8 @@ export const SearchHeaderComponent = ({
                   value={searchTitle}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     onSearchByTitle(event.target.value);
-                    if (onSetData) {
-                      onSetData([]);
-                    }
-                    if (onSetHasMore) {
-                      onSetHasMore(true);
-                    }
-                    if (onSetLoading) {
-                      onSetLoading(true);
+                    if (resetState) {
+                      resetState();
                     }
                   }}
                   size="small"
@@ -164,7 +149,7 @@ export const SearchHeaderComponent = ({
                   fullWidth
                 />
               </Grid>
-            {displayFilter && onShowDrawer && (
+                )}
               <Grid item style={{ display: 'flex' }}>
                 <SvgIcon onClick={() => !!error || onShowDrawer(true)}>
                   <svg
@@ -183,7 +168,6 @@ export const SearchHeaderComponent = ({
                   </svg>
                 </SvgIcon>
               </Grid>
-            )}
           </Grid>
         </Grid>
       </Grid>

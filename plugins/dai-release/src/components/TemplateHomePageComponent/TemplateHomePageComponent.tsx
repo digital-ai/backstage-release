@@ -1,19 +1,20 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
+import React, {useState} from 'react';
 import {
   ScrollableTable,
   ScrollableTableColumn,
 } from '../DenseScrollableTable/ScrollableTable';
+import { FilterComponent } from "../FilterComponent";
 import { PlusIcon } from '../../icon/icon';
-import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
-
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
+
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -57,7 +58,7 @@ const defaultColumns: ScrollableTableColumn[] = [
           style={{ width: '150px', height: '40px', textTransform: 'none' }}
           startIcon={<PlusIcon />}
         >
-          New Releases
+          New Release
         </LinkButton>
       </div>
     ),
@@ -79,10 +80,12 @@ export const TemplateHomePageComponent = () => {
     loading,
     error,
     data,
+    tags,
     hasMore,
     searchTitle,
     instance,
     instanceList,
+    setTags,
     setPage,
     setSearchTitle,
     setInstance,
@@ -94,8 +97,18 @@ export const TemplateHomePageComponent = () => {
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
-    setPage((prevPage: number) => prevPage + 1);
+    setPage((prevPage: number) => {
+      return prevPage + 1;
+    });
   };
+
+  const [showDrawer, onShowDrawer] = useState(false);
+  const resetState = () => {
+    setData([]);
+    setHasMore(true);
+    setLoading(true);
+  };
+
   return (
     <div>
       <Header
@@ -120,10 +133,18 @@ export const TemplateHomePageComponent = () => {
               instanceList={instanceList}
               error={error}
               onSearchByTitle={setSearchTitle}
+              onShowDrawer={onShowDrawer}
               onSetInstance={setInstance}
-              onSetData={setData}
-              onSetHasMore={setHasMore}
-              onSetLoading={setLoading}
+              resetState={resetState}
+            />
+            <FilterComponent
+                showDrawer={showDrawer}
+                onShowDrawer={onShowDrawer}
+                tags={tags}
+                searchTitle={searchTitle}
+                onSetTags={setTags}
+                onSearchByTitle={setSearchTitle}
+                resetState={resetState}
             />
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />

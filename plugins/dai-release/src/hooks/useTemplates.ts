@@ -4,23 +4,25 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
-import { useDebouncedValue } from '../utils/helpers';
+import {useDebouncedValue} from '../utils/helpers';
 
 export function useTemplates(): {
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-  data: any;
-  error: Error | undefined;
-  hasMore: Boolean;
-  searchTitle: string;
   instance: string;
+  data: any;
+  tags: string[];
+  setData: (value: any) => void;
+  hasMore: boolean;
+  setHasMore: (value: boolean) => void;
+  setRowsPerPage: (value: number) => void;
+  loading: boolean;
+  error: undefined | Error;
+  searchTitle: string;
+  setLoading: (value: boolean) => void;
   instanceList: ReleaseInstanceConfig[] | undefined;
-  setPage: (page: (prevPage: number) => number) => void;
-  setRowsPerPage: (pageSize: number) => void;
-  setSearchTitle: (title: string) => void;
-  setInstance: (instance: string) => void;
-  setHasMore: (hasMore: boolean) => void;
-  setData: (data: any) => void;
+  setSearchTitle: (value:  string) => void;
+  setTags: (value: string[]) => void
+  setInstance: (value: string) => void;
+  setPage: (value: (prevPage: number) => number)  => void
 } {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -32,13 +34,18 @@ export function useTemplates(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState<string []>([]);
+
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Use the debounced value of searchTitle, it will update the state after 1 second
-  const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
+  const debouncedSearchTitle = useDebouncedValue(searchTitle, 500);
+
+  // Use the debounced value of searchTag, it will update the state after 1 second
+  const debouncedSearchTag = useDebouncedValue(tags, 500);
 
   const { error } = useAsyncRetryWithSelectiveDeps(
     async () => {
@@ -67,6 +74,7 @@ export function useTemplates(): {
           rowsPerPage,
           debouncedSearchTitle,
           instance,
+          debouncedSearchTag,
           { signal: abortController.signal },
         );
 
@@ -92,23 +100,25 @@ export function useTemplates(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, debouncedSearchTitle, instance],
+    [api, rowsPerPage, debouncedSearchTitle, instance, debouncedSearchTag],
   );
 
   return {
-    loading,
-    hasMore,
-    setLoading,
     data,
     error,
-    searchTitle: searchTitle,
+    hasMore,
     instance,
     instanceList,
+    loading,
+    searchTitle: searchTitle,
+    setData,
+    setHasMore,
+    setInstance,
+    setLoading,
     setPage,
     setRowsPerPage,
     setSearchTitle,
-    setInstance,
-    setHasMore,
-    setData,
+    setTags,
+    tags,
   };
 }
