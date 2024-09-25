@@ -148,7 +148,7 @@ describe('ReleaseApiClient', () => {
         ),
       );
 
-      const response = await client.getTemplates(0, 15, '','default',[]);
+      const response = await client.getTemplates(0, 15, '', 'default', []);
       expect(response !== undefined).toBeTruthy();
     });
     it('should return error', async () => {
@@ -162,7 +162,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getTemplates(0, 1, '', 'default',[]);
+        await client.getTemplates(0, 1, '', 'default', []);
       } catch (e) {
         err = e;
       } finally {
@@ -179,7 +179,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getTemplates(0, 15, '','default',[]);
+        await client.getTemplates(0, 15, '', 'default', []);
       } catch (e) {
         err = e;
       } finally {

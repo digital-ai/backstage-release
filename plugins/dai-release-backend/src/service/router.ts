@@ -118,7 +118,12 @@ export async function createRouter(
     }
 
     const title = getDecodedQueryVal(req.query.title?.toString());
-    const tags: string[] = req.query.tag ? req.query.tag.toString().split(',').map(tag => getDecodedQueryVal(tag)): [];
+    const tags: string[] = req.query.tag
+      ? req.query.tag
+          .toString()
+          .split(',')
+          .map(tag => getDecodedQueryVal(tag))
+      : [];
     const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
@@ -155,7 +160,6 @@ export async function createRouter(
     }
     res.status(200).json(instancesList);
   });
-
 
   const middleware = MiddlewareFactory.create({ logger, config });
   router.use(middleware.error());

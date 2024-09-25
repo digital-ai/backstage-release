@@ -66,7 +66,7 @@ describe('FilterComponent - Templates', () => {
   // setup mock response
   beforeEach(() => {
     server.use(
-        rest.get('/*', (_, res, ctx) => res(ctx.status(200), ctx.json({}))),
+      rest.get('/*', (_, res, ctx) => res(ctx.status(200), ctx.json({}))),
     );
   });
   it('should render the search filter elements', async () => {
@@ -76,7 +76,7 @@ describe('FilterComponent - Templates', () => {
       tags: [],
       onSearchByTitle: () => {},
       onSetTags: () => {},
-      onShowDrawer:  () => {},
+      onShowDrawer: () => {},
       resetState: () => {},
     });
     expect(rendered.getByLabelText('Search by name')).toBeInTheDocument();
@@ -86,10 +86,10 @@ describe('FilterComponent - Templates', () => {
     const rendered = await renderTemplateContent({
       showDrawer: true,
       searchTitle: 'test',
-      tags: ['user1','user2'],
+      tags: ['user1', 'user2'],
       onSearchByTitle: () => {},
       onSetTags: () => {},
-      onShowDrawer:  () => {},
+      onShowDrawer: () => {},
       resetState: () => {},
     });
     expect(rendered.getByLabelText('Search by name')).toHaveValue('test');
@@ -99,12 +99,17 @@ describe('FilterComponent - Templates', () => {
 
     // Check if the placeholder text is correct
     const searchByTagsInput = rendered.getByLabelText('Search by tags');
-    expect(searchByTagsInput).toHaveAttribute('placeholder', 'Type and press Enter');
+    expect(searchByTagsInput).toHaveAttribute(
+      'placeholder',
+      'Type and press Enter',
+    );
 
     const user1 = rendered.getByRole('button', { name: /user1/i });
 
     // Check if the delete icon is available
-    const deleteUser1Icon = user1.querySelector('svg[data-testid="CancelIcon"]');
+    const deleteUser1Icon = user1.querySelector(
+      'svg[data-testid="CancelIcon"]',
+    );
     expect(deleteUser1Icon).toBeInTheDocument();
 
     // Check if the tag icon is available
@@ -113,7 +118,9 @@ describe('FilterComponent - Templates', () => {
 
     const user2 = rendered.getByRole('button', { name: /user2/i });
     // Check if the delete icon is available
-    const deleteUser2Icon = user2.querySelector('svg[data-testid="CancelIcon"]');
+    const deleteUser2Icon = user2.querySelector(
+      'svg[data-testid="CancelIcon"]',
+    );
     expect(deleteUser2Icon).toBeInTheDocument();
     // Check if the tag icon is available
     const tag2Icon = user2.querySelector('svg[data-testid="chip-icon-1"]');
@@ -121,9 +128,8 @@ describe('FilterComponent - Templates', () => {
 
     // Check if the close icon is available
     const clear = rendered.getByRole('button', { name: /Clear/i });
-    clear.querySelector('svg[data-testid="CloseIcon"]')
+    clear.querySelector('svg[data-testid="CloseIcon"]');
   });
-
 });
 
 async function renderContent(args: {
@@ -166,7 +172,7 @@ async function renderTemplateContent(args: {
   resetState?: () => void;
 }) {
   return await renderInTestApp(
-  <FilterComponent
+    <FilterComponent
       showDrawer={args.showDrawer}
       onShowDrawer={args.onShowDrawer}
       tags={args.tags}
@@ -174,6 +180,6 @@ async function renderTemplateContent(args: {
       onSetTags={args.onSetTags}
       onSearchByTitle={args.onSearchByTitle}
       resetState={args.resetState}
-  />,
+    />,
   );
 }

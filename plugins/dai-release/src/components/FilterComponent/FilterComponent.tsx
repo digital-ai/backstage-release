@@ -6,7 +6,7 @@ import {
   Paper,
   makeStyles,
 } from '@material-ui/core';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -124,7 +124,7 @@ export const FilterComponent = ({
       width: 500,
       '& > * + *': {
         marginTop: theme.spacing(3),
-      }
+      },
     },
     inputItem: {
       width: '100%',
@@ -166,7 +166,7 @@ export const FilterComponent = ({
           onSetTags(newCustomValues);
         }
         setCustomValues(newCustomValues);
-        setInputValue('');// Clear the input field
+        setInputValue(''); // Clear the input field
       }
     }
   };
@@ -193,12 +193,10 @@ export const FilterComponent = ({
     if (onStatusTagChange) {
       onStatusTagChange([]);
     }
-    if(setCustomValues) {
+    if (setCustomValues) {
       setCustomValues([]);
       setInputValue('');
     }
-
-
   };
 
   return (
@@ -223,201 +221,206 @@ export const FilterComponent = ({
       </Paper>
       <FormControl sx={{ mx: 2, my: 3 }}>
         <Grid
-            container
-            spacing={3}
-            direction="column"
-            justifyContent="flex-start"
-            style={{width: '300px'}}
+          container
+          spacing={3}
+          direction="column"
+          justifyContent="flex-start"
+          style={{ width: '300px' }}
         >
           <Grid item className={classes.clearGrid}>
             <span>Applied filters</span>
             <Button
-                variant="outlined"
-                onClick={() => clearAllState()}
-                size="small"
-                className={classes.inputLabelRoot}
+              variant="outlined"
+              onClick={() => clearAllState()}
+              size="small"
+              className={classes.inputLabelRoot}
             >
               Clear all
             </Button>
           </Grid>
           {onStatusTagChange && (
-              <Grid item>
-                <FormControl fullWidth size="small">
-                  <InputLabel
+            <Grid item>
+              <FormControl fullWidth size="small">
+                <InputLabel
+                  className={classes.inputRoot}
+                  id="status-multiple-checkbox-label"
+                >
+                  Status
+                </InputLabel>
+                <Select
+                  renderValue={selected => (
+                    <span className={classes.statusTagLabel}>
+                      {selected.join(', ')}
+                    </span>
+                  )}
+                  labelId="status-multiple-checkbox-label"
+                  id="status-multiple-checkbox"
+                  multiple
+                  value={statusTags}
+                  onChange={onStatusChange}
+                  input={
+                    <OutlinedInput
+                      label="Status"
                       className={classes.inputRoot}
-                      id="status-multiple-checkbox-label"
-                  >
-                    Status
-                  </InputLabel>
-                  <Select
-                      renderValue={selected => (
-                          <span className={classes.statusTagLabel}>
-                    {selected.join(', ')}
-                  </span>
-                      )}
-                      labelId="status-multiple-checkbox-label"
-                      id="status-multiple-checkbox"
-                      multiple
-                      value={statusTags}
-                      onChange={onStatusChange}
-                      input={
-                        <OutlinedInput label="Status" className={classes.inputRoot}/>
-                      }
-                      inputProps={{size: 'small'}}
-                  >
-                    <MenuItem style={{gap: '5px'}}>
-                      <Button
-                          variant="text"
-                          size="small"
-                          startIcon={<SelectAll/>}
-                          onClick={event => {
-                            event.stopPropagation();
-                            const statusValues = statuses.map(item => item.status);
-                            onStatusTagChange(statusValues);
-                          }}
-                          className={classes.selectButton}
-                      >
-                        Select All
-                      </Button>
-                      <Button
-                          variant="text"
-                          size="small"
-                          startIcon={<ClearAllOutlined/>}
-                          onClick={event => {
-                            event.stopPropagation();
-                            onStatusTagChange([]);
-                          }}
-                          className={classes.selectButton}
-                      >
-                        Clear All
-                      </Button>
+                    />
+                  }
+                  inputProps={{ size: 'small' }}
+                >
+                  <MenuItem style={{ gap: '5px' }}>
+                    <Button
+                      variant="text"
+                      size="small"
+                      startIcon={<SelectAll />}
+                      onClick={event => {
+                        event.stopPropagation();
+                        const statusValues = statuses.map(item => item.status);
+                        onStatusTagChange(statusValues);
+                      }}
+                      className={classes.selectButton}
+                    >
+                      Select All
+                    </Button>
+                    <Button
+                      variant="text"
+                      size="small"
+                      startIcon={<ClearAllOutlined />}
+                      onClick={event => {
+                        event.stopPropagation();
+                        onStatusTagChange([]);
+                      }}
+                      className={classes.selectButton}
+                    >
+                      Clear All
+                    </Button>
+                  </MenuItem>
+                  {statuses.map(data => (
+                    <MenuItem key={data.status} value={data.status}>
+                      <Checkbox
+                        size="small"
+                        checked={
+                          statusTags && statusTags.indexOf(data.status) > -1
+                        }
+                      />
+                      <i
+                        className={classes.statusIcon}
+                        style={{ backgroundColor: data.color }}
+                      />
+                      <ListItemText
+                        primary={data.status}
+                        classes={{ primary: classes.inputRoot }}
+                      />
                     </MenuItem>
-                    {statuses.map(data => (
-                        <MenuItem key={data.status} value={data.status}>
-                          <Checkbox
-                              size="small"
-                              checked={statusTags && statusTags.indexOf(data.status) > -1}
-                          />
-                          <i
-                              className={classes.statusIcon}
-                              style={{backgroundColor: data.color}}
-                          />
-                          <ListItemText
-                              primary={data.status}
-                              classes={{primary: classes.inputRoot}}
-                          />
-                        </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
           )}
           {onOrderByChange && (
-              <Grid item>
-                <FormControl fullWidth size="small">
-                  <InputLabel
-                      id="orderby-select-label-id"
-                      className={classes.inputRoot}
-                  >
-                    Order by
-                  </InputLabel>
-                  <Select
-                      labelId="orderby-select-label-id"
-                      id="orderby-select-label"
-                      value={orderBy}
+            <Grid item>
+              <FormControl fullWidth size="small">
+                <InputLabel
+                  id="orderby-select-label-id"
+                  className={classes.inputRoot}
+                >
+                  Order by
+                </InputLabel>
+                <Select
+                  labelId="orderby-select-label-id"
+                  id="orderby-select-label"
+                  value={orderBy}
+                  label="Order by"
+                  onChange={(event: SelectChangeEvent) => {
+                    onOrderByChange(event.target.value);
+                  }}
+                  input={
+                    <OutlinedInput
                       label="Order by"
-                      onChange={(event: SelectChangeEvent) => {
-                        onOrderByChange(event.target.value);
-                      }}
-                      input={
-                        <OutlinedInput
-                            label="Order by"
-                            className={classes.inputRoot}
-                        />
-                      }
-                      inputProps={{size: 'small'}}
-                      defaultValue="start_date"
-                  >
-                    <MenuItem value="start_date" className={classes.inputRoot}>
-                      Start Date
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
+                      className={classes.inputRoot}
+                    />
+                  }
+                  inputProps={{ size: 'small' }}
+                  defaultValue="start_date"
+                >
+                  <MenuItem value="start_date" className={classes.inputRoot}>
+                    Start Date
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           )}
           {onFromDateChange && (
-              <Grid item>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                      slotProps={{
-                        textField: {
-                          size: 'small',
-                          InputProps: {
-                            classes: {
-                              root: classes.datePickerInputRoot,
-                            },
-                          },
-                          InputLabelProps: {
-                            classes: {root: classes.inputLabelRoot},
-                          },
+            <Grid item>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      InputProps: {
+                        classes: {
+                          root: classes.datePickerInputRoot,
                         },
-                        openPickerIcon: {
-                          classes: {root: classes.openCalenderPickerIcon},
-                        },
-                        digitalClockSectionItem: {
-                          classes: {root: classes.inputLabelRoot},
-                        },
-                        popper: {
-                          placement: 'left-start',
-                        },
-                      }}
-                      label="From"
-                      ampm
-                      value={fromDate}
-                      onAccept={onFromDateChange}
-                      className={classes.fullWidth}
-                  />
-                </LocalizationProvider>
-              </Grid>
+                      },
+                      InputLabelProps: {
+                        classes: { root: classes.inputLabelRoot },
+                      },
+                    },
+                    openPickerIcon: {
+                      classes: { root: classes.openCalenderPickerIcon },
+                    },
+                    digitalClockSectionItem: {
+                      classes: { root: classes.inputLabelRoot },
+                    },
+                    popper: {
+                      placement: 'left-start',
+                    },
+                  }}
+                  label="From"
+                  ampm
+                  value={fromDate}
+                  onAccept={onFromDateChange}
+                  className={classes.fullWidth}
+                />
+              </LocalizationProvider>
+            </Grid>
           )}
           {onToDateChange && (
-              <Grid item>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                      slotProps={{
-                        textField: {
-                          size: 'small',
-                          InputProps: {
-                            classes: {
-                              root: classes.datePickerInputRoot,
-                            },
-                          },
-                          InputLabelProps: {
-                            classes: {root: classes.inputLabelRoot},
-                          },
+            <Grid item>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      InputProps: {
+                        classes: {
+                          root: classes.datePickerInputRoot,
                         },
-                        openPickerIcon: {
-                          classes: {root: classes.openCalenderPickerIcon},
-                        },
-                        digitalClockSectionItem: {
-                          classes: {root: classes.inputLabelRoot},
-                        },
-                        popper: {
-                          placement: 'left-start',
-                        },
-                      }}
-                      label="To"
-                      ampm
-                      value={toDate}
-                      onAccept={onToDateChange}
-                      className={classes.fullWidth}
-                  />
-                </LocalizationProvider>
-              </Grid>
+                      },
+                      InputLabelProps: {
+                        classes: { root: classes.inputLabelRoot },
+                      },
+                    },
+                    openPickerIcon: {
+                      classes: { root: classes.openCalenderPickerIcon },
+                    },
+                    digitalClockSectionItem: {
+                      classes: { root: classes.inputLabelRoot },
+                    },
+                    popper: {
+                      placement: 'left-start',
+                    },
+                  }}
+                  label="To"
+                  ampm
+                  value={toDate}
+                  onAccept={onToDateChange}
+                  className={classes.fullWidth}
+                />
+              </LocalizationProvider>
+            </Grid>
           )}
           {onSearchByTitle && (
-          <Grid item className={classes.inputItem}>
-            <TextField
+            <Grid item className={classes.inputItem}>
+              <TextField
                 id="outlined-basic"
                 label="Search by name"
                 variant="outlined"
@@ -425,25 +428,24 @@ export const FilterComponent = ({
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   onSearchByTitle(event.target.value);
                   if (resetState) {
-                    resetState()
+                    resetState();
                   }
                 }}
                 size="small"
                 disabled={!!error}
                 fullWidth
-     /*           sx={{
+                /*           sx={{
                 '& .MuiFormLabel-root': {
                   fontSize: '0.875rem',
                   fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
                 },
               }}*/
-            />
-          </Grid>
+              />
+            </Grid>
           )}
           {onSetTags && (
-          <Grid item className={classes.inputItem} >
-
-            <Autocomplete
+            <Grid item className={classes.inputItem}>
+              <Autocomplete
                 multiple
                 freeSolo // Allows user to enter custom values
                 id="tags-outlined"
@@ -451,31 +453,36 @@ export const FilterComponent = ({
                 value={tags} // Controlled value
                 onChange={handleChange} // Update the selected custom values
                 inputValue={inputValue}
-                filterSelectedOptions// Bind input field value
+                filterSelectedOptions // Bind input field value
                 onInputChange={(_event, newValue) => setInputValue(newValue)} // Update input value when typing
                 renderTags={(value: string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                        <Chip
-                            icon={<LocalOfferIcon data-testid={`chip-icon-${index}`} style={{ color: 'green' }} />}
-                            label={option}
-                            {...getTagProps({ index })}
-                            onDelete={getTagProps({ index }).onDelete} // Chip delete functionality
+                  value.map((option: string, index: number) => (
+                    <Chip
+                      icon={
+                        <LocalOfferIcon
+                          data-testid={`chip-icon-${index}`}
+                          style={{ color: 'green' }}
                         />
-                    ))
-                }
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Search by tags"
-                        placeholder="Type and press Enter"
-                        onKeyDown={handleKeyDown} // Add custom values on Enter key press
-                        size="small"
-                        id="outlined-basic"
+                      }
+                      label={option}
+                      {...getTagProps({ index })}
+                      onDelete={getTagProps({ index }).onDelete} // Chip delete functionality
                     />
+                  ))
+                }
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Search by tags"
+                    placeholder="Type and press Enter"
+                    onKeyDown={handleKeyDown} // Add custom values on Enter key press
+                    size="small"
+                    id="outlined-basic"
+                  />
                 )}
-            />
-          </Grid>
-              )}
+              />
+            </Grid>
+          )}
         </Grid>
       </FormControl>
     </Drawer>

@@ -1,11 +1,11 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollableTable,
   ScrollableTableColumn,
 } from '../DenseScrollableTable/ScrollableTable';
-import { FilterComponent } from "../FilterComponent";
+import { FilterComponent } from '../FilterComponent';
 import { PlusIcon } from '../../icon/icon';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
-
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -138,13 +137,13 @@ export const TemplateHomePageComponent = () => {
               resetState={resetState}
             />
             <FilterComponent
-                showDrawer={showDrawer}
-                onShowDrawer={onShowDrawer}
-                tags={tags}
-                searchTitle={searchTitle}
-                onSetTags={setTags}
-                onSearchByTitle={setSearchTitle}
-                resetState={resetState}
+              showDrawer={showDrawer}
+              onShowDrawer={onShowDrawer}
+              tags={tags}
+              searchTitle={searchTitle}
+              onSetTags={setTags}
+              onSearchByTitle={setSearchTitle}
+              resetState={resetState}
             />
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />

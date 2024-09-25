@@ -315,28 +315,24 @@ export class ReleaseOverviewApi {
   ) {
     let url = `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`;
     if (title && title !== '') {
-       url += `&title=${title}`;
+      url += `&title=${title}`;
     }
     if (tags && tags.length > 0) {
       tags.forEach(tag => {
         url += `&tag=${tag}`;
       });
     }
-    const response = await fetch(
-        url,
-      {
-        method: 'GET',
-        headers: {
-          'x-release-personal-token': `${accessToken}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'x-release-personal-token': `${accessToken}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    );
+    });
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
   }
-
 }

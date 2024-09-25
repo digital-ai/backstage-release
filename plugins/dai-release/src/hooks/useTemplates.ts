@@ -4,7 +4,7 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
-import {useDebouncedValue} from '../utils/helpers';
+import { useDebouncedValue } from '../utils/helpers';
 
 export function useTemplates(): {
   instance: string;
@@ -19,10 +19,10 @@ export function useTemplates(): {
   searchTitle: string;
   setLoading: (value: boolean) => void;
   instanceList: ReleaseInstanceConfig[] | undefined;
-  setSearchTitle: (value:  string) => void;
-  setTags: (value: string[]) => void
+  setSearchTitle: (value: string) => void;
+  setTags: (value: string[]) => void;
   setInstance: (value: string) => void;
-  setPage: (value: (prevPage: number) => number)  => void
+  setPage: (value: (prevPage: number) => number) => void;
 } {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -34,7 +34,7 @@ export function useTemplates(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<string []>([]);
+  const [tags, setTags] = useState<string[]>([]);
 
   const api = useApi(daiReleaseApiRef);
 

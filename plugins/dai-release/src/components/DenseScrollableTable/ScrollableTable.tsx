@@ -91,7 +91,11 @@ export const ScrollableTable = ({
           }
           onScroll={handleScroll}
         >
-          <Table stickyHeader aria-label="sticky table" style={{tableLayout: "auto"}}>
+          <Table
+            stickyHeader
+            aria-label="sticky table"
+            style={{ tableLayout: 'auto' }}
+          >
             <TableHead>
               <TableRow>
                 {columns.map(column => (
@@ -109,7 +113,11 @@ export const ScrollableTable = ({
                 data.map((row, index) => (
                   <TableRow key={index}>
                     {columns.map((column, colIndex) => (
-                      <TableCell key={colIndex} style={column.cellStyle} className={classes.cellStyle}>
+                      <TableCell
+                        key={colIndex}
+                        style={column.cellStyle}
+                        className={classes.cellStyle}
+                      >
                         {column.render ? column.render(row) : ''}
                       </TableCell>
                     ))}
@@ -117,7 +125,7 @@ export const ScrollableTable = ({
                 ))}
               {data.length === 0 && (
                 <TableRow style={{ height: '150px' }}>
-                  <TableCell colSpan={4} style={{ lineHeight: '18px'}}>
+                  <TableCell colSpan={4} style={{ lineHeight: '18px' }}>
                     {data.length === 0 && !loading && emptyContent}
                   </TableCell>
                 </TableRow>
