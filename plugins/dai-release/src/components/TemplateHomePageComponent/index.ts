@@ -1,0 +1,1 @@
+export { TemplateHomePageComponent } from './TemplateHomePageComponent';

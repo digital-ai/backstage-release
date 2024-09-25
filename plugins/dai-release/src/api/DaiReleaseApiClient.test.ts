@@ -2,6 +2,7 @@ import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
+import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';
@@ -116,6 +117,86 @@ describe('ReleaseApiClient', () => {
       let err;
       try {
         await client.getReleases(0, 1, '3', '', null, null, [], 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+  });
+  describe('getTemplates', () => {
+    it('should return valid response', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/templates',
+          (req, res, ctx) => {
+            if (
+              checkParam(req.url.searchParams, 'pageNumber', '0') &&
+              checkParam(req.url.searchParams, 'resultsPerPage', '15')
+            ) {
+              return res(
+                ctx.status(200),
+                ctx.set('Content-Type', 'application/json'),
+                ctx.json(mockTemplateList),
+              );
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getTemplates(0, 15, '', 'default');
+      expect(response !== undefined).toBeTruthy();
+    });
+    it('should return error', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/templates',
+          (_, res, ctx) => {
+            res(ctx.status(500), ctx.set('Content-Type', 'application/json'));
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getTemplates(0, 1, '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    });
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/templates',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getTemplates(0, 15, '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/templates',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getTemplates(0, 15, '', 'default');
       } catch (e) {
         err = e;
       } finally {

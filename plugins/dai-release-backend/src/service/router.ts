@@ -1,5 +1,6 @@
 import {
-  HttpAuthService, LoggerService,
+  HttpAuthService,
+  LoggerService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
 import { InputError, NotAllowedError } from '@backstage/errors';
@@ -10,7 +11,7 @@ import {
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
-import { MiddlewareFactory } from "@backstage/backend-defaults/rootHttpRouter";
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
@@ -100,6 +101,35 @@ export async function createRouter(
       instanceName,
     );
     res.status(200).json(releases);
+  });
+
+  router.get('/templates', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+
+    const title = getDecodedQueryVal(req.query.title?.toString());
+    const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
+    const resultsPerPage = getEncodedQueryVal(
+      req.query.resultsPerPage?.toString(),
+    );
+    const instanceName = req.query.instanceName?.toString() || '';
+    const templates = await releaseOverviewApi.getTemplates(
+      title,
+      pageNumber,
+      resultsPerPage,
+      instanceName,
+    );
+    res.status(200).json(templates);
   });
 
   router.get('/instances', async (req, res) => {

@@ -16,17 +16,17 @@ type DenseTableProps = {
   columns: TableColumn[];
   retry: () => void;
   searchTitle: string;
-  fromDate: dayjs.Dayjs | null;
-  toDate: dayjs.Dayjs | null;
-  orderBy: string;
-  statusTags: string[];
+  fromDate?: dayjs.Dayjs | null;
+  toDate?: dayjs.Dayjs | null;
+  orderBy?: string;
+  statusTags?: string[];
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   setSearchTitle: (title: string) => void;
-  setFromDate: (fromDate: dayjs.Dayjs | null) => void;
-  setToDate: (toDate: dayjs.Dayjs | null) => void;
-  setOrderBy: (orderBy: string) => void;
-  setStatusTags: (statusTags: string[]) => void;
+  setFromDate?: (fromDate: dayjs.Dayjs | null) => void;
+  setToDate?: (toDate: dayjs.Dayjs | null) => void;
+  setOrderBy?: (orderBy: string) => void;
+  setStatusTags?: (statusTags: string[]) => void;
 };
 const headerStyle: React.CSSProperties = {
   textTransform: 'capitalize',

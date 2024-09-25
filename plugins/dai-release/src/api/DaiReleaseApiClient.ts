@@ -12,6 +12,7 @@ import {
   ReleaseList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
+import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
 
@@ -77,7 +78,28 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return await this.get<ReleaseInstanceConfig[]>('instances');
   }
 
-  private async get<T>(path: string): Promise<T> {
+  async getTemplates(
+    page: number,
+    rowsPerPage: number,
+    searchTile: string,
+    instanceName: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<{ items: TemplateList }> {
+    const queryString = new URLSearchParams();
+
+    queryString.append('pageNumber', page.toString());
+    queryString.append('resultsPerPage', rowsPerPage.toString());
+    queryString.append('title', searchTile.toString());
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `templates?${queryString}`;
+    const items = await this.get<TemplateList>(urlSegment, options);
+    return { items };
+  }
+
+  private async get<T>(
+    path: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();
@@ -89,6 +111,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         Accept: 'application/json',
         Authorization: `Bearer ${idToken}`,
       },
+      signal: options?.signal,
     });
 
     if (!response.ok) {

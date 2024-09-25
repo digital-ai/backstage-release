@@ -28,3 +28,14 @@ export const DaiReleasePage = daiReleasePlugin.provide(
     mountPoint: daiReleaseContentRouteRef,
   }),
 );
+
+export const DaiTemplatePage = daiReleasePlugin.provide(
+  createRoutableExtension({
+    name: 'DaiTemplatePage',
+    component: () =>
+      import('./components/TemplateHomePageComponent/').then(
+        m => m.TemplateHomePageComponent,
+      ),
+    mountPoint: daiReleaseContentRouteRef,
+  }),
+);

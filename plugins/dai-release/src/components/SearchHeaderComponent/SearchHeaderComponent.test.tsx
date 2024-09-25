@@ -20,6 +20,8 @@ describe('SearchHeaderComponent', () => {
 
   it('should render the search elements', async () => {
     const rendered = await renderContent({
+      titleName: 'Active Releases',
+      searchTitleTextField: 'Title',
       searchTitle: '',
       instance: '',
       instanceList: [],
@@ -34,6 +36,8 @@ describe('SearchHeaderComponent', () => {
   });
   it('should render the search elements with content', async () => {
     const rendered = await renderContent({
+      titleName: 'Active Releases',
+      searchTitleTextField: 'Title',
       searchTitle: 'Test',
       instance: 'default',
       instanceList: [
@@ -62,6 +66,8 @@ describe('SearchHeaderComponent', () => {
   });
 });
 async function renderContent(args: {
+  titleName: string;
+  searchTitleTextField: string;
   instance: string;
   onShowDrawer: () => void;
   instanceList: any[];
@@ -73,6 +79,9 @@ async function renderContent(args: {
 }) {
   return await renderInTestApp(
     <SearchHeaderComponent
+      displayFilter
+      titleName={args.titleName}
+      searchTitleTextField={args.searchTitleTextField}
       searchTitle={args.searchTitle}
       instance={args.instance}
       instanceList={args.instanceList}

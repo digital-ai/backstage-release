@@ -3,21 +3,26 @@ import {
   RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
   RELEASE_OVERVIEW_EXISTING_API_PATH,
+  RELEASE_TEMPLATE_LIST_API_PATH,
+  getCreateReleaseRedirectUri,
   getCredentials,
   getReleaseApiHost,
   getReleaseDetailsRedirectUri,
+  getTemplateDetailsRedirectUri,
 } from './apiConfig';
 import {
   Release,
   ReleaseCountResults,
   ReleaseFallBackOverview,
   ReleaseOverview,
+  TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
+import { Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
-import { RootLoggerService } from "@backstage/backend-plugin-api";
+import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
 
 export class ReleaseOverviewApi {
@@ -256,5 +261,69 @@ export class ReleaseOverviewApi {
 
   async getReleaseInstances() {
     return this.config.getInstanceList();
+  }
+
+  async getTemplates(
+    title: string,
+    pageNumber: string,
+    resultsPerPage: string,
+    instanceName: string,
+  ): Promise<TemplateList> {
+    const instanceConfig = this.config.getInstanceConfig(instanceName);
+    const accessToken = getCredentials(instanceConfig);
+    const apiUrl = getReleaseApiHost(instanceConfig);
+
+    const data: TemplateOverview[] = await this.getTemplateList(
+      apiUrl,
+      title,
+      accessToken,
+      pageNumber,
+      resultsPerPage,
+    );
+
+    const folderIdTitleMap: Map<string, string> =
+      await this.getFolderIdAndTitleMap(apiUrl, accessToken);
+
+    const templates: Template[] = [];
+    data.forEach(d =>
+      templates.push({
+        id: d.id,
+        title: d.title,
+        folder: this.getFolderTitle(folderIdTitleMap, d.id),
+        newReleaseRedirectUri: getCreateReleaseRedirectUri(
+          instanceConfig,
+          d.id,
+        ),
+        titleRedirectUri: getTemplateDetailsRedirectUri(instanceConfig, d.id),
+      }),
+    );
+
+    return {
+      templates: templates,
+    };
+  }
+
+  async getTemplateList(
+    apiUrl: string,
+    title: string,
+    accessToken: string,
+    pageNumber: string,
+    resultsPerPage: string,
+  ) {
+    const response = await fetch(
+      `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}&title=${title}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    return await response.json();
   }
 }
