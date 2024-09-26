@@ -23,7 +23,9 @@ The frontend plugin needs to be added to your application. To do so:
 yarn --cwd packages/app add @digital-ai/plugin-dai-release
 ```
 
-#### 2. Add the `DaiReleasePage` extension to your `App.tsx`:
+#### 2. Add Active Releases to your Backstage::
+
+##### a. Add the `DaiReleasePage` extension to your `App.tsx`:
 
 Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component exported from the plugin, for example:
 
@@ -37,12 +39,36 @@ const routes = (
         <Route path="/dai-release" element={<DaiReleasePage/>}/>
 ```
 
-#### 3. Add Digital.ai Release to your app Sidebar:
+##### b. Add Digital.ai Release to your app Sidebar:
 
 ```
 import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
 
 <SidebarItem icon={ReleaseSvgIcon} to="dai-release" text="Dai Release" />
+```
+
+#### 3. Add Release Template to your Backstage::
+
+##### a. Add the `DaiTemplatePage` extension to your `App.tsx`:
+
+Modify your app routes in `App.tsx` to include the `ReleaseHomePage` component exported from the plugin, for example:
+
+```tsx
+// In packages/app/src/App.tsx
+import {DaiTemplatePage} from '@digital-ai/plugin-dai-release';
+
+const routes = (
+     <FlatRoutes>
+        {/* ...other routes */}
+        <Route path="/dai-template" element={<DaiTemplatePage/>}/>
+```
+
+##### b. Add Digital.ai Release to your app Sidebar:
+
+```
+import {ReleaseSvgIcon} from '@digital-ai/plugin-dai-release';
+
+<SidebarItem icon={ReleaseSvgIcon} to="dai-template" text="Dai Release Template" />
 ```
 
 ## Links

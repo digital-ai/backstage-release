@@ -327,7 +327,6 @@ export class ReleaseOverviewApi {
     }
     return await response.json();
   }
-
   private getFolderId(id: string) {
     if (!id) return '';
     const [first, second] = id.split('/');
