@@ -1,0 +1,1 @@
+export { TemplateMetaModalPopupComponent } from './TemplateMetaModalPopupComponent';

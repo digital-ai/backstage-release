@@ -1,13 +1,12 @@
 import { IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Popover from '@mui/material/Popover';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
 import React from 'react';
-import Typography from '@mui/material/Typography';
 
 export function usePopover() {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -23,7 +22,7 @@ export function usePopover() {
   return { anchorEl, handleClick, handleClose, open, id };
 }
 
-export function ReleasePopOverComponent() {
+export function ReleasePopOverComponent({ onOpenModal }: any) {
   const { anchorEl, handleClick, handleClose, open, id } = usePopover();
 
   return (
@@ -42,12 +41,15 @@ export function ReleasePopOverComponent() {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        onClick={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
         }}
       >
-        <Typography sx={{ p: 2 }}>No data available</Typography>
+        <Button variant="text" onClick={onOpenModal}>
+          Meta Information
+        </Button>
       </Popover>
     </div>
   );

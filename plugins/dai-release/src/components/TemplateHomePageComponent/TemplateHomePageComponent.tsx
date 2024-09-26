@@ -1,9 +1,6 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import {
-  ScrollableTable,
-  ScrollableTableColumn,
-} from '../DenseScrollableTable/ScrollableTable';
+import { ScrollableTable } from '../DenseScrollableTable/ScrollableTable';
 import { PlusIcon } from '../../icon/icon';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
@@ -14,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
+import { TemplateMetaModalPopupComponent } from '../TemplateMetaModalPopupComponent';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -32,45 +30,6 @@ const useEmptyStyles = makeStyles(theme => ({
   },
 }));
 
-const defaultColumns: ScrollableTableColumn[] = [
-  {
-    label: 'Name',
-    headerStyle: { width: '1000px', lineHeight: '14px' },
-    render: row => <Link to={row.titleRedirectUri}>{row.title}</Link>,
-    cellStyle: { width: '1000px', lineHeight: '14px' },
-  },
-  {
-    label: 'Folder',
-    headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
-    render: row => capitalize(row.folder),
-    cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
-  },
-  {
-    label: 'Action',
-    headerStyle: { width: '180px', lineHeight: '14px' },
-    render: row => (
-      <div style={{ width: '150px', height: '40px' }}>
-        <LinkButton
-          to={row.newReleaseRedirectUri}
-          color="default"
-          variant="outlined"
-          style={{ width: '150px', height: '40px', textTransform: 'none' }}
-          startIcon={<PlusIcon />}
-        >
-          New Releases
-        </LinkButton>
-      </div>
-    ),
-    cellStyle: { width: '180px', lineHeight: '14px' },
-  },
-  {
-    label: '',
-    headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
-    render: () => <ReleasePopOverComponent />,
-    cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
-  },
-];
-
 export const TemplateHomePageComponent = () => {
   const classes = useStyles();
   const emptyClasses = useEmptyStyles();
@@ -83,19 +42,36 @@ export const TemplateHomePageComponent = () => {
     searchTitle,
     instance,
     instanceList,
+    openModal,
+    modalData,
     setPage,
     setSearchTitle,
     setInstance,
     setLoading,
     setHasMore,
     setData,
+    setOpenModal,
+    setModalData,
   } = useTemplates();
+
+  const handleOpenModal = async () => {
+    // // Make API call here to fetch data
+    // const data = useTemplates(); // Replace with actual API call
+    // setModalData(data);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalData(null);
+  };
 
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     setPage((prevPage: number) => prevPage + 1);
   };
+
   return (
     <div>
       <Header
@@ -128,20 +104,74 @@ export const TemplateHomePageComponent = () => {
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
-              <ScrollableTable
-                loading={loading}
-                loadMoreData={loadMoreData}
-                data={data}
-                emptyContent={
-                  <Typography
-                    color="textSecondary"
-                    className={emptyClasses.empty}
-                  >
-                    No templates available
-                  </Typography>
-                }
-                columns={defaultColumns}
-              />
+              <>
+                <ScrollableTable
+                  loading={loading}
+                  loadMoreData={loadMoreData}
+                  data={data}
+                  emptyContent={
+                    <Typography
+                      color="textSecondary"
+                      className={emptyClasses.empty}
+                    >
+                      No templates available
+                    </Typography>
+                  }
+                  columns={[
+                    {
+                      label: 'Name',
+                      headerStyle: { width: '1000px', lineHeight: '14px' },
+                      render: row => (
+                        <Link to={row.titleRedirectUri}>{row.title}</Link>
+                      ),
+                      cellStyle: { width: '1000px', lineHeight: '14px' },
+                    },
+                    {
+                      label: 'Folder',
+                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      render: row => capitalize(row.folder),
+                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                    },
+                    {
+                      label: 'Action',
+                      headerStyle: { width: '180px', lineHeight: '14px' },
+                      render: row => (
+                        <div style={{ width: '150px', height: '40px' }}>
+                          <LinkButton
+                            to={row.newReleaseRedirectUri}
+                            color="default"
+                            variant="outlined"
+                            style={{
+                              width: '150px',
+                              height: '40px',
+                              textTransform: 'none',
+                            }}
+                            startIcon={<PlusIcon />}
+                          >
+                            New Releases
+                          </LinkButton>
+                        </div>
+                      ),
+                      cellStyle: { width: '180px', lineHeight: '14px' },
+                    },
+                    {
+                      label: '',
+                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      render: () => (
+                        <ReleasePopOverComponent
+                          onOpenModal={() => handleOpenModal()}
+                        />
+                      ),
+                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                    },
+                  ]}
+                />
+                <TemplateMetaModalPopupComponent
+                  open={openModal}
+                  onClose={handleCloseModal}
+                  data={modalData}
+                />
+              </>
             )}
           </Grid>
         </Grid>

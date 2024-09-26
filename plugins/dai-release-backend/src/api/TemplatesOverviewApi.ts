@@ -40,7 +40,7 @@ export class TemplatesOverviewApi {
     const commitVersioningData: TemplateCommitVersions =
       await this.getTemplateCommitVersions(folderId, accessToken, apiUrl);
 
-    if (gitConfigData && gitConfigData.length > 0) {
+    if (gitConfigData && gitConfigData.length > 0 && commitVersioningData) {
       const gitConfig = gitConfigData[0];
       // Extract the latest commit from commitVersioningData.versions based on commitTime
       const latestCommit = commitVersioningData?.versions.reduce(

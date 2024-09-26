@@ -15,12 +15,16 @@ export function useTemplates(): {
   searchTitle: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
+  openModal: boolean;
+  modalData: any;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
   setInstance: (instance: string) => void;
   setHasMore: (hasMore: boolean) => void;
   setData: (data: any) => void;
+  setOpenModal: (openModal: boolean) => void;
+  setModalData: (modalData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -32,6 +36,8 @@ export function useTemplates(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalData, setModalData] = useState(null);
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
@@ -104,11 +110,15 @@ export function useTemplates(): {
     searchTitle: searchTitle,
     instance,
     instanceList,
+    openModal,
+    modalData,
     setPage,
     setRowsPerPage,
     setSearchTitle,
     setInstance,
     setHasMore,
     setData,
+    setOpenModal,
+    setModalData,
   };
 }
