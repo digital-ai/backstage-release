@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
-import { TemplateMetaModalPopupComponent } from '../TemplateMetaModalPopupComponent';
+import { MetaModalPopupComponent } from '../MetaModalPopupComponent';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -43,7 +43,8 @@ export const TemplateHomePageComponent = () => {
     instance,
     instanceList,
     openModal,
-    modalData,
+    modalPopupInputId,
+    modalPopupData,
     setPage,
     setSearchTitle,
     setInstance,
@@ -51,25 +52,18 @@ export const TemplateHomePageComponent = () => {
     setHasMore,
     setData,
     setOpenModal,
-    setModalData,
+    setModalPopupInputId,
+    setModalPopupData,
   } = useTemplates();
-
-  const handleOpenModal = async () => {
-    // // Make API call here to fetch data
-    // const data = useTemplates(); // Replace with actual API call
-    // setModalData(data);
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setModalData(null);
-  };
 
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     setPage((prevPage: number) => prevPage + 1);
+  };
+
+  const onClosePopupModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -157,20 +151,27 @@ export const TemplateHomePageComponent = () => {
                     {
                       label: '',
                       headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
-                      render: () => (
+                      render: row => (
                         <ReleasePopOverComponent
-                          onOpenModal={() => handleOpenModal()}
+                          folderId={row.id}
+                          setOpenModal={setOpenModal}
+                          setFolderId={setModalPopupInputId}
                         />
                       ),
                       cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
                     },
                   ]}
                 />
-                <TemplateMetaModalPopupComponent
-                  open={openModal}
-                  onClose={handleCloseModal}
-                  data={modalData}
-                />
+                {openModal && (
+                  <MetaModalPopupComponent
+                    onClose={onClosePopupModal}
+                    instance={instance}
+                    modalPopupInputId={modalPopupInputId}
+                    openModal={openModal}
+                    modalPopupData={modalPopupData}
+                    setModalPopupData={setModalPopupData}
+                  />
+                )}
               </>
             )}
           </Grid>

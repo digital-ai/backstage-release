@@ -290,7 +290,6 @@ export class ReleaseOverviewApi {
         id: d.id,
         title: d.title,
         folder: this.getFolderTitle(folderIdTitleMap, d.id),
-        folderId: this.getFolderId(d.id),
         newReleaseRedirectUri: getCreateReleaseRedirectUri(
           instanceConfig,
           d.id,
@@ -326,10 +325,5 @@ export class ReleaseOverviewApi {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
-  }
-  private getFolderId(id: string) {
-    if (!id) return '';
-    const [first, second] = id.split('/');
-    return `${first}/${second}`;
   }
 }

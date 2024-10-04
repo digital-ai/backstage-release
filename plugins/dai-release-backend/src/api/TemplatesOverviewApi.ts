@@ -30,34 +30,54 @@ export class TemplatesOverviewApi {
     this.logger?.debug(
       `Calling Template Overview api, instance: ${instanceName} folderId: ${folderId}`,
     );
-    const instanceConfig = this.config.getInstanceConfig(instanceName);
-    const accessToken = getCredentials(instanceConfig);
-    const apiUrl = getReleaseApiHost(instanceConfig);
+    try {
+      const instanceConfig = this.config.getInstanceConfig(instanceName);
+      const accessToken = getCredentials(instanceConfig);
+      const apiUrl = getReleaseApiHost(instanceConfig);
 
-    const gitConfigData: TemplateFolderGitConfig[] =
-      await this.getTemplateFolderGitConfig(folderId, accessToken, apiUrl);
+      const gitConfigData: TemplateFolderGitConfig[] =
+        await this.getTemplateFolderGitConfig(
+          'Applications/FolderDefaultReleaseContent',
+          accessToken,
+          apiUrl,
+        );
 
-    const commitVersioningData: TemplateCommitVersions =
-      await this.getTemplateCommitVersions(folderId, accessToken, apiUrl);
+      const commitVersioningData: TemplateCommitVersions =
+        await this.getTemplateCommitVersions(
+          'Applications/FolderDefaultReleaseContent',
+          accessToken,
+          apiUrl,
+        );
 
-    if (gitConfigData && gitConfigData.length > 0 && commitVersioningData) {
-      const gitConfig = gitConfigData[0];
-      // Extract the latest commit from commitVersioningData.versions based on commitTime
-      const latestCommit = commitVersioningData?.versions.reduce(
-        (latest, current) =>
-          current.commitTime > latest.commitTime ? current : latest,
+      if (
+        gitConfigData &&
+        gitConfigData.length > 0 &&
+        commitVersioningData &&
+        Object.keys(commitVersioningData).length > 0 &&
+        commitVersioningData.versions
+      ) {
+        const gitConfig = gitConfigData[0];
+        // Extract the latest commit from commitVersioningData.versions based on commitTime
+        const latestCommit = commitVersioningData?.versions.reduce(
+          (latest, current) =>
+            current.commitTime > latest.commitTime ? current : latest,
+        );
+
+        // Combine the extracted data into the desired format
+        return {
+          folderId: gitConfig.id,
+          url: gitConfig.url,
+          name: latestCommit?.name,
+          shortMessage: latestCommit?.shortMessage,
+          committer: latestCommit?.commiter,
+          commitTime: latestCommit?.commitTime,
+          commitHash: latestCommit?.commitHash,
+        };
+      }
+    } catch (error) {
+      this.logger?.error(
+        `Error occurred while fetching template meta info: ${error}`,
       );
-
-      // Combine the extracted data into the desired format
-      return {
-        folderId: gitConfig.folderId,
-        url: gitConfig.url,
-        name: latestCommit?.name,
-        shortMessage: latestCommit?.shortMessage,
-        committer: latestCommit?.commiter,
-        commitTime: latestCommit?.commitTime,
-        commitHash: latestCommit?.commitHash,
-      };
     }
     return {} as TemplateGitMetaInfo;
   }
@@ -101,7 +121,7 @@ export class TemplatesOverviewApi {
       },
     );
     if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
+      return {} as TemplateCommitVersions;
     }
     return await response.json();
   }

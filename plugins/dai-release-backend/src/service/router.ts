@@ -173,7 +173,8 @@ export async function createRouter(
       }
     }
     const instanceName = req.query.instanceName?.toString() || '';
-    const folderId = req.query.folderId?.toString() || '';
+    const folderId = getDecodedQueryVal(req.query.folderId?.toString() || '');
+    console.log('folderId', folderId);
     const metaInformation = await templatesOverviewApi.getTemplateMetaInfo(
       instanceName,
       folderId,

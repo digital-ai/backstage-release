@@ -14,7 +14,6 @@ export type Template = {
   id: string;
   title: string;
   folder?: string;
-  folderId: string;
   newReleaseRedirectUri: string;
   titleRedirectUri: string;
 };
@@ -30,7 +29,6 @@ export type TemplateOverview = {
 export type TemplateFolderGitConfig = {
   id: string;
   type: string;
-  folderId: string;
   title: string;
   url: string;
 };

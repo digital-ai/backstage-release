@@ -1,0 +1,105 @@
+/* MetaModalPopupComponent.css */
+.modal-header {
+    background-color: blue;
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    color: white;
+    padding: 1px 10px;
+}
+
+.modal-title {
+    display: inline-block;
+    line-height: 1.1;
+    margin: 10px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+    width: 80%;
+    float: left !important;
+}
+
+.close {
+    color: white;
+    font-weight: 400;
+    opacity: 1;
+    text-shadow: none;
+    font-size: 14px;
+    margin-top: 8px;
+    appearance: none;
+    background: transparent 0 0;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    float: right !important;
+}
+
+.modal-body {
+    padding: 16px;
+}
+
+.version-control {
+    margin-bottom: 16px;
+}
+
+.version-control h4 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.version-control .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.version-control .col-sm-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    font-weight: 500;
+}
+
+.version-control .col-sm-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.coc-label-button {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.coc-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.coc-link:hover {
+    text-decoration: underline;
+}
+
+.coc-message {
+    white-space: pre-wrap;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.button.cancel {
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.button.cancel:hover {
+    background-color: #e0e0e0;
+}

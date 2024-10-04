@@ -10,6 +10,7 @@ import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import {
   ReleaseInstanceConfig,
   ReleaseList,
+  TemplateGitMetaInfo,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
@@ -94,6 +95,19 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     const urlSegment = `templates?${queryString}`;
     const items = await this.get<TemplateList>(urlSegment, options);
     return { items };
+  }
+
+  async getTemplateMetaInfo(
+    instanceName: string,
+    folderId: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<TemplateGitMetaInfo> {
+    const queryString = new URLSearchParams();
+
+    queryString.append('folderId', folderId.toString());
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `template/meta?${queryString}`;
+    return await this.get<TemplateGitMetaInfo>(urlSegment, options);
   }
 
   private async get<T>(

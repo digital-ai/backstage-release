@@ -1,6 +1,7 @@
 import {
   ReleaseInstanceConfig,
   ReleaseList,
+  TemplateGitMetaInfo,
 } from '@digital-ai/plugin-dai-release-common';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
@@ -33,4 +34,10 @@ export interface DaiReleaseApi {
     instanceName: string,
     options?: { signal?: AbortSignal },
   ): Promise<{ items: TemplateList }>;
+
+  getTemplateMetaInfo(
+    instanceName: string,
+    folderId: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<TemplateGitMetaInfo>;
 }

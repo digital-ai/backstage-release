@@ -16,7 +16,8 @@ export function useTemplates(): {
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   openModal: boolean;
-  modalData: any;
+  modalPopupInputId: string;
+  modalPopupData: any;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
@@ -24,7 +25,8 @@ export function useTemplates(): {
   setHasMore: (hasMore: boolean) => void;
   setData: (data: any) => void;
   setOpenModal: (openModal: boolean) => void;
-  setModalData: (modalData: any) => void;
+  setModalPopupInputId: (modalPopupInputId: string) => void;
+  setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -36,8 +38,10 @@ export function useTemplates(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
+  const [modalPopupInputId, setModalPopupInputId] = useState('');
+  const [modalPopupData, setModalPopupData] = useState<any>(undefined);
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
@@ -111,7 +115,8 @@ export function useTemplates(): {
     instance,
     instanceList,
     openModal,
-    modalData,
+    modalPopupInputId,
+    modalPopupData,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -119,6 +124,7 @@ export function useTemplates(): {
     setHasMore,
     setData,
     setOpenModal,
-    setModalData,
+    setModalPopupInputId,
+    setModalPopupData,
   };
 }
