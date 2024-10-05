@@ -9,6 +9,7 @@ type modalPopupProps = {
   onClose: () => void;
   instance: string;
   modalPopupInputId: string;
+  modalTitle: string;
   modalPopupData: any;
   setModalPopupData: (data: any) => void;
 };
@@ -17,6 +18,7 @@ export function MetaModalPopupComponent({
   onClose,
   instance,
   modalPopupInputId,
+  modalTitle,
   openModal,
   modalPopupData,
   setModalPopupData,
@@ -30,6 +32,8 @@ export function MetaModalPopupComponent({
     },
     '& .MuiPaper-root': {
       width: '805px',
+      maxWidth: '805px',
+      borderRadius: '7px',
     },
     '& .col-sm-3': {
       width: '25%',
@@ -104,6 +108,20 @@ export function MetaModalPopupComponent({
     }
   });
 
+  const formatDate = (date: number) => {
+    const d = new Date(date);
+    return d.toLocaleString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  };
+
+  console.log(modalPopupData);
   return (
     <div>
       {modalPopupData != undefined && (
@@ -114,7 +132,7 @@ export function MetaModalPopupComponent({
         >
           <div className="modal-header">
             <h4 className="modal-title pull-left ng-binding" id="modal-title">
-              Meta information - {modalPopupData?.name}
+              Meta information - {modalTitle}
             </h4>
             <button type="button" className="cross">
               <CloseIcon fontSize={'small'} />
@@ -133,25 +151,31 @@ export function MetaModalPopupComponent({
                 <div className="">
                   <div className="col-sm-3">Commit</div>
                   <div className="col-sm-9">
-                    <span className="coc-label-button ng-binding"> GIT </span>{' '}
+                    <span> GIT </span>{' '}
                     <a
                       target="_blank"
                       rel="noopener"
-                      className="coc-link ng-binding"
-                      href="https://github.com/digital-ai/release-content/commit/2ac34ce51d49e86189a7c41f4eabc0947c4b7fc6"
+                      href={
+                        modalPopupData?.url +
+                        '/commit/' +
+                        modalPopupData?.commitHash
+                      }
                     >
-                      {' '}
-                      2ac34ce51d49e86189a7c41f4eabc0947c4b7fc6{' '}
+                      {modalPopupData?.commitHash}
                     </a>
                   </div>
                   <div className="col-sm-3">Timestamp</div>
                   <div className="col-sm-9 ng-binding">
-                    Sep 26, 2024 08:50:13 PM
+                    {formatDate(modalPopupData?.commitTime)}
                   </div>
                   <div className="col-sm-3">Committed by</div>
-                  <div className="col-sm-9 ng-binding">gpugar</div>
+                  <div className="col-sm-9 ng-binding">
+                    {modalPopupData?.committer}
+                  </div>
                   <div className="col-sm-3">Summary</div>
-                  <div className="col-sm-9 coc-message ng-binding">ss</div>
+                  <div className="col-sm-9 coc-message ng-binding">
+                    [{modalPopupData?.name}] {modalPopupData?.shortMessage}
+                  </div>
 
                   <div className="col-sm-3">Source</div>
                   <div className="col-sm-9">
@@ -159,10 +183,9 @@ export function MetaModalPopupComponent({
                       target="_blank"
                       rel="noopener"
                       className="coc-link ng-binding"
-                      href="https://github.com/digital-ai/release-content/"
+                      href={modalPopupData?.url}
                     >
-                      {' '}
-                      https://github.com/digital-ai/release-content/{' '}
+                      {modalPopupData?.url}
                     </a>
                   </div>
                 </div>

@@ -17,6 +17,7 @@ export function useTemplates(): {
   instanceList: ReleaseInstanceConfig[] | undefined;
   openModal: boolean;
   modalPopupInputId: string;
+  modalTitle: string;
   modalPopupData: any;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
@@ -26,6 +27,7 @@ export function useTemplates(): {
   setData: (data: any) => void;
   setOpenModal: (openModal: boolean) => void;
   setModalPopupInputId: (modalPopupInputId: string) => void;
+  setModalTitle: (modalTitle: string) => void;
   setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
@@ -41,6 +43,7 @@ export function useTemplates(): {
 
   const [openModal, setOpenModal] = useState(false);
   const [modalPopupInputId, setModalPopupInputId] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
   const [modalPopupData, setModalPopupData] = useState<any>(undefined);
   const api = useApi(daiReleaseApiRef);
 
@@ -116,6 +119,7 @@ export function useTemplates(): {
     instanceList,
     openModal,
     modalPopupInputId,
+    modalTitle,
     modalPopupData,
     setPage,
     setRowsPerPage,
@@ -125,6 +129,7 @@ export function useTemplates(): {
     setData,
     setOpenModal,
     setModalPopupInputId,
+    setModalTitle,
     setModalPopupData,
   };
 }

@@ -44,6 +44,7 @@ export const TemplateHomePageComponent = () => {
     instanceList,
     openModal,
     modalPopupInputId,
+    modalTitle,
     modalPopupData,
     setPage,
     setSearchTitle,
@@ -53,6 +54,7 @@ export const TemplateHomePageComponent = () => {
     setData,
     setOpenModal,
     setModalPopupInputId,
+    setModalTitle,
     setModalPopupData,
   } = useTemplates();
 
@@ -154,8 +156,10 @@ export const TemplateHomePageComponent = () => {
                       render: row => (
                         <ReleasePopOverComponent
                           folderId={row.id}
+                          modalTitle={row.title}
                           setOpenModal={setOpenModal}
                           setFolderId={setModalPopupInputId}
+                          setModalTitle={setModalTitle}
                         />
                       ),
                       cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
@@ -167,6 +171,7 @@ export const TemplateHomePageComponent = () => {
                     onClose={onClosePopupModal}
                     instance={instance}
                     modalPopupInputId={modalPopupInputId}
+                    modalTitle={modalTitle}
                     openModal={openModal}
                     modalPopupData={modalPopupData}
                     setModalPopupData={setModalPopupData}

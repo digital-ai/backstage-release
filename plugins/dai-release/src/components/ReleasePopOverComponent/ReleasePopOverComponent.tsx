@@ -7,8 +7,10 @@ import React from 'react';
 
 export function usePopover(
   folderId: string,
+  modalTitle: string,
   setOpenModal: any,
   setFolderId: any,
+  setModalTitle: any,
 ) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -23,6 +25,7 @@ export function usePopover(
   const onOpenPopupModal = () => {
     setOpenModal(true);
     setFolderId(folderId);
+    setModalTitle(modalTitle);
   };
 
   const open = Boolean(anchorEl);
@@ -40,11 +43,13 @@ export function usePopover(
 
 export function ReleasePopOverComponent({
   folderId,
+  modalTitle,
   setOpenModal,
   setFolderId,
+  setModalTitle,
 }: any) {
   const { anchorEl, handleClick, handleClose, open, id, onOpenPopupModal } =
-    usePopover(folderId, setOpenModal, setFolderId);
+    usePopover(folderId, modalTitle, setOpenModal, setFolderId, setModalTitle);
 
   return (
     <>
