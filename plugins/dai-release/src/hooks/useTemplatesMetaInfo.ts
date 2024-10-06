@@ -28,6 +28,8 @@ export function useGetTemplateMetaInfo(
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
 
+        setMetaInfo(undefined);
+
         const result = await api.getTemplateMetaInfo(instance, folderId, {
           signal: abortController.signal,
         });

@@ -36,18 +36,10 @@ export class TemplatesOverviewApi {
       const apiUrl = getReleaseApiHost(instanceConfig);
 
       const gitConfigData: TemplateFolderGitConfig[] =
-        await this.getTemplateFolderGitConfig(
-          'Applications/FolderDefaultReleaseContent',
-          accessToken,
-          apiUrl,
-        );
+        await this.getTemplateFolderGitConfig(folderId, accessToken, apiUrl);
 
       const commitVersioningData: TemplateCommitVersions =
-        await this.getTemplateCommitVersions(
-          'Applications/FolderDefaultReleaseContent',
-          accessToken,
-          apiUrl,
-        );
+        await this.getTemplateCommitVersions(folderId, accessToken, apiUrl);
 
       if (
         gitConfigData &&

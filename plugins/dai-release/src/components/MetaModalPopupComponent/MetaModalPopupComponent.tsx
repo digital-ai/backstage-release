@@ -1,7 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { Dialog, DialogActions, styled } from '@mui/material';
+import React from 'react';
+import {
+  Dialog,
+  DialogActions,
+  styled,
+  Button,
+  CircularProgress,
+} from '@mui/material';
 import CloseIcon from '@material-ui/icons/Close';
-import Button from '@mui/material/Button';
 import { useGetTemplateMetaInfo } from '../../hooks/useTemplatesMetaInfo';
 
 type modalPopupProps = {
@@ -35,6 +40,13 @@ export function MetaModalPopupComponent({
       maxWidth: '805px',
       borderRadius: '7px',
     },
+    '&.loading .MuiDialog-container .MuiPaper-root': {
+      overflow: 'hidden',
+      background: 'transparent',
+      boxShadow: 'none',
+      height: 'auto',
+      width: 'auto',
+    },
     '& .col-sm-3': {
       width: '25%',
       float: 'left',
@@ -46,6 +58,10 @@ export function MetaModalPopupComponent({
       float: 'right',
       marginBottom: '10px',
       paddingLeft: 0,
+
+      a: {
+        color: '#3d6c9e',
+      },
     },
     '& h4': {
       marginBottom: '10px',
@@ -92,25 +108,25 @@ export function MetaModalPopupComponent({
     '& .close': {
       textTransform: 'none',
     },
+    '& .coc-label-button': {
+      background: '#3d6c9e',
+      borderRadius: '.25rem',
+      color: '#ffffff',
+      fontSize: '11px',
+      fontWeight: '400',
+      height: '16px',
+      marginRight: '5px',
+      paddingLeft: '5px',
+      paddingRight: '5px',
+      textAlign: 'center',
+      display: 'inline-block',
+    },
   }));
-  const previousModalPopupDataRef = useRef(modalPopupData);
 
-  useEffect(() => {
-    previousModalPopupDataRef.current = modalPopupData;
-  }, [modalPopupData]);
+  useGetTemplateMetaInfo(instance, modalPopupInputId, setModalPopupData);
 
-  useGetTemplateMetaInfo(instance, modalPopupInputId, newData => {
-    if (
-      JSON.stringify(newData) !==
-      JSON.stringify(previousModalPopupDataRef.current)
-    ) {
-      setModalPopupData(newData);
-    }
-  });
-
-  const formatDate = (date: number) => {
-    const d = new Date(date);
-    return d.toLocaleString('en-US', {
+  const formatDate = (date: number) =>
+    new Date(date).toLocaleString('en-US', {
       month: 'short',
       day: '2-digit',
       year: 'numeric',
@@ -119,87 +135,85 @@ export function MetaModalPopupComponent({
       second: '2-digit',
       hour12: true,
     });
-  };
 
-  console.log(modalPopupData);
   return (
     <div>
-      {modalPopupData != undefined && (
-        <BootstrapDialog
-          onClose={onClose}
-          aria-labelledby="customized-dialog-title"
-          open={openModal}
-        >
-          <div className="modal-header">
-            <h4 className="modal-title pull-left ng-binding" id="modal-title">
-              Meta information - {modalTitle}
-            </h4>
-            <button type="button" className="cross">
-              <CloseIcon fontSize={'small'} />
-            </button>
-            <div className="clearfix"></div>
-          </div>
+      <BootstrapDialog
+        onClose={onClose}
+        aria-labelledby="customized-dialog-title"
+        open={openModal}
+        className={!modalPopupData ? 'loading' : ''}
+      >
+        {!modalPopupData && <CircularProgress />}
 
-          <div>
-            <div className="modal-body version-control">
-              <h4> Source Control Management </h4>
-              {!modalPopupData?.name && (
-                <p className="ng-hide">No data available.</p>
-              )}
-
-              {modalPopupData?.name && (
-                <div className="">
-                  <div className="col-sm-3">Commit</div>
-                  <div className="col-sm-9">
-                    <span> GIT </span>{' '}
-                    <a
-                      target="_blank"
-                      rel="noopener"
-                      href={
-                        modalPopupData?.url +
-                        '/commit/' +
-                        modalPopupData?.commitHash
-                      }
-                    >
-                      {modalPopupData?.commitHash}
-                    </a>
-                  </div>
-                  <div className="col-sm-3">Timestamp</div>
-                  <div className="col-sm-9 ng-binding">
-                    {formatDate(modalPopupData?.commitTime)}
-                  </div>
-                  <div className="col-sm-3">Committed by</div>
-                  <div className="col-sm-9 ng-binding">
-                    {modalPopupData?.committer}
-                  </div>
-                  <div className="col-sm-3">Summary</div>
-                  <div className="col-sm-9 coc-message ng-binding">
-                    [{modalPopupData?.name}] {modalPopupData?.shortMessage}
-                  </div>
-
-                  <div className="col-sm-3">Source</div>
-                  <div className="col-sm-9">
-                    <a
-                      target="_blank"
-                      rel="noopener"
-                      className="coc-link ng-binding"
-                      href={modalPopupData?.url}
-                    >
-                      {modalPopupData?.url}
-                    </a>
-                  </div>
-                </div>
-              )}
+        {modalPopupData && (
+          <>
+            <div className="modal-header">
+              <h4 className="modal-title" id="modal-title">
+                Meta information - {modalTitle}
+              </h4>
+              <button type="button" className="cross" onClick={onClose}>
+                <CloseIcon fontSize={'small'} />
+              </button>
+              <div className="clearfix"></div>
             </div>
-          </div>
+            <div>
+              <div className="modal-body version-control">
+                <h4> Source Control Management </h4>
+                {!modalPopupData?.name ? (
+                  <p>No data available.</p>
+                ) : (
+                  <div className="">
+                    <div className="col-sm-3">Commit</div>
+                    <div className="col-sm-9">
+                      <span className="coc-label-button"> GIT </span>{' '}
+                      <a
+                        target="_blank"
+                        rel="noopener"
+                        href={
+                          modalPopupData?.url +
+                          '/commit/' +
+                          modalPopupData?.commitHash
+                        }
+                      >
+                        {modalPopupData?.commitHash}
+                      </a>
+                    </div>
+                    <div className="col-sm-3">Timestamp</div>
+                    <div className="col-sm-9">
+                      {formatDate(modalPopupData?.commitTime)}
+                    </div>
+                    <div className="col-sm-3">Committed by</div>
+                    <div className="col-sm-9">{modalPopupData?.committer}</div>
+                    <div className="col-sm-3">Summary</div>
+                    <div className="col-sm-9 coc-message">
+                      [{modalPopupData?.name}] {modalPopupData?.shortMessage}
+                    </div>
 
-          <DialogActions>
-            <Button className="close" autoFocus onClick={onClose}>
-              Close
-            </Button>
-          </DialogActions>
-        </BootstrapDialog>
-      )}
+                    <div className="col-sm-3">Source</div>
+                    <div className="col-sm-9">
+                      <a
+                        target="_blank"
+                        rel="noopener"
+                        className="coc-link"
+                        href={modalPopupData?.url}
+                      >
+                        {modalPopupData?.url}
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <DialogActions>
+              <Button className="close" autoFocus onClick={onClose}>
+                Close
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </BootstrapDialog>
     </div>
   );
 }
