@@ -1,7 +1,7 @@
-import { useApi } from '@backstage/core-plugin-api';
-import { daiReleaseApiRef } from '../api';
 import { useEffect, useRef } from 'react';
 import { TemplateGitMetaInfo } from '@digital-ai/plugin-dai-release-common';
+import { daiReleaseApiRef } from '../api';
+import { useApi } from '@backstage/core-plugin-api';
 
 export function useGetTemplateMetaInfo(
   instance: string,
@@ -64,5 +64,5 @@ export function useGetTemplateMetaInfo(
         abortControllerRef.current.abort();
       }
     };
-  }, [folderId, api]);
+  }, [folderId, api, setMetaInfo, instance]);
 }

@@ -31,7 +31,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   private async getToken() {
     const { token } = await this.identityApi.getCredentials();
-    return token; //'6HqrCFFDme/3WcC0SFdpaunTu8g2WY+/'
+    return token; //  '6HqrCFFDme/3WcC0SFdpaunTu8g2WY+/'
   }
 
   private isStatusChecked(statusTags: string[], tag: string) {

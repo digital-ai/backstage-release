@@ -13,16 +13,16 @@ import {
   error500ResponseHandler,
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
+import {
+  templateBackendPluginApiResponse,
+  templateGitMetaInfoResponse,
+} from '../mocks/mockTemplateData';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createRouter } from './router';
 import express from 'express';
 import { mockServices } from '@backstage/backend-test-utils';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
-import {
-  templateBackendPluginApiResponse,
-  templateGitMetaInfoResponse,
-} from '../mocks/mockTemplateData';
 
 let app: express.Express;
 const permissionApi = {

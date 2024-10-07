@@ -15,10 +15,10 @@ import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
+import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
-import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
 
 export interface RouterOptions {
   config: Config;

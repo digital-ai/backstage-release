@@ -1,12 +1,11 @@
-import React from 'react';
-import {
-  Dialog,
-  DialogActions,
-  styled,
-  Button,
-  CircularProgress,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import React from 'react';
+
+import { styled } from '@mui/material/zero-styled';
 import { useGetTemplateMetaInfo } from '../../hooks/useTemplatesMetaInfo';
 
 type modalPopupProps = {
@@ -153,9 +152,9 @@ export function MetaModalPopupComponent({
                 Meta information - {modalTitle}
               </h4>
               <button type="button" className="cross" onClick={onClose}>
-                <CloseIcon fontSize={'small'} />
+                <CloseIcon fontSize="small" />
               </button>
-              <div className="clearfix"></div>
+              <div className="clearfix" />
             </div>
             <div>
               <div className="modal-body version-control">
@@ -170,11 +169,7 @@ export function MetaModalPopupComponent({
                       <a
                         target="_blank"
                         rel="noopener"
-                        href={
-                          modalPopupData?.url +
-                          '/commit/' +
-                          modalPopupData?.commitHash
-                        }
+                        href={`${modalPopupData?.url}/commit/${modalPopupData?.commitHash}`}
                       >
                         {modalPopupData?.commitHash}
                       </a>
@@ -207,7 +202,7 @@ export function MetaModalPopupComponent({
             </div>
 
             <DialogActions>
-              <Button className="close" autoFocus onClick={onClose}>
+              <Button className="close" onClick={onClose}>
                 Close
               </Button>
             </DialogActions>

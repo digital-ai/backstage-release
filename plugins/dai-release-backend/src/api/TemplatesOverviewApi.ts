@@ -1,16 +1,17 @@
-import { RootLoggerService } from '@backstage/backend-plugin-api';
-import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import {
-  getCredentials,
-  getReleaseApiHost,
   RELEASE_TEMPLATE_GIT_COMMIT_VERSIONING_PATH,
   RELEASE_TEMPLATE_GIT_CONFIG_PATH,
+  getCredentials,
+  getReleaseApiHost,
 } from './apiConfig';
 import {
   TemplateCommitVersions,
   TemplateFolderGitConfig,
   TemplateGitMetaInfo,
 } from '@digital-ai/plugin-dai-release-common';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
+import { RootLoggerService } from '@backstage/backend-plugin-api';
+
 import { parseErrorResponse } from './responseUtil';
 
 export class TemplatesOverviewApi {

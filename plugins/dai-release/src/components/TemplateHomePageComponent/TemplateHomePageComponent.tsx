@@ -1,17 +1,17 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import { ScrollableTable } from '../DenseScrollableTable/ScrollableTable';
+import { MetaModalPopupComponent } from '../MetaModalPopupComponent';
 import { PlusIcon } from '../../icon/icon';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
+import { ScrollableTable } from '../DenseScrollableTable/ScrollableTable';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useTemplates } from '../../hooks';
-import { MetaModalPopupComponent } from '../MetaModalPopupComponent';
 
 const useStyles = makeStyles(() => ({
   logoStyle: {

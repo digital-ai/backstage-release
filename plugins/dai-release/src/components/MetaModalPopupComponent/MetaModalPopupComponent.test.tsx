@@ -1,19 +1,19 @@
-import React from 'react';
-import { MetaModalPopupComponent } from './MetaModalPopupComponent';
-import {
-  renderInTestApp,
-  setupRequestMockHandlers,
-  TestApiProvider,
-} from '@backstage/test-utils';
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import { DaiReleaseApiClient, daiReleaseApiRef } from '../../api';
 import {
   DiscoveryApi,
-  discoveryApiRef,
   IdentityApi,
+  discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { DaiReleaseApiClient, daiReleaseApiRef } from '../../api';
+import {
+  TestApiProvider,
+  renderInTestApp,
+  setupRequestMockHandlers,
+} from '@backstage/test-utils';
+import { MetaModalPopupComponent } from './MetaModalPopupComponent';
+import React from 'react';
 import { fireEvent } from '@testing-library/react';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 const identityApi = {
   getCredentials: jest.fn(),
