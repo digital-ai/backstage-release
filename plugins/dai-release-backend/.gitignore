@@ -3,3 +3,4 @@ dist/
 dist-types/
 yarn.lock
 yarn-error.log
+app-config.yaml
