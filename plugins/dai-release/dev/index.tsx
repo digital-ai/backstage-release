@@ -1,11 +1,11 @@
-import { DaiReleasePage, daiReleasePlugin, DaiTemplatePage } from '../src';
+import { DaiReleasePage, daiReleasePlugin } from '../src';
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
 
 createDevApp()
   .registerPlugin(daiReleasePlugin)
   .addPage({
-    element: <DaiTemplatePage />,
+    element: <DaiReleasePage />,
     title: 'Root Page',
     path: '/dai-release',
   })
