@@ -64,7 +64,7 @@ export const templateGitCommitVersionResponse = {
 };
 
 export const templateGitMetaInfoResponse: TemplateGitMetaInfo = {
-  folderId: 'Applications/Folder1',
+  folderId: 'Applications/Folder1/Release1',
   url: 'http://localhost/git/Folder1',
   name: 'Welcome release',
   shortMessage: 'Initial commit',
