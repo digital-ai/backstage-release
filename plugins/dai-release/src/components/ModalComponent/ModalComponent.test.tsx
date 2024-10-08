@@ -9,7 +9,7 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
-import { MetaModalPopupComponent } from './MetaModalPopupComponent';
+import { ModalComponent } from './ModalComponent';
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 import { rest } from 'msw';
@@ -35,8 +35,9 @@ describe('MetaModalPopupComponent', () => {
       onClose: () => {},
       instance: 'default',
       modalPopupInputId: 'test',
-      modalTitle: 'Test',
+      modalTitle: 'Meta information - Test',
       modalPopupData: null,
+      sourcePage: 'template',
       setModalPopupData: () => {},
     });
 
@@ -57,9 +58,12 @@ describe('MetaModalPopupComponent', () => {
       onClose: () => {},
       instance: 'default',
       modalPopupInputId: 'test',
-      modalTitle: 'Test Title',
+      modalTitle: 'Meta information - Test Title',
       modalPopupData: mockData,
-      setModalPopupData: () => {},
+      sourcePage: 'template',
+      setModalPopupData: () => {
+        return mockData;
+      },
     });
 
     expect(
@@ -81,8 +85,9 @@ describe('MetaModalPopupComponent', () => {
       onClose: onCloseMock,
       instance: 'default',
       modalPopupInputId: 'test',
-      modalTitle: '',
+      modalTitle: 'Meta information - Test Title',
       modalPopupData: {},
+      sourcePage: 'template',
       setModalPopupData: () => {},
     });
 
@@ -100,6 +105,7 @@ describe('MetaModalPopupComponent', () => {
       modalPopupInputId: 'test',
       modalTitle: '',
       modalPopupData: mockData,
+      sourcePage: 'template',
       setModalPopupData: () => {},
     });
 
@@ -116,6 +122,7 @@ async function renderContent(args: {
   modalPopupInputId: string;
   modalTitle: string;
   modalPopupData: any;
+  sourcePage: string;
   setModalPopupData: (data: any) => void;
 }) {
   return await renderInTestApp(
@@ -128,13 +135,14 @@ async function renderContent(args: {
         ],
       ]}
     >
-      <MetaModalPopupComponent
+      <ModalComponent
         openModal={args.openModal}
         onClose={args.onClose}
         instance={args.instance}
         modalPopupInputId={args.modalPopupInputId}
         modalTitle={args.modalTitle}
         modalPopupData={args.modalPopupData}
+        sourcePage={args.sourcePage}
         setModalPopupData={args.setModalPopupData}
       />
     </TestApiProvider>,

@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import React from 'react';
 
+import { getTemplateMetaContent } from '../TemplateHomePageComponent/TemplateMetaContent';
 import { styled } from '@mui/material/zero-styled';
 import { useGetTemplateMetaInfo } from '../../hooks/useTemplatesMetaInfo';
 
@@ -15,16 +16,18 @@ type modalPopupProps = {
   modalPopupInputId: string;
   modalTitle: string;
   modalPopupData: any;
+  sourcePage: string;
   setModalPopupData: (data: any) => void;
 };
 
-export function MetaModalPopupComponent({
+export function ModalComponent({
   onClose,
   instance,
   modalPopupInputId,
   modalTitle,
   openModal,
   modalPopupData,
+  sourcePage,
   setModalPopupData,
 }: modalPopupProps) {
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -38,6 +41,7 @@ export function MetaModalPopupComponent({
       width: '805px',
       maxWidth: '805px',
       borderRadius: '7px',
+      marginLeft: '15%',
     },
     '&.loading .MuiDialog-container .MuiPaper-root': {
       overflow: 'hidden',
@@ -149,58 +153,15 @@ export function MetaModalPopupComponent({
           <>
             <div className="modal-header">
               <h4 className="modal-title" id="modal-title">
-                Meta information - {modalTitle}
+                {modalTitle}
               </h4>
               <button type="button" className="cross" onClick={onClose}>
                 <CloseIcon fontSize="small" />
               </button>
               <div className="clearfix" />
             </div>
-            <div>
-              <div className="modal-body version-control">
-                <h4> Source Control Management </h4>
-                {!modalPopupData?.name ? (
-                  <p>No data available.</p>
-                ) : (
-                  <div className="">
-                    <div className="col-sm-3">Commit</div>
-                    <div className="col-sm-9">
-                      <span className="coc-label-button"> GIT </span>{' '}
-                      <a
-                        target="_blank"
-                        rel="noopener"
-                        href={`${modalPopupData?.url}/commit/${modalPopupData?.commitHash}`}
-                      >
-                        {modalPopupData?.commitHash}
-                      </a>
-                    </div>
-                    <div className="col-sm-3">Timestamp</div>
-                    <div className="col-sm-9">
-                      {formatDate(modalPopupData?.commitTime)}
-                    </div>
-                    <div className="col-sm-3">Committed by</div>
-                    <div className="col-sm-9">{modalPopupData?.committer}</div>
-                    <div className="col-sm-3">Summary</div>
-                    <div className="col-sm-9 coc-message">
-                      [{modalPopupData?.name}] {modalPopupData?.shortMessage}
-                    </div>
-
-                    <div className="col-sm-3">Source</div>
-                    <div className="col-sm-9">
-                      <a
-                        target="_blank"
-                        rel="noopener"
-                        className="coc-link"
-                        href={modalPopupData?.url}
-                      >
-                        {modalPopupData?.url}
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
+            {sourcePage === 'template' &&
+              getTemplateMetaContent(modalPopupData, formatDate)}
             <DialogActions>
               <Button className="close" onClick={onClose}>
                 Close

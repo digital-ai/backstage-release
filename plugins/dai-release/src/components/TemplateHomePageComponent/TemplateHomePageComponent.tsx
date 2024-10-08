@@ -1,6 +1,6 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import { MetaModalPopupComponent } from '../MetaModalPopupComponent';
+import { ModalComponent } from '../ModalComponent';
 import { PlusIcon } from '../../icon/icon';
 import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
@@ -167,13 +167,14 @@ export const TemplateHomePageComponent = () => {
                   ]}
                 />
                 {openModal && (
-                  <MetaModalPopupComponent
+                  <ModalComponent
                     onClose={onClosePopupModal}
                     instance={instance}
                     modalPopupInputId={modalPopupInputId}
-                    modalTitle={modalTitle}
+                    modalTitle={`Meta information - ${modalTitle}`}
                     openModal={openModal}
                     modalPopupData={modalPopupData}
+                    sourcePage="template"
                     setModalPopupData={setModalPopupData}
                   />
                 )}
