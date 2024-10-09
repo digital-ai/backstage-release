@@ -25,6 +25,7 @@ export const templateBackendPluginApiResponse: TemplateList = {
       id: 'Applications/Folder1/Release1',
       title: 'Configure Release',
       folder: 'Deploy',
+      folderId: 'Applications/Folder1',
       newReleaseRedirectUri:
         'http://localhost/#/releases/create?fromTemplateId=Folder1-Release1',
       titleRedirectUri: 'http://localhost/#/templates/Folder1-Release1',
@@ -33,6 +34,7 @@ export const templateBackendPluginApiResponse: TemplateList = {
       id: 'Applications/Folder2/Folder2/Folder1/Release2',
       title: 'Welcome release',
       folder: 'Digital.ai - Official > Workflows > Subfolders',
+      folderId: 'Applications/Folder2/Folder2/Folder1',
       newReleaseRedirectUri:
         'http://localhost/#/releases/create?fromTemplateId=Folder2-Folder2-Folder1-Release2',
       titleRedirectUri:

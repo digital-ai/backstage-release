@@ -155,7 +155,7 @@ export const TemplateHomePageComponent = () => {
                       headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
                       render: row => (
                         <ReleasePopOverComponent
-                          folderId={row.id}
+                          folderId={row.folderId}
                           modalTitle={row.title}
                           setOpenModal={setOpenModal}
                           setFolderId={setModalPopupInputId}

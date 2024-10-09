@@ -154,7 +154,6 @@ describe('router api tests with permissions ALLOW', () => {
       const response = await request(app)
         .get('/templates')
         .query('instanceName=default');
-      console.log(response.body.error.message);
       expect(response.body.error.message).toEqual(
         'Release service request not found',
       );

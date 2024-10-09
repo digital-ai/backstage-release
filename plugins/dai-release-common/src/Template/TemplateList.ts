@@ -14,6 +14,7 @@ export type Template = {
   id: string;
   title: string;
   folder?: string;
+  folderId: string;
   newReleaseRedirectUri: string;
   titleRedirectUri: string;
 };
