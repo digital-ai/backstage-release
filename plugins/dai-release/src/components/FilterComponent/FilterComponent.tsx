@@ -413,12 +413,11 @@ export const FilterComponent = ({
                 size="small"
                 disabled={!!error}
                 fullWidth
-                /*           sx={{
-                '& .MuiFormLabel-root': {
-                  fontSize: '0.875rem',
-                  fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-                },
-              }}*/
+                InputLabelProps={{
+                  style: {
+                    fontSize: '0.875rem', // Custom font size
+                  },
+                }}
               />
             </Grid>
           )}
@@ -457,6 +456,11 @@ export const FilterComponent = ({
                     onKeyDown={handleKeyDown} // Add custom values on Enter key press
                     size="small"
                     id="outlined-basic"
+                    InputLabelProps={{
+                      style: {
+                        fontSize: '0.875rem', // Custom font size
+                      },
+                    }}
                   />
                 )}
               />
