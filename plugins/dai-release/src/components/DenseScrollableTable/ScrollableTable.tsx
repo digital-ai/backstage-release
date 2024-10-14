@@ -10,6 +10,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import React from 'react';
+import {appThemeApiRef, useApi} from "@backstage/core-plugin-api";
+import {useObservable} from "react-use";
 
 const useStyles = makeStyles(() => ({
   headerStyle: {
@@ -45,6 +47,13 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'center',
   },
+  darkTheme: {
+    backgroundColor:'#424242'
+  },
+  lightTheme: {
+    backgroundColor:'#FFFFFF'
+  }
+
 }));
 
 export interface ScrollableTableColumn {
@@ -74,6 +83,12 @@ export const ScrollableTable = ({
     }
   };
   const classes = useStyles();
+  const appThemeApi = useApi(appThemeApiRef);
+  const themeId = useObservable(
+      appThemeApi.activeThemeId$(),
+      appThemeApi.getActiveThemeId(),
+  );
+  const headerThemeStyle = themeId === 'dark' ? classes.darkTheme : classes.lightTheme
 
   return (
     <div style={{ position: 'relative' }}>
@@ -101,7 +116,7 @@ export const ScrollableTable = ({
                 {columns.map(column => (
                   <TableCell
                     style={column.headerStyle}
-                    className={classes.headerStyle}
+                    className = {`${classes.headerStyle} ${themeId === 'dark' ? classes.darkTheme : classes.lightTheme}`}
                   >
                     {column.label}
                   </TableCell>
