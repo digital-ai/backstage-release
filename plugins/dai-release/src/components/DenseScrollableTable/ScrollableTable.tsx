@@ -9,8 +9,8 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import React from 'react';
 import {appThemeApiRef, useApi} from "@backstage/core-plugin-api";
+import React from 'react';
 import {useObservable} from "react-use";
 
 const useStyles = makeStyles(() => ({
