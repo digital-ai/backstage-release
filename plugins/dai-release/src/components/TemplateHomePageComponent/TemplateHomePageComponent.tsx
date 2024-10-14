@@ -1,16 +1,13 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import { ModalComponent } from '../ModalComponent';
 import React, { useEffect, useState } from 'react';
-import {
-  ScrollableTable,
-} from '../DenseScrollableTable/ScrollableTable';
 import { FilterComponent } from '../FilterComponent';
+import { ModalComponent } from '../ModalComponent';
 import { PlusIcon } from '../../icon/icon';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
+import { ScrollableTable } from '../DenseScrollableTable/ScrollableTable';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
-
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
