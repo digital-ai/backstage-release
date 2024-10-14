@@ -88,8 +88,6 @@ export const ScrollableTable = ({
       appThemeApi.activeThemeId$(),
       appThemeApi.getActiveThemeId(),
   );
-  const headerThemeStyle = themeId === 'dark' ? classes.darkTheme : classes.lightTheme
-
   return (
     <div style={{ position: 'relative' }}>
       {loading && (
