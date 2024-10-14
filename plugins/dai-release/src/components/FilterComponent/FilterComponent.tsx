@@ -210,6 +210,9 @@ export const FilterComponent = ({
               onClick={() => clearAllState()}
               size="small"
               className={classes.inputLabelRoot}
+              style={{
+                textTransform: 'none',
+              }}
             >
               Clear all
             </Button>
