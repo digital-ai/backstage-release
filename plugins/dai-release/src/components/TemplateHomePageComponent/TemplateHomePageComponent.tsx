@@ -1,15 +1,16 @@
 import { Content, Header, Link, LinkButton } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
+import { ModalComponent } from '../ModalComponent';
 import React, { useEffect, useState } from 'react';
 import {
   ScrollableTable,
-  ScrollableTableColumn,
 } from '../DenseScrollableTable/ScrollableTable';
 import { FilterComponent } from '../FilterComponent';
 import { PlusIcon } from '../../icon/icon';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
+
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -32,45 +33,6 @@ const useEmptyStyles = makeStyles(theme => ({
   },
 }));
 
-const defaultColumns: ScrollableTableColumn[] = [
-  {
-    label: 'Name',
-    headerStyle: { width: '1000px', lineHeight: '14px' },
-    render: row => <Link to={row.titleRedirectUri}>{row.title}</Link>,
-    cellStyle: { width: '1000px', lineHeight: '14px' },
-  },
-  {
-    label: 'Folder',
-    headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
-    render: row => capitalize(row.folder),
-    cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
-  },
-  {
-    label: 'Action',
-    headerStyle: { width: '180px', lineHeight: '14px' },
-    render: row => (
-      <div style={{ width: '150px', height: '40px' }}>
-        <LinkButton
-          to={row.newReleaseRedirectUri}
-          color="default"
-          variant="outlined"
-          style={{ width: '150px', height: '40px', textTransform: 'none' }}
-          startIcon={<PlusIcon />}
-        >
-          New Release
-        </LinkButton>
-      </div>
-    ),
-    cellStyle: { width: '180px', lineHeight: '14px' },
-  },
-  {
-    label: '',
-    headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
-    render: () => <ReleasePopOverComponent />,
-    cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
-  },
-];
-
 export const TemplateHomePageComponent = () => {
   const classes = useStyles();
   const emptyClasses = useEmptyStyles();
@@ -84,6 +46,10 @@ export const TemplateHomePageComponent = () => {
     searchTitle,
     instance,
     instanceList,
+    openModal,
+    modalPopupInputId,
+    modalTitle,
+    modalPopupData,
     setTags,
     setPage,
     setSearchTitle,
@@ -91,15 +57,22 @@ export const TemplateHomePageComponent = () => {
     setLoading,
     setHasMore,
     setData,
+    setOpenModal,
+    setModalPopupInputId,
+    setModalTitle,
+    setModalPopupData,
   } = useTemplates();
 
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
-    setPage((prevPage: number) => {
-      return prevPage + 1;
-    });
+    setPage((prevPage: number) => prevPage + 1);
   };
+
+  const onClosePopupModal = () => {
+    setOpenModal(false);
+  };
+
 
   const [showDrawer, onShowDrawer] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
@@ -131,7 +104,7 @@ export const TemplateHomePageComponent = () => {
         <Grid container spacing={3} direction="column">
           <Grid item>
             <SearchHeaderComponent
-              displayFilter={false}
+              displayFilter={true}
               searchTitleTextField="Search by name"
               titleName="Templates"
               searchTitle={searchTitle}
@@ -156,20 +129,85 @@ export const TemplateHomePageComponent = () => {
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
-              <ScrollableTable
-                loading={loading}
-                loadMoreData={loadMoreData}
-                data={data}
-                emptyContent={
-                  <Typography
-                    color="textSecondary"
-                    className={emptyClasses.empty}
-                  >
-                    No templates available
-                  </Typography>
-                }
-                columns={defaultColumns}
-              />
+              <>
+                <ScrollableTable
+                  loading={loading}
+                  loadMoreData={loadMoreData}
+                  data={data}
+                  emptyContent={
+                    <Typography
+                      color="textSecondary"
+                      className={emptyClasses.empty}
+                    >
+                      No templates available
+                    </Typography>
+                  }
+                  columns={[
+                    {
+                      label: 'Name',
+                      headerStyle: { width: '1000px', lineHeight: '14px' },
+                      render: row => (
+                        <Link to={row.titleRedirectUri}>{row.title}</Link>
+                      ),
+                      cellStyle: { width: '1000px', lineHeight: '14px' },
+                    },
+                    {
+                      label: 'Folder',
+                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      render: row => capitalize(row.folder),
+                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                    },
+                    {
+                      label: 'Action',
+                      headerStyle: { width: '180px', lineHeight: '14px' },
+                      render: row => (
+                        <div style={{ width: '150px', height: '40px' }}>
+                          <LinkButton
+                            to={row.newReleaseRedirectUri}
+                            color="default"
+                            variant="outlined"
+                            style={{
+                              width: '150px',
+                              height: '40px',
+                              textTransform: 'none',
+                            }}
+                            startIcon={<PlusIcon />}
+                          >
+                            New Releases
+                          </LinkButton>
+                        </div>
+                      ),
+                      cellStyle: { width: '180px', lineHeight: '14px' },
+                    },
+                    {
+                      label: '',
+                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      render: row => (
+                        <ReleasePopOverComponent
+                          folderId={row.folderId}
+                          modalTitle={row.title}
+                          setOpenModal={setOpenModal}
+                          setFolderId={setModalPopupInputId}
+                          setModalTitle={setModalTitle}
+                        />
+                      ),
+                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                    },
+                  ]}
+                />
+                {openModal && (
+                  <ModalComponent
+                    onClose={onClosePopupModal}
+                    instance={instance}
+                    modalPopupInputId={modalPopupInputId}
+                    modalTitle={`Meta information - ${modalTitle}`}
+                    openModal={openModal}
+                    modalPopupData={modalPopupData}
+                    sourcePage="template"
+                    setModalPopupData={setModalPopupData}
+                  />
+                )}
+              </>
             )}
           </Grid>
         </Grid>

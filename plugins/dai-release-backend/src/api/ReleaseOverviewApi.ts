@@ -292,6 +292,7 @@ export class ReleaseOverviewApi {
         id: d.id,
         title: d.title,
         folder: this.getFolderTitle(folderIdTitleMap, d.id),
+        folderId: d.id.substring(0, d.id.lastIndexOf('/')),
         newReleaseRedirectUri: getCreateReleaseRedirectUri(
           instanceConfig,
           d.id,

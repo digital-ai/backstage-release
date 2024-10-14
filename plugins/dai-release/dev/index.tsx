@@ -1,4 +1,4 @@
-import { DaiReleasePage, daiReleasePlugin } from '../src/plugin';
+import { DaiReleasePage, daiReleasePlugin } from '../src';
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
 

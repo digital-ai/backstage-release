@@ -7,22 +7,30 @@ import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
 
 export function useTemplates(): {
-  instance: string;
-  data: any;
-  tags: string[];
-  setData: (value: any) => void;
-  hasMore: boolean;
-  setHasMore: (value: boolean) => void;
-  setRowsPerPage: (value: number) => void;
   loading: boolean;
-  error: undefined | Error;
+  setLoading: (loading: boolean) => void;
+  data: any;
+  error: Error | undefined;
+  hasMore: Boolean;
+  tags: string[];
   searchTitle: string;
-  setLoading: (value: boolean) => void;
+  instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
-  setSearchTitle: (value: string) => void;
+  openModal: boolean;
+  modalPopupInputId: string;
+  modalTitle: string;
+  modalPopupData: any;
+  setPage: (page: (prevPage: number) => number) => void;
+  setRowsPerPage: (pageSize: number) => void;
+  setSearchTitle: (title: string) => void;
   setTags: (value: string[]) => void;
-  setInstance: (value: string) => void;
-  setPage: (value: (prevPage: number) => number) => void;
+  setInstance: (instance: string) => void;
+  setHasMore: (hasMore: boolean) => void;
+  setData: (data: any) => void;
+  setOpenModal: (openModal: boolean) => void;
+  setModalPopupInputId: (modalPopupInputId: string) => void;
+  setModalTitle: (modalTitle: string) => void;
+  setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
@@ -36,6 +44,10 @@ export function useTemplates(): {
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [modalPopupInputId, setModalPopupInputId] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalPopupData, setModalPopupData] = useState<any>(undefined);
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
@@ -104,20 +116,28 @@ export function useTemplates(): {
   );
 
   return {
+    loading,
+    hasMore,
+    setLoading,
     data,
     error,
-    hasMore,
+    searchTitle: searchTitle,
     instance,
     instanceList,
-    loading,
-    searchTitle: searchTitle,
-    setData,
-    setHasMore,
-    setInstance,
-    setLoading,
+    openModal,
+    modalPopupInputId,
+    modalTitle,
+    modalPopupData,
     setPage,
     setRowsPerPage,
     setSearchTitle,
+    setInstance,
+    setHasMore,
+    setData,
+    setOpenModal,
+    setModalPopupInputId,
+    setModalTitle,
+    setModalPopupData,
     setTags,
     tags,
   };

@@ -6,7 +6,12 @@ import {
   releasesOverviewFallbackReleaseApiResponse,
   releasesOverviewReleaseApiResponse,
 } from './mockData';
-import { templatesReleaseApiResponse } from './mockTemplateData';
+import {
+  templateFolderGitConfigResponse,
+  templateGitCommitVersionResponse,
+  templateGitMetaInfoResponse,
+  templatesReleaseApiResponse,
+} from './mockTemplateData';
 
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search', () => {
@@ -26,6 +31,18 @@ export const mockTestHandlers = [
   }),
   http.get('http://localhost/api/v1/templates', () => {
     return new HttpResponse(JSON.stringify(templatesReleaseApiResponse));
+  }),
+  http.get('http://localhost/api/v1/config/byTypeAndTitle', () => {
+    return new HttpResponse(JSON.stringify(templateFolderGitConfigResponse));
+  }),
+  http.get(
+    'http://localhost/api/v1/folders/versioning/Applications/Folder1/versions',
+    () => {
+      return new HttpResponse(JSON.stringify(templateGitCommitVersionResponse));
+    },
+  ),
+  http.get('http://localhost/api/v1/template/meta', () => {
+    return new HttpResponse(JSON.stringify(templateGitMetaInfoResponse));
   }),
 ];
 
