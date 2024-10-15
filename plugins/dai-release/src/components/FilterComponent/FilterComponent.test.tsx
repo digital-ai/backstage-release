@@ -98,6 +98,7 @@ describe('FilterComponent - Templates', () => {
     expect(rendered.getByText('user2')).toBeInTheDocument();
 
     // Check if the placeholder text is correct
+    // @ts-ignore
     const searchByTagsInput = rendered.getByRole('combobox', { id: 'tags-outlined' });
     expect(searchByTagsInput).toHaveAttribute(
       'placeholder',

@@ -21,9 +21,11 @@ type SearchHeaderComponentProps = {
   titleName: string;
   searchTitleTextField: string;
   searchTitle: string;
+  customSearch?: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   retry?: () => void;
+  onCustomSearch?: (customString: React.ChangeEvent<HTMLInputElement>) => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
   onShowDrawer: (showDrawer: boolean) => void;
@@ -31,18 +33,22 @@ type SearchHeaderComponentProps = {
   resetState?: () => void;
   displayFilter: boolean;
   error: Error | undefined;
+  tableSearchFilter?: boolean;
 };
 
 export const SearchHeaderComponent = ({
   displayFilter,
+  tableSearchFilter,
   titleName,
   searchTitleTextField,
   searchTitle,
+  customSearch,
   instance,
   instanceList,
   retry,
   error,
   filterCount,
+  onCustomSearch,
   onSearchByTitle,
   onSetInstance,
   onShowDrawer,
@@ -153,6 +159,30 @@ export const SearchHeaderComponent = ({
                   fullWidth
                 />
               </Grid>
+            )}
+            {tableSearchFilter  && onCustomSearch && (
+                <Grid item className={classes.inputItem}>
+                  <TextField
+                      id="outlined-basic"
+                      label="Search"
+                      value={customSearch}
+                      variant="outlined"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        onCustomSearch(event)
+                      }}
+                      size="small"
+                      InputProps={{
+                        classes: {
+                          root: classes.inputRoot,
+                        },
+                      }}
+                      InputLabelProps={{
+                        classes: { root: classes.inputLabelRoot },
+                      }}
+                      disabled={!!error}
+                      fullWidth
+                  />
+                </Grid>
             )}
             <Grid item style={{ display: 'flex' }}>
               <Badge

@@ -85,6 +85,19 @@ export const TemplateHomePageComponent = () => {
     setFilterCount(count);
   }, [tags, searchTitle]);
 
+  const [customSearchQuery, setCustomSearchQuery] = useState('');
+
+  const filteredData = customSearchQuery
+      ? data.filter((row: { [x: string]: { toString: () => string; }; }) =>
+          ['title', 'folder'].some(key =>
+              row[key]?.toString().toLowerCase().includes(customSearchQuery?.toLowerCase())
+          )
+      )
+      : data;
+  const handleCustomSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomSearchQuery(event.target.value);
+  };
+
   return (
     <div>
       <Header
@@ -102,6 +115,7 @@ export const TemplateHomePageComponent = () => {
           <Grid item>
             <SearchHeaderComponent
               displayFilter={false}
+              tableSearchFilter
               searchTitleTextField="Search by name"
               titleName="Templates"
               searchTitle={searchTitle}
@@ -109,6 +123,8 @@ export const TemplateHomePageComponent = () => {
               instanceList={instanceList}
               error={error}
               filterCount={filterCount}
+              customSearch={customSearchQuery}
+              onCustomSearch={handleCustomSearchChange}
               onSearchByTitle={setSearchTitle}
               onShowDrawer={onShowDrawer}
               onSetInstance={setInstance}
@@ -130,7 +146,7 @@ export const TemplateHomePageComponent = () => {
                 <ScrollableTable
                   loading={loading}
                   loadMoreData={loadMoreData}
-                  data={data}
+                  data={filteredData}
                   emptyContent={
                     <Typography
                       color="textSecondary"
