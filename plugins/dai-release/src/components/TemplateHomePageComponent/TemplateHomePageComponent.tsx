@@ -160,21 +160,21 @@ export const TemplateHomePageComponent = () => {
                   columns={[
                     {
                       label: 'Name',
-                      headerStyle: { width: '70vw', lineHeight: '14px' },
+                      headerStyle: { width: '1000px',  lineHeight: '14px',},
                       render: row => (
                         <Link to={row.titleRedirectUri}>{row.title}</Link>
                       ),
-                      cellStyle: { width: '70vw', lineHeight: '14px' },
+                      cellStyle: { width: '1000px', lineHeight: '14px', },
                     },
                     {
                       label: 'Folder',
-                      headerStyle: { width: '10vw', whiteSpace: 'nowrap' },
+                      headerStyle: { width: '500px' },
                       render: row => capitalize(row.folder),
-                      cellStyle: { width: '10vw', whiteSpace: 'nowrap' },
+                      cellStyle: { width: '500px' },
                     },
                     {
                       label: 'Action',
-                      headerStyle: { width: '10vw', lineHeight: '14px' },
+                      headerStyle: { width: '180px', lineHeight: '14px' },
                       render: row => (
                         <div style={{ width: '150px', height: '40px' }}>
                           <LinkButton
@@ -192,7 +192,7 @@ export const TemplateHomePageComponent = () => {
                           </LinkButton>
                         </div>
                       ),
-                      cellStyle: { width: '10vw', lineHeight: '14px' },
+                      cellStyle: { width: '180px', lineHeight: '14px' },
                     },
                     {
                       label: '',
