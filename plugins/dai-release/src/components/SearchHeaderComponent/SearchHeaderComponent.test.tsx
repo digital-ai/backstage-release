@@ -106,7 +106,7 @@ describe('SearchHeaderComponent', () => {
     expect(rendered.getByLabelText('Search')).toHaveValue('test');
     expect(rendered.getByLabelText('Choose Instance')).toBeInTheDocument();
     expect(rendered.getByLabelText('Choose Instance')).toHaveTextContent(
-        'default',
+      'default',
     );
     const badge = rendered.getByTestId('badge-icon');
     expect(badge).toHaveTextContent('3');

@@ -31,9 +31,9 @@ type SearchHeaderComponentProps = {
   onShowDrawer: (showDrawer: boolean) => void;
   filterCount: number;
   resetState?: () => void;
-  displayFilter: boolean | true;
+  displayFilter?: boolean | true;
   error: Error | undefined;
-  tableSearchFilter: boolean | false;
+  tableSearchFilter?: boolean | false;
 };
 
 export const SearchHeaderComponent = ({
@@ -160,29 +160,29 @@ export const SearchHeaderComponent = ({
                 />
               </Grid>
             )}
-            {tableSearchFilter  && (
-                <Grid item className={classes.inputItem}>
-                  <TextField
-                      id="outlined-basic"
-                      label="Search"
-                      value={customSearch}
-                      variant="outlined"
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      onCustomSearch?.(event.target.value);
-                      }}
-                      size="small"
-                      InputProps={{
-                        classes: {
-                          root: classes.inputRoot,
-                        },
-                      }}
-                      InputLabelProps={{
-                        classes: { root: classes.inputLabelRoot },
-                      }}
-                      disabled={!!error}
-                      fullWidth
-                  />
-                </Grid>
+            {tableSearchFilter && (
+              <Grid item className={classes.inputItem}>
+                <TextField
+                  id="outlined-basic"
+                  label="Search"
+                  value={customSearch}
+                  variant="outlined"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onCustomSearch?.(event.target.value);
+                  }}
+                  size="small"
+                  InputProps={{
+                    classes: {
+                      root: classes.inputRoot,
+                    },
+                  }}
+                  InputLabelProps={{
+                    classes: { root: classes.inputLabelRoot },
+                  }}
+                  disabled={!!error}
+                  fullWidth
+                />
+              </Grid>
             )}
             <Grid item style={{ display: 'flex' }}>
               <Badge

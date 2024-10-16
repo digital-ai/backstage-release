@@ -70,7 +70,6 @@ export const TemplateHomePageComponent = () => {
     setOpenModal(false);
   };
 
-
   const [showDrawer, onShowDrawer] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
   const resetState = () => {
@@ -88,12 +87,15 @@ export const TemplateHomePageComponent = () => {
   const [customSearchQuery, setCustomSearchQuery] = useState('');
 
   const filteredData = customSearchQuery
-      ? data.filter((row: { [x: string]: { toString: () => string; }; }) =>
-          ['title', 'folder'].some(key =>
-              row[key]?.toString().toLowerCase().includes(customSearchQuery?.toLowerCase())
-          )
+    ? data.filter((row: { [x: string]: { toString: () => string } }) =>
+        ['title', 'folder'].some(key =>
+          row[key]
+            ?.toString()
+            .toLowerCase()
+            .includes(customSearchQuery?.toLowerCase()),
+        ),
       )
-      : data;
+    : data;
   const handleCustomSearchChange = (customSearchStr: string) => {
     setCustomSearchQuery(customSearchStr);
   };
