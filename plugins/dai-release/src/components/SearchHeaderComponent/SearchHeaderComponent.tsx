@@ -25,15 +25,15 @@ type SearchHeaderComponentProps = {
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   retry?: () => void;
-  onCustomSearch?: (customString: React.ChangeEvent<HTMLInputElement>) => void;
+  onCustomSearch?: (customString: string) => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
   onShowDrawer: (showDrawer: boolean) => void;
   filterCount: number;
   resetState?: () => void;
-  displayFilter: boolean;
+  displayFilter: boolean | true;
   error: Error | undefined;
-  tableSearchFilter?: boolean;
+  tableSearchFilter: boolean | false;
 };
 
 export const SearchHeaderComponent = ({
@@ -160,7 +160,7 @@ export const SearchHeaderComponent = ({
                 />
               </Grid>
             )}
-            {tableSearchFilter  && onCustomSearch && (
+            {tableSearchFilter  && (
                 <Grid item className={classes.inputItem}>
                   <TextField
                       id="outlined-basic"
@@ -168,7 +168,7 @@ export const SearchHeaderComponent = ({
                       value={customSearch}
                       variant="outlined"
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                        onCustomSearch(event)
+                      onCustomSearch?.(event.target.value);
                       }}
                       size="small"
                       InputProps={{

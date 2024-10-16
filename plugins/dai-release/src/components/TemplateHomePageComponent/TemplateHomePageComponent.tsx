@@ -94,8 +94,8 @@ export const TemplateHomePageComponent = () => {
           )
       )
       : data;
-  const handleCustomSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomSearchQuery(event.target.value);
+  const handleCustomSearchChange = (customSearchStr: string) => {
+    setCustomSearchQuery(customSearchStr);
   };
 
   return (
@@ -158,21 +158,21 @@ export const TemplateHomePageComponent = () => {
                   columns={[
                     {
                       label: 'Name',
-                      headerStyle: { width: '1000px', lineHeight: '14px' },
+                      headerStyle: { width: '70vw', lineHeight: '14px' },
                       render: row => (
                         <Link to={row.titleRedirectUri}>{row.title}</Link>
                       ),
-                      cellStyle: { width: '1000px', lineHeight: '14px' },
+                      cellStyle: { width: '70vw', lineHeight: '14px' },
                     },
                     {
                       label: 'Folder',
-                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      headerStyle: { width: '10vw', whiteSpace: 'nowrap' },
                       render: row => capitalize(row.folder),
-                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      cellStyle: { width: '10vw', whiteSpace: 'nowrap' },
                     },
                     {
                       label: 'Action',
-                      headerStyle: { width: '180px', lineHeight: '14px' },
+                      headerStyle: { width: '10vw', lineHeight: '14px' },
                       render: row => (
                         <div style={{ width: '150px', height: '40px' }}>
                           <LinkButton
@@ -190,7 +190,7 @@ export const TemplateHomePageComponent = () => {
                           </LinkButton>
                         </div>
                       ),
-                      cellStyle: { width: '180px', lineHeight: '14px' },
+                      cellStyle: { width: '10vw', lineHeight: '14px' },
                     },
                     {
                       label: '',

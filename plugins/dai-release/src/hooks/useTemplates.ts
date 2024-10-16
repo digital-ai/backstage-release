@@ -33,7 +33,7 @@ export function useTemplates(): {
   setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [searchTitle, setSearchTitle] = useState('');
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<

@@ -9,8 +9,8 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
+import React, {useRef} from 'react';
 import {appThemeApiRef, useApi} from "@backstage/core-plugin-api";
-import React from 'react';
 import {useObservable} from "react-use";
 
 const useStyles = makeStyles(() => ({
@@ -38,8 +38,8 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
   },
   defaultTableContainer: {
-    height: '850px',
-    overflow: 'auto',
+    height: '80vh',
+    overflowY: 'scroll',
     borderBottom: 'unset',
   },
   emptyTableContent: {
@@ -76,10 +76,13 @@ export const ScrollableTable = ({
   emptyContent,
   columns,
 }: ScrollableProps) => {
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight) {
-      loadMoreData();
+  const containerRef = useRef(null);
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        loadMoreData(); // Load the next page of data
+      }
     }
   };
   const classes = useStyles();
@@ -102,6 +105,7 @@ export const ScrollableTable = ({
               ? classes.emptyTableContent
               : classes.defaultTableContainer
           }
+          ref={containerRef}
           onScroll={handleScroll}
         >
           <Table
