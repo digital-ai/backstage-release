@@ -1,4 +1,4 @@
-import { Content, Header, Link, LinkButton } from '@backstage/core-components';
+import { Content, Header, Link, LinkButton, Page } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
@@ -101,7 +101,7 @@ export const TemplateHomePageComponent = () => {
   };
 
   return (
-    <div>
+      <Page themeId="home">
       <Header
         title={
           <img
@@ -227,6 +227,6 @@ export const TemplateHomePageComponent = () => {
           </Grid>
         </Grid>
       </Content>
-    </div>
+      </Page>
   );
 };
