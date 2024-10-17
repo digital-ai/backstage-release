@@ -12,7 +12,7 @@ describe('ReleasePopOverComponent', () => {
     const { getByLabelText, getByText } = render(<ReleasePopOverComponent />);
     const button = getByLabelText('more');
     fireEvent.click(button);
-    const metaInfoButton = getByText('Meta Information');
+    const metaInfoButton = getByText('Meta information');
     expect(metaInfoButton).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe('ReleasePopOverComponent', () => {
     );
     const button = getByLabelText('more');
     fireEvent.click(button);
-    const metaInfoButton = getByText('Meta Information');
+    const metaInfoButton = getByText('Meta information');
     fireEvent.click(metaInfoButton);
     expect(setOpenModalMock).toHaveBeenCalledWith(true);
     expect(setFolderIdMock).toHaveBeenCalledWith('testFolder');

@@ -265,6 +265,7 @@ export class ReleaseOverviewApi {
 
   async getTemplates(
     title: string,
+    tags: string[],
     pageNumber: string,
     resultsPerPage: string,
     instanceName: string,
@@ -276,6 +277,7 @@ export class ReleaseOverviewApi {
     const data: TemplateOverview[] = await this.getTemplateList(
       apiUrl,
       title,
+      tags,
       accessToken,
       pageNumber,
       resultsPerPage,
@@ -307,21 +309,28 @@ export class ReleaseOverviewApi {
   async getTemplateList(
     apiUrl: string,
     title: string,
+    tags: string[],
     accessToken: string,
     pageNumber: string,
     resultsPerPage: string,
   ) {
-    const response = await fetch(
-      `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}&title=${title}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-release-personal-token': `${accessToken}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+    let url = `${apiUrl}${RELEASE_TEMPLATE_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`;
+    if (title && title !== '') {
+      url += `&title=${title}`;
+    }
+    if (tags && tags.length > 0) {
+      tags.forEach(tag => {
+        url += `&tag=${tag}`;
+      });
+    }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'x-release-personal-token': `${accessToken}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    );
+    });
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }

@@ -9,7 +9,9 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useRef } from 'react';
+import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
+import { useObservable } from 'react-use';
 
 const useStyles = makeStyles(() => ({
   headerStyle: {
@@ -21,9 +23,8 @@ const useStyles = makeStyles(() => ({
   layoutSec: {
     paddingTop: '0',
   },
-  commonCellStyle: {
-    width: 'auto',
-    whiteSpace: 'nowrap',
+  cellStyle: {
+    padding: '8px 10px 8px 18px',
   },
   customLoadingIcon: {
     display: 'flex',
@@ -37,14 +38,20 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
   },
   defaultTableContainer: {
-    height: '850px',
-    overflow: 'auto',
+    height: '80vh',
+    overflowY: 'scroll',
     borderBottom: 'unset',
   },
   emptyTableContent: {
     overflow: 'auto',
     display: 'flex',
     justifyContent: 'center',
+  },
+  darkTheme: {
+    backgroundColor: '#424242',
+  },
+  lightTheme: {
+    backgroundColor: '#FFFFFF',
   },
 }));
 
@@ -68,14 +75,21 @@ export const ScrollableTable = ({
   emptyContent,
   columns,
 }: ScrollableProps) => {
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    if (scrollHeight - scrollTop === clientHeight) {
-      loadMoreData();
+  const containerRef = useRef(null);
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        loadMoreData(); // Load the next page of data
+      }
     }
   };
   const classes = useStyles();
-
+  const appThemeApi = useApi(appThemeApiRef);
+  const themeId = useObservable(
+    appThemeApi.activeThemeId$(),
+    appThemeApi.getActiveThemeId(),
+  );
   return (
     <div style={{ position: 'relative' }}>
       {loading && (
@@ -90,15 +104,20 @@ export const ScrollableTable = ({
               ? classes.emptyTableContent
               : classes.defaultTableContainer
           }
+          ref={containerRef}
           onScroll={handleScroll}
         >
-          <Table stickyHeader aria-label="sticky table">
+          <Table
+            stickyHeader
+            aria-label="sticky table"
+            style={{ tableLayout: 'auto' }}
+          >
             <TableHead>
               <TableRow>
                 {columns.map(column => (
                   <TableCell
                     style={column.headerStyle}
-                    className={classes.headerStyle}
+                    className={`${classes.headerStyle} ${themeId === 'dark' ? classes.darkTheme : classes.lightTheme}`}
                   >
                     {column.label}
                   </TableCell>
@@ -110,7 +129,11 @@ export const ScrollableTable = ({
                 data.map((row, index) => (
                   <TableRow key={index}>
                     {columns.map((column, colIndex) => (
-                      <TableCell key={colIndex} style={column.cellStyle}>
+                      <TableCell
+                        key={colIndex}
+                        style={column.cellStyle}
+                        className={classes.cellStyle}
+                      >
                         {column.render ? column.render(row) : ''}
                       </TableCell>
                     ))}

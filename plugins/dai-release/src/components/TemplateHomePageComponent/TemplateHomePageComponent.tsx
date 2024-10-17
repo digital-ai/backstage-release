@@ -1,13 +1,13 @@
-import { Content, Header, Link, LinkButton } from '@backstage/core-components';
+import { Content, Header, Link, LinkButton, Page } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { FilterComponent } from '../FilterComponent';
 import { ModalComponent } from '../ModalComponent';
 import { PlusIcon } from '../../icon/icon';
-import React from 'react';
 import { ReleasePopOverComponent } from '../ReleasePopOverComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { ScrollableTable } from '../DenseScrollableTable/ScrollableTable';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
-
 import Typography from '@mui/material/Typography';
 import capitalize from 'lodash/capitalize';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -38,6 +38,7 @@ export const TemplateHomePageComponent = () => {
     loading,
     error,
     data,
+    tags,
     hasMore,
     searchTitle,
     instance,
@@ -46,6 +47,7 @@ export const TemplateHomePageComponent = () => {
     modalPopupInputId,
     modalTitle,
     modalPopupData,
+    setTags,
     setPage,
     setSearchTitle,
     setInstance,
@@ -68,8 +70,38 @@ export const TemplateHomePageComponent = () => {
     setOpenModal(false);
   };
 
+  const [showDrawer, onShowDrawer] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
+  const resetState = () => {
+    setData([]);
+    setHasMore(true);
+    setLoading(true);
+  };
+  useEffect(() => {
+    // Calculate the number of applied filters
+    const count =
+      (tags.length > 0 ? tags.length : 0) + (searchTitle.length > 0 ? 1 : 0);
+    setFilterCount(count);
+  }, [tags, searchTitle]);
+
+  const [customSearchQuery, setCustomSearchQuery] = useState('');
+
+  const filteredData = customSearchQuery
+    ? data.filter((row: { [x: string]: { toString: () => string } }) =>
+        ['title', 'folder'].some(key =>
+          row[key]
+            ?.toString()
+            .toLowerCase()
+            .includes(customSearchQuery?.toLowerCase()),
+        ),
+      )
+    : data;
+  const handleCustomSearchChange = (customSearchStr: string) => {
+    setCustomSearchQuery(customSearchStr);
+  };
+
   return (
-    <div>
+      <Page themeId="home">
       <Header
         title={
           <img
@@ -85,17 +117,29 @@ export const TemplateHomePageComponent = () => {
           <Grid item>
             <SearchHeaderComponent
               displayFilter={false}
+              tableSearchFilter
               searchTitleTextField="Search by name"
               titleName="Templates"
               searchTitle={searchTitle}
               instance={instance}
               instanceList={instanceList}
               error={error}
+              filterCount={filterCount}
+              customSearch={customSearchQuery}
+              onCustomSearch={handleCustomSearchChange}
               onSearchByTitle={setSearchTitle}
+              onShowDrawer={onShowDrawer}
               onSetInstance={setInstance}
-              onSetData={setData}
-              onSetHasMore={setHasMore}
-              onSetLoading={setLoading}
+              resetState={resetState}
+            />
+            <FilterComponent
+              showDrawer={showDrawer}
+              onShowDrawer={onShowDrawer}
+              tags={tags}
+              searchTitle={searchTitle}
+              onSetTags={setTags}
+              onSearchByTitle={setSearchTitle}
+              resetState={resetState}
             />
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
@@ -104,7 +148,7 @@ export const TemplateHomePageComponent = () => {
                 <ScrollableTable
                   loading={loading}
                   loadMoreData={loadMoreData}
-                  data={data}
+                  data={filteredData}
                   emptyContent={
                     <Typography
                       color="textSecondary"
@@ -116,17 +160,17 @@ export const TemplateHomePageComponent = () => {
                   columns={[
                     {
                       label: 'Name',
-                      headerStyle: { width: '1000px', lineHeight: '14px' },
+                      headerStyle: { width: '1000px',  lineHeight: '14px',},
                       render: row => (
                         <Link to={row.titleRedirectUri}>{row.title}</Link>
                       ),
-                      cellStyle: { width: '1000px', lineHeight: '14px' },
+                      cellStyle: { width: '1000px', lineHeight: '14px', },
                     },
                     {
                       label: 'Folder',
-                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      headerStyle: { width: '500px' },
                       render: row => capitalize(row.folder),
-                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      cellStyle: { width: '500px' },
                     },
                     {
                       label: 'Action',
@@ -183,6 +227,6 @@ export const TemplateHomePageComponent = () => {
           </Grid>
         </Grid>
       </Content>
-    </div>
+      </Page>
   );
 };

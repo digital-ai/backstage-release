@@ -25,6 +25,7 @@ export type TemplateOverview = {
   type: string;
   kind: string;
   title: string;
+  tags?: string[];
 };
 
 export type TemplateFolderGitConfig = {

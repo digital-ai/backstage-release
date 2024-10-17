@@ -12,6 +12,7 @@ export function useTemplates(): {
   data: any;
   error: Error | undefined;
   hasMore: Boolean;
+  tags: string[];
   searchTitle: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
@@ -22,6 +23,7 @@ export function useTemplates(): {
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
+  setTags: (value: string[]) => void;
   setInstance: (instance: string) => void;
   setHasMore: (hasMore: boolean) => void;
   setData: (data: any) => void;
@@ -31,7 +33,7 @@ export function useTemplates(): {
   setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [searchTitle, setSearchTitle] = useState('');
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
@@ -40,6 +42,7 @@ export function useTemplates(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
 
   const [openModal, setOpenModal] = useState(false);
   const [modalPopupInputId, setModalPopupInputId] = useState('');
@@ -51,7 +54,10 @@ export function useTemplates(): {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // Use the debounced value of searchTitle, it will update the state after 1 second
-  const debouncedSearchTitle = useDebouncedValue(searchTitle, 1000);
+  const debouncedSearchTitle = useDebouncedValue(searchTitle, 500);
+
+  // Use the debounced value of searchTag, it will update the state after 1 second
+  const debouncedSearchTag = useDebouncedValue(tags, 500);
 
   const { error } = useAsyncRetryWithSelectiveDeps(
     async () => {
@@ -80,6 +86,7 @@ export function useTemplates(): {
           rowsPerPage,
           debouncedSearchTitle,
           instance,
+          debouncedSearchTag,
           { signal: abortController.signal },
         );
 
@@ -105,7 +112,7 @@ export function useTemplates(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, debouncedSearchTitle, instance],
+    [api, rowsPerPage, debouncedSearchTitle, instance, debouncedSearchTag],
   );
 
   return {
@@ -131,5 +138,7 @@ export function useTemplates(): {
     setModalPopupInputId,
     setModalTitle,
     setModalPopupData,
+    setTags,
+    tags,
   };
 }
