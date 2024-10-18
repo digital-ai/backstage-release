@@ -1,5 +1,6 @@
 import React from 'react';
 import { createSvgIcon } from '@mui/material/utils';
+import '@digital-ai/dot-icons/index.css';
 
 export const PlusIcon = createSvgIcon(
   <svg
@@ -17,3 +18,28 @@ export const PlusIcon = createSvgIcon(
   </svg>,
   'Plus',
 );
+
+export const templateIcon = () => {
+  return <div>
+    <span className="dot-icon">
+    <i className="icon-template"></i>
+    </span>
+  </div>
+}
+
+export const activeReleaseIcon = () => {
+  return <div>
+    <span className="dot-icon">
+    <i className="icon-release"></i>
+    </span>
+  </div>
+}
+
+export const workflowIcon = () => {
+  return <div>
+    <span className="dot-icon">
+    <i className="icon-workflow"></i>
+    </span>
+  </div>
+}
+
