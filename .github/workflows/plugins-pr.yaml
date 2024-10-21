@@ -21,15 +21,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-        registry-url: 'https://registry.npmjs.org/'
-        scope: '@digital-ai'
-    - name: Configure GitHub Package Registry
-      run: |
-         # Set GitHub registry for the @digital-ai scope
-         npm config set @digital-ai:registry https://npm.pkg.github.com
-        
-         # Authenticate with GitHub Packages using GitHub token
-         npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+        registry-url: 'https://npm.pkg.github.com'
     - name: dai-release-common - Install dependencies
       working-directory: ./plugins/dai-release-common
       run: yarn install
@@ -69,6 +61,16 @@ jobs:
     - name: dai-release - Use local link
       working-directory: ./plugins/dai-release
       run: yarn link "@digital-ai/plugin-dai-release-common"
+    - name: Install dot-icon from npm registry - Configure npm to use npm registry for @digital-ai scope
+      run: |
+        npm config set @digital-ai:registry https://registry.npmjs.org/
+    - name: Install dot-icon from npm registry.
+      working-directory: ${{ inputs.plugin-path }}
+      run: |
+        yarn add @digital-ai/dot-icons --registry=https://registry.npmjs.org/
+    - name: Install dot-icon from npm registry - Reset npm config.
+      run: |
+        npm config delete @digital-ai:registry
     - name: dai-release - Install dependencies
       working-directory: ./plugins/dai-release
       run: yarn install
