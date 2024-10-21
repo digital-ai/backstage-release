@@ -1,4 +1,10 @@
-import { Grid, MenuItem, TextField, makeStyles } from '@material-ui/core';
+import {
+  Badge,
+  Grid,
+  MenuItem,
+  TextField,
+  makeStyles,
+} from '@material-ui/core';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
 import FormControl from '@mui/material/FormControl';
@@ -15,34 +21,38 @@ type SearchHeaderComponentProps = {
   titleName: string;
   searchTitleTextField: string;
   searchTitle: string;
+  customSearch?: string;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   retry?: () => void;
+  onCustomSearch?: (customString: string) => void;
   onSearchByTitle: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
-  onShowDrawer?: (showDrawer: boolean) => void;
-  onSetData?: (data: any) => void;
-  onSetHasMore?: (hasMore: boolean) => void;
-  onSetLoading?: (loading: boolean) => void;
-  displayFilter: boolean;
+  onShowDrawer: (showDrawer: boolean) => void;
+  filterCount: number;
+  resetState?: () => void;
+  displayFilter?: boolean | true;
   error: Error | undefined;
+  tableSearchFilter?: boolean | false;
 };
 
 export const SearchHeaderComponent = ({
   displayFilter,
+  tableSearchFilter,
   titleName,
   searchTitleTextField,
   searchTitle,
+  customSearch,
   instance,
   instanceList,
   retry,
   error,
+  filterCount,
+  onCustomSearch,
   onSearchByTitle,
   onSetInstance,
   onShowDrawer,
-  onSetData,
-  onSetHasMore,
-  onSetLoading,
+  resetState,
 }: SearchHeaderComponentProps) => {
   const useStyles = makeStyles(() => ({
     inputRoot: {
@@ -103,15 +113,7 @@ export const SearchHeaderComponent = ({
                   label="Choose Instance"
                   onChange={(event: SelectChangeEvent) => {
                     onSetInstance(event.target.value);
-                    if (onSetData) {
-                      onSetData([]);
-                    }
-                    if (onSetHasMore) {
-                      onSetHasMore(true);
-                    }
-                    if (onSetLoading) {
-                      onSetLoading(true);
-                    }
+                    resetState?.();
                   }}
                   input={
                     <OutlinedInput
@@ -142,6 +144,7 @@ export const SearchHeaderComponent = ({
                   value={searchTitle}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     onSearchByTitle(event.target.value);
+                    resetState?.();
                   }}
                   size="small"
                   InputProps={{
@@ -157,8 +160,36 @@ export const SearchHeaderComponent = ({
                 />
               </Grid>
             )}
-            {displayFilter && onShowDrawer && (
-              <Grid item style={{ display: 'flex' }}>
+            {tableSearchFilter && (
+              <Grid item className={classes.inputItem}>
+                <TextField
+                  id="outlined-basic"
+                  label="Search"
+                  value={customSearch}
+                  variant="outlined"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onCustomSearch?.(event.target.value);
+                  }}
+                  size="small"
+                  InputProps={{
+                    classes: {
+                      root: classes.inputRoot,
+                    },
+                  }}
+                  InputLabelProps={{
+                    classes: { root: classes.inputLabelRoot },
+                  }}
+                  disabled={!!error}
+                  fullWidth
+                />
+              </Grid>
+            )}
+            <Grid item style={{ display: 'flex' }}>
+              <Badge
+                badgeContent={filterCount}
+                color="secondary"
+                data-testid="badge-icon"
+              >
                 <SvgIcon onClick={() => !!error || onShowDrawer(true)}>
                   <svg
                     viewBox="0 0 20 20"
@@ -175,8 +206,8 @@ export const SearchHeaderComponent = ({
                     />
                   </svg>
                 </SvgIcon>
-              </Grid>
-            )}
+              </Badge>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

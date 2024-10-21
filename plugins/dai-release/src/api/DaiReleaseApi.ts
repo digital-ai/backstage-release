@@ -21,7 +21,7 @@ export interface DaiReleaseApi {
     searchTile: string,
     fromDate: dayjs.Dayjs | null,
     toDate: dayjs.Dayjs | null,
-    statusTags: string[],
+    statusTags: string[] | undefined,
     instanceName: string,
   ): Promise<{ items: ReleaseList }>;
 
@@ -32,6 +32,7 @@ export interface DaiReleaseApi {
     rowsPerPage: number,
     searchTile: string,
     instanceName: string,
+    tags: string[],
     options?: { signal?: AbortSignal },
   ): Promise<{ items: TemplateList }>;
 

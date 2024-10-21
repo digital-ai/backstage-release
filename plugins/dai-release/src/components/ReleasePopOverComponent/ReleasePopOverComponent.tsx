@@ -74,8 +74,16 @@ export function ReleasePopOverComponent({
             horizontal: 'left',
           }}
         >
-          <Button variant="text" onClick={onOpenPopupModal}>
-            Meta Information
+          <Button
+            variant="text"
+            onClick={onOpenPopupModal}
+            style={{
+              width: '150px',
+              height: '40px',
+              textTransform: 'none',
+            }}
+          >
+            Meta information
           </Button>
         </Popover>
       </div>

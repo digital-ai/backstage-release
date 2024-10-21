@@ -123,6 +123,12 @@ export async function createRouter(
     }
 
     const title = getDecodedQueryVal(req.query.title?.toString());
+    const tags: string[] = req.query.tag
+      ? req.query.tag
+          .toString()
+          .split(',')
+          .map(tag => getDecodedQueryVal(tag))
+      : [];
     const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
@@ -130,6 +136,7 @@ export async function createRouter(
     const instanceName = req.query.instanceName?.toString() || '';
     const templates = await releaseOverviewApi.getTemplates(
       title,
+      tags,
       pageNumber,
       resultsPerPage,
       instanceName,
