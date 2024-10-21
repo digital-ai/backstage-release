@@ -38,6 +38,11 @@ jobs:
         if: ${{ inputs.plugin-path == './plugins/dai-release' }}
         run: |
           npm config delete @digital-ai:registry
+      - name: Configure npm to use both GitHub and npm registries
+        if: ${{ inputs.plugin-path == './plugins/dai-release' }}
+        run: |
+            npm config set @digital-ai:registry https://npm.pkg.github.com
+            npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         working-directory: ${{ inputs.plugin-path }}
         run: yarn install
