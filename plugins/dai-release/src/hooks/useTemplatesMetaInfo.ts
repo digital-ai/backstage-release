@@ -7,6 +7,7 @@ export function useGetTemplateMetaInfo(
   instance: string,
   folderId: string,
   setMetaInfo: (metaInfo: TemplateGitMetaInfo | undefined) => void,
+  sourcePage: string
 ) {
   const api = useApi(daiReleaseApiRef);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -15,6 +16,7 @@ export function useGetTemplateMetaInfo(
   );
 
   useEffect(() => {
+
     let isMounted = true;
 
     const fetchMetaInfo = async () => {
@@ -54,15 +56,14 @@ export function useGetTemplateMetaInfo(
       }
     };
 
-    if (folderId) {
+    if(sourcePage === 'template' && folderId) {
       fetchMetaInfo();
     }
-
     return () => {
       isMounted = false;
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
     };
-  }, [folderId, api, setMetaInfo, instance]);
+  }, [folderId, api, setMetaInfo, instance, sourcePage]);
 }
