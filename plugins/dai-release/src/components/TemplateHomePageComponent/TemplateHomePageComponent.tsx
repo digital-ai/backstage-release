@@ -160,17 +160,17 @@ export const TemplateHomePageComponent = () => {
                   columns={[
                     {
                       label: 'Name',
-                      headerStyle: { width: '1000px',  lineHeight: '14px',},
+                      headerStyle: { width: '850px', lineHeight: '14px' },
                       render: row => (
                         <Link to={row.titleRedirectUri}>{row.title}</Link>
                       ),
-                      cellStyle: { width: '1000px', lineHeight: '14px', },
+                      cellStyle: { width: '850px', lineHeight: '14px' },
                     },
                     {
                       label: 'Folder',
-                      headerStyle: { width: '500px' },
+                      headerStyle: { width: '450px', lineHeight: '14px' },
                       render: row => capitalize(row.folder),
-                      cellStyle: { width: '500px' },
+                      cellStyle: { width: '450px', lineHeight: '14px' },
                     },
                     {
                       label: 'Action',
