@@ -52,3 +52,18 @@ export const getTemplateMetaContent = (
     </div>
   );
 };
+
+export const getActiveReleaseMetaContent = ( modalPopupData: TemplateGitMetaInfo,
+) => {
+    return (
+        <div>
+            <div className="modal-body version-control">
+                {!modalPopupData?.name ? (
+                    <p>No data available.</p>
+                ) : (
+                    <div className=""/>
+                )}
+            </div>
+        </div>
+    );
+};

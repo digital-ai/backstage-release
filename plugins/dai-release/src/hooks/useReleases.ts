@@ -20,6 +20,10 @@ export function useReleases(): {
   statusTags: string[] | undefined;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
+  openModal: boolean;
+  modalPopupInputId: string;
+  modalTitle: string;
+  modalPopupData: any;
   setPage: (page: number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setSearchTitle: (title: string) => void;
@@ -28,6 +32,10 @@ export function useReleases(): {
   setOrderBy: (orderBy: string) => void;
   setStatusTags: (statusTags: string[] | undefined) => void;
   setInstance: (instance: string) => void;
+  setOpenModal: (openModal: boolean) => void;
+  setModalPopupInputId: (modalPopupInputId: string) => void;
+  setModalTitle: (modalTitle: string) => void;
+  setModalPopupData: (modalPopupData: any) => void;
 } {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -40,6 +48,11 @@ export function useReleases(): {
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined
   >([]);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [modalPopupInputId, setModalPopupInputId] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalPopupData, setModalPopupData] = useState<any>(undefined);
 
   const api = useApi(daiReleaseApiRef);
 
@@ -93,6 +106,10 @@ export function useReleases(): {
     statusTags,
     instance,
     instanceList,
+    openModal,
+    modalPopupInputId,
+    modalTitle,
+    modalPopupData,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -101,5 +118,9 @@ export function useReleases(): {
     setOrderBy,
     setStatusTags,
     setInstance,
+    setOpenModal,
+    setModalPopupInputId,
+    setModalTitle,
+    setModalPopupData,
   };
 }

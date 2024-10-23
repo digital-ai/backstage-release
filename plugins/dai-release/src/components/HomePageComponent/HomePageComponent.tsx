@@ -1,8 +1,9 @@
-import { Content, Header, Page } from '@backstage/core-components';
+import {Content, Header, Page} from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
+import {ModalComponent} from "../ModalComponent";
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -35,6 +36,10 @@ export const HomePageComponent = () => {
     statusTags,
     instance,
     instanceList,
+    openModal,
+    modalPopupInputId,
+    modalTitle,
+    modalPopupData,
     setPage,
     setRowsPerPage,
     setSearchTitle,
@@ -43,6 +48,10 @@ export const HomePageComponent = () => {
     setOrderBy,
     setStatusTags,
     setInstance,
+    setOpenModal,
+    setModalPopupInputId,
+    setModalTitle,
+    setModalPopupData,
   } = useReleases();
 
   useEffect(() => {
@@ -53,6 +62,12 @@ export const HomePageComponent = () => {
       (statusTags !== undefined ? statusTags.length : 0);
     setFilterCount(count);
   }, [fromDate, toDate, statusTags]);
+
+  const onClosePopupModal = () => {
+    setOpenModal(false);
+  };
+
+
   return (
     <Page themeId="home">
       <Header
@@ -98,13 +113,14 @@ export const HomePageComponent = () => {
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
+                <>
               <DenseTable
                 page={page}
                 pageSize={rowsPerPage}
                 loading={loading}
                 totalCount={items?.total ?? 100}
                 tableData={items?.releases || []}
-                columns={defaultColumns}
+                columns={defaultColumns(setOpenModal, setModalPopupInputId, setModalTitle)}
                 retry={retry}
                 searchTitle={searchTitle}
                 fromDate={fromDate}
@@ -119,6 +135,19 @@ export const HomePageComponent = () => {
                 setOrderBy={setOrderBy}
                 setStatusTags={setStatusTags}
               />
+                  {openModal && (
+                      <ModalComponent
+                          onClose={onClosePopupModal}
+                          instance={instance}
+                          modalPopupInputId={modalPopupInputId}
+                          modalTitle={`Meta information - ${modalTitle}`}
+                          openModal={openModal}
+                          modalPopupData={modalPopupData}
+                          sourcePage="release"
+                          setModalPopupData={setModalPopupData}
+                      />
+                  )}
+                </>
             )}
           </Grid>
         </Grid>
