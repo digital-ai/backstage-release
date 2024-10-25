@@ -206,7 +206,7 @@ export const FilterComponent = ({
           style={{ width: '300px' }}
         >
           <Grid item className={classes.clearGrid}>
-            <span data-testid={'appliedFilterid'}>Applied filters ({filterCount})</span>
+            <span data-testid='appliedFilterid'>Applied filters ({filterCount})</span>
             <Button
               variant="outlined"
               onClick={() => clearAllState()}
