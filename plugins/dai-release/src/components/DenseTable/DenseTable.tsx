@@ -103,39 +103,44 @@ export const columnFactories = Object.freeze({
   },
 
   createAdditionalDataColumns(
-      setOpenModal: (open: boolean) => void,
-      setModalPopupInputId: (id: string) => void,
-      setModalTitle: (title: string) => void
+    setOpenModal: (open: boolean) => void,
+    setModalPopupInputId: (id: string) => void,
+    setModalTitle: (title: string) => void,
   ): TableColumn {
     return {
       title: '',
       field: '',
       cellStyle: cellStyle,
       headerStyle: headerStyle,
-      render: (_row: Partial<any>) =>  (<ReleasePopOverComponent
+      render: (_row: Partial<any>) => (
+        <ReleasePopOverComponent
           folderId={_row.folderId}
           modalTitle={_row.title}
           setOpenModal={setOpenModal}
           setFolderId={setModalPopupInputId}
           setModalTitle={setModalTitle}
-      />),
+        />
+      ),
       searchable: false,
       sorting: false,
     };
   },
 });
 
-
 export const defaultColumns = (
-    setOpenModal: (open: boolean) => void,
-    setModalPopupInputId: (id: string) => void,
-    setModalTitle: (title: string) => void
+  setOpenModal: (open: boolean) => void,
+  setModalPopupInputId: (id: string) => void,
+  setModalTitle: (title: string) => void,
 ): TableColumn[] => [
   columnFactories.createTitleColumns(),
   columnFactories.createFolderColumns(),
   columnFactories.createStatusColumns(),
   columnFactories.createFromDateColumns(),
-  columnFactories.createAdditionalDataColumns(setOpenModal, setModalPopupInputId, setModalTitle),
+  columnFactories.createAdditionalDataColumns(
+    setOpenModal,
+    setModalPopupInputId,
+    setModalTitle,
+  ),
 ];
 
 export const DenseTable = ({

@@ -1,9 +1,9 @@
-import {Content, Header, Page} from '@backstage/core-components';
+import { Content, Header, Page } from '@backstage/core-components';
 import { DenseTable, defaultColumns } from '../DenseTable';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
-import {ModalComponent} from "../ModalComponent";
+import { ModalComponent } from '../ModalComponent';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -67,7 +67,6 @@ export const HomePageComponent = () => {
     setOpenModal(false);
   };
 
-
   return (
     <Page themeId="home">
       <Header
@@ -113,41 +112,45 @@ export const HomePageComponent = () => {
             {error && !loading ? (
               <ReleaseResponseErrorPanel error={error} />
             ) : (
-                <>
-              <DenseTable
-                page={page}
-                pageSize={rowsPerPage}
-                loading={loading}
-                totalCount={items?.total ?? 100}
-                tableData={items?.releases || []}
-                columns={defaultColumns(setOpenModal, setModalPopupInputId, setModalTitle)}
-                retry={retry}
-                searchTitle={searchTitle}
-                fromDate={fromDate}
-                toDate={toDate}
-                orderBy={orderBy}
-                statusTags={statusTags}
-                onRowsPerPageChange={setRowsPerPage}
-                onPageChange={setPage}
-                setSearchTitle={setSearchTitle}
-                setFromDate={setFromDate}
-                setToDate={setToDate}
-                setOrderBy={setOrderBy}
-                setStatusTags={setStatusTags}
-              />
-                  {openModal && (
-                      <ModalComponent
-                          onClose={onClosePopupModal}
-                          instance={instance}
-                          modalPopupInputId={modalPopupInputId}
-                          modalTitle={`Meta information - ${modalTitle}`}
-                          openModal={openModal}
-                          modalPopupData={modalPopupData}
-                          sourcePage="release"
-                          setModalPopupData={setModalPopupData}
-                      />
+              <>
+                <DenseTable
+                  page={page}
+                  pageSize={rowsPerPage}
+                  loading={loading}
+                  totalCount={items?.total ?? 100}
+                  tableData={items?.releases || []}
+                  columns={defaultColumns(
+                    setOpenModal,
+                    setModalPopupInputId,
+                    setModalTitle,
                   )}
-                </>
+                  retry={retry}
+                  searchTitle={searchTitle}
+                  fromDate={fromDate}
+                  toDate={toDate}
+                  orderBy={orderBy}
+                  statusTags={statusTags}
+                  onRowsPerPageChange={setRowsPerPage}
+                  onPageChange={setPage}
+                  setSearchTitle={setSearchTitle}
+                  setFromDate={setFromDate}
+                  setToDate={setToDate}
+                  setOrderBy={setOrderBy}
+                  setStatusTags={setStatusTags}
+                />
+                {openModal && (
+                  <ModalComponent
+                    onClose={onClosePopupModal}
+                    instance={instance}
+                    modalPopupInputId={modalPopupInputId}
+                    modalTitle={`Meta information - ${modalTitle}`}
+                    openModal={openModal}
+                    modalPopupData={modalPopupData}
+                    sourcePage="release"
+                    setModalPopupData={setModalPopupData}
+                  />
+                )}
+              </>
             )}
           </Grid>
         </Grid>

@@ -1,4 +1,7 @@
-import {getActiveReleaseMetaContent, getTemplateMetaContent} from '../TemplateHomePageComponent/TemplateMetaContent';
+import {
+  getActiveReleaseMetaContent,
+  getTemplateMetaContent,
+} from '../TemplateHomePageComponent/TemplateMetaContent';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
@@ -6,7 +9,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import React from 'react';
 import { styled } from '@mui/material/zero-styled';
-import {useGetReleaseMetaInfo} from "../../hooks/useReleaseMetaInfo";
+import { useGetReleaseMetaInfo } from '../../hooks/useReleaseMetaInfo';
 import { useGetTemplateMetaInfo } from '../../hooks/useTemplatesMetaInfo';
 
 type modalPopupProps = {
@@ -126,7 +129,12 @@ export function ModalComponent({
     },
   }));
 
-  useGetTemplateMetaInfo(instance, modalPopupInputId, setModalPopupData, sourcePage);
+  useGetTemplateMetaInfo(
+    instance,
+    modalPopupInputId,
+    setModalPopupData,
+    sourcePage,
+  );
   useGetReleaseMetaInfo(setModalPopupData, sourcePage);
 
   const formatDate = (date: number) =>

@@ -61,7 +61,7 @@ export function ReleasePopOverComponent({
           size="small"
           onClick={handleClick}
         >
-          <MoreVertIcon />
+          <MoreVertIcon data-testid="moreVertIcon" />
         </IconButton>
         <Popover
           id={id}
