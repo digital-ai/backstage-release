@@ -139,6 +139,7 @@ export const TemplateHomePageComponent = () => {
               resetState={resetState}
             />
             <FilterComponent
+              filterCount={filterCount}
               showDrawer={showDrawer}
               onShowDrawer={onShowDrawer}
               tags={tags}

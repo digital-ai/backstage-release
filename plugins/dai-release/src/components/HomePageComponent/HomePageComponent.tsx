@@ -97,6 +97,7 @@ export const HomePageComponent = () => {
               onShowDrawer={onShowDrawer}
             />
             <FilterComponent
+              filterCount={filterCount}
               fromDate={fromDate}
               toDate={toDate}
               orderBy={orderBy}
