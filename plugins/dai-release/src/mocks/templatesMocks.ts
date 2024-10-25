@@ -1,4 +1,4 @@
-import { TemplateList } from '@digital-ai/plugin-dai-release-common';
+import {TemplateGitMetaInfo, TemplateList} from '@digital-ai/plugin-dai-release-common';
 
 export const templates = {
   page: 1,
@@ -552,3 +552,13 @@ export const mockTemplateList: TemplateList = {
 export const mockEmptyTemplateList: TemplateList = {
   templates: [],
 };
+
+export const mockTemplateGitMetaInfo: TemplateGitMetaInfo = {
+  folderId: "Applications/Folder1",
+  url: "https://github.com/digital-ai/release-content",
+  name: "DigitalAIOfficial/24.1.1",
+  shortMessage: "[release/24.1.x] Workflow Template name and logo updation. (#40)",
+  committer: "GitHub",
+  commitTime: 1717739139000,
+  commitHash: "08a500db0ed6d3241fc1a4be1e9a2d56f11f33e7"
+}
