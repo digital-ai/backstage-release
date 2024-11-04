@@ -112,7 +112,7 @@ export const ScrollableTable = ({
           <Table
             stickyHeader
             aria-label="sticky table"
-            style={{ tableLayout: 'fixed',width: '100%' }}
+            style={{ tableLayout: 'fixed',minWidth: '75vw'}}
           >
 
             <TableHead>
