@@ -1,12 +1,14 @@
+
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import React from 'react';
-
+import { getActiveReleaseMetaContent} from "../HomePageComponent/ReleaseMetaContent";
 import { getTemplateMetaContent } from '../TemplateHomePageComponent/TemplateMetaContent';
 import { styled } from '@mui/material/zero-styled';
+import { useGetReleaseMetaInfo } from '../../hooks/useReleaseMetaInfo';
 import { useGetTemplateMetaInfo } from '../../hooks/useTemplatesMetaInfo';
 
 type modalPopupProps = {
@@ -126,7 +128,13 @@ export function ModalComponent({
     },
   }));
 
-  useGetTemplateMetaInfo(instance, modalPopupInputId, setModalPopupData);
+  useGetTemplateMetaInfo(
+    instance,
+    modalPopupInputId,
+    setModalPopupData,
+    sourcePage,
+  );
+  useGetReleaseMetaInfo(setModalPopupData, sourcePage);
 
   const formatDate = (date: number) =>
     new Date(date).toLocaleString('en-US', {
@@ -162,6 +170,8 @@ export function ModalComponent({
             </div>
             {sourcePage === 'template' &&
               getTemplateMetaContent(modalPopupData, formatDate)}
+            {sourcePage === 'release' &&
+              getActiveReleaseMetaContent(modalPopupData)}
             <DialogActions>
               <Button className="close" onClick={onClose}>
                 Close

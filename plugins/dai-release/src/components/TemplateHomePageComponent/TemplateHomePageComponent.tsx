@@ -1,4 +1,10 @@
-import { Content, Header, Link, LinkButton, Page } from '@backstage/core-components';
+import {
+  Content,
+  Header,
+  Link,
+  LinkButton,
+  Page,
+} from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { FilterComponent } from '../FilterComponent';
@@ -101,7 +107,7 @@ export const TemplateHomePageComponent = () => {
   };
 
   return (
-      <Page themeId="home">
+    <Page themeId="home">
       <Header
         title={
           <img
@@ -133,6 +139,7 @@ export const TemplateHomePageComponent = () => {
               resetState={resetState}
             />
             <FilterComponent
+              filterCount={filterCount}
               showDrawer={showDrawer}
               onShowDrawer={onShowDrawer}
               tags={tags}
@@ -160,23 +167,23 @@ export const TemplateHomePageComponent = () => {
                   columns={[
                     {
                       label: 'Name',
-                      headerStyle: { width: '1000px',  lineHeight: '14px',},
+                      headerStyle: { width: 'calc(35% + 0px)', maxWidth:'calc(35% + 0px)', lineHeight: '14px',  whiteSpace: 'nowrap',boxSizing: "border-box", textTransform: 'capitalize',  padding: '8px 16px',},
                       render: row => (
-                        <Link to={row.titleRedirectUri}>{row.title}</Link>
+                        <Link to={row.titleRedirectUri}>{row.title || '\u00A0'}</Link>
                       ),
-                      cellStyle: { width: '1000px', lineHeight: '14px', },
+                      cellStyle: { width: 'calc(35% + 0px)',minWidth: 'calc(35% + 0px)', lineHeight: '14px', boxSizing: "border-box",  whiteSpace: 'normal', overflow: 'hidden', textOverflow:'ellipsis'},
                     },
                     {
                       label: 'Folder',
-                      headerStyle: { width: '500px' },
-                      render: row => capitalize(row.folder),
-                      cellStyle: { width: '500px' },
+                      headerStyle: {  width: 'calc(20% + 0px)', lineHeight: '14px',  whiteSpace: 'nowrap', boxSizing: "border-box", textTransform: 'capitalize',  padding: '8px 16px',},
+                      render: row => capitalize(row.folder || '\u00A0'),
+                      cellStyle: { width: '20vw', lineHeight: '14px', boxSizing: "border-box", whiteSpace: 'normal'},
                     },
                     {
                       label: 'Action',
-                      headerStyle: { width: '180px', lineHeight: '14px' },
+                      headerStyle: {  width: 'calc(15% + 0px)', lineHeight: '14px',  whiteSpace: 'nowrap',  boxSizing: "border-box", textTransform: 'capitalize', padding: '8px 16px', },
                       render: row => (
-                        <div style={{ width: '150px', height: '40px' }}>
+                        <div style={{ width: '150px', height: '40px', }}>
                           <LinkButton
                             to={row.newReleaseRedirectUri}
                             color="default"
@@ -192,11 +199,11 @@ export const TemplateHomePageComponent = () => {
                           </LinkButton>
                         </div>
                       ),
-                      cellStyle: { width: '180px', lineHeight: '14px' },
+                      cellStyle: { width: '15vw', lineHeight: '14px'},
                     },
                     {
                       label: '',
-                      headerStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      headerStyle: { width: 'calc(3% + 0px)', whiteSpace: 'nowrap', lineHeight: '14px', boxSizing: "border-box",  padding: '8px 16px',},
                       render: row => (
                         <ReleasePopOverComponent
                           folderId={row.folderId}
@@ -206,7 +213,7 @@ export const TemplateHomePageComponent = () => {
                           setModalTitle={setModalTitle}
                         />
                       ),
-                      cellStyle: { width: 'auto', whiteSpace: 'nowrap' },
+                      cellStyle: { width: '3vw', whiteSpace: 'nowrap', lineHeight: '14px'},
                     },
                   ]}
                 />
@@ -227,6 +234,6 @@ export const TemplateHomePageComponent = () => {
           </Grid>
         </Grid>
       </Content>
-      </Page>
+    </Page>
   );
 };

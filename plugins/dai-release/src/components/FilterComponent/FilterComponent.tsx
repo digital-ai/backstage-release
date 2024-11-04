@@ -35,6 +35,7 @@ type FilterComponentProps = {
   tags?: string[];
   error?: Error;
   showDrawer: boolean;
+  filterCount: number;
   onFromDateChange?: (startDate: dayjs.Dayjs | null) => void;
   onToDateChange?: (toDate: dayjs.Dayjs | null) => void;
   onOrderByChange?: (orderBy: string) => void;
@@ -55,6 +56,7 @@ export const FilterComponent = ({
   tags,
   error,
   showDrawer,
+  filterCount,
   onFromDateChange,
   onToDateChange,
   onOrderByChange,
@@ -204,7 +206,7 @@ export const FilterComponent = ({
           style={{ width: '300px' }}
         >
           <Grid item className={classes.clearGrid}>
-            <span>Applied filters</span>
+            <span data-testid='appliedFilterid'>Applied filters ({filterCount})</span>
             <Button
               variant="outlined"
               onClick={() => clearAllState()}

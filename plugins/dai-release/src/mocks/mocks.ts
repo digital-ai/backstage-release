@@ -1,4 +1,7 @@
-import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+import {
+  ReleaseInstanceConfig,
+  ReleaseList,
+} from '@digital-ai/plugin-dai-release-common';
 
 export const releases = {
   pages: 1,
@@ -403,3 +406,20 @@ export const releaseInstanceConfigResponse: ReleaseInstanceConfig[] = [
     token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
   },
 ];
+
+export const mockReleaseList: ReleaseList = {
+  total: 1,
+  releases: [
+    {
+      id: 'Applications/Folder3981784fa264be9b0cb046483b0afa9/Releaseb150bc2534584849b2732c6378ec3244',
+      title:
+        'notifications: xl-cli nightly : XL DevOps Platform Nightly : 2024-10-24T01:13:00.102000',
+      folder: 'Developers Love',
+      status: 'COMPLETED',
+      fromDate: 1729740488907,
+      endDate: 1729741020900,
+      releaseRedirectUri:
+        'https://xl-release.xebialabs.com/#/releases/Folder3981784fa264be9b0cb046483b0afa9-Releaseb150bc2534584849b2732c6378ec3244',
+    },
+  ],
+};

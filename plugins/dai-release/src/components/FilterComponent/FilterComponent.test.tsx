@@ -21,6 +21,7 @@ describe('FilterComponent - ActiveRelease', () => {
 
   it('should render the search filter elements', async () => {
     const rendered = await renderContent({
+      filterCount: 0,
       fromDate: null,
       toDate: null,
       statusTags: [],
@@ -37,9 +38,12 @@ describe('FilterComponent - ActiveRelease', () => {
     expect(rendered.getByLabelText('Order by')).toBeInTheDocument();
     expect(rendered.getByLabelText('From')).toBeInTheDocument();
     expect(rendered.getByLabelText('To')).toBeInTheDocument();
+    const appliedFilter = rendered.getByTestId('appliedFilterid');
+    expect(appliedFilter).toHaveTextContent('Applied filters (0)');
   });
   it('should render the search filter elements with content', async () => {
     const rendered = await renderContent({
+      filterCount: 3,
       fromDate: dayjs(new Date('04/09/2024 05:07 PM')),
       toDate: dayjs(new Date('04/09/2024 05:07 PM')),
       statusTags: ['Failing'],
@@ -57,6 +61,8 @@ describe('FilterComponent - ActiveRelease', () => {
     expect(rendered.getByLabelText('To')).toHaveValue('04/09/2024 05:07 PM');
     expect(rendered.getByText('Failing')).toBeInTheDocument();
     expect(rendered.getByText('Start Date')).toBeInTheDocument();
+    const appliedFilter = rendered.getByTestId('appliedFilterid');
+    expect(appliedFilter).toHaveTextContent('Applied filters (3)');
   });
 });
 describe('FilterComponent - Templates', () => {
@@ -71,6 +77,7 @@ describe('FilterComponent - Templates', () => {
   });
   it('should render the search filter elements', async () => {
     const rendered = await renderTemplateContent({
+      filterCount: 0,
       showDrawer: true,
       searchTitle: '',
       tags: [],
@@ -81,9 +88,12 @@ describe('FilterComponent - Templates', () => {
     });
     expect(rendered.getByLabelText('Search by name')).toBeInTheDocument();
     expect(rendered.getByLabelText('Search by tags')).toBeInTheDocument();
+    const appliedFilter = rendered.getByTestId('appliedFilterid');
+    expect(appliedFilter).toHaveTextContent('Applied filters (0)');
   });
   it('should render the search filter elements with content', async () => {
     const rendered = await renderTemplateContent({
+      filterCount: 3,
       showDrawer: true,
       searchTitle: 'test',
       tags: ['user1', 'user2'],
@@ -96,6 +106,8 @@ describe('FilterComponent - Templates', () => {
     expect(rendered.getByLabelText('Search by tags')).toBeInTheDocument();
     expect(rendered.getByText('user1')).toBeInTheDocument();
     expect(rendered.getByText('user2')).toBeInTheDocument();
+    const appliedFilter = rendered.getByTestId('appliedFilterid');
+    expect(appliedFilter).toHaveTextContent('Applied filters (3)');
 
     // Check if the placeholder text is correct
     const searchByTagsInput = rendered.getByRole('combobox');
@@ -138,6 +150,7 @@ async function renderContent(args: {
   orderBy: string;
   statusTags: string[];
   showDrawer: boolean;
+  filterCount: number;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onFromDateChange: (fromDate: dayjs.Dayjs | null) => void;
@@ -148,6 +161,7 @@ async function renderContent(args: {
 }) {
   return await renderInTestApp(
     <FilterComponent
+        filterCount={args.filterCount}
       fromDate={args.fromDate}
       orderBy={args.orderBy}
       onFromDateChange={args.onFromDateChange}
@@ -162,6 +176,7 @@ async function renderContent(args: {
   );
 }
 async function renderTemplateContent(args: {
+  filterCount: number;
   showDrawer: boolean;
   searchTitle?: string;
   statusTags?: string[] | undefined;
@@ -173,6 +188,7 @@ async function renderTemplateContent(args: {
 }) {
   return await renderInTestApp(
     <FilterComponent
+        filterCount={args.filterCount}
       showDrawer={args.showDrawer}
       onShowDrawer={args.onShowDrawer}
       tags={args.tags}

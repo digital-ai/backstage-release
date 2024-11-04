@@ -9,9 +9,13 @@ import {
   renderInTestApp,
   setupRequestMockHandlers,
 } from '@backstage/test-utils';
+import { fireEvent, screen } from '@testing-library/react';
+import {
+  mockReleaseList,
+  releaseInstanceConfigResponse,
+} from '../../mocks/mocks';
 import { HomePageComponent } from './HomePageComponent';
 import React from 'react';
-import { releaseInstanceConfigResponse } from '../../mocks/mocks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -36,7 +40,7 @@ describe('HomePageComponent', () => {
         res(
           ctx.status(200),
           ctx.set('Content-Type', 'application/json'),
-          ctx.json({}),
+          ctx.json(mockReleaseList),
         ),
       ),
       rest.get('http://example.com/api/dai-release/instances', (_, res, ctx) =>
@@ -54,6 +58,33 @@ describe('HomePageComponent', () => {
     const image = rendered.getByAltText('Release logo') as HTMLImageElement;
     expect(image).toBeInTheDocument();
     expect(image.src).toContain('releaseLogoWhite');
+  });
+  it('should display the popover when clicking the IconButton for meta information', async () => {
+    server.use(
+      rest.get('http://example.com/api/dai-release/releases', (_, res, ctx) =>
+        res(
+          ctx.status(200),
+          ctx.set('Content-Type', 'application/json'),
+          ctx.json(mockReleaseList),
+        ),
+      ),
+    );
+    const rendered = await renderContent();
+    const moreVertIcons = rendered.getAllByTestId('moreVertIcon');
+    expect(moreVertIcons.length).toBeGreaterThan(0);
+
+    fireEvent.click(moreVertIcons[0]);
+    // Verify that the popover is displayed with the expected content
+    const metaInfoButton = await screen.findByText('Meta information');
+    expect(metaInfoButton).toBeInTheDocument();
+
+    // Simulate a click on the "Meta information" button
+    fireEvent.click(metaInfoButton);
+
+    // Verify that the popover displays "No data available"
+
+    const noDataText = await screen.findByText('No data available.');
+    expect(noDataText).toBeInTheDocument();
   });
 });
 

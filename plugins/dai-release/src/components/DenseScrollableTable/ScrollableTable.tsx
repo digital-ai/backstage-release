@@ -7,7 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles,
+  makeStyles
 } from '@material-ui/core';
 import React, { useRef } from 'react';
 import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
@@ -18,13 +18,13 @@ const useStyles = makeStyles(() => ({
     borderBottom: '1px solid #d5d5d5',
     borderTop: '1px solid #d5d5d5',
     fontWeight: 700,
-    padding: '8px 16px 8px 20px',
+    padding: '8px 16px',
   },
   layoutSec: {
     paddingTop: '0',
   },
   cellStyle: {
-    padding: '8px 10px 8px 18px',
+    padding: '8px 16px',
   },
   customLoadingIcon: {
     display: 'flex',
@@ -38,12 +38,14 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
   },
   defaultTableContainer: {
-    height: '80vh',
+    height: 'calc(100vh - 200px)',
     overflowY: 'scroll',
     borderBottom: 'unset',
+    overflowX: 'scroll'
   },
   emptyTableContent: {
-    overflow: 'auto',
+    overflowY: 'scroll',
+    overflowX: 'scroll',
     display: 'flex',
     justifyContent: 'center',
   },
@@ -110,12 +112,14 @@ export const ScrollableTable = ({
           <Table
             stickyHeader
             aria-label="sticky table"
-            style={{ tableLayout: 'auto' }}
+            style={{ tableLayout: 'fixed',minWidth: '75vw'}}
           >
+
             <TableHead>
               <TableRow>
-                {columns.map(column => (
+                {columns.map((column, index) => (
                   <TableCell
+                    key={index}
                     style={column.headerStyle}
                     className={`${classes.headerStyle} ${themeId === 'dark' ? classes.darkTheme : classes.lightTheme}`}
                   >
@@ -124,8 +128,9 @@ export const ScrollableTable = ({
                 ))}
               </TableRow>
             </TableHead>
+
             <TableBody>
-              {data.length > 0 &&
+              {data.length > 0 ? (
                 data.map((row, index) => (
                   <TableRow key={index}>
                     {columns.map((column, colIndex) => (
@@ -134,15 +139,15 @@ export const ScrollableTable = ({
                         style={column.cellStyle}
                         className={classes.cellStyle}
                       >
-                        {column.render ? column.render(row) : ''}
+                        {column.render ? column.render(row) : '\u00A0'} {/* Non-breaking space */}
                       </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              {data.length === 0 && (
+                ))
+              ) : (
                 <TableRow style={{ height: '150px' }}>
-                  <TableCell colSpan={4} style={{ lineHeight: '18px' }}>
-                    {data.length === 0 && !loading && emptyContent}
+                  <TableCell colSpan={columns.length} style={{ lineHeight: '14px' }} className={classes.cellStyle}>
+                    {!loading && emptyContent}
                   </TableCell>
                 </TableRow>
               )}
