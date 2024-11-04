@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
   },
   defaultTableContainer: {
-    height: '80vh',
+    height: 'calc(100vh - 200px)',
     overflowY: 'scroll',
     borderBottom: 'unset',
     overflowX: 'scroll'
