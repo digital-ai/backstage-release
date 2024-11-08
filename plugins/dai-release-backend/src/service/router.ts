@@ -10,6 +10,7 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { CategoriesApi } from '../api/CategoriesApi';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -40,6 +41,12 @@ export async function createRouter(
     ReleaseConfig.fromConfig(config),
     logger,
   );
+
+  const categoriesApi = CategoriesApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+
   if (config.subscribe) {
     //  check for live yaml config change
     config.subscribe(() => {
@@ -185,6 +192,24 @@ export async function createRouter(
       instanceName,
       folderId,
     );
+    res.status(200).json(metaInformation);
+  });
+
+  router.get('/categories', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const metaInformation = await categoriesApi.getCategoriesApi(instanceName);
     res.status(200).json(metaInformation);
   });
 
