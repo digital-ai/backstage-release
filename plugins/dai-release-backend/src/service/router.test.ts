@@ -23,6 +23,7 @@ import express from 'express';
 import { mockServices } from '@backstage/backend-test-utils';
 import request from 'supertest';
 import { setupServer } from 'msw/node';
+import {categoriesBackendPluginApiResponse} from "../mocks/mockCategories";
 
 let app: express.Express;
 const permissionApi = {
@@ -182,6 +183,50 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
+  describe('GET /categories with instance name input', () => {
+    it('returns ok', async () => {
+      server.resetHandlers(...mockTestHandlers);
+      const response = await request(app)
+          .get('/categories')
+          .query('instanceName=default')
+          .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(categoriesBackendPluginApiResponse);
+    });
+
+    it('GET 404 from release for /categories', async () => {
+      server.resetHandlers(...error404ResponseHandler);
+      const response = await request(app)
+          .get('/categories')
+          .query('instanceName=default');
+      expect(response.body.error.message).toEqual(
+          'Release service request not found',
+      );
+    });
+
+    it('GET 403 from release for /categories', async () => {
+      server.resetHandlers(...error403ResponseHandler);
+      const response = await request(app)
+          .get('/categories')
+          .query('instanceName=default');
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+          'Permission denied or the requested functionality is not supported',
+      );
+    });
+
+    it('GET 500 from release for /categories', async () => {
+      server.resetHandlers(...error500ResponseHandler);
+      const response = await request(app)
+          .get('/categories')
+          .query('instanceName=default');
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+          'failed to fetch data, status 500',
+      );
+    });
+  });
+
   describe('GET /instances', () => {
     it('returns ok', async () => {
       const response = await request(app)
@@ -212,6 +257,18 @@ describe('router api tests with permissions ALLOW', () => {
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
         "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
+  describe('GET /categories without instance name input', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+          .get('/categories')
+          .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+          "Couldn't find a release instance '' in the config",
       );
     });
   });
@@ -248,6 +305,16 @@ describe('router api tests - with permissions DENY', () => {
       );
     });
   });
+  describe('GET /categories', () => {
+    it('GET 403 from release for /categories', async () => {
+      server.resetHandlers(...error403ResponseHandler);
+      const response = await request(app).get('/categories');
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
 });
 
 describe('router api tests - without permissions', () => {
@@ -281,6 +348,16 @@ describe('router api tests - without permissions', () => {
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(templateGitMetaInfoResponse);
+    });
+  });
+  describe('GET /categories', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+          .get('/categories')
+          .query('instanceName=default')
+          .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(categoriesBackendPluginApiResponse);
     });
   });
 });
