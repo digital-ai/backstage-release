@@ -1,4 +1,7 @@
-import { Categories } from '@digital-ai/plugin-dai-release-common';
+import {
+  Categories,
+  ReleaseCategories,
+} from '@digital-ai/plugin-dai-release-common';
 
 export const categoriesReleaseApiResponse: Categories = {
   totalElements: 6,
@@ -54,11 +57,31 @@ export const categoriesReleaseApiResponse: Categories = {
   last: true,
 };
 
-export const categoriesBackendPluginApiResponse: string[] = [
-  'Application Life Cycle Management',
-  'Application onboarding',
-  'Cloud & Container',
-  'Digital.ai Release runner installation',
-  'Infrastructure Service',
-  'Serverless',
-];
+export const categoriesBackendPluginApiResponse: ReleaseCategories = {
+  activeCategory: [
+    {
+      id: '3',
+      title: 'Application Life Cycle Management',
+    },
+    {
+      id: '2',
+      title: 'Application onboarding',
+    },
+    {
+      id: '4',
+      title: 'Cloud & Container',
+    },
+    {
+      id: '6',
+      title: 'Digital.ai Release runner installation',
+    },
+    {
+      id: '1',
+      title: 'Infrastructure Service',
+    },
+    {
+      id: '5',
+      title: 'Serverless',
+    },
+  ],
+};

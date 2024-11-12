@@ -1,9 +1,13 @@
 import {
+  Categories,
+  CategoriesContentActiveList,
+  ReleaseCategories,
+} from '@digital-ai/plugin-dai-release-common';
+import {
   RELEASE_CATEGORIES,
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { Categories } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -21,7 +25,7 @@ export class CategoriesApi {
     return new CategoriesApi(logger, config);
   }
 
-  async getCategoriesApi(instanceName: string): Promise<string[]> {
+  async getCategoriesApi(instanceName: string): Promise<ReleaseCategories> {
     this.logger?.debug(`Calling Categories api, instance: ${instanceName}`);
 
     const instanceConfig = this.config.getInstanceConfig(instanceName);
@@ -33,10 +37,12 @@ export class CategoriesApi {
       apiUrl,
     );
 
-    const categoriesTitle: string[] = [];
-    categories.content.forEach(d => categoriesTitle.push(d.title));
+    const categoriesActiveList: CategoriesContentActiveList[] =
+      categories.content.map(({ id, title }) => ({ id, title }));
 
-    return categoriesTitle;
+    return {
+      activeCategory: categoriesActiveList,
+    };
   }
 
   private async getCategories(accessToken: string, apiUrl: string) {

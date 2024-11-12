@@ -7,6 +7,7 @@ import {
   mockTestHandlers,
 } from '../mocks/mock.test.handlers';
 import { CategoriesApi } from './CategoriesApi';
+import { ReleaseCategories } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { categoriesBackendPluginApiResponse } from '../mocks/mockCategories';
 import { config } from '../mocks/mockData';
@@ -57,7 +58,7 @@ describe('Backend API tests for Categories', () => {
       mockServices.logger.mock(),
     );
 
-    const categories: string[] =
+    const categories: ReleaseCategories =
       await categoriesApi.getCategoriesApi('default');
 
     expect(categories).toEqual(categoriesBackendPluginApiResponse);
