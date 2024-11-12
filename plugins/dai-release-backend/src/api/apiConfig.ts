@@ -14,6 +14,8 @@ export const RELEASE_TEMPLATE_GIT_CONFIG_PATH = '/api/v1/config/byTypeAndTitle';
 export const RELEASE_TEMPLATE_GIT_COMMIT_VERSIONING_PATH =
   '/api/v1/folders/versioning';
 
+export const RELEASE_WORKFLOW_LIST_API_PATH = '/api/v1/workflows/search';
+
 export const getCredentials = (config: ReleaseInstanceConfig) => {
   try {
     const accessToken = config.token;

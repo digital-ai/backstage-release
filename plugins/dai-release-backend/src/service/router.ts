@@ -8,7 +8,7 @@ import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
-import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
+import { getDecodedQueryVal, getEncodedQueryVal, getReleaseApiHost, } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
@@ -19,6 +19,7 @@ import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
+import { WorkflowsOverviewApi } from '../api/WorkflowsOverviewApi';
 
 export interface RouterOptions {
   config: Config;
@@ -37,6 +38,10 @@ export async function createRouter(
     logger,
   );
   const templatesOverviewApi = TemplatesOverviewApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+  const workflowsOverviewApi = WorkflowsOverviewApi.fromConfig(
     ReleaseConfig.fromConfig(config),
     logger,
   );
@@ -186,6 +191,25 @@ export async function createRouter(
       folderId,
     );
     res.status(200).json(metaInformation);
+  });
+
+  router.post('/workflows/search', async (req, res) => {
+      if (permissions && httpAuth) {
+        const decision = await permissions.authorize(
+          [{ permission: daiReleaseViewPermission }],
+          { credentials: await httpAuth.credentials(req) },
+        );
+        const { result } = decision[0];
+        if (result === AuthorizeResult.DENY) {
+          throw new NotAllowedError(
+            'Access Denied: Unauthorized to access the Backstage Release plugin',
+          );
+        }
+      }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const apiUrl = ReleaseConfig.fromConfig(config).getReleaseApiHost(instanceName);
+    const workflows = await workflowsOverviewApi.getWorkflowsList(instanceName, apiUrl);
+    res.status(200).json("{}");
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });
