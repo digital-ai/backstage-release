@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release-common/v0.1.1) (08/11/2024)
+
+### Library upgrade
+- Updated dependencies
+  - @backstage/plugin-catalog-common@^1.0.26
+  - @backstage/plugin-permission-common@^0.8.1
+  - @backstage/plugin-permission-node@^0.8.2
+### Features
+- Added support for release Template.
+
+
 ## [v0.1.1-alpha.0](https://github.com/digital-ai/backstage-release/tree/dai-release-common/v0.1.1-alpha.0) (18/09/2024)
 
 ### Library upgrade
