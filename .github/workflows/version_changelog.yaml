@@ -55,7 +55,7 @@ jobs:
       - name: Update CHANGELOG.md for Module1
         id: update-changelog
         run: |
-          echo -e "\n## ${GITHUB_REF##*/} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.plugin }}/CHANGELOG.md
+          echo -e "\n## ${GITHUB_REF##*/} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.inputs.plugin-path }}/CHANGELOG.md
       - name: Commit and Push Updated Changelogs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
