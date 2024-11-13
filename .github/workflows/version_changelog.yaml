@@ -40,7 +40,7 @@ jobs:
           preid: 'alpha'
           target-branch: 'S-114659-GA' # need to map it to main branch
       - name: Extract Module Changelog Sections from PR Description
-        id: changelog
+        id: update-changelog
         run: |
           # Extract PR body content
           echo "$PR_BODY" > pr_body.txt          
@@ -50,17 +50,9 @@ jobs:
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
-          # Save the version and changelog to the state        
-          echo "changelog=$CHANGELOG" >> $GITHUB_STATE
-
-          # Also pass the version and changelog as outputs to be used in next steps    
-          echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
+          echo -e "\n## ${{ steps.version-bump.outputs.newTag  }} - $(date +'%Y-%m-%d')\n $CHANGELOG" >> ${{ inputs.plugin-path }}/CHANGE_LOG.md
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-      - name: Update CHANGELOG.md
-        id: update-changelog
-        run: |
-          echo -e "\n## ${{ steps.version-bump.outputs.newTag  }} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.plugin-path }}/CHANGE_LOG.md
       - name: Commit and Push Updated Changelogs
         id: commit-changelog
         env:
