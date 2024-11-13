@@ -50,7 +50,7 @@ jobs:
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"      
           # Set the new changelog header with version and date
-          NEW_ENTRY="## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ steps.version-bump.outputs.newTag }}) $(date +'%Y-%m-%d')\n$CHANGELOG"
+          NEW_ENTRY="## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ steps.version-bump.outputs.newTag }}) ($(date +'%Y-%m-%d'))\n$CHANGELOG"
           
           # Prepend the new changelog entry to the top of the existing CHANGELOG.md
           echo -e "$NEW_ENTRY" | cat - ${{ inputs.plugin-path }}/CHANGE_LOG.md > temp_CHANGELOG.md && mv temp_CHANGELOG.md ${{ inputs.plugin-path }}/CHANGE_LOG.md
