@@ -45,15 +45,14 @@ jobs:
           # Extract PR body content
           echo "$PR_BODY" > pr_body.txt
           
-          # Extract each module's changelog
-          
-          # Capture the changelog section under "## dai-release Changelog"
-          CHANGELOG=$(awk '/### dai-release Changelog/,/^### /' pr_body.txt | sed '1d;$d')  
-          # Verify extraction result
-          echo "Captured Changelog Section:"
-          echo "$CHANGELOG"
-
-          # Set outputs for each module changelog
+         
+          # Initialize an empty CHANGELOG variable
+          CHANGELOG=""
+          while IFS= read -r section; do
+          CHANGELOG+="${section}\n"
+          done < <(awk '/### ${{ inputs.plugin }} Changelog/,/^### /' pr_body.txt | sed '/^### ${{inputs.plugin}} Changelog/d')          
+          # Verify extraction result          
+          echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
