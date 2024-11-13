@@ -48,8 +48,13 @@ jobs:
           # Initialize an empty CHANGELOG variable             
           CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### dai-/p' pr_body.txt   | sed '1d;$d')
           # Verify extraction result          
-          echo -e "Captured Changelog Sections:\n$CHANGELOG"          
-          echo -e "\n## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ steps.version-bump.outputs.newTag }})  $(date +'%Y-%m-%d')\n$CHANGELOG") | cat - ${{ inputs.plugin-path }}/CHANGE_LOG.md > temp_CHANGELOG.md && mv temp_CHANGELOG.md ${{ inputs.plugin-path }}/CHANGE_LOG.md
+          echo -e "Captured Changelog Sections:\n$CHANGELOG"      
+          # Set the new changelog header with version and date
+          NEW_ENTRY="## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ steps.version-bump.outputs.newTag }}) $(date +'%Y-%m-%d')\n$CHANGELOG"
+    
+          # Prepend the new changelog entry to the top of the existing CHANGELOG.md
+          echo -e "$NEW_ENTRY" | cat - ${{ inputs.plugin-path }}/CHANGE_LOG.md > temp_CHANGELOG.md && mv temp_CHANGELOG.md ${{ inputs.plugin-path }}/CHANGE_LOG.md
+
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
       - name: Commit and Push Updated Changelogs
