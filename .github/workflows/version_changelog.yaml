@@ -43,21 +43,23 @@ jobs:
         id: changelog
         run: |
           # Extract PR body content
-          echo "$PR_BODY" > pr_body.txt
-          
+          echo "$PR_BODY" > pr_body.txt          
          
-          # Initialize an empty CHANGELOG variable
-          CHANGELOG=$(awk "/### ${{inputs.plugin}} Changelog/,/^### dai/" pr_body.txt | sed "/^### ${plugin} Changelog/d")     
+          # Initialize an empty CHANGELOG variable             
+          CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### ${{ inputs.plugin }} Changelog End/p' pr.txt | sed '1d;$d')
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
       - name: Update CHANGELOG.md for Module1
+        if: steps.changelog.outputs.changelog != '' && steps.changelog.outputs.changelog != ' '
         id: update-changelog
         run: |
-          echo -e "\n## ${GITHUB_REF##*/} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.plugin-path }}/CHANGE_LOG.md
+          echo -e "\n## ${{ steps.bump-version.outputs.new-version }} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.plugin-path }}/CHANGE_LOG.md
       - name: Commit and Push Updated Changelogs
+        id: commit-changelog
+        if: steps.changelog.outputs.changelog != '' && steps.changelog.outputs.changelog != ' '
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
