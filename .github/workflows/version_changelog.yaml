@@ -47,10 +47,7 @@ jobs:
           
          
           # Initialize an empty CHANGELOG variable
-          CHANGELOG=""
-          while IFS= read -r section; do
-          CHANGELOG+="${section}\n"
-          done < <(awk '/### ${{ inputs.plugin }} Changelog/,/^### dai /' pr_body.txt | sed '/^### ${{inputs.plugin}} Changelog/d')          
+          CHANGELOG=$(awk "/### ${{inputs.plugin}} Changelog/,/^### dai/" pr_body.txt | sed "/^### ${plugin} Changelog/d")     
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
