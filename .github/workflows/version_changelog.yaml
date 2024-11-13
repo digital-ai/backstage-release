@@ -50,12 +50,10 @@ jobs:
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
-          # Save the version and changelog to the state
-          echo "VERSION=$VERSION" >> $GITHUB_STATE
-          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_STATE
+          # Save the version and changelog to the state        
+          echo "changelog=$CHANGELOG" >> $GITHUB_STATE
 
-          # Also pass the version and changelog as outputs to be used in next steps
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          # Also pass the version and changelog as outputs to be used in next steps    
           echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
