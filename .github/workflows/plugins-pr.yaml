@@ -76,3 +76,8 @@ jobs:
     - name: dai-release - Run tests  
       working-directory: ./plugins/dai-release
       run: yarn test
+  version-changelog:
+    uses: ./.github/workflows/version_changelog.yaml
+    with:
+      plugin-path: ./plugins/dai-release
+      plugin: dai-release
