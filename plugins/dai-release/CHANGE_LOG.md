@@ -67,3 +67,9 @@
 
 ##  - 2024-11-13
 
+
+## dai-release/v0.1.2 - 2024-11-13
+ 
+1. Updating the version 
+2. Adding changelog
+
