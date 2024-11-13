@@ -63,3 +63,6 @@
 - Multiple Instance support
 - Apply filters on title, status, start and end dates
 - Sort releases by start and end dates
+
+## merge - 2024-11-13
+
