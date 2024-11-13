@@ -45,14 +45,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ruby ruby-dev build-essential
           sudo gem install github_changelog_generator
-      - name: Generate Changelog
+      - name: Extract Module Changelog Sections from PR Description
+        id: update-changelog
         run: |
-            # Generate changelog
-            github_changelog_generator --token ${{ secrets.GITHUB_TOKEN }} \
-              --future-release v${{ steps.version-bump.outputs.newTag }} \
-              --output CHANGELOG.md \
-              --unreleased-label "Unreleased" \
-              --exclude-labels "documentation"  # Exclude documentation if needed
+          # Extract PR body content
+          echo "$PR_BODY" > pr_body.txt          
+          
+          # Initialize an empty CHANGELOG variable             
+          CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### dai-/p' pr_body.txt   | sed '1d;$d')
+          # Verify extraction result          
+          echo -e "Captured Changelog Sections:\n$CHANGELOG"          
+          echo -e "\n## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ inputs.plugin }}/v${{ steps.version-bump.outputs.newTag }})  ($(date +'%Y-%m-%d')\n$CHANGELOG") | cat - ${{ inputs.plugin-path }}/CHANGE_LOG.md > temp_CHANGELOG.md && mv temp_CHANGELOG.md ${{ inputs.plugin-path }}/CHANGE_LOG.md
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
       - name: Commit and Push Updated Changelogs
         id: commit-changelog
         env:
@@ -62,4 +67,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ${{ inputs.plugin-path }}/CHANGE_LOG.md
           git commit -m "Update ${{ inputs.plugin }}CHANGE_LOG.md files"
-          git push origin 'S-114659-GA' # need to map it to main branch          
+          git push origin 'S-114659-GA' # need to map it to main branch
