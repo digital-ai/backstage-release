@@ -72,3 +72,6 @@
 
 ## merge - 2024-11-13
 ## dai-release Changelog
+
+## merge - 2024-11-13
+1. Updating the version 
