@@ -1,0 +1,1 @@
+export { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
