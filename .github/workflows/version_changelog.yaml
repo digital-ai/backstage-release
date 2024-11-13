@@ -50,7 +50,7 @@ jobs:
           CHANGELOG=""
           while IFS= read -r section; do
           CHANGELOG+="${section}\n"
-          done < <(awk '/### ${{ inputs.plugin }} Changelog/,/^### /' pr_body.txt | sed '/^### ${{inputs.plugin}} Changelog/d')          
+          done < <(awk '/## ${{ inputs.plugin }} Changelog/,/^## /' pr_body.txt | sed '/^### ${{inputs.plugin}} Changelog/d')          
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
