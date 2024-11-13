@@ -64,10 +64,6 @@
 - Apply filters on title, status, start and end dates
 - Sort releases by start and end dates
 
-
-##  - 2024-11-13
-
-
 ## dai-release/v0.1.2 - 2024-11-13
  
 1. Updating the version 
