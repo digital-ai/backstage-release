@@ -46,7 +46,7 @@ jobs:
           echo "$PR_BODY" > pr_body.txt          
          
           # Initialize an empty CHANGELOG variable             
-          CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### ${{ inputs.plugin }} Changelog End/p' pr.txt | sed '1d;$d')
+          CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### dai-/p' pr_body.txt   | sed '1d;$d')
           # Verify extraction result          
           echo -e "Captured Changelog Sections:\n$CHANGELOG"
           echo "::set-output name=changelog::$CHANGELOG"
