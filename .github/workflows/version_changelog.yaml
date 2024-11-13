@@ -52,14 +52,14 @@ jobs:
           echo "::set-output name=changelog::$CHANGELOG"
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-      - name: Update CHANGELOG.md for Module1
-        if: steps.changelog.outputs.changelog != '' && steps.changelog.outputs.changelog != ' '
+      - name: Update CHANGELOG.md
+        if: steps.changelog.outputs.changelog != ''
         id: update-changelog
         run: |
           echo -e "\n## ${{ steps.bump-version.outputs.new-version }} - $(date +'%Y-%m-%d')\n${{ steps.changelog.outputs.changelog }}" >> ${{ inputs.plugin-path }}/CHANGE_LOG.md
       - name: Commit and Push Updated Changelogs
         id: commit-changelog
-        if: steps.changelog.outputs.changelog != '' && steps.changelog.outputs.changelog != ' '
+        if: steps.changelog.outputs.changelog != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
