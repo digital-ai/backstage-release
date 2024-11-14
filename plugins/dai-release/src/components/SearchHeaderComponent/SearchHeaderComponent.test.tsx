@@ -132,8 +132,8 @@ async function renderContent(args: {
 }) {
   return await renderInTestApp(
     <SearchHeaderComponent
-      displayFilter={args.displayFilter}
-      tableSearchFilter={args.tableSearchFilter}
+      displaySearchFilter={args.displayFilter}
+      displayTableSearchFilter={args.tableSearchFilter}
       titleName={args.titleName}
       customSearch={args.customSearch}
       searchTitleTextField={args.searchTitleTextField}

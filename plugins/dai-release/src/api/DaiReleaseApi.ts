@@ -41,4 +41,8 @@ export interface DaiReleaseApi {
     folderId: string,
     options?: { signal?: AbortSignal },
   ): Promise<TemplateGitMetaInfo>;
+
+  getReleaseCategories(
+      instanceName: string
+  ): Promise<ReleaseCategories>;
 }

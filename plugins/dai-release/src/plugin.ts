@@ -39,3 +39,14 @@ export const DaiTemplatePage = daiReleasePlugin.provide(
     mountPoint: daiReleaseContentRouteRef,
   }),
 );
+
+export const DaiWorkFlowCatalog = daiReleasePlugin.provide(
+    createRoutableExtension({
+        name: 'DaiTemplatePage',
+        component: () =>
+            import('./components/WorkflowComponent/').then(
+                m => m.WorkflowComponent,
+            ),
+        mountPoint: daiReleaseContentRouteRef,
+    }),
+)
