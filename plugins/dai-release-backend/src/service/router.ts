@@ -8,7 +8,7 @@ import {
   daiReleasePermissions,
   daiReleaseViewPermission,
 } from '@digital-ai/plugin-dai-release-common';
-import { getDecodedQueryVal, getEncodedQueryVal, getReleaseApiHost, } from '../api/apiConfig';
+import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
@@ -16,10 +16,10 @@ import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
+import { WorkflowsOverviewApi } from '../api/WorkflowsOverviewApi';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
-import { WorkflowsOverviewApi } from '../api/WorkflowsOverviewApi';
 
 export interface RouterOptions {
   config: Config;
@@ -193,7 +193,7 @@ export async function createRouter(
     res.status(200).json(metaInformation);
   });
 
-  router.post('/workflows/search', async (req, res) => {
+  router.post('/workflows', async (req, res) => {
       if (permissions && httpAuth) {
         const decision = await permissions.authorize(
           [{ permission: daiReleaseViewPermission }],
@@ -207,9 +207,36 @@ export async function createRouter(
         }
       }
     const instanceName = req.query.instanceName?.toString() || '';
-    const apiUrl = ReleaseConfig.fromConfig(config).getReleaseApiHost(instanceName);
-    const workflows = await workflowsOverviewApi.getWorkflowsList(instanceName, apiUrl);
-    res.status(200).json("{}");
+    const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
+    const resultsPerPage = getEncodedQueryVal(
+      req.query.resultsPerPage?.toString(),
+    );
+    const searchInput = req.query.searchInput?.toString() || '';
+    const categories: string[] = req.query.categories
+      ? req.query.categories.toString().split(',')
+      : [];
+    const author = req.query.author?.toString() || '';
+    const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(instanceName, pageNumber, resultsPerPage, searchInput, categories, author);
+    res.status(200).json(workflows);
+  });
+
+  router.post('/redirect-to-workflow', async (req, res) => {
+      if (permissions && httpAuth) {
+        const decision = await permissions.authorize(
+          [{ permission: daiReleaseViewPermission }],
+          { credentials: await httpAuth.credentials(req) },
+        );
+        const { result } = decision[0];
+        if (result === AuthorizeResult.DENY) {
+          throw new NotAllowedError(
+            'Access Denied: Unauthorized to access the Backstage Release plugin',
+          );
+        }
+      }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const { templateId, releaseTitle } = req.body;
+    const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(instanceName, templateId, releaseTitle);
+    res.status(200).json({ url: redirectUrl });
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });

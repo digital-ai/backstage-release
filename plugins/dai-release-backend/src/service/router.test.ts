@@ -15,8 +15,12 @@ import {
 } from '../mocks/mock.test.handlers';
 import {
   templateBackendPluginApiResponse,
-  templateGitMetaInfoResponse,
+  templateGitMetaInfoResponse
 } from '../mocks/mockTemplateData';
+import {
+  workflowsBackendResponse,
+  workflowsTriggerBackendResponse
+} from '../mocks/mockWorkflowsData';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { createRouter } from './router';
 import express from 'express';
@@ -215,6 +219,82 @@ describe('router api tests with permissions ALLOW', () => {
       );
     });
   });
+
+  describe('POST /workflows with instance name', () => {
+      server.resetHandlers(...mockTestHandlers);
+      it('returns ok', async () => {
+        const response = await request(app)
+          .post('/workflows')
+          .query({
+             instanceName: 'default',
+             pageNumber: '0',
+             resultsPerPage: '10',
+             searchInput: '',
+             categories: 'cat1,cat2',
+            })
+          .set('authorization', 'Bearer someauthtoken').send({});
+        console.log("------------------------");
+        console.log(response.body);
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(workflowsBackendResponse);
+      });
+  });
+  describe('POST /workflows without instance name input', () => {
+      it('POST 500 from release for /workflows', async () => {
+        const response = await request(app)
+          .post('/workflows')
+          .query({
+             pageNumber: '1',
+             resultsPerPage: '10',
+             searchInput: '',
+             categories: 'cat1,cat2',
+             author: '',
+            })
+          .set('authorization', 'Bearer someauthtoken').send({});
+        expect(response.status).toEqual(500);
+        expect(response.body.error.message).toContain(
+            "Couldn't find a release instance '' in the config",
+        );
+      });
+  });
+  describe('POST /redirect-to-workflow with instance name', () => {
+      it('returns ok', async () => {
+        const response = await request(app)
+          .post('/redirect-to-workflow')
+          .query({
+             instanceName: 'Production'
+            })
+          .set('authorization', 'Bearer someauthtoken').send(
+              {
+                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
+                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
+              });
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(workflowsTriggerResponse);
+      });
+  });
+  describe('POST /redirect-to-workflow with instance name', () => {
+      it('POST 500 from release for /redirect-to-workflow', async () => {
+        const response = await request(app)
+          .post('/redirect-to-workflow')
+          .query({
+             pageNumber: '1',
+             resultsPerPage: '10',
+             searchInput: 'test',
+             categories: 'cat1,cat2',
+             author: 'author1',
+            })
+          .set('authorization', 'Bearer someauthtoken').send(
+              {
+                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
+                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
+              });
+        expect(response.status).toEqual(500);
+        expect(response.body.error.message).toContain(
+            "Couldn't find a release instance '' in the config",
+        );
+      });
+  });
 });
 
 describe('router api tests - with permissions DENY', () => {
@@ -247,6 +327,49 @@ describe('router api tests - with permissions DENY', () => {
         'Access Denied: Unauthorized to access the Backstage Release plugin',
       );
     });
+  });
+  describe('POST /workflows', () => {
+      it('POST 403 from release for /workflows', async () => {
+        server.resetHandlers(...error403ResponseHandler);
+        const response = await request(app)
+          .post('/workflows')
+          .query({
+             instanceName: 'Production',
+             pageNumber: '1',
+             resultsPerPage: '10',
+             searchInput: 'test',
+             categories: 'cat1,cat2',
+             author: 'author1',
+            })
+          .set('authorization', 'Bearer someauthtoken').send({});
+        expect(response.status).toEqual(403);
+        expect(response.body.error.message).toContain(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      });
+  });
+  describe('POST /redirect-to-workflow', () => {
+      it('POST 403 from release for /redirect-to-workflow', async () => {
+        const response = await request(app)
+          .post('/workflows')
+          .query({
+             instanceName: 'default',
+             pageNumber: '1',
+             resultsPerPage: '10',
+             searchInput: 'test',
+             categories: 'cat1,cat2',
+             author: 'author1',
+            })
+          .set('authorization', 'Bearer someauthtoken').send(
+              {
+                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
+                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
+              });
+        expect(response.status).toEqual(403);
+        expect(response.body.error.message).toContain(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      });
   });
 });
 
@@ -282,5 +405,45 @@ describe('router api tests - without permissions', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(templateGitMetaInfoResponse);
     });
+  });
+  describe('POST /workflows', () => {
+      it('Get workflows data from release', async () => {
+        const response = await request(app)
+          .post('/workflows')
+          .query({
+             instanceName: 'default',
+             pageNumber: '1',
+             resultsPerPage: '10',
+             searchInput: 'test',
+             categories: 'cat1,cat2',
+             author: 'author1',
+            })
+          .set('authorization', 'Bearer someauthtoken').send({});
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(workflowsBackendResponse);
+      });
+  });
+  describe('POST /redirect-to-workflow', () => {
+      it('Get redirect Link', async () => {
+
+       nock('http://localhost')
+      .post('/api/v1/templates/Applications/Release2bb84833587a48bf8af3943006e1acdf/create')
+      .reply(200, { data: workflowsTriggerResponse });
+
+        const response = await request(app)
+          .post('/redirect-to-workflow')
+          .query({
+             instanceName: 'default'
+            })
+          .set('authorization', 'Bearer someauthtoken').send(
+              {
+                templateId: 'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
+                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
+              });
+        expect(response.status).toEqual(200);
+        console.log("#################################################3");
+        console.log(response.body);
+        expect(response.body).toEqual(workflowsTriggerBackendResponse);
+      });
   });
 });
