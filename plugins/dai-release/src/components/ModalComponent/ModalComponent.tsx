@@ -1,11 +1,10 @@
-
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import React from 'react';
-import { getActiveReleaseMetaContent} from "../HomePageComponent/ReleaseMetaContent";
+import { getActiveReleaseMetaContent } from '../HomePageComponent/ReleaseMetaContent';
 import { getTemplateMetaContent } from '../TemplateHomePageComponent/TemplateMetaContent';
 import { styled } from '@mui/material/zero-styled';
 import { useGetReleaseMetaInfo } from '../../hooks/useReleaseMetaInfo';

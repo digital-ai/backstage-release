@@ -1,42 +1,52 @@
 import { useEffect, useRef } from 'react';
-import {
-    ReleaseCategories,
-} from '@digital-ai/plugin-dai-release-common';
+import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 
 export function useReleaseCategories(
-    instance: string,
-    setReleaseCategories: (categories: ReleaseCategories | undefined) => void,
+  instance: string,
+  setReleaseCategories: (value: CategoriesContentActiveList[]) => void,
+  setLoadingReleaseCategories: (loading: boolean) => void,
 ) {
-    const api = useApi(daiReleaseApiRef);
-    const abortControllerRef = useRef<AbortController | null>(null);
-    useEffect(() => {
-        const getReleaseCategories = async () => {
-            try {                // Cancel the previous request
-                if (abortControllerRef.current) {
-                    abortControllerRef.current.abort();
-                }
-                // Create a new AbortController for the current request
-                const abortController = new AbortController();
-                abortControllerRef.current = abortController;
-                setReleaseCategories(undefined);
+  const api = useApi(daiReleaseApiRef);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  useEffect(() => {
+    let isMounted = true;
+    if (!instance) return;
+    const getReleaseCategories = async () => {
+      if (!isMounted) return;
+      setLoadingReleaseCategories(true);
+      try {
+        // Cancel the previous request
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
+        // Create a new AbortController for the current request
+        const abortController = new AbortController();
+        abortControllerRef.current = abortController;
+        setReleaseCategories([]);
+        const result = await api.getReleaseCategories(instance);
+        if (isMounted && !abortController.signal.aborted) {
+          setReleaseCategories(result.activeCategory);
+          setLoadingReleaseCategories(false);
+        }
+      } catch (err) {
+        // Check if error is due to abort, otherwise handle the error
+        const abortError = err as Error;
+        if (abortError.name !== 'AbortError') {
+          setReleaseCategories([]);
+          setLoadingReleaseCategories(false);
+        }
+      }
+    };
 
-                const result = await api.getReleaseCategories(instance);
-                setReleaseCategories(result)
-            } catch (err) {
-                // Check if error is due to abort, otherwise handle the error
-                const abortError = err as Error;
-                if (abortError.name !== 'AbortError') {
-                    setReleaseCategories({} as ReleaseCategories);
-                }
-            }
-        };
-        getReleaseCategories();
-        return () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
-        };
-    }, [api, setReleaseCategories, instance]);
+    getReleaseCategories();
+
+    return () => {
+      isMounted = false;
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [api, instance, setReleaseCategories, setLoadingReleaseCategories]);
 }

@@ -1,7 +1,7 @@
-import { daiReleasePlugin } from '../src';
+import { DaiWorkFlowCatalog } from '../src/plugin';
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
-import {DaiWorkFlowCatalog} from "../src/plugin";
+import { daiReleasePlugin } from '../src';
 
 createDevApp()
   .registerPlugin(daiReleasePlugin)

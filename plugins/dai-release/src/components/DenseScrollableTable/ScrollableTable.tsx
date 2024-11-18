@@ -7,7 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import React, { useRef } from 'react';
 import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
     height: 'calc(100vh - 200px)',
     overflowY: 'scroll',
     borderBottom: 'unset',
-    overflowX: 'scroll'
+    overflowX: 'scroll',
   },
   emptyTableContent: {
     overflowY: 'scroll',
@@ -112,9 +112,8 @@ export const ScrollableTable = ({
           <Table
             stickyHeader
             aria-label="sticky table"
-            style={{ tableLayout: 'fixed',minWidth: '75vw'}}
+            style={{ tableLayout: 'fixed', minWidth: '75vw' }}
           >
-
             <TableHead>
               <TableRow>
                 {columns.map((column, index) => (
@@ -139,14 +138,19 @@ export const ScrollableTable = ({
                         style={column.cellStyle}
                         className={classes.cellStyle}
                       >
-                        {column.render ? column.render(row) : '\u00A0'} {/* Non-breaking space */}
+                        {column.render ? column.render(row) : '\u00A0'}{' '}
+                        {/* Non-breaking space */}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow style={{ height: '150px' }}>
-                  <TableCell colSpan={columns.length} style={{ lineHeight: '14px' }} className={classes.cellStyle}>
+                  <TableCell
+                    colSpan={columns.length}
+                    style={{ lineHeight: '14px' }}
+                    className={classes.cellStyle}
+                  >
                     {!loading && emptyContent}
                   </TableCell>
                 </TableRow>

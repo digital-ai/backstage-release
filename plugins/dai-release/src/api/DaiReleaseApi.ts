@@ -1,4 +1,5 @@
 import {
+  ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
@@ -42,7 +43,5 @@ export interface DaiReleaseApi {
     options?: { signal?: AbortSignal },
   ): Promise<TemplateGitMetaInfo>;
 
-  getReleaseCategories(
-      instanceName: string
-  ): Promise<ReleaseCategories>;
+  getReleaseCategories(instanceName: string): Promise<ReleaseCategories>;
 }

@@ -27,6 +27,7 @@ export function useWorkflowCatalog(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
@@ -37,7 +38,6 @@ export function useWorkflowCatalog(): {
     async () => {
       try {
         setLoading(true);
-
         // Cancel the previous request
         if (abortControllerRef.current) {
           abortControllerRef.current.abort();
