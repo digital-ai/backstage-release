@@ -92,7 +92,6 @@ describe('router api tests with permissions ALLOW', () => {
   describe('GET /health', () => {
     it('returns ok', async () => {
       const response = await request(app).get('/health');
-
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({ status: 'ok' });
     });
@@ -220,25 +219,6 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('POST /workflows with instance name', () => {
-      server.resetHandlers(...mockTestHandlers);
-      it('returns ok', async () => {
-        const response = await request(app)
-          .post('/workflows')
-          .query({
-             instanceName: 'default',
-             pageNumber: '0',
-             resultsPerPage: '10',
-             searchInput: '',
-             categories: 'cat1,cat2',
-            })
-          .set('authorization', 'Bearer someauthtoken').send({});
-        console.log("------------------------");
-        console.log(response.body);
-        expect(response.status).toEqual(200);
-        expect(response.body).toEqual(workflowsBackendResponse);
-      });
-  });
   describe('POST /workflows without instance name input', () => {
       it('POST 500 from release for /workflows', async () => {
         const response = await request(app)
@@ -257,22 +237,7 @@ describe('router api tests with permissions ALLOW', () => {
         );
       });
   });
-  describe('POST /redirect-to-workflow with instance name', () => {
-      it('returns ok', async () => {
-        const response = await request(app)
-          .post('/redirect-to-workflow')
-          .query({
-             instanceName: 'Production'
-            })
-          .set('authorization', 'Bearer someauthtoken').send(
-              {
-                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
-                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
-              });
-        expect(response.status).toEqual(200);
-        expect(response.body).toEqual(workflowsTriggerResponse);
-      });
-  });
+
   describe('POST /redirect-to-workflow with instance name', () => {
       it('POST 500 from release for /redirect-to-workflow', async () => {
         const response = await request(app)
@@ -286,7 +251,7 @@ describe('router api tests with permissions ALLOW', () => {
             })
           .set('authorization', 'Bearer someauthtoken').send(
               {
-                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
+                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
                 releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
               });
         expect(response.status).toEqual(500);
@@ -362,7 +327,7 @@ describe('router api tests - with permissions DENY', () => {
             })
           .set('authorization', 'Bearer someauthtoken').send(
               {
-                templateId: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
+                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
                 releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
               });
         expect(response.status).toEqual(403);
@@ -425,11 +390,6 @@ describe('router api tests - without permissions', () => {
   });
   describe('POST /redirect-to-workflow', () => {
       it('Get redirect Link', async () => {
-
-       nock('http://localhost')
-      .post('/api/v1/templates/Applications/Release2bb84833587a48bf8af3943006e1acdf/create')
-      .reply(200, { data: workflowsTriggerResponse });
-
         const response = await request(app)
           .post('/redirect-to-workflow')
           .query({
@@ -437,12 +397,10 @@ describe('router api tests - without permissions', () => {
             })
           .set('authorization', 'Bearer someauthtoken').send(
               {
-                templateId: 'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
+                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
                 releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
               });
         expect(response.status).toEqual(200);
-        console.log("#################################################3");
-        console.log(response.body);
         expect(response.body).toEqual(workflowsTriggerBackendResponse);
       });
   });

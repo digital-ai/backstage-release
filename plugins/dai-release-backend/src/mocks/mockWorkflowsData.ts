@@ -1,3 +1,17 @@
+import { ConfigReader } from '@backstage/config';
+
+export const config = new ConfigReader({
+  daiRelease: {
+    instances: [
+      {
+        name: 'default',
+        host: 'http://localhost',
+        token: 'rpa_8a2f34b48etoken4daeaef797de8e2e',
+      },
+    ],
+  },
+});
+
 export const workflowsBackendResponse = [
   {
     title: "AWS Lambda setup function with Digital.ai Deploy",
@@ -64,7 +78,7 @@ export const workflowsResponse = {
 };
 
 export const workflowsTriggerBackendResponse = {
-  url: "http://localhost:5516/#/stepper/FolderDefaultReleaseContent-Folder0a5f467c12cf41ce967092077b2138e5-Folder303182ca1d5443b2b63a0ff04eec5878-Release2bb84833587a48bf8af3943006e1acdf"
+  url: "http://localhost/#/stepper/FolderDefaultReleaseContent-Folder0a5f467c12cf41ce967092077b2138e5-Folder303182ca1d5443b2b63a0ff04eec5878-Release2bb84833587a48bf8af3943006e1acdf"
 };
 
 export const workflowsTriggerResponse = {

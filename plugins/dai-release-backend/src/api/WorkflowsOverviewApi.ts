@@ -45,9 +45,7 @@ export class WorkflowsOverviewApi {
     const templateIdConverted = convertIdPath(workflow.id);
     const redirectUrl = `${apiUrl}${RELEASE_WORKFLOW_TRIGGER_WORKFLOW_PATH}/${templateIdConverted}`;
 
-    //window.location.href = redirectUrl;
     return redirectUrl
-    //window.location.assign(redirectUrl);
   }
 
   async getWorkflowsOverviewApi(
