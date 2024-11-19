@@ -37,7 +37,7 @@ export type WorkflowContent = {
   defaultTargetFolder: string;
   executions: number;
 };
-
+// Main API Response - releaseAPI/workflows/search
 export type WorkflowsResponse = {
   totalElements: number;
   totalPages: number;
@@ -47,4 +47,27 @@ export type WorkflowsResponse = {
   content: WorkflowContent[];
   first: boolean;
   last: boolean;
+};
+
+export type GitInfo = {
+  commitId: string;
+  repoLink: string;
+}
+
+export type Workflow = {
+  title: string;
+  id: string;
+  description: string;
+  logoLink: string;
+  author: string;
+  folderTitle: string;
+  categories: string[];
+  git: GitInfo;
+}
+
+// Backend API Response - workflow/redirect
+export type Workflows = {
+    workflows: Workflow[];
+    totalPages: number;
+    totalElements: number;
 };

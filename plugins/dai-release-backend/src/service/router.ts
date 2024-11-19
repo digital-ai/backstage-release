@@ -220,7 +220,7 @@ export async function createRouter(
     res.status(200).json(workflows);
   });
 
-  router.post('/redirect-to-workflow', async (req, res) => {
+  router.post('/workflow/redirect', async (req, res) => {
       if (permissions && httpAuth) {
         const decision = await permissions.authorize(
           [{ permission: daiReleaseViewPermission }],

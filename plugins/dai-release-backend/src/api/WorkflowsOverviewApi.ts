@@ -6,7 +6,7 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { WorkflowContent, WorkflowsResponse } from '@digital-ai/plugin-dai-release-common';
+import { WorkflowContent, Workflows, WorkflowsResponse } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -36,10 +36,15 @@ export class WorkflowsOverviewApi {
       return parts.slice(1).join('-');
     }
 
+    function getReleaseId(templateId: string): string {
+      const parts = templateId.split('/');
+      return parts[parts.length - 1];
+    }
+
     const workflow: WorkflowContent = await this.createRelease(
       accessToken,
       apiUrl,
-      templateId,
+      getReleaseId(templateId),
       releaseTitle
     );
     const templateIdConverted = convertIdPath(workflow.id);
@@ -55,8 +60,7 @@ export class WorkflowsOverviewApi {
     searchInput: string,
     categories: string[],
     author: string
-  ): Promise<{ title: string; id: string; description: string; logoLink: string;
-    author: string; folderTitle: string; categories: string[]; git: { commitId: string; repoLink: string; }; }[]> {
+  ): Promise<Workflows> {
     this.logger?.debug(`Calling Workflows List api, instance: ${instanceName}`);
 
     const instanceConfig = this.config.getInstanceConfig(instanceName);
@@ -95,7 +99,12 @@ export class WorkflowsOverviewApi {
       }
     }));
 
-    return workflowDetails;
+    return {
+      workflows: workflowDetails,
+      totalPages: workflows.totalPages,
+      totalElements: workflows.totalElements
+    };
+
   }
 
   private async getWorkflowsList(

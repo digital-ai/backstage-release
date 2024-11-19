@@ -54,6 +54,9 @@ export const mockTestHandlers = [
   }),
   http.post('http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create', () => {
     return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
+  }),
+  http.post('http://localhost/api/v1/workflow/redirect', () => {
+    return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
   })
 
 ];

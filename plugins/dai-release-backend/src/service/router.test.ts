@@ -19,6 +19,7 @@ import {
 } from '../mocks/mockTemplateData';
 import {
   workflowsBackendResponse,
+  workflowsRedirectRequest,
   workflowsTriggerBackendResponse
 } from '../mocks/mockWorkflowsData';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
@@ -238,10 +239,10 @@ describe('router api tests with permissions ALLOW', () => {
       });
   });
 
-  describe('POST /redirect-to-workflow with instance name', () => {
-      it('POST 500 from release for /redirect-to-workflow', async () => {
+  describe('POST /workflow/redirect with instance name', () => {
+      it('POST 500 from release for /workflow/redirect', async () => {
         const response = await request(app)
-          .post('/redirect-to-workflow')
+          .post('/workflow/redirect')
           .query({
              pageNumber: '1',
              resultsPerPage: '10',
@@ -249,11 +250,7 @@ describe('router api tests with permissions ALLOW', () => {
              categories: 'cat1,cat2',
              author: 'author1',
             })
-          .set('authorization', 'Bearer someauthtoken').send(
-              {
-                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
-                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
-              });
+          .set('authorization', 'Bearer someauthtoken').send(workflowsRedirectRequest);
         expect(response.status).toEqual(500);
         expect(response.body.error.message).toContain(
             "Couldn't find a release instance '' in the config",
@@ -313,10 +310,10 @@ describe('router api tests - with permissions DENY', () => {
         );
       });
   });
-  describe('POST /redirect-to-workflow', () => {
-      it('POST 403 from release for /redirect-to-workflow', async () => {
+  describe('POST /workflow/redirect', () => {
+      it('POST 403 from release for /workflow/redirect', async () => {
         const response = await request(app)
-          .post('/workflows')
+          .post('/workflow/redirect')
           .query({
              instanceName: 'default',
              pageNumber: '1',
@@ -325,11 +322,7 @@ describe('router api tests - with permissions DENY', () => {
              categories: 'cat1,cat2',
              author: 'author1',
             })
-          .set('authorization', 'Bearer someauthtoken').send(
-              {
-                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
-                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
-              });
+          .set('authorization', 'Bearer someauthtoken').send(workflowsRedirectRequest);
         expect(response.status).toEqual(403);
         expect(response.body.error.message).toContain(
           'Access Denied: Unauthorized to access the Backstage Release plugin',
@@ -388,18 +381,15 @@ describe('router api tests - without permissions', () => {
         expect(response.body).toEqual(workflowsBackendResponse);
       });
   });
-  describe('POST /redirect-to-workflow', () => {
+
+  describe('POST /workflow/redirect', () => {
       it('Get redirect Link', async () => {
         const response = await request(app)
-          .post('/redirect-to-workflow')
+          .post('/workflow/redirect')
           .query({
              instanceName: 'default'
             })
-          .set('authorization', 'Bearer someauthtoken').send(
-              {
-                templateId: 'Release2bb84833587a48bf8af3943006e1acdf',
-                releaseTitle: 'AWS Lambda setup function with Digital.ai Deploy'
-              });
+          .set('authorization', 'Bearer someauthtoken').send(workflowsRedirectRequest);
         expect(response.status).toEqual(200);
         expect(response.body).toEqual(workflowsTriggerBackendResponse);
       });

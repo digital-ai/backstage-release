@@ -49,7 +49,7 @@ describe("WorkflowsOverviewApi", () => {
 
     const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(
       "default",
-      "Release2bb84833587a48bf8af3943006e1acdf",
+      "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
       "AWS Lambda setup function with Digital.ai Deploy"
     );
 
@@ -66,7 +66,7 @@ describe("WorkflowsOverviewApi", () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           "invalidInstance",
-          "Release2bb84833587a48bf8af3943006e1acdf",
+          "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
           "AWS Lambda setup function with Digital.ai Deploy"
         )
     ).rejects.toThrow(
@@ -82,8 +82,8 @@ describe("WorkflowsOverviewApi", () => {
 
     const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(
       "default",
-      "0",
-      "10",
+      "1",
+      "1",
       "test",
       ["cat1", "cat2"],
       "author1"
@@ -209,7 +209,7 @@ describe("WorkflowsOverviewApi", () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           "default",
-          "Release2bb84833587a48bf8af3943006e1acdf",
+          "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
           "AWS Lambda setup function with Digital.ai Deploy"
         )
     ).rejects.toThrow(
@@ -227,7 +227,7 @@ describe("WorkflowsOverviewApi", () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           "default",
-          "Release2bb84833587a48bf8af3943006e1acdf",
+          "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
           "AWS Lambda setup function with Digital.ai Deploy"
         )
     ).rejects.toThrow(
@@ -246,7 +246,7 @@ describe("WorkflowsOverviewApi", () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           "default",
-          "Release2bb84833587a48bf8af3943006e1acdf",
+          "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
           "AWS Lambda setup function with Digital.ai Deploy"
         )
     ).rejects.toThrow("Release service request not found");
@@ -263,7 +263,7 @@ describe("WorkflowsOverviewApi", () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           "default",
-          "Release2bb84833587a48bf8af3943006e1acdf",
+          "Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf",
           "AWS Lambda setup function with Digital.ai Deploy"
         )
     ).rejects.toThrow("failed to fetch data, status 500 Unexpected error");
