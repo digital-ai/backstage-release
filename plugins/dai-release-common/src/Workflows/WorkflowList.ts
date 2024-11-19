@@ -38,7 +38,7 @@ export type WorkflowContent = {
   executions: number;
 };
 // Main API Response - releaseAPI/workflows/search
-export type WorkflowsResponse = {
+export type WorkflowsOverview = {
   totalElements: number;
   totalPages: number;
   size: number;
@@ -66,7 +66,7 @@ export type Workflow = {
 }
 
 // Backend API Response - workflow/redirect
-export type Workflows = {
+export type WorkflowsList = {
     workflows: Workflow[];
     totalPages: number;
     totalElements: number;

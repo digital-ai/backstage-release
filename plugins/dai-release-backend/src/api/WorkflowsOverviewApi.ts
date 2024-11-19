@@ -6,7 +6,7 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { WorkflowContent, Workflows, WorkflowsResponse } from '@digital-ai/plugin-dai-release-common';
+import { WorkflowContent, Workflows, WorkflowsOverview } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -67,7 +67,7 @@ export class WorkflowsOverviewApi {
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
 
-    const workflows: WorkflowsResponse = await this.getWorkflowsList(
+    const workflows: WorkflowsOverview = await this.getWorkflowsList(
       accessToken,
       apiUrl,
       pageNumber,
