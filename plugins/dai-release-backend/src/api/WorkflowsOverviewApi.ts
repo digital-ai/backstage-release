@@ -6,7 +6,7 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { WorkflowContent, WorkflowsList, WorkflowsResponse } from '@digital-ai/plugin-dai-release-common';
+import { WorkflowContent, WorkflowsList, WorkflowsOverview } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
