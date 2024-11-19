@@ -6,7 +6,7 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { WorkflowContent, Workflows, WorkflowsOverview } from '@digital-ai/plugin-dai-release-common';
+import { WorkflowContent, WorkflowsList, WorkflowsResponse } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -60,7 +60,7 @@ export class WorkflowsOverviewApi {
     searchInput: string,
     categories: string[],
     author: string
-  ): Promise<Workflows> {
+  ): Promise<WorkflowsList> {
     this.logger?.debug(`Calling Workflows List api, instance: ${instanceName}`);
 
     const instanceConfig = this.config.getInstanceConfig(instanceName);
