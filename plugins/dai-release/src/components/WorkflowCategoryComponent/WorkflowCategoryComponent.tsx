@@ -154,7 +154,10 @@ export function WorkflowCategoryComponent({
   }
 
   function onCategoryFilterChange(options: CheckboxProps[]) {
-    console.log(options);
+    workflowSearch.categories = options
+      .filter(option => option.checked)
+      .map(option => option.value)
+      .filter((value): value is string => value !== undefined);
   }
   return (
     <CssGrid className={classes.workflowCatalog}>

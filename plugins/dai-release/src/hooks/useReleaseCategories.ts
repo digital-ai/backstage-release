@@ -12,7 +12,7 @@ export function useReleaseCategories(
   const abortControllerRef = useRef<AbortController | null>(null);
   useEffect(() => {
     let isMounted = true;
-    if (!instance) return;
+
     const getReleaseCategories = async () => {
       if (!isMounted) return;
       setLoadingReleaseCategories(true);
@@ -39,8 +39,9 @@ export function useReleaseCategories(
         }
       }
     };
-
-    getReleaseCategories();
+    if (instance) {
+      getReleaseCategories();
+    }
 
     return () => {
       isMounted = false;
