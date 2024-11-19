@@ -194,18 +194,18 @@ export async function createRouter(
   });
 
   router.post('/workflows', async (req, res) => {
-      if (permissions && httpAuth) {
-        const decision = await permissions.authorize(
-          [{ permission: daiReleaseViewPermission }],
-          { credentials: await httpAuth.credentials(req) },
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
         );
-        const { result } = decision[0];
-        if (result === AuthorizeResult.DENY) {
-          throw new NotAllowedError(
-            'Access Denied: Unauthorized to access the Backstage Release plugin',
-          );
-        }
       }
+    }
     const instanceName = req.query.instanceName?.toString() || '';
     const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
     const resultsPerPage = getEncodedQueryVal(
@@ -216,26 +216,37 @@ export async function createRouter(
       ? req.query.categories.toString().split(',')
       : [];
     const author = req.query.author?.toString() || '';
-    const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(instanceName, pageNumber, resultsPerPage, searchInput, categories, author);
+    const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(
+      instanceName,
+      pageNumber,
+      resultsPerPage,
+      searchInput,
+      categories,
+      author,
+    );
     res.status(200).json(workflows);
   });
 
   router.post('/workflow/redirect', async (req, res) => {
-      if (permissions && httpAuth) {
-        const decision = await permissions.authorize(
-          [{ permission: daiReleaseViewPermission }],
-          { credentials: await httpAuth.credentials(req) },
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
         );
-        const { result } = decision[0];
-        if (result === AuthorizeResult.DENY) {
-          throw new NotAllowedError(
-            'Access Denied: Unauthorized to access the Backstage Release plugin',
-          );
-        }
       }
+    }
     const instanceName = req.query.instanceName?.toString() || '';
     const { templateId, releaseTitle } = req.body;
-    const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(instanceName, templateId, releaseTitle);
+    const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(
+      instanceName,
+      templateId,
+      releaseTitle,
+    );
     res.status(200).json({ url: redirectUrl });
   });
 

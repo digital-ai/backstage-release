@@ -52,7 +52,7 @@ export type WorkflowsOverview = {
 export type GitInfo = {
   commitId: string;
   repoLink: string;
-}
+};
 
 export type Workflow = {
   title: string;
@@ -63,11 +63,11 @@ export type Workflow = {
   folderTitle: string;
   categories: string[];
   git: GitInfo;
-}
+};
 
 // Backend API Response - /workflows
 export type WorkflowsList = {
-    workflows: Workflow[];
-    totalPages: number;
-    totalElements: number;
+  workflows: Workflow[];
+  totalPages: number;
+  totalElements: number;
 };

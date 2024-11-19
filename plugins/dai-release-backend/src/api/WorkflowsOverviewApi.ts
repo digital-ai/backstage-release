@@ -6,7 +6,11 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import { WorkflowContent, WorkflowsList, WorkflowsOverview } from '@digital-ai/plugin-dai-release-common';
+import {
+  WorkflowContent,
+  WorkflowsList,
+  WorkflowsOverview,
+} from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -24,8 +28,14 @@ export class WorkflowsOverviewApi {
     return new WorkflowsOverviewApi(logger, config);
   }
 
-  async redirectToWorkflowRunPage(instanceName: string, templateId: string, releaseTitle: string) {
-    this.logger?.debug(`Redirecting to Workflows Run Page, instance: ${instanceName}`);
+  async redirectToWorkflowRunPage(
+    instanceName: string,
+    templateId: string,
+    releaseTitle: string,
+  ) {
+    this.logger?.debug(
+      `Redirecting to Workflows Run Page, instance: ${instanceName}`,
+    );
 
     const instanceConfig = this.config.getInstanceConfig(instanceName);
     const accessToken = getCredentials(instanceConfig);
@@ -45,12 +55,12 @@ export class WorkflowsOverviewApi {
       accessToken,
       apiUrl,
       getReleaseId(templateId),
-      releaseTitle
+      releaseTitle,
     );
     const templateIdConverted = convertIdPath(workflow.id);
     const redirectUrl = `${apiUrl}${RELEASE_WORKFLOW_TRIGGER_WORKFLOW_PATH}/${templateIdConverted}`;
 
-    return redirectUrl
+    return redirectUrl;
   }
 
   async getWorkflowsOverviewApi(
@@ -59,7 +69,7 @@ export class WorkflowsOverviewApi {
     resultsPerPage: string = '10',
     searchInput: string,
     categories: string[],
-    author: string
+    author: string,
   ): Promise<WorkflowsList> {
     this.logger?.debug(`Calling Workflows List api, instance: ${instanceName}`);
 
@@ -74,7 +84,7 @@ export class WorkflowsOverviewApi {
       resultsPerPage,
       searchInput,
       categories,
-      author
+      author,
     );
 
     function getRepoLink(repoRemoteLink: string, commitId: string): string {
@@ -95,16 +105,18 @@ export class WorkflowsOverviewApi {
       categories: Array.isArray(d.categories) ? d.categories : [d.categories],
       git: {
         commitId: d.scmTraceabilityData.commit.substring(0, 8),
-        repoLink: getRepoLink(d.scmTraceabilityData.remote, d.scmTraceabilityData.commit)
-      }
+        repoLink: getRepoLink(
+          d.scmTraceabilityData.remote,
+          d.scmTraceabilityData.commit,
+        ),
+      },
     }));
 
     return {
       workflows: workflowDetails,
       totalPages: workflows.totalPages,
-      totalElements: workflows.totalElements
+      totalElements: workflows.totalElements,
     };
-
   }
 
   private async getWorkflowsList(
@@ -114,23 +126,26 @@ export class WorkflowsOverviewApi {
     resultsPerPage: string = '10',
     searchInput: string,
     categories: string[],
-    author: string
+    author: string,
   ) {
     const body = JSON.stringify({
       ...(searchInput && { searchInput }),
       ...(categories.length && { categories }),
-      ...(author && { author })
+      ...(author && { author }),
     });
 
-    const response = await fetch(`${apiUrl}${RELEASE_WORKFLOW_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`, {
-      method: 'POST',
-      headers: {
-        'x-release-personal-token': `${accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+    const response = await fetch(
+      `${apiUrl}${RELEASE_WORKFLOW_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+      {
+        method: 'POST',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: body,
       },
-      body: body
-    });
+    );
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
@@ -141,21 +156,24 @@ export class WorkflowsOverviewApi {
     accessToken: string,
     apiUrl: string,
     templateId: string,
-    releaseTitle: string
+    releaseTitle: string,
   ) {
     const body = JSON.stringify({
-      ...(releaseTitle && { releaseTitle })
+      ...(releaseTitle && { releaseTitle }),
     });
 
-    const response = await fetch(`${apiUrl}${RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH}/${templateId}/create`, {
-      method: 'POST',
-      headers: {
-        'x-release-personal-token': `${accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+    const response = await fetch(
+      `${apiUrl}${RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH}/${templateId}/create`,
+      {
+        method: 'POST',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: body,
       },
-      body: body
-    });
+    );
     if (!response.ok) {
       await parseErrorResponse(this.logger, response);
     }
