@@ -36,8 +36,8 @@ export class WorkflowsOverviewApi {
       return parts.slice(1).join('-');
     }
 
-    function getReleaseId(templateId: string): string {
-      const parts = templateId.split('/');
+    function getReleaseId(fullTemplateId: string): string {
+      const parts = fullTemplateId.split('/');
       return parts[parts.length - 1];
     }
 
