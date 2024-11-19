@@ -7,8 +7,8 @@ import {
   DotSkeleton,
   DotTypography,
 } from '@digital-ai/dot-components';
+import React, {useEffect, useState} from 'react';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -129,28 +129,38 @@ export const WorkflowCategoriesSkeleton = () => {
 type workflowCategoryComponentProps = {
   releaseCategories: CategoriesContentActiveList[] | [];
   isLoadingCategories: boolean;
-  author: string;
-  setAuthor: (value: string) => void;
+  instance: string;
 };
 
 export function WorkflowCategoryComponent({
   releaseCategories,
   isLoadingCategories,
-  setAuthor,
-  author,
+  instance
 }: workflowCategoryComponentProps) {
   const classes = useStyles();
-  const workflowSearch = {
-    categories: [''],
-  };
+  const [workflowSearch, setWorkflowSearch] = useState<{
+    categories: string[];
+    author: string;
+  }>({
+    categories: [],
+    author: '',
+  });
   const checkboxOptions: CheckboxProps[] = releaseCategories.map(category => ({
     label: category.title,
     value: category.id,
     checked: workflowSearch?.categories?.includes(category.title),
   }));
 
+  useEffect(() => {
+    // Reset workflowSearch when instance changes
+    setWorkflowSearch({
+      categories: [],
+      author: '',
+    });
+  }, [instance]);
+
   function handleAuthorChange(value: string) {
-    setAuthor(value);
+    workflowSearch.author = value;
   }
 
   function onCategoryFilterChange(options: CheckboxProps[]) {
@@ -204,7 +214,7 @@ export function WorkflowCategoryComponent({
                 onChange={e => handleAuthorChange(e.target.value)}
                 persistentLabel
                 placeholder="Start typing to filter Author"
-                value={author}
+                value={workflowSearch.author}
               />
             </div>
           </div>

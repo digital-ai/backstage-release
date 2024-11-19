@@ -24,11 +24,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+export type WorkFlowSearch = {
+  categories: string[];
+  author: string;
+}
+
 export const WorkflowComponent = () => {
   const classes = useStyles();
   const [loadingReleaseCategories, setLoadingReleaseCategories] =
     useState(true);
-  const [author, setAuthor] = useState('');
+
   const [releaseCategories, setReleaseCategories] = useState<
     CategoriesContentActiveList[]
   >([]);
@@ -69,8 +74,7 @@ export const WorkflowComponent = () => {
             <WorkflowCategoryComponent
               releaseCategories={releaseCategories}
               isLoadingCategories={loadingReleaseCategories}
-              author={author}
-              setAuthor={setAuthor}
+              instance={instance}
             />
           </DotThemeProvider>
         </Grid>
