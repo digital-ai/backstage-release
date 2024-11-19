@@ -22,6 +22,7 @@ describe('SearchHeaderComponent', () => {
     const rendered = await renderContent({
       displayFilter: true,
       tableSearchFilter: false,
+      displayFilterIcon: true,
       titleName: 'Active Releases',
       searchTitleTextField: 'Title',
       searchTitle: '',
@@ -41,6 +42,7 @@ describe('SearchHeaderComponent', () => {
     const rendered = await renderContent({
       displayFilter: true,
       tableSearchFilter: false,
+      displayFilterIcon: true,
       titleName: 'Active Releases',
       searchTitleTextField: 'Title',
       searchTitle: 'Test',
@@ -76,6 +78,7 @@ describe('SearchHeaderComponent', () => {
     const rendered = await renderContent({
       displayFilter: false,
       tableSearchFilter: true,
+      displayFilterIcon: true,
       titleName: 'Templates',
       searchTitleTextField: 'Search by name',
       searchTitle: 'Test',
@@ -115,6 +118,7 @@ describe('SearchHeaderComponent', () => {
 async function renderContent(args: {
   displayFilter: boolean | true;
   tableSearchFilter: boolean | false;
+  displayFilterIcon: boolean | true;
   titleName: string;
   searchTitleTextField: string;
   instance: string;
@@ -134,6 +138,7 @@ async function renderContent(args: {
     <SearchHeaderComponent
       displaySearchFilter={args.displayFilter}
       displayTableSearchFilter={args.tableSearchFilter}
+      displayFilterIcon={args.displayFilterIcon}
       titleName={args.titleName}
       customSearch={args.customSearch}
       searchTitleTextField={args.searchTitleTextField}
