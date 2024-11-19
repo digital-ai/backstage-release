@@ -1,5 +1,3 @@
-# Changelog
-
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.1) (08/11/2024)
 
 ### Library upgrade

@@ -25,11 +25,23 @@
 - [ ] All acceptance criteria has been met from linked issue
 - [ ] Run code locally and verify all changes
 
-
-
-
-
-
+## Changelog
+- Use the format plugin-name Changelog Begin and plugin-name Changelog End to mark the start and end of the changelog for that plugin. For example:
+  [dai-release Changelog Begin] and [dai-release Changelog End]
+- Each plugin's changelog should include the following sections:
+  - Features:
+      List new features added to the plugin.
+  - Bug Fixes:
+      Mention any bugs that have been fixed.
+  - Breaking Changes
+      List any changes that break backward compatibility.
+  - Miscellaneous
+      Any other updates or changes that don't fit into the above categories.
+### dai-release Changelog Begin 
+### dai-release Changelog End
+### dai-release-backend Changelog Begin
+### dai-release-backend Changelog end
+### dai-release-common Changelog Begin
 
 ## Related Issue(s)
 
