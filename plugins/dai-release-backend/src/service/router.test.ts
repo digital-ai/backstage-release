@@ -17,6 +17,11 @@ import {
   templateBackendPluginApiResponse,
   templateGitMetaInfoResponse,
 } from '../mocks/mockTemplateData';
+import {
+  workflowsBackendResponse,
+  workflowsRedirectRequest,
+  workflowsTriggerBackendResponse,
+} from '../mocks/mockWorkflowsData';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { categoriesBackendPluginApiResponse } from '../mocks/mockCategories';
 import { createRouter } from './router';
@@ -272,6 +277,25 @@ describe('router api tests with permissions ALLOW', () => {
       );
     });
   });
+  describe('POST /workflow/redirect with instance name', () => {
+    it('POST 500 from release for /workflow/redirect', async () => {
+      const response = await request(app)
+        .post('/workflow/redirect')
+        .query({
+          pageNumber: '1',
+          resultsPerPage: '10',
+          searchInput: 'test',
+          categories: 'cat1,cat2',
+          author: 'author1',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send(workflowsRedirectRequest);
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
 });
 
 describe('router api tests - with permissions DENY', () => {
@@ -309,6 +333,47 @@ describe('router api tests - with permissions DENY', () => {
     it('GET 403 from release for /categories', async () => {
       server.resetHandlers(...error403ResponseHandler);
       const response = await request(app).get('/categories');
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+  describe('POST /workflows', () => {
+    it('POST 403 from release for /workflows', async () => {
+      server.resetHandlers(...error403ResponseHandler);
+      const response = await request(app)
+        .post('/workflows')
+        .query({
+          instanceName: 'Production',
+          pageNumber: '1',
+          resultsPerPage: '10',
+          searchInput: 'test',
+          categories: 'cat1,cat2',
+          author: 'author1',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send({});
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+  describe('POST /workflow/redirect', () => {
+    it('POST 403 from release for /workflow/redirect', async () => {
+      const response = await request(app)
+        .post('/workflow/redirect')
+        .query({
+          instanceName: 'default',
+          pageNumber: '1',
+          resultsPerPage: '10',
+          searchInput: 'test',
+          categories: 'cat1,cat2',
+          author: 'author1',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send(workflowsRedirectRequest);
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
         'Access Denied: Unauthorized to access the Backstage Release plugin',
@@ -358,6 +423,38 @@ describe('router api tests - without permissions', () => {
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(categoriesBackendPluginApiResponse);
+    });
+  });
+  describe('POST /workflows', () => {
+    it('Get workflows data from release', async () => {
+      const response = await request(app)
+        .post('/workflows')
+        .query({
+          instanceName: 'default',
+          pageNumber: '1',
+          resultsPerPage: '10',
+          searchInput: 'test',
+          categories: 'cat1,cat2',
+          author: 'author1',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send({});
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(workflowsBackendResponse);
+    });
+  });
+
+  describe('POST /workflow/redirect', () => {
+    it('Get redirect Link', async () => {
+      const response = await request(app)
+        .post('/workflow/redirect')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send(workflowsRedirectRequest);
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(workflowsTriggerBackendResponse);
     });
   });
 });

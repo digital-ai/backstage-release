@@ -12,7 +12,13 @@ import {
   templateGitMetaInfoResponse,
   templatesReleaseApiResponse,
 } from './mockTemplateData';
+import {
+  workflowsResponse,
+  workflowsTriggerResponse,
+} from './mockWorkflowsData';
+
 import { categoriesReleaseApiResponse } from './mockCategories';
+
 
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search', () => {
@@ -47,6 +53,18 @@ export const mockTestHandlers = [
   }),
   http.get('http://localhost/api/v1/categories', () => {
     return new HttpResponse(JSON.stringify(categoriesReleaseApiResponse));
+  }),
+  http.post('http://localhost/api/v1/workflows/search', () => {
+    return new HttpResponse(JSON.stringify(workflowsResponse));
+  }),
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    () => {
+      return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
+    },
+  ),
+  http.post('http://localhost/api/v1/workflow/redirect', () => {
+    return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
   }),
 ];
 
@@ -93,6 +111,22 @@ export const error404ResponseHandler = [
       statusText: 'Not found',
     });
   }),
+  http.post('http://localhost/api/v1/workflows/search', () => {
+
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    () => {
+      return new HttpResponse(JSON.stringify('[]'), {
+        status: 404,
+        statusText: 'Not found',
+      });
+    },
+  ),
 ];
 
 export const error403ResponseHandler = [
@@ -132,12 +166,29 @@ export const error403ResponseHandler = [
       statusText: 'forbidden',
     });
   }),
+
   http.get('http://localhost/api/v1/categories', () => {
     return new HttpResponse('You do not have release#view permission', {
       status: 403,
       statusText: 'forbidden',
     });
   }),
+  http.post('http://localhost/api/v1/workflows/search', () => {
+
+    return new HttpResponse('You do not have release#view permission', {
+      status: 403,
+      statusText: 'forbidden',
+    });
+  }),
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    () => {
+      return new HttpResponse('You do not have release#view permission', {
+        status: 403,
+        statusText: 'forbidden',
+      });
+    },
+  ),
 ];
 
 export const error500ResponseHandler = [
@@ -177,12 +228,30 @@ export const error500ResponseHandler = [
       statusText: 'Unexpected error',
     });
   }),
+
   http.get('http://localhost/api/v1/categories', () => {
     return new HttpResponse(null, {
       status: 500,
       statusText: 'Unexpected error',
     });
   }),
+  http.post('http://localhost/api/v1/workflows/search', () => {
+
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: 'Unexpected error',
+    });
+  }),
+
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    () => {
+      return new HttpResponse(null, {
+        status: 500,
+        statusText: 'Unexpected error',
+      });
+    },
+  ),
 ];
 
 export const error401ResponseHandler = [
@@ -222,12 +291,30 @@ export const error401ResponseHandler = [
       statusText: 'Unauthorized',
     });
   }),
+
   http.get('http://localhost/api/v1/categories', () => {
     return new HttpResponse(null, {
       status: 401,
       statusText: 'Unauthorized',
     });
   }),
+  http.post('http://localhost/api/v1/workflows/search', () => {
+
+    return new HttpResponse(null, {
+      status: 401,
+      statusText: 'Unauthorized',
+    });
+  }),
+
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    () => {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: 'Unauthorized',
+      });
+    },
+  ),
 ];
 
 export const mockTestHandlersfallBack = [
