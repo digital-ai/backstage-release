@@ -277,6 +277,27 @@ describe('router api tests with permissions ALLOW', () => {
       );
     });
   });
+
+  describe('POST /workflows without instance name input', () => {
+    it('POST 500 from release for /workflows', async () => {
+      const response = await request(app)
+        .post('/workflows')
+        .query({
+          pageNumber: '1',
+          resultsPerPage: '10',
+          searchInput: '',
+          categories: 'cat1,cat2',
+          author: '',
+        })
+        .set('authorization', 'Bearer someauthtoken')
+        .send({});
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
   describe('POST /workflow/redirect with instance name', () => {
     it('POST 500 from release for /workflow/redirect', async () => {
       const response = await request(app)
