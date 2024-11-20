@@ -5,9 +5,10 @@ import {
   DotCheckboxGroup,
   DotInputText,
   DotSkeleton,
+  DotThemeProvider,
   DotTypography,
 } from '@digital-ai/dot-components';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -135,7 +136,7 @@ type workflowCategoryComponentProps = {
 export function WorkflowCategoryComponent({
   releaseCategories,
   isLoadingCategories,
-  instance
+  instance,
 }: workflowCategoryComponentProps) {
   const classes = useStyles();
   const [workflowSearch, setWorkflowSearch] = useState<{
@@ -170,65 +171,67 @@ export function WorkflowCategoryComponent({
       .filter((value): value is string => value !== undefined);
   }
   return (
-    <CssGrid className={classes.workflowCatalog}>
-      <CssCell
-        center={false}
-        className="workflow-drawer-content-left-cell"
-        lg={{ start: 1, span: 3 }}
-        md={{ start: 1, span: 3 }}
-        sm={{ start: 1, span: 3 }}
-        xl={{ start: 1, span: 3 }}
-      >
-        <div className="workflow-drawer-content-left">
-          <div>
+    <DotThemeProvider>
+      <CssGrid className={classes.workflowCatalog}>
+        <CssCell
+          center={false}
+          className="workflow-drawer-content-left-cell"
+          lg={{ start: 1, span: 3 }}
+          md={{ start: 1, span: 3 }}
+          sm={{ start: 1, span: 3 }}
+          xl={{ start: 1, span: 3 }}
+        >
+          <div className="workflow-drawer-content-left">
             <div>
-              {releaseCategories.length > 0 && (
-                <DotTypography
-                  data-testid="category-filter-title"
-                  variant="subtitle2"
-                >
-                  Categories
-                </DotTypography>
-              )}
-              {isLoadingCategories ? (
-                <WorkflowCategoriesSkeleton />
-              ) : (
-                releaseCategories.length > 0 && (
-                  <DotCheckboxGroup
-                    className="categories-filter"
-                    defaultValues={checkboxOptions.filter(
-                      checkboxOption => checkboxOption.checked,
-                    )}
-                    onChange={(_event, options) =>
-                      onCategoryFilterChange(options)
-                    }
-                    options={checkboxOptions}
-                    showSelectAll
-                  />
-                )
-              )}
-              <DotInputText
-                id="authored-by"
-                label="Authored By"
-                name="authored-by"
-                onChange={e => handleAuthorChange(e.target.value)}
-                persistentLabel
-                placeholder="Start typing to filter Author"
-                value={workflowSearch.author}
-              />
+              <div>
+                {releaseCategories.length > 0 && (
+                  <DotTypography
+                    data-testid="category-filter-title"
+                    variant="subtitle2"
+                  >
+                    Categories
+                  </DotTypography>
+                )}
+                {isLoadingCategories ? (
+                  <WorkflowCategoriesSkeleton />
+                ) : (
+                  releaseCategories.length > 0 && (
+                    <DotCheckboxGroup
+                      className="categories-filter"
+                      defaultValues={checkboxOptions.filter(
+                        checkboxOption => checkboxOption.checked,
+                      )}
+                      onChange={(_event, options) =>
+                        onCategoryFilterChange(options)
+                      }
+                      options={checkboxOptions}
+                      showSelectAll
+                    />
+                  )
+                )}
+                <DotInputText
+                  id="authored-by"
+                  label="Authored By"
+                  name="authored-by"
+                  onChange={e => handleAuthorChange(e.target.value)}
+                  persistentLabel
+                  placeholder="Start typing to filter Author"
+                  value={workflowSearch.author}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </CssCell>
-      <CssCell
-        center={false}
-        className="tab-content-cell"
-        lg={{ start: 4, span: 9 }}
-        md={{ start: 4, span: 9 }}
-        sm={{ start: 1, span: 12 }}
-        xl={{ start: 4, span: 9 }}
-        xs={{ start: 1, span: 12 }}
-      />
-    </CssGrid>
+        </CssCell>
+        <CssCell
+          center={false}
+          className="tab-content-cell"
+          lg={{ start: 4, span: 9 }}
+          md={{ start: 4, span: 9 }}
+          sm={{ start: 1, span: 12 }}
+          xl={{ start: 4, span: 9 }}
+          xs={{ start: 1, span: 12 }}
+        />
+      </CssGrid>
+    </DotThemeProvider>
   );
 }

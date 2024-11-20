@@ -2,7 +2,6 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
-import { DotThemeProvider } from '@digital-ai/dot-components';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
@@ -27,7 +26,7 @@ const useStyles = makeStyles(() => ({
 export type WorkFlowSearch = {
   categories: string[];
   author: string;
-}
+};
 
 export const WorkflowComponent = () => {
   const classes = useStyles();
@@ -70,13 +69,11 @@ export const WorkflowComponent = () => {
         </Grid>
         <div className={classes.horizontalBar} />
         <Grid>
-          <DotThemeProvider>
-            <WorkflowCategoryComponent
-              releaseCategories={releaseCategories}
-              isLoadingCategories={loadingReleaseCategories}
-              instance={instance}
-            />
-          </DotThemeProvider>
+          <WorkflowCategoryComponent
+            releaseCategories={releaseCategories}
+            isLoadingCategories={loadingReleaseCategories}
+            instance={instance}
+          />
         </Grid>
       </Content>
     </Page>
