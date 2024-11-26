@@ -8,6 +8,7 @@ import {
 } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import {
+  ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
@@ -151,5 +152,12 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     }
 
     return (await response.json()) as Promise<T>;
+  }
+
+  async getReleaseCategories(instanceName: string): Promise<ReleaseCategories> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `categories?${queryString}`;
+    return await this.get<ReleaseCategories>(urlSegment);
   }
 }

@@ -2,6 +2,7 @@ import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
+import { mockReleaseCategories } from '../mocks/categoriesMocks';
 import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
@@ -197,6 +198,78 @@ describe('ReleaseApiClient', () => {
       let err;
       try {
         await client.getTemplates(0, 15, '', 'default', []);
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+  });
+  describe('getReleaseCategories', () => {
+    it('should return valid response', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) => {
+            return res(
+              ctx.status(200),
+              ctx.set('Content-Type', 'application/json'),
+              ctx.json(mockReleaseCategories),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getReleaseCategories('default');
+      expect(response !== undefined).toBeTruthy();
+      expect(response.activeCategory.length).toBeGreaterThan(0);
+    });
+    it('should return error', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) => {
+            res(ctx.status(500), ctx.set('Content-Type', 'application/json'));
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    });
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
       } catch (e) {
         err = e;
       } finally {

@@ -1,5 +1,7 @@
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.1) (08/11/2024)
+
 ### Library upgrade
+
 - Updated dependencies
   - @backstage/core-components@^0.14.10
   - @backstage/core-plugin-api@^1.9.3
@@ -20,6 +22,7 @@
   - styled-components@^6.1.13
 
 ### Features
+
 - Monitor releases templates.
 - Link to open template.
 - Link to create new release from template that redirect to the release instance.

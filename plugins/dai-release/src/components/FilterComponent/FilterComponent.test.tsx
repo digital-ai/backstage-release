@@ -161,7 +161,7 @@ async function renderContent(args: {
 }) {
   return await renderInTestApp(
     <FilterComponent
-        filterCount={args.filterCount}
+      filterCount={args.filterCount}
       fromDate={args.fromDate}
       orderBy={args.orderBy}
       onFromDateChange={args.onFromDateChange}
@@ -188,7 +188,7 @@ async function renderTemplateContent(args: {
 }) {
   return await renderInTestApp(
     <FilterComponent
-        filterCount={args.filterCount}
+      filterCount={args.filterCount}
       showDrawer={args.showDrawer}
       onShowDrawer={args.onShowDrawer}
       tags={args.tags}
