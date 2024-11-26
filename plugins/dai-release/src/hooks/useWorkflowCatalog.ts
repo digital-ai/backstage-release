@@ -3,6 +3,7 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
+import { workflowCatalogsList } from '../mocks/workflowMocks';
 
 export function useWorkflowCatalog(): {
   loading: boolean;
@@ -19,7 +20,7 @@ export function useWorkflowCatalog(): {
   setData: (data: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined
@@ -31,7 +32,7 @@ export function useWorkflowCatalog(): {
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
-
+  global.console.log('useWorkflowCatalog');
   const { error } = useAsyncRetryWithSelectiveDeps(
     // eslint-disable-next-line consistent-return
     async () => {
@@ -51,19 +52,19 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            setLoading(false);
+            // setLoading(false);
           });
         }
 
-        const result = { items: { workflow: [] } };
+        const result = workflowCatalogsList;
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
-          setLoading(false);
-          if (result.items?.workflow?.length < rowsPerPage) {
+          // setLoading(false);
+          if (result?.workflows?.length < rowsPerPage) {
             setHasMore(false);
           }
-          setData((prevData: any) => [...prevData, ...result.items?.workflow]);
+          setData((prevData: any) => [...prevData, ...result?.workflows]);
           return result;
         }
       } catch (err) {
@@ -74,7 +75,7 @@ export function useWorkflowCatalog(): {
           throw err;
         }
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     },
     page,
