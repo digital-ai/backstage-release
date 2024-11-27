@@ -37,7 +37,7 @@ export const calculateCellProps = (index: number): CellProps => {
     },
     xl: {
       columns: 12,
-      cards: 3,
+      cards: 2,
     },
     lg: {
       columns: 12,

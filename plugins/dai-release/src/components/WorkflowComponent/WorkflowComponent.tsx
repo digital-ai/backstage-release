@@ -26,6 +26,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#e3e5e8', // or any color you prefer
     color: '#e3e5e8',
   },
+  workflowDrawerContentLeftCells: {
+    justifyContent: 'flex-start !important',
+    padding: '0px 16px 0px 16px',
+  },
 }));
 
 export type WorkFlowSearch = {
@@ -99,11 +103,12 @@ export const WorkflowComponent = () => {
           <CssGrid className="workflow-catalog">
             <CssCell
               center={false}
-              className="workflow-drawer-content-left-cell"
+              className={classes.workflowDrawerContentLeftCells}
               lg={{ start: 1, span: 4 }}
-              md={{ start: 1, span: 4 }}
-              sm={{ start: 1, span: 3 }}
+              md={{ start: 1, span: 6 }}
+              sm={{ start: 1, span: 12 }}
               xl={{ start: 1, span: 4 }}
+              xxl={{ start: 1, span: 3 }}
             >
               <div className="workflow-drawer-content-left">
                 <WorkflowCategoryComponent
@@ -113,15 +118,15 @@ export const WorkflowComponent = () => {
                 />
               </div>
             </CssCell>
-            <div className={classes.horizontalBar} />
             <CssCell
               center={false}
               className="tab-content-cell"
-              lg={{ start: 5, span: 8 }}
-              md={{ start: 5, span: 8 }}
+              lg={{ start: 5, span: 10 }}
+              md={{ start: 7, span: 10 }}
               sm={{ start: 1, span: 12 }}
               xl={{ start: 5, span: 8 }}
               xs={{ start: 1, span: 12 }}
+              xxl={{ start: 4, span: 9 }}
             >
               <div className="workflow-cards">
                 <WorkflowCatalogComponent

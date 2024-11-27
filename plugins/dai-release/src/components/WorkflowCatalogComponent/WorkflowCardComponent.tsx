@@ -41,15 +41,12 @@ const useStyles = makeStyles(() => ({
     '& .dot-card-top-bottom-spacing': {
       padding: '16px 0',
     },
-    '& .folder-chip-section': {
+    '& .folder-chip-section, & .categories-chip-section': {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
     },
     '& .categories-chip-section': {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
       flexWrap: 'wrap',
     },
     '& .run-workflow-btn': {
@@ -57,7 +54,7 @@ const useStyles = makeStyles(() => ({
       backgroundColor: 'rgb(255, 255, 255) !important',
       borderColor: 'rgb(164, 172, 182) !important',
       width: '97%',
-      marginTop: '30px',
+      marginTop: '30px !important',
     },
     '& .dot-card-header-title': {
       display: '-webkit-box',
@@ -131,7 +128,7 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
             size="small"
             startIcon={<DotIcon iconId="folder" />}
             children={folderTitle}
-            charactersLimit={16}
+            charactersLimit={18}
           />
         </div>
         {renderCommitLink()}

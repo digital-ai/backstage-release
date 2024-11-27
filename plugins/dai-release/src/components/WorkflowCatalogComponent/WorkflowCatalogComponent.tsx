@@ -69,7 +69,7 @@ export const WorkflowCatalogComponent = ({
           );
         })}
         {loading &&
-          [...Array(2)].map((_value, skeletonIndex) => {
+          [...Array(3)].map((_value, skeletonIndex) => {
             const props = calculateCellProps(skeletonIndex);
             return (
               <CssCell {...props} key={skeletonIndex}>
