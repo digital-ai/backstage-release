@@ -1,11 +1,13 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
+import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCatalogComponent } from '../WorkflowCatalogComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
+import { useReleaseCategories } from '../../hooks/useReleaseCategories';
 import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 
 const useStyles = makeStyles(() => ({
@@ -18,9 +20,26 @@ const useStyles = makeStyles(() => ({
   workflowHeaderSec: {
     flexWrap: 'nowrap',
   },
+  horizontalBar: {
+    width: '100%',
+    height: '0.5px',
+    backgroundColor: '#e3e5e8', // or any color you prefer
+    color: '#e3e5e8',
+  },
 }));
+
+export type WorkFlowSearch = {
+  categories: string[];
+  author: string;
+};
 export const WorkflowComponent = () => {
   const classes = useStyles();
+  const [loadingReleaseCategories, setLoadingReleaseCategories] =
+    useState(true);
+
+  const [releaseCategories, setReleaseCategories] = useState<
+    CategoriesContentActiveList[]
+  >([]);
 
   const {
     data,
@@ -33,6 +52,12 @@ export const WorkflowComponent = () => {
     setPage,
     setInstance,
   } = useWorkflowCatalog();
+
+  useReleaseCategories(
+    instance,
+    setReleaseCategories,
+    setLoadingReleaseCategories,
+  );
 
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
@@ -81,9 +106,14 @@ export const WorkflowComponent = () => {
               xl={{ start: 1, span: 4 }}
             >
               <div className="workflow-drawer-content-left">
-                <WorkflowCategoryComponent />
+                <WorkflowCategoryComponent
+                  releaseCategories={releaseCategories}
+                  isLoadingCategories={loadingReleaseCategories}
+                  instance={instance}
+                />
               </div>
             </CssCell>
+            <div className={classes.horizontalBar} />
             <CssCell
               center={false}
               className="tab-content-cell"

@@ -115,6 +115,10 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(.*))"
-    ]
+    ],
+    "moduleNameMapper": {
+      "@digital-ai/dot-icons": "<rootDir>/testing-utils/style-mock.ts",
+      "@digital-ai/dot-illustrations": "<rootDir>/testing-utils/style-mock.ts"
+    }
   }
 }

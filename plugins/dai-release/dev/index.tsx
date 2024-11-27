@@ -1,12 +1,12 @@
-import { DaiReleasePage, daiReleasePlugin } from '../src';
+import { DaiWorkFlowCatalog } from '../src/plugin';
 import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
-import { WorkflowComponent } from '../src/components/WorkflowComponent';
+import { daiReleasePlugin } from '../src';
 
 createDevApp()
   .registerPlugin(daiReleasePlugin)
   .addPage({
-    element: <WorkflowComponent />,
+    element: <DaiWorkFlowCatalog />,
     title: 'Root Page',
     path: '/dai-release',
   })

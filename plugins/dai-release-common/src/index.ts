@@ -4,6 +4,7 @@
  *
  * @packageDocumentation
  */
+
 export * from './Folder';
 export * from './ReleaseCountResults';
 export * from './ReleaseList';
@@ -11,4 +12,5 @@ export * from './ReleaseOverview';
 export * from './permissions';
 export * from './ReleaseInstanceConfig';
 export * from './Template/TemplateList';
-export * from './Workflow/WorkflowList';
+export * from './Categories/CategoriesList';
+export * from './Workflows/WorkflowList';

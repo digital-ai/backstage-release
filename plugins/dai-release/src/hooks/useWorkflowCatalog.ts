@@ -20,7 +20,7 @@ export function useWorkflowCatalog(): {
   setData: (data: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined
@@ -28,17 +28,16 @@ export function useWorkflowCatalog(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
-  global.console.log('useWorkflowCatalog');
   const { error } = useAsyncRetryWithSelectiveDeps(
     // eslint-disable-next-line consistent-return
     async () => {
       try {
         setLoading(true);
-
         // Cancel the previous request
         if (abortControllerRef.current) {
           abortControllerRef.current.abort();
@@ -52,7 +51,7 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            // setLoading(false);
+            setLoading(false);
           });
         }
 
@@ -75,7 +74,7 @@ export function useWorkflowCatalog(): {
           throw err;
         }
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     },
     page,
