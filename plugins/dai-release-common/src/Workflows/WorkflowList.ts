@@ -72,7 +72,7 @@ export type WorkflowsList = {
   totalElements: number;
 };
 
-export type FolderOverview {
+export type FolderOverview = {
   id: string;
   type: string;
   $token: string;
@@ -81,16 +81,16 @@ export type FolderOverview {
   $metadata?: Metadata; // Optional metadata property
 }
 
-export type Metadata {
+export type Metadata = {
   security: Security;
 }
 
-export type Security {
+export type Security = {
   permissions: string[];
   teams: string[];
 }
 
-export type FoldersList {
+export type FoldersList = {
   id: string;
   title: string;
   children: FolderList[];
