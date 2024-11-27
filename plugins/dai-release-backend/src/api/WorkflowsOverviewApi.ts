@@ -10,6 +10,8 @@ import {
   WorkflowContent,
   WorkflowsList,
   WorkflowsOverview,
+  FolderOverview,
+  FoldersList
 } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
@@ -172,6 +174,65 @@ export class WorkflowsOverviewApi {
           Accept: 'application/json',
         },
         body: body,
+      },
+    );
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    return await response.json();
+  }
+
+  async getWorkflowsFolderListApi(
+    instanceName: string,
+    pageNumber: string = '0',
+    resultsPerPage: string = '10'
+  ): Promise<FoldersList> {
+    this.logger?.debug(`Calling Workflows List Folders api, instance: ${instanceName}`);
+
+    const instanceConfig = this.config.getInstanceConfig(instanceName);
+    const accessToken = getCredentials(instanceConfig);
+    const apiUrl = getReleaseApiHost(instanceConfig);
+
+    const folders: FolderOverview = await this.getWorkflowsFolderList(
+      accessToken,
+      apiUrl,
+      pageNumber,
+      resultsPerPage
+    );
+
+    function parseFolder(folder: FolderOverview): any {
+      return {
+        id: folder.id,
+        title: folder.title,
+        permissions: folder.$metadata?.security.permissions || [],
+        teams: folder.$metadata?.security.teams || [],
+        children: folder.children.map(parseFolder),
+      };
+    }
+    const foldersContent = folders.map(parseFolder);
+
+    return {
+      folders: foldersContent,
+      totalPages: folders.totalPages,
+      totalElements: folders.totalElements,
+    };
+  }
+
+  private async getWorkflowsFolderList(
+    accessToken: string,
+    apiUrl: string,
+    pageNumber: string = '0',
+    resultsPerPage: string = '20'
+  ) {
+    const response = await fetch(
+      `${apiUrl}${RELEASE_WORKFLOW_FOLDER_LIST_API_PATH}?depth=20&permissions=true&page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-release-personal-token': `${accessToken}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        }
       },
     );
     if (!response.ok) {
