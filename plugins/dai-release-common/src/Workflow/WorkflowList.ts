@@ -93,5 +93,5 @@ export type Security {
 export type FoldersList {
   id: string;
   title: string;
-  children: FolderList[];
+  children: FoldersList[];
 }
