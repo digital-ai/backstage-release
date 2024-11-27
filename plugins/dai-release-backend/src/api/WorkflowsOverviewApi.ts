@@ -193,7 +193,7 @@ export class WorkflowsOverviewApi {
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
 
-    const folders: FolderOverview = await this.getWorkflowsFolderList(
+    const folders: FolderOverview[] = await this.getWorkflowsFolderList(
       accessToken,
       apiUrl,
       pageNumber,
@@ -206,10 +206,10 @@ export class WorkflowsOverviewApi {
         title: folder.title,
         permissions: folder.$metadata?.security.permissions || [],
         teams: folder.$metadata?.security.teams || [],
-        children: folder.children.map(parseFolder),
+        children: folder.children.map(parseFolder(folder)),
       };
     }
-    const foldersContent = folders.map(parseFolder);
+    const foldersContent = folders.map(parseFolder(folder));
 
     return {
       folders: foldersContent,
