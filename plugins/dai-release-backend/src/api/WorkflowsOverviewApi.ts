@@ -206,10 +206,10 @@ export class WorkflowsOverviewApi {
         title: folder.title,
         permissions: folder.$metadata?.security.permissions || [],
         teams: folder.$metadata?.security.teams || [],
-        children: folder.children.map(parseFolder(folder)),
+        children: folder.children.map(parseFolder(folders)),
       };
     }
-    const foldersContent = folders.map(parseFolder(folder));
+    const foldersContent = folders.map(parseFolder(folders));
 
     return {
       folders: foldersContent,
