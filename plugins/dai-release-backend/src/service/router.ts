@@ -250,6 +250,33 @@ export async function createRouter(
     res.status(200).json({ url: redirectUrl });
   });
 
+  router.get('/workflow/folders', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
+    const resultsPerPage = getEncodedQueryVal(
+      req.query.resultsPerPage?.toString(),
+    );
+    const folderList = await workflowsOverviewApi.getWorkflowsFolderListApi(
+      instanceName,
+      pageNumber,
+      resultsPerPage,
+    );
+    res.status(200).json(folderList);
+  });
+
+
   const middleware = MiddlewareFactory.create({ logger, config });
   router.use(middleware.error());
   return router;

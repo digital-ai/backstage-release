@@ -18,6 +18,7 @@ export const RELEASE_WORKFLOW_LIST_API_PATH = '/api/v1/workflows/search';
 export const RELEASE_WORKFLOW_LOGO_API_PATH = '/api/v1/templates/logo';
 export const RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH = '/api/v1/templates';
 export const RELEASE_WORKFLOW_TRIGGER_WORKFLOW_PATH = '/#/stepper';
+export const RELEASE_WORKFLOW_FOLDER_LIST_API_PATH = '/api/v1/folders/list';
 
 export const getCredentials = (config: ReleaseInstanceConfig) => {
   try {

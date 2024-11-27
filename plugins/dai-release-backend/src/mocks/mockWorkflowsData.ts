@@ -100,3 +100,47 @@ export const workflowsTriggerBackendResponse = {
 export const workflowsTriggerResponse = {
   id: 'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
 };
+
+export const workflowsFoldersResponse = [
+  {
+    id: "Applications/FolderDefaultReleaseContent",
+    type: "xlrelease.Folder",
+    $token: "32faeaaf-9c01-45bf-ac85-19a36b453a47",
+    title: "Digital.ai - Official",
+    children: [
+      {
+        id: "Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0",
+        type: "xlrelease.Folder",
+        $token: "e3d22eb8-9548-4883-97cb-8ecbb1beb118",
+        title: "Workflow Executions",
+        children: [],
+        $metadata: {
+          security: {
+            permissions: ["folder#view", "workflow#start_execution"],
+            teams: ["Workflow Admin"]
+          }
+        }
+      }
+    ],
+    $metadata: {
+      security: {
+        permissions: ["workflow#view_execution", "folder#view"],
+        teams: ["Viewer"]
+      }
+    }
+  }
+];
+
+export const workflowsFoldersBackendResponse = [
+  {
+    id: "Applications/FolderDefaultReleaseContent",
+    title: "Digital.ai - Official",
+    children: [
+      {
+        id: "Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0",
+        title: "Workflow Executions",
+        children: []
+      }
+    ]
+  }
+];
