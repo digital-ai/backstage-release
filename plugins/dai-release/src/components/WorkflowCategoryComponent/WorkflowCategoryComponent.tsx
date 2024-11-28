@@ -7,9 +7,9 @@ import {
 } from '@digital-ai/dot-components';
 import React, { useEffect, useState } from 'react';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
     ':root': {
       '--margin-dot': '10.5px',
