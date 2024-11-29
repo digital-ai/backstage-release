@@ -6,8 +6,8 @@ import {
   DotTypography,
 } from '@digital-ai/dot-components';
 import React, { useEffect, useState } from 'react';
-import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 import { Theme, makeStyles } from '@material-ui/core/styles';
+import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
