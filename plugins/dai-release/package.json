@@ -67,8 +67,6 @@
     "@mui/x-date-pickers": "^7.16.0",
     "@types/lodash": "^4.17.7",
     "dayjs": "^1.11.13",
-    "less": "^4.2.0",
-    "less-loader": "^12.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "react-use": "^17.5.1",
