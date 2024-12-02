@@ -30,6 +30,11 @@ const useStyles = makeStyles(() => ({
   catalogGrid: {
     marginTop: '24px',
   },
+  noWorkflow: {
+    display: 'flex !important',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -51,33 +56,48 @@ export const WorkflowCatalogComponent = ({
 
   const renderWorkflows = () => {
     return (
-      <CssGrid
-        columnGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
-        rowGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
-        row-gap="12px"
-        className={classes.catalogGrid}
-      >
-        {data.map((currentWorkflow: Workflow, index: number) => {
-          const props = calculateCellProps(index);
-          return (
-            <CssCell {...props} key={currentWorkflow.id}>
-              <WorkflowCard
-                onClick={() => handleOnRunClick(currentWorkflow)}
-                workflow={currentWorkflow}
-              />
-            </CssCell>
-          );
-        })}
-        {loading &&
-          [...Array(3)].map((_value, skeletonIndex) => {
-            const props = calculateCellProps(skeletonIndex);
+      <>
+        <CssGrid
+          columnGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
+          rowGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
+          row-gap="12px"
+          className={classes.catalogGrid}
+        >
+          {data.map((currentWorkflow: Workflow, index: number) => {
+            const props = calculateCellProps(index);
             return (
-              <CssCell {...props} key={skeletonIndex}>
-                <WorkflowCardSkeleton />
+              <CssCell {...props} key={currentWorkflow.id}>
+                <WorkflowCard
+                  onClick={() => handleOnRunClick(currentWorkflow)}
+                  workflow={currentWorkflow}
+                />
               </CssCell>
             );
           })}
-      </CssGrid>
+          {loading &&
+            [...Array(3)].map((_value, skeletonIndex) => {
+              const props = calculateCellProps(skeletonIndex);
+              return (
+                <CssCell {...props} key={skeletonIndex}>
+                  <WorkflowCardSkeleton />
+                </CssCell>
+              );
+            })}
+        </CssGrid>
+
+        {data.length === 0 && !loading && (
+          <CssGrid
+            columnGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
+            rowGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
+            row-gap="12px"
+            className={classes.noWorkflow}
+          >
+            <CssCell>
+              <DotTypography variant="body1">No workflows found</DotTypography>
+            </CssCell>
+          </CssGrid>
+        )}
+      </>
     );
   };
 

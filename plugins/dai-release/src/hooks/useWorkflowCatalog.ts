@@ -3,7 +3,6 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
-import { workflowCatalogsList } from '../mocks/workflowMocks';
 
 export function useWorkflowCatalog(): {
   loading: boolean;
@@ -55,7 +54,7 @@ export function useWorkflowCatalog(): {
           });
         }
 
-        const result = workflowCatalogsList;
+        const result = await api.getWorkflowCatalog(page, '', [], '', instance);
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
