@@ -40,6 +40,9 @@ jobs:
     - name: dai-release-common - Link
       working-directory: ./plugins/dai-release-common
       run: yarn link
+    - name: dai-release-backend - Use local unlink
+      working-directory: ./plugins/dai-release-backend
+      run: yarn unlink "@digital-ai/plugin-dai-release-common"
     - name: dai-release-backend - Use local link
       working-directory: ./plugins/dai-release-backend
       run: yarn link "@digital-ai/plugin-dai-release-common"
