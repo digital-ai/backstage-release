@@ -40,15 +40,12 @@ jobs:
     - name: dai-release-common - Link
       working-directory: ./plugins/dai-release-common
       run: yarn link
-    - name: dai-release-backend - Clear yarn cache
-      working-directory: ./plugins/dai-release-backend
-      run: yarn cache clean
-    - name: dai-release-backend - Install dependencies
-      working-directory: ./plugins/dai-release-backend
-      run: yarn install
     - name: dai-release-backend - Use local link
       working-directory: ./plugins/dai-release-backend
       run: yarn link "@digital-ai/plugin-dai-release-common"
+    - name: dai-release-backend - Install dependencies
+      working-directory: ./plugins/dai-release-backend
+      run: yarn install
     - name: dai-release-backend - Run tsc
       working-directory: ./plugins/dai-release-backend
       run: yarn tsc
