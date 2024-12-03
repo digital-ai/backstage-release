@@ -1,11 +1,12 @@
-import { HttpResponse, http } from 'msw';
 import {
+  FoldersListBackendResponse,
   folderListReleaseApiResponse,
   releaseInstanceConfigResponse,
   releasesCountReleaseApiResponse,
   releasesOverviewFallbackReleaseApiResponse,
-  releasesOverviewReleaseApiResponse,
+  releasesOverviewReleaseApiResponse
 } from './mockData';
+import { HttpResponse, http } from 'msw';
 import {
   templateFolderGitConfigResponse,
   templateGitCommitVersionResponse,
@@ -66,6 +67,10 @@ export const mockTestHandlers = [
   http.post('http://localhost/api/v1/workflow/redirect', () => {
     return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
   }),
+  http.get('http://localhost/api/v1/folders', () => {
+    return new HttpResponse(JSON.stringify(FoldersListBackendResponse));
+  })
+
 ];
 
 export const error404ResponseHandler = [
@@ -112,7 +117,6 @@ export const error404ResponseHandler = [
     });
   }),
   http.post('http://localhost/api/v1/workflows/search', () => {
-
     return new HttpResponse(JSON.stringify('[]'), {
       status: 404,
       statusText: 'Not found',
@@ -127,6 +131,12 @@ export const error404ResponseHandler = [
       });
     },
   ),
+  http.get('http://localhost/api/v1/folders', () => {
+    return new HttpResponse(JSON.stringify('[]'), {
+      status: 404,
+      statusText: 'Not found',
+    });
+  }),
 ];
 
 export const error403ResponseHandler = [
@@ -189,6 +199,12 @@ export const error403ResponseHandler = [
       });
     },
   ),
+  http.get('http://localhost/api/v1/folders', () => {
+    return new HttpResponse('You do not have release#view permission', {
+      status: 403,
+      statusText: 'forbidden',
+    });
+  }),
 ];
 
 export const error500ResponseHandler = [
@@ -252,6 +268,12 @@ export const error500ResponseHandler = [
       });
     },
   ),
+  http.get('http://localhost/api/v1/folders', () => {
+      return new HttpResponse(null, {
+        status: 500,
+        statusText: 'Unexpected error',
+      });
+  }),
 ];
 
 export const error401ResponseHandler = [
@@ -315,6 +337,12 @@ export const error401ResponseHandler = [
       });
     },
   ),
+  http.get('http://localhost/api/v1/folders', () => {
+    return new HttpResponse(null, {
+      status: 401,
+      statusText: 'Unauthorized',
+    });
+  }),
 ];
 
 export const mockTestHandlersfallBack = [

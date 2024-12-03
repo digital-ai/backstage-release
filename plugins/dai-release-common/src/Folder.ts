@@ -19,3 +19,9 @@ export type Folder = {
     };
   };
 };
+
+export type FolderBackendResponse = {
+  folders: Folder[];
+  totalPages: number;
+  totalElements: number;
+};

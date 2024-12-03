@@ -1,12 +1,13 @@
 import {
+  FoldersListBackendResponse,
+  config,
+  releaseInstanceConfigResponse,
+  releasesBackendApiResponse
+} from '../mocks/mockData';
+import {
   HttpAuthService,
   PermissionsService,
 } from '@backstage/backend-plugin-api';
-import {
-  config,
-  releaseInstanceConfigResponse,
-  releasesBackendApiResponse,
-} from '../mocks/mockData';
 import {
   error403ResponseHandler,
   error404ResponseHandler,
@@ -317,6 +318,33 @@ describe('router api tests with permissions ALLOW', () => {
       );
     });
   });
+
+  describe('GET /folders and emulate 500 Error', () => {
+    it('GET 500 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
+  describe('GET /folders', () => {
+    it('returns ok', async () => {
+        server.resetHandlers(...mockTestHandlers);
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default'
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      console.log(response.body)
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(FoldersListBackendResponse);
+    });
+  });
 });
 
 describe('router api tests - with permissions DENY', () => {
@@ -401,6 +429,22 @@ describe('router api tests - with permissions DENY', () => {
       );
     });
   });
+
+  describe('GET /folders', () => {
+    it('GET 403 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+
 });
 
 describe('router api tests - without permissions', () => {
@@ -476,6 +520,19 @@ describe('router api tests - without permissions', () => {
         .send(workflowsRedirectRequest);
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(workflowsTriggerBackendResponse);
+    });
+  });
+
+  describe('GET /folders without permissions', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(FoldersListBackendResponse);
     });
   });
 });

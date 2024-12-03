@@ -1,3 +1,4 @@
+import { FolderBackendResponse, Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import {
   RELEASE_COUNT_API_PATH,
   RELEASE_FOLDERS_LIST_API_PATH,
@@ -17,7 +18,6 @@ import {
   ReleaseOverview,
   TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import { Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
@@ -205,6 +205,27 @@ export class ReleaseOverviewApi {
       await parseErrorResponse(this.logger, response);
     }
     return await response.json();
+  }
+
+  async getFoldersListApi(
+    instanceName: string
+  ): Promise<FolderBackendResponse> {
+    this.logger?.debug(`Calling Workflows List Folders api, instance: ${instanceName}`);
+
+    const instanceConfig = this.config.getInstanceConfig(instanceName);
+    const accessToken = getCredentials(instanceConfig);
+    const apiUrl = getReleaseApiHost(instanceConfig);
+
+    const foldersList: Folder[] = await this.getFoldersList(
+          apiUrl,
+          accessToken
+        );
+
+    return {
+      folders: foldersList,
+      totalPages: 1,
+      totalElements: foldersList.length,
+    };
   }
 
   async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
