@@ -79,19 +79,19 @@ export type FolderOverview {
   title: string;
   children: FolderOverview[]; // Recursive structure for nested children
   $metadata?: Metadata; // Optional metadata property
-}
+};
 
 export type Metadata {
   security: Security;
-}
+};
 
 export type Security {
   permissions: string[];
   teams: string[];
-}
+};
 
 export type FoldersList {
   id: string;
   title: string;
   children: FoldersList[];
-}
+};

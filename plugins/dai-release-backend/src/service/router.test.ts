@@ -2,7 +2,7 @@ import {
   FoldersListBackendResponse,
   config,
   releaseInstanceConfigResponse,
-  releasesBackendApiResponse
+  releasesBackendApiResponse,
 } from '../mocks/mockData';
 import {
   HttpAuthService,
@@ -333,11 +333,11 @@ describe('router api tests with permissions ALLOW', () => {
 
   describe('GET /folders', () => {
     it('returns ok', async () => {
-        server.resetHandlers(...mockTestHandlers);
+      server.resetHandlers(...mockTestHandlers);
       const response = await request(app)
         .get('/folders')
         .query({
-          instanceName: 'default'
+          instanceName: 'default',
         })
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
@@ -443,7 +443,6 @@ describe('router api tests - with permissions DENY', () => {
       );
     });
   });
-
 });
 
 describe('router api tests - without permissions', () => {
