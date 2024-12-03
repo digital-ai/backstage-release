@@ -1,4 +1,8 @@
-import { FolderBackendResponse, Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
+import {
+  FolderBackendResponse,
+  Template,
+  TemplateList,
+} from '@digital-ai/plugin-dai-release-common';
 import {
   RELEASE_COUNT_API_PATH,
   RELEASE_FOLDERS_LIST_API_PATH,
@@ -208,18 +212,20 @@ export class ReleaseOverviewApi {
   }
 
   async getFoldersListApi(
-    instanceName: string
+    instanceName: string,
   ): Promise<FolderBackendResponse> {
-    this.logger?.debug(`Calling Workflows List Folders api, instance: ${instanceName}`);
+    this.logger?.debug(
+      `Calling Workflows List Folders api, instance: ${instanceName}`,
+    );
 
     const instanceConfig = this.config.getInstanceConfig(instanceName);
     const accessToken = getCredentials(instanceConfig);
     const apiUrl = getReleaseApiHost(instanceConfig);
 
     const foldersList: Folder[] = await this.getFoldersList(
-          apiUrl,
-          accessToken
-        );
+      apiUrl,
+      accessToken,
+    );
 
     return {
       folders: foldersList,

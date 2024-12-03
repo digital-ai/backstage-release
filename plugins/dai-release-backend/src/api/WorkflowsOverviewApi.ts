@@ -9,7 +9,7 @@ import {
 import {
   WorkflowContent,
   WorkflowsList,
-  WorkflowsOverview
+  WorkflowsOverview,
 } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';

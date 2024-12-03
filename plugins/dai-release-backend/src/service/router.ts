@@ -289,9 +289,7 @@ export async function createRouter(
       }
     }
     const instanceName = req.query.instanceName?.toString() || '';
-    const folderList = await releaseOverviewApi.getFoldersListApi(
-      instanceName
-    );
+    const folderList = await releaseOverviewApi.getFoldersListApi(instanceName);
     res.status(200).json(folderList);
   });
 
