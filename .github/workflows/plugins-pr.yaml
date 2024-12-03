@@ -38,7 +38,7 @@ jobs:
       working-directory: ./plugins/dai-release-common
       run: yarn test
     - name: dai-release-common - Link
-      working-directory: ./plugins/dai-release-common
+      working-directory: ./plugins/dai-release-common/dist
       run: yarn link
     - name: dai-release-backend - Use local link
       working-directory: ./plugins/dai-release-backend
