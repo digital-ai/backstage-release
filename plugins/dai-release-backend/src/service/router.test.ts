@@ -340,7 +340,6 @@ describe('router api tests with permissions ALLOW', () => {
           instanceName: 'default'
         })
         .set('authorization', 'Bearer someauthtoken');
-      console.log(response.body)
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(FoldersListBackendResponse);
     });
