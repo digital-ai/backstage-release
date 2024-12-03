@@ -275,7 +275,7 @@ export async function createRouter(
     res.status(200).json({ url: redirectUrl });
   });
 
-  router.get('/folders', async (req, res) => {
+  router.get('/release/folders', async (req, res) => {
     if (permissions && httpAuth) {
       const decision = await permissions.authorize(
         [{ permission: daiReleaseViewPermission }],

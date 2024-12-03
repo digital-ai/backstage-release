@@ -319,10 +319,10 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('GET /folders and emulate 500 Error', () => {
+  describe('GET /release/folders and emulate 500 Error', () => {
     it('GET 500 from Get Folders Data', async () => {
       const response = await request(app)
-        .get('/folders')
+        .get('/release/folders')
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
@@ -331,11 +331,11 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('GET /folders', () => {
+  describe('GET /release/folders', () => {
     it('returns ok', async () => {
       server.resetHandlers(...mockTestHandlers);
       const response = await request(app)
-        .get('/folders')
+        .get('/release/folders')
         .query({
           instanceName: 'default',
         })
@@ -429,10 +429,10 @@ describe('router api tests - with permissions DENY', () => {
     });
   });
 
-  describe('GET /folders', () => {
+  describe('GET /release/folders', () => {
     it('GET 403 from Get Folders Data', async () => {
       const response = await request(app)
-        .get('/folders')
+        .get('/release/folders')
         .query({
           instanceName: 'default',
         })
@@ -521,10 +521,10 @@ describe('router api tests - without permissions', () => {
     });
   });
 
-  describe('GET /folders without permissions', () => {
+  describe('GET /release/folders without permissions', () => {
     it('returns ok', async () => {
       const response = await request(app)
-        .get('/folders')
+        .get('/release/folders')
         .query({
           instanceName: 'default',
         })
