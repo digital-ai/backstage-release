@@ -40,6 +40,9 @@ jobs:
     - name: dai-release-common - Link
       working-directory: ./plugins/dai-release-common
       run: yarn link
+    - name: dai-release-backend - Clear yarn cache
+      working-directory: ./plugins/dai-release-backend
+      run: yarn cache clean
     - name: dai-release-backend - Install dependencies
       working-directory: ./plugins/dai-release-backend
       run: yarn install
