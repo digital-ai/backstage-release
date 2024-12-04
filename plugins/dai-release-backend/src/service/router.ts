@@ -10,12 +10,14 @@ import {
 } from '@digital-ai/plugin-dai-release-common';
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
+import { CategoriesApi } from '../api/CategoriesApi';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
 import Router from 'express-promise-router';
 import { TemplatesOverviewApi } from '../api/TemplatesOverviewApi';
+import { WorkflowsOverviewApi } from '../api/WorkflowsOverviewApi';
 import { createPermissionIntegrationRouter } from '@backstage/plugin-permission-node';
 import express from 'express';
 import { validateInstanceRes } from '../api/responseUtil';
@@ -37,6 +39,16 @@ export async function createRouter(
     logger,
   );
   const templatesOverviewApi = TemplatesOverviewApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+
+  const categoriesApi = CategoriesApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+
+  const workflowsOverviewApi = WorkflowsOverviewApi.fromConfig(
     ReleaseConfig.fromConfig(config),
     logger,
   );
@@ -186,6 +198,81 @@ export async function createRouter(
       folderId,
     );
     res.status(200).json(metaInformation);
+  });
+
+  router.get('/categories', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const metaInformation = await categoriesApi.getCategoriesApi(instanceName);
+    res.status(200).json(metaInformation);
+  });
+
+  router.post('/workflows', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const pageNumber = getEncodedQueryVal(req.query.pageNumber?.toString());
+    const resultsPerPage = getEncodedQueryVal(
+      req.query.resultsPerPage?.toString(),
+    );
+    const searchInput = req.query.searchInput?.toString() || '';
+    const categories: string[] = req.query.categories
+      ? req.query.categories.toString().split(',')
+      : [];
+    const author = req.query.author?.toString() || '';
+    const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(
+      instanceName,
+      pageNumber,
+      resultsPerPage,
+      searchInput,
+      categories,
+      author,
+    );
+    res.status(200).json(workflows);
+  });
+
+  router.post('/workflow/redirect', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const { templateId, releaseTitle } = req.body;
+    const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(
+      instanceName,
+      templateId,
+      releaseTitle,
+    );
+    res.status(200).json({ url: redirectUrl });
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });

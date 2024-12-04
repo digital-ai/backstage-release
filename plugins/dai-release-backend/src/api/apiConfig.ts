@@ -14,6 +14,12 @@ export const RELEASE_TEMPLATE_GIT_CONFIG_PATH = '/api/v1/config/byTypeAndTitle';
 export const RELEASE_TEMPLATE_GIT_COMMIT_VERSIONING_PATH =
   '/api/v1/folders/versioning';
 
+export const RELEASE_CATEGORIES = '/api/v1/categories';
+export const RELEASE_WORKFLOW_LIST_API_PATH = '/api/v1/workflows/search';
+export const RELEASE_WORKFLOW_LOGO_API_PATH = '/api/v1/templates/logo';
+export const RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH = '/api/v1/templates';
+export const RELEASE_WORKFLOW_TRIGGER_WORKFLOW_PATH = '/#/stepper';
+
 export const getCredentials = (config: ReleaseInstanceConfig) => {
   try {
     const accessToken = config.token;
