@@ -12,13 +12,12 @@ import {
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
+  TemplateList,
   WorkflowsList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
-import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
-import { workflowCatalogsList } from '../mocks/workflowMocks';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -34,7 +33,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   private async getToken() {
     const { token } = await this.identityApi.getCredentials();
-    return token;
+    return '6HqrCFFDme/3WcC0SFdpaunTu8g2WY+/' ?? token;
   }
 
   private isStatusChecked(statusTags: string[], tag: string) {
@@ -169,16 +168,17 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     categories: string[],
     author: string,
     instanceName: string,
+    options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList> {
     const queryString = new URLSearchParams();
     queryString.append('instanceName', instanceName.toString());
-    const urlSegment = `workflows?pageNumber=${page}&searchInput=${searchInput}&categories=${categories}&author=${author}`;
-    // will be removed in next PR by implementing the actual API call
-    global.console.log('urlSegment', urlSegment);
-    const response = new Response(JSON.stringify(workflowCatalogsList), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    return (await response.json()) as Promise<WorkflowsList>;
+    queryString.append('pageNumber', page.toString());
+    queryString.append('resultsPerPage', '10');
+    queryString.append('searchInput', searchInput.toString());
+    queryString.append('categories', categories.join(','));
+    queryString.append('author', author.toString());
+
+    const urlSegment = `workflows?${queryString}`;
+    return await this.get<WorkflowsList>(urlSegment, options);
   }
 }

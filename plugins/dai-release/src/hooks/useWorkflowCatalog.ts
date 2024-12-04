@@ -54,7 +54,14 @@ export function useWorkflowCatalog(): {
           });
         }
 
-        const result = await api.getWorkflowCatalog(page, '', [], '', instance);
+        const result = await api.getWorkflowCatalog(
+          page,
+          '',
+          [],
+          '',
+          instance,
+          { signal: abortController.signal },
+        );
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {

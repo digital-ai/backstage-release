@@ -1,8 +1,8 @@
 import { CssCell, CssGrid, DotTypography } from '@digital-ai/dot-components';
+import React, { useRef } from 'react';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
-import React from 'react';
 import { Workflow } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
@@ -53,6 +53,15 @@ export const WorkflowCatalogComponent = ({
     // need to add the logic to run the workflow
     global.console.log(workflowFromCategory, loadMoreData);
   };
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        loadMoreData(); // Load the next page of data
+      }
+    }
+  };
 
   const renderWorkflows = () => {
     return (
@@ -102,7 +111,11 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
-    <div className={classes.workflowDrawerHeaderSearch}>
+    <div
+      className={classes.workflowDrawerHeaderSearch}
+      ref={containerRef}
+      onScroll={handleScroll}
+    >
       <div className="search-row">
         <DotTypography className={classes.searchHeader} variant="h4">
           Search Workflows

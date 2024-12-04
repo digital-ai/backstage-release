@@ -30,6 +30,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-start !important',
     padding: '0px 16px 0px 16px',
   },
+  workflowCatalogContentCell: {
+    justifyContent: 'flex-start !important',
+  },
 }));
 
 export type WorkFlowSearch = {
@@ -120,7 +123,7 @@ export const WorkflowComponent = () => {
             </CssCell>
             <CssCell
               center={false}
-              className="tab-content-cell"
+              className={classes.workflowCatalogContentCell}
               lg={{ start: 5, span: 10 }}
               md={{ start: 7, span: 10 }}
               sm={{ start: 1, span: 12 }}
