@@ -18,7 +18,6 @@ import { DaiReleaseApi } from './DaiReleaseApi';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
-import { workflowCatalogsList } from '../mocks/workflowMocks';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -156,6 +155,48 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return (await response.json()) as Promise<T>;
   }
 
+  private async post<T>(
+    path: string,
+    body: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<T> {
+    const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
+    const url = new URL(path, baseUrl);
+    const idToken = await this.getToken();
+    const bodyJson = body && body.length > 0 ? JSON.stringify(body) : JSON.stringify({});
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: bodyJson,
+      signal: options?.signal,
+    });
+
+    if (!response.ok) {
+      const data = await parseErrorResponseBody(response);
+      if (response.status === 401) {
+        throw new AuthenticationError(data.error.message);
+      } else if (response.status === 403) {
+        throw new NotAllowedError(data.error.message);
+      } else if (response.status === 404) {
+        throw new NotFoundError(data.error.message);
+      } else if (response.status === 500) {
+        throw new ServiceUnavailableError(`Release Service Unavailable`);
+      } else if (response.status === 400) {
+        throw new InputError(data.error.message);
+      }
+      throw new Error(
+        `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse as Promise<T>;
+  }
+
   async getReleaseCategories(instanceName: string): Promise<ReleaseCategories> {
     const queryString = new URLSearchParams();
     queryString.append('instanceName', instanceName.toString());
@@ -171,14 +212,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     instanceName: string,
   ): Promise<WorkflowsList> {
     const queryString = new URLSearchParams();
-    queryString.append('instanceName', instanceName.toString());
-    const urlSegment = `workflows?pageNumber=${page}&searchInput=${searchInput}&categories=${categories}&author=${author}`;
-    // will be removed in next PR by implementing the actual API call
-    global.console.log('urlSegment', urlSegment);
-    const response = new Response(JSON.stringify(workflowCatalogsList), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    return (await response.json()) as Promise<WorkflowsList>;
+    queryString.append("instanceName", instanceName.toString());
+    queryString.append("pageNumber", page.toString());
+    queryString.append("resultsPerPage", '20');
+    const urlSegment = `workflows?${queryString}`;
+    return await this.post(urlSegment, "");
   }
 }
