@@ -2,7 +2,7 @@ import {
   FoldersListBackendResponse,
   config,
   releaseInstanceConfigResponse,
-  releasesBackendApiResponse,
+  releasesBackendApiResponse
 } from '../mocks/mockData';
 import {
   HttpAuthService,
@@ -319,10 +319,10 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('GET /release/folders and emulate 500 Error', () => {
+  describe('GET /folders and emulate 500 Error', () => {
     it('GET 500 from Get Folders Data', async () => {
       const response = await request(app)
-        .get('/release/folders')
+        .get('/folders')
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
@@ -331,13 +331,13 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('GET /release/folders', () => {
+  describe('GET /folders', () => {
     it('returns ok', async () => {
-      server.resetHandlers(...mockTestHandlers);
+        server.resetHandlers(...mockTestHandlers);
       const response = await request(app)
-        .get('/release/folders')
+        .get('/folders')
         .query({
-          instanceName: 'default',
+          instanceName: 'default'
         })
         .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(200);
@@ -429,10 +429,10 @@ describe('router api tests - with permissions DENY', () => {
     });
   });
 
-  describe('GET /release/folders', () => {
+  describe('GET /folders', () => {
     it('GET 403 from Get Folders Data', async () => {
       const response = await request(app)
-        .get('/release/folders')
+        .get('/folders')
         .query({
           instanceName: 'default',
         })
@@ -443,6 +443,7 @@ describe('router api tests - with permissions DENY', () => {
       );
     });
   });
+
 });
 
 describe('router api tests - without permissions', () => {
@@ -521,10 +522,10 @@ describe('router api tests - without permissions', () => {
     });
   });
 
-  describe('GET /release/folders without permissions', () => {
+  describe('GET /folders without permissions', () => {
     it('returns ok', async () => {
       const response = await request(app)
-        .get('/release/folders')
+        .get('/folders')
         .query({
           instanceName: 'default',
         })
