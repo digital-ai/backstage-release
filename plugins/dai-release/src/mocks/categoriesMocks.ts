@@ -1,4 +1,4 @@
-import { ReleaseCategories } from '@digital-ai/plugin-dai-release-common/dist-types/src';
+import { ReleaseCategories } from '@digital-ai/plugin-dai-release-common';
 
 export const mockReleaseCategories: ReleaseCategories = {
   activeCategory: [

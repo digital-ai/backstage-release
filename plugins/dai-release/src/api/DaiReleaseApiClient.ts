@@ -12,11 +12,13 @@ import {
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
+  WorkflowsList,
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
 import dayjs from 'dayjs';
+import { workflowCatalogsList } from '../mocks/workflowMocks';
 
 export class DaiReleaseApiClient implements DaiReleaseApi {
   private readonly discoveryApi: DiscoveryApi;
@@ -159,5 +161,24 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('instanceName', instanceName.toString());
     const urlSegment = `categories?${queryString}`;
     return await this.get<ReleaseCategories>(urlSegment);
+  }
+
+  async getWorkflowCatalog(
+    page: number,
+    searchInput: string,
+    categories: string[],
+    author: string,
+    instanceName: string,
+  ): Promise<WorkflowsList> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `workflows?pageNumber=${page}&searchInput=${searchInput}&categories=${categories}&author=${author}`;
+    // will be removed in next PR by implementing the actual API call
+    global.console.log('urlSegment', urlSegment);
+    const response = new Response(JSON.stringify(workflowCatalogsList), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return (await response.json()) as Promise<WorkflowsList>;
   }
 }

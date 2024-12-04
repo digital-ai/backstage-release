@@ -1,24 +1,15 @@
 import {
   CheckboxProps,
-  CssCell,
-  CssGrid,
   DotCheckboxGroup,
   DotInputText,
   DotSkeleton,
-  DotThemeProvider,
   DotTypography,
 } from '@digital-ai/dot-components';
 import React, { useEffect, useState } from 'react';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
-  logoStyle: {
-    width: '300px',
-  },
-  layoutSec: {
-    paddingTop: '0',
-  },
+const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
     ':root': {
       '--margin-dot': '10.5px',
@@ -32,31 +23,20 @@ const useStyles = makeStyles(theme => ({
   },
   workflowCatalog: {
     height: '100%',
-    maxWidth: '165px',
     width: '100%',
-    '& .workflow-drawer-content-left-cell': {
-      height: '81vh',
-      width: '16vw',
-      minHeight: 0,
-      [theme.breakpoints.down(719)]: {
-        display: 'none',
-      },
 
-      '& .workflow-drawer-content-left': {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        borderRight: `1px solid #e3e5e8;`,
-        height: '100%',
-        padding: theme.spacing(2, 3, 3, 0),
-        '& .categories-filter': {
-          margin: theme.spacing(0, 0, 2, 0),
-          overflowY: 'auto',
-        },
-        '& button': {
-          margin: theme.spacing(0),
-          width: '100%',
-        },
+    '& .workflow-drawer-content-left': {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%',
+      '& .categories-filter': {
+        margin: theme.spacing(0, 0, 2, 0),
+        overflowY: 'auto',
+      },
+      '& button': {
+        margin: theme.spacing(0),
+        width: '100%',
       },
     },
   },
@@ -171,67 +151,43 @@ export function WorkflowCategoryComponent({
       .filter((value): value is string => value !== undefined);
   }
   return (
-    <DotThemeProvider>
-      <CssGrid className={classes.workflowCatalog}>
-        <CssCell
-          center={false}
-          className="workflow-drawer-content-left-cell"
-          lg={{ start: 1, span: 3 }}
-          md={{ start: 1, span: 3 }}
-          sm={{ start: 1, span: 3 }}
-          xl={{ start: 1, span: 3 }}
-        >
-          <div className="workflow-drawer-content-left">
-            <div>
-              <div>
-                {releaseCategories.length > 0 && (
-                  <DotTypography
-                    data-testid="category-filter-title"
-                    variant="subtitle2"
-                  >
-                    Categories
-                  </DotTypography>
+    <div className={classes.workflowCatalog}>
+      <div className="workflow-drawer-content-left">
+        <div>
+          {releaseCategories.length > 0 && (
+            <DotTypography
+              data-testid="category-filter-title"
+              variant="subtitle2"
+            >
+              Categories
+            </DotTypography>
+          )}
+          {isLoadingCategories ? (
+            <WorkflowCategoriesSkeleton />
+          ) : (
+            releaseCategories.length > 0 && (
+              <DotCheckboxGroup
+                className="categories-filter"
+                defaultValues={checkboxOptions.filter(
+                  checkboxOption => checkboxOption.checked,
                 )}
-                {isLoadingCategories ? (
-                  <WorkflowCategoriesSkeleton />
-                ) : (
-                  releaseCategories.length > 0 && (
-                    <DotCheckboxGroup
-                      className="categories-filter"
-                      defaultValues={checkboxOptions.filter(
-                        checkboxOption => checkboxOption.checked,
-                      )}
-                      onChange={(_event, options) =>
-                        onCategoryFilterChange(options)
-                      }
-                      options={checkboxOptions}
-                      showSelectAll
-                    />
-                  )
-                )}
-                <DotInputText
-                  id="authored-by"
-                  label="Authored By"
-                  name="authored-by"
-                  onChange={e => handleAuthorChange(e.target.value)}
-                  persistentLabel
-                  placeholder="Start typing to filter Author"
-                  value={workflowSearch.author}
-                />
-              </div>
-            </div>
-          </div>
-        </CssCell>
-        <CssCell
-          center={false}
-          className="tab-content-cell"
-          lg={{ start: 4, span: 9 }}
-          md={{ start: 4, span: 9 }}
-          sm={{ start: 1, span: 12 }}
-          xl={{ start: 4, span: 9 }}
-          xs={{ start: 1, span: 12 }}
-        />
-      </CssGrid>
-    </DotThemeProvider>
+                onChange={(_event, options) => onCategoryFilterChange(options)}
+                options={checkboxOptions}
+                showSelectAll
+              />
+            )
+          )}
+          <DotInputText
+            id="authored-by"
+            label="Authored By"
+            name="authored-by"
+            onChange={e => handleAuthorChange(e.target.value)}
+            persistentLabel
+            placeholder="Start typing to filter Author"
+            value={workflowSearch.author}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
