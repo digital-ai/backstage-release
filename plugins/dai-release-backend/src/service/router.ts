@@ -11,6 +11,7 @@ import {
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { CategoriesApi } from '../api/CategoriesApi';
+import { FoldersApi } from '../api/FoldersApi';
 import { Config } from '@backstage/config';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
@@ -52,6 +53,12 @@ export async function createRouter(
     ReleaseConfig.fromConfig(config),
     logger,
   );
+
+  const foldersApi = FoldersApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+
   if (config.subscribe) {
     //  check for live yaml config change
     config.subscribe(() => {
@@ -289,7 +296,7 @@ export async function createRouter(
       }
     }
     const instanceName = req.query.instanceName?.toString() || '';
-    const folderList = await releaseOverviewApi.getFoldersListApi(instanceName);
+    const folderList = await foldersApi.getFoldersListApi(instanceName);
     res.status(200).json(folderList);
   });
 

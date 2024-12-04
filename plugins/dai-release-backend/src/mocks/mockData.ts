@@ -283,7 +283,7 @@ export const FoldersListBackendResponse: FolderBackendResponse = {
       },
     },
   ],
-  totalPages: 1,
+  totalPages: 0,
   totalElements: 3,
 };
 

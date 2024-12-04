@@ -1,11 +1,9 @@
 import {
-  FolderBackendResponse,
   Template,
   TemplateList,
 } from '@digital-ai/plugin-dai-release-common';
 import {
   RELEASE_COUNT_API_PATH,
-  RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
   RELEASE_OVERVIEW_EXISTING_API_PATH,
   RELEASE_TEMPLATE_LIST_API_PATH,
@@ -28,14 +26,17 @@ import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
+import { FoldersApi } from './FoldersApi';
 
 export class ReleaseOverviewApi {
   private readonly logger: RootLoggerService;
   private readonly config: ReleaseConfig;
+  private readonly foldersApi: FoldersApi;
 
   private constructor(logger: RootLoggerService, config: ReleaseConfig) {
     this.logger = logger;
     this.config = config;
+    this.foldersApi = FoldersApi.fromConfig(config, logger);
   }
 
   static fromConfig(config: ReleaseConfig, logger: RootLoggerService) {
@@ -211,49 +212,11 @@ export class ReleaseOverviewApi {
     return await response.json();
   }
 
-  async getFoldersListApi(
-    instanceName: string,
-  ): Promise<FolderBackendResponse> {
-    this.logger?.debug(
-      `Calling Workflows List Folders api, instance: ${instanceName}`,
-    );
-
-    const instanceConfig = this.config.getInstanceConfig(instanceName);
-    const accessToken = getCredentials(instanceConfig);
-    const apiUrl = getReleaseApiHost(instanceConfig);
-
-    const foldersList: Folder[] = await this.getFoldersList(
-      apiUrl,
-      accessToken,
-    );
-
-    return {
-      folders: foldersList,
-      totalPages: 1,
-      totalElements: foldersList.length,
-    };
-  }
-
-  async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
-    const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
-      method: 'GET',
-      headers: {
-        'x-release-personal-token': `${accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
-    return await response.json();
-  }
-
   async getFolderIdAndTitleMap(
     apiUrl: string,
     authCredentials: string,
   ): Promise<Map<string, string>> {
-    const foldersList: Folder[] = await this.getFoldersList(
+    const foldersList: Folder[] = await this.foldersApi.getFoldersList(
       apiUrl,
       authCredentials,
     );

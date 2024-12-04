@@ -1,5 +1,4 @@
 import {
-  FolderBackendResponse,
   ReleaseList,
   TemplateList,
 } from '@digital-ai/plugin-dai-release-common';
@@ -137,18 +136,6 @@ describe('Backend API tests for Releases', () => {
     );
   });
 
-  it('Should get folders from Release API', async () => {
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
-    );
-
-    const folderList: FolderBackendResponse =
-      await releaseOverviewApi.getFoldersListApi('default');
-    expect(folderList.totalPages).toEqual(1);
-    expect(folderList.totalElements).toEqual(3);
-  });
-
   it('Get 401 response from releases from Release API', async () => {
     server.resetHandlers(...error401ResponseHandler);
 
@@ -191,21 +178,6 @@ describe('Backend API tests for Releases', () => {
     await expect(
       async () =>
         await releaseOverviewApi.getTemplates('', [], '0', '100', 'default'),
-    ).rejects.toThrow(
-      'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
-    );
-  });
-
-  it('Get 401 response from get folders from Release API', async () => {
-    server.resetHandlers(...error401ResponseHandler);
-
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
-    );
-
-    await expect(
-      async () => await releaseOverviewApi.getFoldersListApi('default'),
     ).rejects.toThrow(
       'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
     );
@@ -258,21 +230,6 @@ describe('Backend API tests for Releases', () => {
     );
   });
 
-  it('Get 403 response from get folders from Release API', async () => {
-    server.resetHandlers(...error403ResponseHandler);
-
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
-    );
-
-    await expect(
-      async () => await releaseOverviewApi.getFoldersListApi('default'),
-    ).rejects.toThrow(
-      'Permission denied or the requested functionality is not supported',
-    );
-  });
-
   it('Get 404 response from getReleases from Release API', async () => {
     server.resetHandlers(...error404ResponseHandler);
 
@@ -311,19 +268,6 @@ describe('Backend API tests for Releases', () => {
     await expect(
       async () =>
         await releaseOverviewApi.getTemplates('', [], '0', '100', 'default'),
-    ).rejects.toThrow('Release service request not found');
-  });
-
-  it('Get 404 response from get folders from Release API', async () => {
-    server.resetHandlers(...error404ResponseHandler);
-
-    const releaseOverviewApi = ReleaseOverviewApi.fromConfig(
-      ReleaseConfig.fromConfig(config),
-      mockServices.logger.mock(),
-    );
-
-    await expect(
-      async () => await releaseOverviewApi.getFoldersListApi('default'),
     ).rejects.toThrow('Release service request not found');
   });
 
