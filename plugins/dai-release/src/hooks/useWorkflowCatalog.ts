@@ -32,7 +32,6 @@ export function useWorkflowCatalog(): {
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
-
   const { error } = useAsyncRetryWithSelectiveDeps(
     // eslint-disable-next-line consistent-return
     async () => {
@@ -55,15 +54,15 @@ export function useWorkflowCatalog(): {
           });
         }
 
-        const result = { items: { workflow: [] } };
+        const result = await api.getWorkflowCatalog(page, '', [], '', instance);
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
-          setLoading(false);
-          if (result.items?.workflow?.length < rowsPerPage) {
+          // setLoading(false);
+          if (result?.workflows?.length < rowsPerPage) {
             setHasMore(false);
           }
-          setData((prevData: any) => [...prevData, ...result.items?.workflow]);
+          setData((prevData: any) => [...prevData, ...result?.workflows]);
           return result;
         }
       } catch (err) {

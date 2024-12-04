@@ -65,7 +65,7 @@ export type Workflow = {
   git: GitInfo;
 };
 
-// Backend API Response - /workflows
+// Backend API Response - workflow/redirect
 export type WorkflowsList = {
   workflows: Workflow[];
   totalPages: number;
