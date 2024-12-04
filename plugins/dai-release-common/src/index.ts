@@ -13,4 +13,4 @@ export * from './permissions';
 export * from './ReleaseInstanceConfig';
 export * from './Template/TemplateList';
 export * from './Categories/CategoriesList';
-export * from './Workflows/WorkflowList';
+export * from './Workflow/WorkflowList';
