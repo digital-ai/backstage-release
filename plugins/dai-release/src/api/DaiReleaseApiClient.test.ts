@@ -317,7 +317,7 @@ describe('ReleaseApiClient', () => {
 
     // these cases will be verified after api implementation
 
-    // it('should return error', async () => {
+    // testing('should return error', async () => {
     //   worker.use(
     //     rest.get(
     //       'https://example.com/api/dai-release/workflows',
@@ -339,7 +339,7 @@ describe('ReleaseApiClient', () => {
     //   }
     // });
     //
-    // it('should return AuthenticationError', async () => {
+    // testing('should return AuthenticationError', async () => {
     //   worker.use(
     //     rest.get(
     //       'https://example.com/api/dai-release/workflows',
@@ -357,7 +357,7 @@ describe('ReleaseApiClient', () => {
     //   }
     // });
     //
-    // it('should return NotAllowedError', async () => {
+    // testing('should return NotAllowedError', async () => {
     //   worker.use(
     //     rest.get(
     //       'https://example.com/api/dai-release/workflows',
