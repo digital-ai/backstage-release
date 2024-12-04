@@ -11,8 +11,8 @@ import {
 import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { CategoriesApi } from '../api/CategoriesApi';
-import { FoldersApi } from '../api/FoldersApi';
 import { Config } from '@backstage/config';
+import { FoldersApi } from '../api/FoldersApi';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';

@@ -1,12 +1,9 @@
-import {
-  FolderBackendResponse
-} from '@digital-ai/plugin-dai-release-common';
+import { Folder, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import {
   RELEASE_FOLDERS_LIST_API_PATH,
   getCredentials,
   getReleaseApiHost
 } from './apiConfig';
-import { Folder } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';

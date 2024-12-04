@@ -1,10 +1,4 @@
-import {
-  FolderBackendResponse
-} from '@digital-ai/plugin-dai-release-common';
 import { SetupServerApi, setupServer } from 'msw/node';
-import {
-  config
-} from '../mocks/mockData';
 import {
   error401ResponseHandler,
   error403ResponseHandler,
@@ -12,8 +6,10 @@ import {
   error500ResponseHandler,
   mockTestHandlers
 } from '../mocks/mock.test.handlers';
-import { ReleaseConfig } from '../service/releaseInstanceConfig';
+import { FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { FoldersApi } from './FoldersApi';
+import { ReleaseConfig } from '../service/releaseInstanceConfig';
+import { config } from '../mocks/mockData';
 import { mockServices } from '@backstage/backend-test-utils';
 
 function configureMockServer(): SetupServerApi {
