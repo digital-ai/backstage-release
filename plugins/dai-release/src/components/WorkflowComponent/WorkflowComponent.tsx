@@ -87,59 +87,62 @@ export const WorkflowComponent = () => {
         />
         <Content className={classes.layoutSec}>
           <Grid
-            container
-            spacing={1}
-            direction="column"
-            className={classes.workflowHeaderSec}
+              container
+              spacing={1}
+              direction="column"
+              className={classes.workflowHeaderSec}
           >
             <Grid item>
               <SearchHeaderComponent
-                displayFilterIcon={false}
-                titleName="Workflow catalog"
-                instance={instance}
-                instanceList={instanceList}
-                error={error}
-                onSetInstance={setInstance}
+                  displayFilterIcon={false}
+                  titleName="Workflow catalog"
+                  instance={instance}
+                  instanceList={instanceList}
+                  error={error}
+                  onSetInstance={setInstance}
               />
             </Grid>
           </Grid>
+          <div className={classes.horizontalBar}/>
+          <div style={{paddingTop: '12px'}}>
           <CssGrid className="workflow-catalog">
             <CssCell
-              center={false}
-              className={classes.workflowDrawerContentLeftCells}
-              lg={{ start: 1, span: 4 }}
-              md={{ start: 1, span: 6 }}
-              sm={{ start: 1, span: 12 }}
-              xl={{ start: 1, span: 4 }}
-              xxl={{ start: 1, span: 3 }}
+                center={false}
+                className={classes.workflowDrawerContentLeftCells}
+                lg={{start: 1, span: 4}}
+                md={{start: 1, span: 6}}
+                sm={{start: 1, span: 12}}
+                xl={{start: 1, span: 4}}
+                xxl={{start: 1, span: 3}}
             >
               <div className="workflow-drawer-content-left">
                 <WorkflowCategoryComponent
-                  releaseCategories={releaseCategories}
-                  isLoadingCategories={loadingReleaseCategories}
-                  instance={instance}
+                    releaseCategories={releaseCategories}
+                    isLoadingCategories={loadingReleaseCategories}
+                    instance={instance}
                 />
               </div>
             </CssCell>
             <CssCell
-              center={false}
-              className={classes.workflowCatalogContentCell}
-              lg={{ start: 5, span: 10 }}
-              md={{ start: 7, span: 10 }}
-              sm={{ start: 1, span: 12 }}
-              xl={{ start: 5, span: 8 }}
-              xs={{ start: 1, span: 12 }}
-              xxl={{ start: 4, span: 9 }}
+                center={false}
+                className={classes.workflowCatalogContentCell}
+                lg={{start: 5, span: 10}}
+                md={{start: 7, span: 10}}
+                sm={{start: 1, span: 12}}
+                xl={{start: 5, span: 8}}
+                xs={{start: 1, span: 12}}
+                xxl={{start: 4, span: 9}}
             >
               <div className="workflow-cards">
                 <WorkflowCatalogComponent
-                  loading={loading}
-                  loadMoreData={loadMoreData}
-                  data={data}
+                    loading={loading}
+                    loadMoreData={loadMoreData}
+                    data={data}
                 />
               </div>
             </CssCell>
           </CssGrid>
+          </div>
         </Content>
       </Page>
     </DotThemeProvider>

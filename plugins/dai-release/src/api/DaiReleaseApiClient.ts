@@ -164,6 +164,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   async getWorkflowCatalog(
     page: number,
+    resultsPerPage : number,
     searchInput: string,
     categories: string[],
     author: string,
@@ -173,7 +174,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     const queryString = new URLSearchParams();
     queryString.append('instanceName', instanceName.toString());
     queryString.append('pageNumber', page.toString());
-    queryString.append('resultsPerPage', '10');
+    queryString.append('resultsPerPage', resultsPerPage.toString());
     queryString.append('searchInput', searchInput.toString());
     queryString.append('categories', categories.join(','));
     queryString.append('author', author.toString());

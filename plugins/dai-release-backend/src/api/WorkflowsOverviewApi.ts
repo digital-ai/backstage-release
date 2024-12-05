@@ -1,4 +1,10 @@
 import {
+  Logo,
+  WorkflowContent,
+  WorkflowsList,
+  WorkflowsOverview,
+} from '@digital-ai/plugin-dai-release-common';
+import {
   RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH,
   RELEASE_WORKFLOW_LIST_API_PATH,
   RELEASE_WORKFLOW_LOGO_API_PATH,
@@ -6,11 +12,6 @@ import {
   getCredentials,
   getReleaseApiHost,
 } from './apiConfig';
-import {
-  WorkflowContent,
-  WorkflowsList,
-  WorkflowsOverview,
-} from '@digital-ai/plugin-dai-release-common';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
 import { parseErrorResponse } from './responseUtil';
@@ -65,8 +66,8 @@ export class WorkflowsOverviewApi {
 
   async getWorkflowsOverviewApi(
     instanceName: string,
-    pageNumber: string = '0',
-    resultsPerPage: string = '10',
+    pageNumber: string ,
+    resultsPerPage: string ,
     searchInput: string,
     categories: string[],
     author: string,
@@ -91,15 +92,17 @@ export class WorkflowsOverviewApi {
       return `${repoRemoteLink}/commit/${commitId}`;
     }
 
-    function getImageLink(logoId: string): string {
-      return `${apiUrl}${RELEASE_WORKFLOW_LOGO_API_PATH}/${logoId}`;
+    function getImageLink(logo: Logo): string {
+      if(logo?.id)
+      return `${apiUrl}${RELEASE_WORKFLOW_LOGO_API_PATH}/${logo?.id}`;
+   return  '';
     }
 
     const workflowDetails = workflows.content.map(d => ({
       title: d.title,
       id: d.id,
       description: d.description,
-      logoLink: getImageLink(d.logo.id),
+      logoLink:  getImageLink(d.logo),
       author: d.author,
       folderTitle: d.folderTitle,
       categories: Array.isArray(d.categories) ? d.categories : [d.categories],
@@ -122,8 +125,8 @@ export class WorkflowsOverviewApi {
   private async getWorkflowsList(
     accessToken: string,
     apiUrl: string,
-    pageNumber: string = '0',
-    resultsPerPage: string = '10',
+    pageNumber: string,
+    resultsPerPage: string,
     searchInput: string,
     categories: string[],
     author: string,

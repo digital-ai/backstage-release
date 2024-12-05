@@ -307,6 +307,7 @@ describe('ReleaseApiClient', () => {
 
       const response = await client.getWorkflowCatalog(
         0,
+        10,
         '',
         [],
         '',

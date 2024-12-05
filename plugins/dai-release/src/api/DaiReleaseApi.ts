@@ -48,6 +48,7 @@ export interface DaiReleaseApi {
 
   getWorkflowCatalog(
     page: number,
+    resultsPerPage: number,
     searchInput: string,
     categories: string[],
     author: string,

@@ -19,7 +19,7 @@ export function useWorkflowCatalog(): {
   setData: (data: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined
@@ -56,6 +56,7 @@ export function useWorkflowCatalog(): {
 
         const result = await api.getWorkflowCatalog(
           page,
+          rowsPerPage,
           '',
           [],
           '',
