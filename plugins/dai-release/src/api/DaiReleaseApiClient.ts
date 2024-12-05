@@ -206,16 +206,19 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   async getWorkflowCatalog(
     page: number,
+    rowsPerPage: number,
     searchInput: string,
     categories: string[],
     author: string,
     instanceName: string,
+    options?: { signal?: AbortSignal }
   ): Promise<WorkflowsList> {
     const queryString = new URLSearchParams();
     queryString.append("instanceName", instanceName.toString());
     queryString.append("pageNumber", page.toString());
-    queryString.append("resultsPerPage", '20');
+    queryString.append("resultsPerPage", rowsPerPage.toString());
+    queryString.append("searchInput", rowsPerPage.toString());
     const urlSegment = `workflows?${queryString}`;
-    return await this.post(urlSegment, "");
+    return await this.post(urlSegment, "", options);
   }
 }
