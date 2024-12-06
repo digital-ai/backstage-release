@@ -1,7 +1,7 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {CategoriesContentActiveList} from '@digital-ai/plugin-dai-release-common';
 import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
@@ -56,6 +56,8 @@ export const WorkflowComponent = () => {
     instanceList,
     loading,
     hasMore,
+    workflowSearch,
+    setWorkflowSearch,
     setLoading,
     setHasMore,
     setData,
@@ -148,6 +150,9 @@ export const WorkflowComponent = () => {
                     releaseCategories={releaseCategories}
                     isLoadingCategories={loadingReleaseCategories}
                     instance={instance}
+                    onSetWorkflowSearch={setWorkflowSearch}
+                    workflowSearch={workflowSearch}
+                    resetState={resetState}
                 />
               </div>
             </CssCell>
