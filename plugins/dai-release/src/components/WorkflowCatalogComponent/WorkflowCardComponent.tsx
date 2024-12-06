@@ -63,6 +63,10 @@ const useStyles = makeStyles(() => ({
       whiteSpace: 'normal',
       overflowWrap: 'break-word',
     },
+    '& .dot-card-title-font': {
+      fontSize: '17px',
+
+    },
   },
 }));
 export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
@@ -107,9 +111,11 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
         <DotCardHeader
           avatar={cardLogo}
           subheader={author ? `by ${author}` : undefined}
-          subheaderSize="large"
+          subheaderSize="small"
           title={title}
-          titleSize="medium"
+          titleSize="small"
+          titleMaxLines={10}
+          className="dot-card-title-font"
         />
         <DotCardContent>
           <div className="dot-card-bottom-spacing">

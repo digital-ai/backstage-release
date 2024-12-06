@@ -3,6 +3,7 @@ import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
+import {useDebouncedValue} from "../utils/helpers";
 
 export function useWorkflowCatalog(): {
   loading: boolean;
@@ -12,6 +13,8 @@ export function useWorkflowCatalog(): {
   hasMore: Boolean;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
+  workflowSearch: { categories: string[]; author: string };
+  setWorkflowSearch: (workflowSearch: { categories: string[]; author: string }) => void;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setInstance: (instance: string) => void;
@@ -19,7 +22,7 @@ export function useWorkflowCatalog(): {
   setData: (data: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<
     ReleaseInstanceConfig[] | undefined
@@ -28,7 +31,20 @@ export function useWorkflowCatalog(): {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const [workflowSearch, setWorkflowSearch] = useState<{
+    categories: string[];
+    author: string;
+  }>({
+    categories: [],
+    author: '',
+  });
+
   const api = useApi(daiReleaseApiRef);
+  // Use the debounced value of searchTitle, it will update the state after 1 second
+  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
+
+  // Use the debounced value of searchTag, it will update the state after 1 second
+  const debouncedSearchCategories = useDebouncedValue(workflowSearch.categories, 500);
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -54,7 +70,15 @@ export function useWorkflowCatalog(): {
           });
         }
 
-        const result = await api.getWorkflowCatalog(page, '', [], '', instance);
+        const result = await api.getWorkflowCatalog(
+          page,
+          rowsPerPage,
+          '',
+          debouncedSearchCategories,
+          debouncedSearchAuthor,
+          instance,
+          { signal: abortController.signal },
+        );
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
@@ -78,7 +102,7 @@ export function useWorkflowCatalog(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, instance],
+    [api, rowsPerPage, instance, debouncedSearchCategories, debouncedSearchAuthor],
   );
   return {
     loading,
@@ -88,6 +112,8 @@ export function useWorkflowCatalog(): {
     error,
     instance,
     instanceList,
+    workflowSearch,
+    setWorkflowSearch,
     setPage,
     setRowsPerPage,
     setInstance,

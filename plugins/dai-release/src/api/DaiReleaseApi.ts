@@ -48,9 +48,11 @@ export interface DaiReleaseApi {
 
   getWorkflowCatalog(
     page: number,
+    resultsPerPage: number,
     searchInput: string,
     categories: string[],
     author: string,
     instanceName: string,
+    options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList>;
 }

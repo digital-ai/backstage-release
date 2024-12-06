@@ -1,9 +1,9 @@
 import { CssCell, CssGrid, DotTypography } from '@digital-ai/dot-components';
+import React, { useRef } from 'react';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
-import React from 'react';
-import { Workflow } from '@digital-ai/plugin-dai-release-common';
+import { Workflow } from "@digital-ai/plugin-dai-release-common";
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { calculateCellProps } from '../../utils/helpers';
@@ -53,6 +53,15 @@ export const WorkflowCatalogComponent = ({
     // need to add the logic to run the workflow
     global.console.log(workflowFromCategory, loadMoreData);
   };
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        loadMoreData(); // Load the next page of data
+      }
+    }
+  };
 
   const renderWorkflows = () => {
     return (
@@ -61,7 +70,6 @@ export const WorkflowCatalogComponent = ({
           columnGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
           rowGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
           row-gap="12px"
-          className={classes.catalogGrid}
         >
           {data.map((currentWorkflow: Workflow, index: number) => {
             const props = calculateCellProps(index);
@@ -102,32 +110,35 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
-    <div className={classes.workflowDrawerHeaderSearch}>
-      <div className="search-row">
-        <DotTypography className={classes.searchHeader} variant="h4">
+      <div
+          className={classes.workflowDrawerHeaderSearch}>
+        <DotTypography className={classes.searchHeader} variant="subtitle2">
           Search Workflows
         </DotTypography>
         <Paper
-          component="form"
-          sx={{
-            p: '2px 4px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
+            component="form"
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
         >
-          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <IconButton type="button" sx={{p: '10px'}} aria-label="search">
             <span className={`${classes.dotIconSize} dot-icon`}>
-              <i className="icon-search" />
+              <i className="icon-search"/>
             </span>
           </IconButton>
           <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Start typing to filter workflows..."
-            inputProps={{ 'aria-label': 'search google maps' }}
+              sx={{ml: 1, flex: 1}}
+              placeholder="Start typing to filter workflows..."
+              inputProps={{'aria-label': 'search google maps'}}
           />
         </Paper>
-        {renderWorkflows()}
+         <br/>
+         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}} ref={containerRef}
+              onScroll={handleScroll}>
+          {renderWorkflows()}
+        </div>
       </div>
-    </div>
   );
 };
