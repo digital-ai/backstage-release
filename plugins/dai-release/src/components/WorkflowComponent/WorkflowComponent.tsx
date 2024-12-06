@@ -3,13 +3,13 @@ import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
 import {CategoriesContentActiveList} from '@digital-ai/plugin-dai-release-common';
+import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCatalogComponent } from '../WorkflowCatalogComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
 import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
-import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
