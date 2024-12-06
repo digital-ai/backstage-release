@@ -119,13 +119,14 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   private async get<T>(
     path: string,
     options?: { signal?: AbortSignal },
+    method: string = 'GET',
   ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();
 
     const response = await fetch(url.toString(), {
-      method: 'GET',
+      method: method,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -180,6 +181,6 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     queryString.append('author', author.toString());
 
     const urlSegment = `workflows?${queryString}`;
-    return await this.get<WorkflowsList>(urlSegment, options);
+    return await this.get<WorkflowsList>(urlSegment, options, 'POST');
   }
 }

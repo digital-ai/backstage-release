@@ -2,7 +2,7 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
-import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
+import {CategoriesContentActiveList} from '@digital-ai/plugin-dai-release-common';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCatalogComponent } from '../WorkflowCatalogComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
@@ -56,6 +56,8 @@ export const WorkflowComponent = () => {
     loading,
     hasMore,
     setLoading,
+    setHasMore,
+    setData,
     setPage,
     setInstance,
   } = useWorkflowCatalog();
@@ -65,11 +67,29 @@ export const WorkflowComponent = () => {
     setReleaseCategories,
     setLoadingReleaseCategories,
   );
-
+  const [customSearchQuery, setCustomSearchQuery] = useState('');
   const loadMoreData = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     setPage((prevPage: number) => prevPage + 1);
+  };
+  const resetState = () => {
+    setData([]);
+    setHasMore(true);
+    setLoading(true);
+  };
+  const filteredData = customSearchQuery
+      ? data.filter((row: { [x: string]: { toString: () => string } }) =>
+          ['title', 'description'].some(key =>
+              row[key]
+                  ?.toString()
+                  .toLowerCase()
+                  .includes(customSearchQuery?.toLowerCase()),
+          ),
+      )
+      : data;
+  const handleCustomSearchChange = (customSearchStr: string) => {
+    setCustomSearchQuery(customSearchStr);
   };
 
   return (
@@ -95,11 +115,15 @@ export const WorkflowComponent = () => {
             <Grid item>
               <SearchHeaderComponent
                   displayFilterIcon={false}
+                  displayTableSearchFilter
                   titleName="Workflow catalog"
                   instance={instance}
                   instanceList={instanceList}
+                  customSearch={customSearchQuery}
+                  onCustomSearch={handleCustomSearchChange}
                   error={error}
                   onSetInstance={setInstance}
+                  resetState={resetState}
               />
             </Grid>
           </Grid>
@@ -137,7 +161,7 @@ export const WorkflowComponent = () => {
                 <WorkflowCatalogComponent
                     loading={loading}
                     loadMoreData={loadMoreData}
-                    data={data}
+                    data={filteredData}
                 />
               </div>
             </CssCell>

@@ -281,7 +281,7 @@ describe('ReleaseApiClient', () => {
   describe('getWorkflowCatalog', () => {
     it('should return valid response', async () => {
       worker.use(
-        rest.get(
+        rest.post(
           'https://example.com/api/dai-release/workflows',
           (req, res, ctx) => {
             if (

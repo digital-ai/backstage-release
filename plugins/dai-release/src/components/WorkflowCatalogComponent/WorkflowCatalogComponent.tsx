@@ -111,14 +111,10 @@ export const WorkflowCatalogComponent = ({
 
   return (
       <div
-          className={classes.workflowDrawerHeaderSearch}
-
-      >
-
+          className={classes.workflowDrawerHeaderSearch}>
         <DotTypography className={classes.searchHeader} variant="subtitle2">
           Search Workflows
         </DotTypography>
-
         <Paper
             component="form"
             sx={{
@@ -139,7 +135,7 @@ export const WorkflowCatalogComponent = ({
           />
         </Paper>
          <br/>
-         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}}   ref={containerRef}
+         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}} ref={containerRef}
               onScroll={handleScroll}>
           {renderWorkflows()}
         </div>

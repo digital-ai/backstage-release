@@ -218,7 +218,7 @@ export async function createRouter(
     res.status(200).json(metaInformation);
   });
 
-  router.get('/workflows', async (req, res) => {
+  router.post('/workflows', async (req, res) => {
     if (permissions && httpAuth) {
       const decision = await permissions.authorize(
         [{ permission: daiReleaseViewPermission }],
