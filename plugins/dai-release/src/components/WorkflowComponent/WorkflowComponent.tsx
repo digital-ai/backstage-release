@@ -9,6 +9,7 @@ import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
 import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
+import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
 
 const useStyles = makeStyles(() => ({
   logoStyle: {
@@ -128,6 +129,9 @@ export const WorkflowComponent = () => {
             </Grid>
           </Grid>
           <div className={classes.horizontalBar}/>
+          {error && !loading ? (
+              <ReleaseResponseErrorPanel error={error} />
+          ) : (
           <div style={{paddingTop: '12px'}}>
           <CssGrid className="workflow-catalog">
             <CssCell
@@ -167,6 +171,7 @@ export const WorkflowComponent = () => {
             </CssCell>
           </CssGrid>
           </div>
+              )}
         </Content>
       </Page>
     </DotThemeProvider>
