@@ -273,11 +273,12 @@ export async function createRouter(
       }
     }
     const instanceName = req.query.instanceName?.toString() || '';
-    const { templateId, releaseTitle } = req.body;
+    const { templateId, releaseTitle, folderId } = req.body;
     const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(
       instanceName,
       templateId,
       releaseTitle,
+      folderId
     );
     res.status(200).json({ url: redirectUrl });
   });

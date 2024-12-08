@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+import { ReleaseInstanceConfig, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
@@ -12,6 +12,7 @@ export function useWorkflowCatalog(): {
   hasMore: Boolean;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
+  folders: FolderBackendResponse;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setInstance: (instance: string) => void;
@@ -21,13 +22,15 @@ export function useWorkflowCatalog(): {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [instance, setInstance] = useState('');
-  const [instanceList, setInstanceList] = useState<
-    ReleaseInstanceConfig[] | undefined
-  >([]);
+  const [instanceList, setInstanceList] = useState<ReleaseInstanceConfig[] | undefined>([]);
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-
+  const [folders, setFolders] = useState<FolderBackendResponse>({
+    folders: [],
+    totalPages: 0,
+    totalElements: 0,
+  });
   const api = useApi(daiReleaseApiRef);
 
   // AbortController reference to cancel the ongoing request
@@ -50,10 +53,12 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            setLoading(false);
+            //setLoading(false);
           });
         }
 
+        const folderResults = await api.getFolders(instance);
+        setFolders(folderResults);
         const result = await api.getWorkflowCatalog(page, '', [], '', instance);
 
         // Only proceed if the request was not aborted
@@ -63,7 +68,7 @@ export function useWorkflowCatalog(): {
             setHasMore(false);
           }
           setData((prevData: any) => [...prevData, ...result?.workflows]);
-          return result;
+          return result ;
         }
       } catch (err) {
         // Check if error is due to abort, otherwise handle the error
@@ -88,6 +93,7 @@ export function useWorkflowCatalog(): {
     error,
     instance,
     instanceList,
+    folders,
     setPage,
     setRowsPerPage,
     setInstance,
