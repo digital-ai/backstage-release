@@ -1,4 +1,4 @@
-import { WorkflowsList } from '@digital-ai/plugin-dai-release-common';
+import { WorkflowsList, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 
 export const catalogsFromRelease = {
   totalElements: 27,
@@ -640,7 +640,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS Lambda create function using S3 zip file',
@@ -656,7 +657,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager create secret',
@@ -672,7 +674,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager delete secret',
@@ -687,7 +690,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager update secret',
@@ -703,7 +707,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'Argo Rollouts install',
@@ -718,7 +723,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete application',
@@ -733,7 +739,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete live deployment configuration',
@@ -748,7 +755,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD install',
@@ -768,7 +776,8 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD setup application',
@@ -784,9 +793,114 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      },defaultTargetFolder:
+                        'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
   ],
   totalPages: 4,
   totalElements: 33,
+};
+
+export const FoldersListBackendResponse: FolderBackendResponse = {
+  folders: [
+             {
+               id: "Applications/FolderDefaultReleaseContent",
+               type: "xlrelease.Folder",
+               $token: "f519ae1e-2ef7-4186-9931-58e87ce0fc02",
+               title: "Digital.ai - Official",
+               children: [
+                 {
+                   id: "Applications/FolderDefaultReleaseContent/Foldereff63691391142ae8fbc0e0ef76eb6c5",
+                   type: "xlrelease.Folder",
+                   $token: "091af4bc-6ada-491e-ae25-58d19f28b236",
+                   title: "Workflow Executions",
+                   children: [],
+                   $metadata: {
+                     security: {
+                       permissions: ["folder#view", "folder#edit"],
+                       teams: [],
+                     },
+                   },
+                 },
+                 {
+                   id: "Applications/FolderDefaultReleaseContent/Folderd570ac729e164bd6af7ab446701a4654",
+                   type: "xlrelease.Folder",
+                   $token: "f48de376-d9e1-400d-95e4-d6524b8bcce5",
+                   title: "Workflows",
+                   children: [
+                     {
+                       id: "Applications/FolderDefaultReleaseContent/Folderd570ac729e164bd6af7ab446701a4654/Folder51151a266d4d4d71bd1b466675626ab5",
+                       type: "xlrelease.Folder",
+                       $token: "70ea13e1-8215-4615-8ca8-d1e9d30b802b",
+                       title: "Digital.ai Deploy",
+                       children: [],
+                       $metadata: {
+                         security: {
+                           permissions: ["folder#view", "folder#edit"],
+                           teams: [],
+                         },
+                       },
+                     },
+                     // More children items here...
+                   ],
+                   $metadata: {
+                     security: {
+                       permissions: ["folder#view", "folder#edit"],
+                       teams: [],
+                     },
+                   },
+                 },
+                 // More children items here...
+               ],
+               $metadata: {
+                 security: {
+                   permissions: ["folder#view", "folder#edit"],
+                   teams: [],
+                 },
+               },
+             },
+             {
+               id: "Applications/FolderSamplesAndTutorials",
+               type: "xlrelease.Folder",
+               $token: "df7aa5b1-5473-4e69-a4f2-7a5d5b6b5db3",
+               title: "Samples & Tutorials",
+               children: [
+                 {
+                   id: "Applications/FolderSamplesAndTutorials/Folder1556f05e631c48b2b0d935c6a9f8560d",
+                   type: "xlrelease.Folder",
+                   $token: "e56d8275-8f39-4c19-bb54-2c7d853088fd",
+                   title: "Workspace 2",
+                   children: [],
+                   $metadata: {
+                     security: {
+                       permissions: ["folder#view", "folder#edit"],
+                       teams: [],
+                     },
+                   },
+                 },
+                 {
+                   id: "Applications/FolderSamplesAndTutorials/Folder2336b7ded4c247df916af3c12a3a4d0e",
+                   type: "xlrelease.Folder",
+                   $token: "f84e28b4-fb61-4634-b110-bcbb3c7de93d",
+                   title: "Worspace 1",
+                   children: [],
+                   $metadata: {
+                     security: {
+                       permissions: ["folder#view", "folder#edit"],
+                       teams: [],
+                     },
+                   },
+                 },
+               ],
+               $metadata: {
+                 security: {
+                   permissions: ["folder#view", "folder#edit"],
+                   teams: [],
+                 },
+               },
+             },
+           ]
+,
+  totalPages: 0,
+  totalElements: 3,
 };

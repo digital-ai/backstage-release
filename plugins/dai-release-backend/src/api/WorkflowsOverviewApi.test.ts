@@ -51,6 +51,7 @@ describe('WorkflowsOverviewApi', () => {
       'default',
       'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
       'AWS Lambda setup function with Digital.ai Deploy',
+      'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
     );
 
     expect(redirectUrl).toEqual(workflowsTriggerBackendResponse.url);
@@ -68,6 +69,7 @@ describe('WorkflowsOverviewApi', () => {
           'invalidInstance',
           'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
           'AWS Lambda setup function with Digital.ai Deploy',
+          'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
         ),
     ).rejects.toThrow(
       "Couldn't find a release instance 'invalidInstance' in the config",
@@ -211,6 +213,7 @@ describe('WorkflowsOverviewApi', () => {
           'default',
           'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
           'AWS Lambda setup function with Digital.ai Deploy',
+          'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
         ),
     ).rejects.toThrow(
       'Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release',
@@ -229,6 +232,7 @@ describe('WorkflowsOverviewApi', () => {
           'default',
           'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
           'AWS Lambda setup function with Digital.ai Deploy',
+          'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
         ),
     ).rejects.toThrow(
       'Permission denied or the requested functionality is not supported',
@@ -248,6 +252,7 @@ describe('WorkflowsOverviewApi', () => {
           'default',
           'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
           'AWS Lambda setup function with Digital.ai Deploy',
+          'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
         ),
     ).rejects.toThrow('Release service request not found');
   });
@@ -265,6 +270,7 @@ describe('WorkflowsOverviewApi', () => {
           'default',
           'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
           'AWS Lambda setup function with Digital.ai Deploy',
+          'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0'
         ),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
   });

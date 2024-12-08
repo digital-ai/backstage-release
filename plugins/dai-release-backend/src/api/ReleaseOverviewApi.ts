@@ -1,6 +1,5 @@
 import {
   RELEASE_COUNT_API_PATH,
-  RELEASE_FOLDERS_LIST_API_PATH,
   RELEASE_OVERVIEW_API_PATH,
   RELEASE_OVERVIEW_EXISTING_API_PATH,
   RELEASE_TEMPLATE_LIST_API_PATH,
@@ -15,11 +14,13 @@ import {
   ReleaseCountResults,
   ReleaseFallBackOverview,
   ReleaseOverview,
+  Template,
+  TemplateList,
   TemplateOverview,
 } from '@digital-ai/plugin-dai-release-common';
-import { Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
+import { FoldersApi } from './FoldersApi';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
@@ -28,10 +29,12 @@ import { parseErrorResponse } from './responseUtil';
 export class ReleaseOverviewApi {
   private readonly logger: RootLoggerService;
   private readonly config: ReleaseConfig;
+  private readonly foldersApi: FoldersApi;
 
   private constructor(logger: RootLoggerService, config: ReleaseConfig) {
     this.logger = logger;
     this.config = config;
+    this.foldersApi = FoldersApi.fromConfig(config, logger);
   }
 
   static fromConfig(config: ReleaseConfig, logger: RootLoggerService) {
@@ -207,26 +210,11 @@ export class ReleaseOverviewApi {
     return await response.json();
   }
 
-  async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
-    const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
-      method: 'GET',
-      headers: {
-        'x-release-personal-token': `${accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-    if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
-    return await response.json();
-  }
-
   async getFolderIdAndTitleMap(
     apiUrl: string,
     authCredentials: string,
   ): Promise<Map<string, string>> {
-    const foldersList: Folder[] = await this.getFoldersList(
+    const foldersList: Folder[] = await this.foldersApi.getFoldersList(
       apiUrl,
       authCredentials,
     );

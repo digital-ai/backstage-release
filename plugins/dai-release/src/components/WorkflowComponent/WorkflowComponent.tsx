@@ -50,6 +50,7 @@ export const WorkflowComponent = () => {
     error,
     instance,
     instanceList,
+    folders,
     loading,
     hasMore,
     setLoading,
@@ -133,6 +134,8 @@ export const WorkflowComponent = () => {
                   loading={loading}
                   loadMoreData={loadMoreData}
                   data={data}
+                  folders={folders}
+                  instance={instance}
                 />
               </div>
             </CssCell>
