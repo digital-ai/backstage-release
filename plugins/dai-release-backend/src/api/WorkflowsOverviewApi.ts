@@ -163,8 +163,8 @@ export class WorkflowsOverviewApi {
     folderId: string
   ) {
     const body = JSON.stringify({
-      ...(releaseTitle && { releaseTitle }),
-      ...(folderId && { folderId }),
+      releaseTitle: releaseTitle || undefined,
+      folderId: folderId || undefined,
     });
 
     const response = await fetch(
