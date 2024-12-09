@@ -81,6 +81,9 @@ async function renderContent(args: {
           releaseCategories={args.releaseCategories}
           instance={args.instance}
           isLoadingCategories={args.isLoadingCategories}
+          onSetWorkflowSearch={jest.fn()}
+          workflowSearch={{ categories: [], author: '' }}
+          resetState={jest.fn()}
         />
       </DotThemeProvider>
     </TestApiProvider>,

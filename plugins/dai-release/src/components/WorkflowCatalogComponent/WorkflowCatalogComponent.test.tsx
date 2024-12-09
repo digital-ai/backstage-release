@@ -39,6 +39,9 @@ async function renderContent(args: {
           loading={args.loading}
           loadMoreData={args.loadMoreData}
           data={args.data}
+          searchInput=""
+          onSearchInput={jest.fn()}
+          resetState={jest.fn()}
         />
       </DotThemeProvider>
     </TestApiProvider>,

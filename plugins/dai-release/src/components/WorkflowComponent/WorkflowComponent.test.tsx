@@ -91,6 +91,10 @@ describe('WorkflowComponent', () => {
       setLoading: jest.fn(),
       setPage: jest.fn(),
       setInstance: jest.fn(),
+      workflowSearch: { categories: [], author: '' },
+      setWorkflowSearch: jest.fn(),
+      searchInput: '',
+      setSearchInput: jest.fn(),
     });
   });
 
@@ -117,6 +121,10 @@ describe('WorkflowComponent', () => {
       setHasMore(_hasMore: boolean): void {},
       setRowsPerPage(_pageSize: number): void {},
       setInstance: jest.fn(),
+      workflowSearch: { categories: [], author: '' },
+      setWorkflowSearch: jest.fn(),
+      searchInput: '',
+      setSearchInput: jest.fn(),
     });
     await renderContent();
 
