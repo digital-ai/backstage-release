@@ -56,6 +56,8 @@ export const WorkflowComponent = () => {
     instanceList,
     loading,
     hasMore,
+    searchInput,
+    setSearchInput,
     workflowSearch,
     setWorkflowSearch,
     setLoading,
@@ -64,7 +66,6 @@ export const WorkflowComponent = () => {
     setPage,
     setInstance,
   } = useWorkflowCatalog();
-
   useReleaseCategories(
     instance,
     setReleaseCategories,
@@ -94,7 +95,6 @@ export const WorkflowComponent = () => {
   const handleCustomSearchChange = (customSearchStr: string) => {
     setCustomSearchQuery(customSearchStr);
   };
-
   return (
     <DotThemeProvider>
       <Page themeId="home">
@@ -127,6 +127,7 @@ export const WorkflowComponent = () => {
                   error={error}
                   onSetInstance={setInstance}
                   resetState={resetState}
+                  onSetWorkflowSearch={setWorkflowSearch}
               />
             </Grid>
           </Grid>
@@ -171,6 +172,9 @@ export const WorkflowComponent = () => {
                     loading={loading}
                     loadMoreData={loadMoreData}
                     data={filteredData}
+                    searchInput={searchInput}
+                    onSearchInput={setSearchInput}
+                    resetState={resetState}
                 />
               </div>
             </CssCell>

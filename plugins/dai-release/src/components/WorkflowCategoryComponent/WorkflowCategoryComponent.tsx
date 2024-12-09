@@ -5,9 +5,9 @@ import {
   DotSkeleton,
   DotTypography,
 } from '@digital-ai/dot-components';
-import React, { useEffect } from 'react';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
+import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
@@ -119,7 +119,6 @@ type workflowCategoryComponentProps = {
 export function WorkflowCategoryComponent({
   releaseCategories,
   isLoadingCategories,
-  instance,
   onSetWorkflowSearch,
   workflowSearch,
   resetState
@@ -130,13 +129,6 @@ export function WorkflowCategoryComponent({
     value: category.id,
     checked: workflowSearch?.categories?.includes(category.title),
   }));
-  useEffect(() => {
-    // Reset workflowSearch when instance changes
-    onSetWorkflowSearch({
-      categories: [],
-      author: '',
-    });
-  }, [instance]);
 
   function handleAuthorChange(value: string) {
     resetState();

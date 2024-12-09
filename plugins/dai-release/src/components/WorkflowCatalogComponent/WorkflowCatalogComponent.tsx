@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: '5px',
   },
   dotIconSize: {
-    fontSize: '16px',
+    fontSize: '20px',
   },
   workflowCatalog: {
     height: '100%',
@@ -41,12 +41,18 @@ type WorkflowCatalogComponentProps = {
   loading: boolean;
   loadMoreData: () => void;
   data: Workflow[];
+  searchInput: string;
+  onSearchInput: (searchInput: string) => void;
+  resetState: () => void;
 };
 
 export const WorkflowCatalogComponent = ({
   loading,
   loadMoreData,
   data,
+  searchInput,
+  onSearchInput,
+  resetState
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
   const handleOnRunClick = (workflowFromCategory: Workflow) => {
@@ -63,6 +69,10 @@ export const WorkflowCatalogComponent = ({
     }
   };
 
+  function handleSearchInput(value: string) {
+        resetState();
+        onSearchInput(value);
+  }
   const renderWorkflows = () => {
     return (
       <>
@@ -122,16 +132,19 @@ export const WorkflowCatalogComponent = ({
               display: 'flex',
               alignItems: 'center',
             }}
+            style={{height: '40px'}}
         >
           <IconButton type="button" sx={{p: '10px'}} aria-label="search">
             <span className={`${classes.dotIconSize} dot-icon`}>
-              <i className="icon-search"/>
+              <i className="icon-search" />
             </span>
           </IconButton>
           <InputBase
               sx={{ml: 1, flex: 1}}
               placeholder="Start typing to filter workflows..."
               inputProps={{'aria-label': 'search google maps'}}
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e.target.value)}
           />
         </Paper>
          <br/>

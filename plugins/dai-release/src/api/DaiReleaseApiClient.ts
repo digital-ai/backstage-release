@@ -210,7 +210,6 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       ...(categories.length && { categories }),
       ...(author && { author }),
     });
-
     const urlSegment = `workflows?${queryString}`;
     return await this.post<WorkflowsList>(urlSegment, options, body);
   }

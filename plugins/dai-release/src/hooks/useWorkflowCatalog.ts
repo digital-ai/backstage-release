@@ -13,6 +13,8 @@ export function useWorkflowCatalog(): {
   hasMore: Boolean;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
+  searchInput: string;
+  setSearchInput: (searchInput: string) => void;
   workflowSearch: { categories: string[]; author: string };
   setWorkflowSearch: (workflowSearch: { categories: string[]; author: string }) => void;
   setPage: (page: (prevPage: number) => number) => void;
@@ -39,12 +41,17 @@ export function useWorkflowCatalog(): {
     author: '',
   });
 
+  const [searchInput, setSearchInput] = useState('');
+
   const api = useApi(daiReleaseApiRef);
-  // Use the debounced value of searchTitle, it will update the state after 1 second
+  // Use the debounced value of searchAuthor, it will update the state after 1 second
   const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
 
-  // Use the debounced value of searchTag, it will update the state after 1 second
+  // Use the debounced value of searchCatefories, it will update the state after 1 second
   const debouncedSearchCategories = useDebouncedValue(workflowSearch.categories, 500);
+
+  // Use the debounced value of searchTag, it will update the state after 1 second
+  const debouncedSearchInput = useDebouncedValue(searchInput, 500);
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -73,7 +80,7 @@ export function useWorkflowCatalog(): {
         const result = await api.getWorkflowCatalog(
           page,
           rowsPerPage,
-          '',
+          debouncedSearchInput,
           debouncedSearchCategories,
           debouncedSearchAuthor,
           instance,
@@ -102,7 +109,7 @@ export function useWorkflowCatalog(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, instance, debouncedSearchCategories, debouncedSearchAuthor],
+    [api, rowsPerPage, instance, debouncedSearchCategories, debouncedSearchAuthor, debouncedSearchInput],
   );
   return {
     loading,
@@ -112,6 +119,8 @@ export function useWorkflowCatalog(): {
     error,
     instance,
     instanceList,
+    searchInput,
+    setSearchInput,
     workflowSearch,
     setWorkflowSearch,
     setPage,
