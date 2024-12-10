@@ -3,6 +3,7 @@ import { ReleaseInstanceConfig, FolderBackendResponse } from '@digital-ai/plugin
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
+import {useDebouncedValue} from "../utils/helpers";
 
 export function useWorkflowCatalog(): {
   loading: boolean;
@@ -13,6 +14,10 @@ export function useWorkflowCatalog(): {
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
   folders: FolderBackendResponse;
+  searchInput: string;
+  setSearchInput: (searchInput: string) => void;
+  workflowSearch: { categories: string[]; author: string };
+  setWorkflowSearch: (workflowSearch: { categories: string[]; author: string }) => void;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setInstance: (instance: string) => void;
@@ -20,18 +25,38 @@ export function useWorkflowCatalog(): {
   setData: (data: any) => void;
 } {
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [instance, setInstance] = useState('');
   const [instanceList, setInstanceList] = useState<ReleaseInstanceConfig[] | undefined>([]);
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const [folders, setFolders] = useState<FolderBackendResponse>({
     folders: [],
     totalPages: 0,
     totalElements: 0,
   });
+
+  const [workflowSearch, setWorkflowSearch] = useState<{
+    categories: string[];
+    author: string;
+  }>({
+    categories: [],
+    author: '',
+  });
+
+  const [searchInput, setSearchInput] = useState('');
+
   const api = useApi(daiReleaseApiRef);
+  // Use the debounced value of searchAuthor, it will update the state after 1 second
+  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
+
+  // Use the debounced value of searchCatefories, it will update the state after 1 second
+  const debouncedSearchCategories = useDebouncedValue(workflowSearch.categories, 500);
+
+  // Use the debounced value of searchTag, it will update the state after 1 second
+  const debouncedSearchInput = useDebouncedValue(searchInput, 500);
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -59,7 +84,15 @@ export function useWorkflowCatalog(): {
 
         const folderResults = await api.getFolders(instance);
         setFolders(folderResults);
-        const result = await api.getWorkflowCatalog(page, '', [], '', instance);
+        const result = await api.getWorkflowCatalog(
+          page,
+          rowsPerPage,
+          debouncedSearchInput,
+          debouncedSearchCategories,
+          debouncedSearchAuthor,
+          instance,
+          { signal: abortController.signal },
+        );
 
         // Only proceed if the request was not aborted
         if (!abortController.signal.aborted) {
@@ -83,7 +116,7 @@ export function useWorkflowCatalog(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, instance],
+    [api, rowsPerPage, instance, debouncedSearchCategories, debouncedSearchAuthor, debouncedSearchInput],
   );
   return {
     loading,
@@ -94,6 +127,10 @@ export function useWorkflowCatalog(): {
     instance,
     instanceList,
     folders,
+    searchInput,
+    setSearchInput,
+    workflowSearch,
+    setWorkflowSearch,
     setPage,
     setRowsPerPage,
     setInstance,

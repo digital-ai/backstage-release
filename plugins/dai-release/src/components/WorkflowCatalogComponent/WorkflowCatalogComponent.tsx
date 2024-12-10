@@ -1,8 +1,8 @@
 import { CssCell, CssGrid, DotTypography, DotDialog } from '@digital-ai/dot-components';
+import React, { useState, useEffect, useRef } from 'react';        
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
-import React, { useState, useEffect, useRef } from 'react';
 import { Workflow, Folder, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
@@ -10,14 +10,13 @@ import { calculateCellProps } from '../../utils/helpers';
 import { makeStyles } from '@material-ui/core';
 import isNil from 'lodash/isNil';
 import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
-//import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   searchHeader: {
     marginBottom: '5px',
   },
   dotIconSize: {
-    fontSize: '16px',
+    fontSize: '20px',
   },
   workflowCatalog: {
     height: '100%',
@@ -66,6 +65,9 @@ type WorkflowCatalogComponentProps = {
   data: Workflow[];
   folders: FolderBackendResponse;
   instance: string;
+  searchInput: string;
+  onSearchInput: (searchInput: string) => void;
+  resetState: () => void;
 };
 
 export const WorkflowCatalogComponent = ({
@@ -73,7 +75,10 @@ export const WorkflowCatalogComponent = ({
   loadMoreData,
   data,
   folders,
-  instance
+  instance,
+  searchInput,
+  onSearchInput,
+  resetState
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
   const [, setPage] = useState(1);
@@ -201,14 +206,27 @@ export const WorkflowCatalogComponent = ({
       </DotDialog>
     );
   };
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        loadMoreData(); // Load the next page of data
+      }
+    }
+  };
 
+  function handleSearchInput(value: string) {
+        resetState();
+        onSearchInput(value);
+  }
   const renderWorkflows = () => {
     return (
       <>
         <CssGrid
           columnGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
           rowGap={{ xxl: 12, xl: 12, lg: 12, md: 8, sm: 8, xs: 8 }}
-          className={classes.catalogGrid}
+          row-gap="12px"
         >
           {data.map((currentWorkflow: Workflow, index: number) => {
             const props = calculateCellProps(index);
@@ -248,31 +266,38 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
-    <div className={classes.workflowDrawerHeaderSearch}>
-      <div className="search-row">
-        <DotTypography className={classes.searchHeader} variant="h4">
+      <div
+          className={classes.workflowDrawerHeaderSearch}>
+        <DotTypography className={classes.searchHeader} variant="subtitle2">
           Search Workflows
         </DotTypography>
         <Paper
-          component="form"
-          sx={{
-            p: '2px 4px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
+            component="form"
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+            style={{height: '40px'}}
         >
-          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <IconButton type="button" sx={{p: '10px'}} aria-label="search">
             <span className={`${classes.dotIconSize} dot-icon`}>
               <i className="icon-search" />
             </span>
           </IconButton>
           <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Start typing to filter workflows..."
-            inputProps={{ 'aria-label': 'search google maps' }}
+              sx={{ml: 1, flex: 1}}
+              placeholder="Start typing to filter workflows..."
+              inputProps={{'aria-label': 'search google maps'}}
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e.target.value)}
           />
         </Paper>
-        {renderWorkflows()}
+         <br/>
+         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}} ref={containerRef}
+              onScroll={handleScroll}>
+          {renderWorkflows()}
+        </div>
       </div>
       {renderDialog()}
       <div ref={observerTarget} />

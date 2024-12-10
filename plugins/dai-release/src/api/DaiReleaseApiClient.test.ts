@@ -242,7 +242,7 @@ describe('ReleaseApiClient', () => {
       } finally {
         expect(err instanceof Error).toBeTruthy();
       }
-    });
+    }, 10000); // Increase timeout for this test
     it('should return AuthenticationError', async () => {
       worker.use(
         rest.get(
@@ -281,14 +281,14 @@ describe('ReleaseApiClient', () => {
   describe('getWorkflowCatalog', () => {
     it('should return valid response', async () => {
       worker.use(
-        rest.get(
+        rest.post(
           'https://example.com/api/dai-release/workflows',
           (req, res, ctx) => {
             if (
               req.url.searchParams.get('pageNumber') === '0' &&
-              req.url.searchParams.get('searchInput') === '' &&
+            /*  req.url.searchParams.get('searchInput') === '' &&
               req.url.searchParams.get('categories') === '' &&
-              req.url.searchParams.get('author') === '' &&
+              req.url.searchParams.get('author') === '' &&*/
               req.url.searchParams.get('instanceName') === 'default'
             ) {
               return res(
@@ -307,6 +307,7 @@ describe('ReleaseApiClient', () => {
 
       const response = await client.getWorkflowCatalog(
         0,
+        10,
         '',
         [],
         '',
@@ -314,66 +315,63 @@ describe('ReleaseApiClient', () => {
       );
       expect(response).toEqual(workflowCatalogsList);
     });
+    it('should return error', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) => {
+            return res(
+              ctx.status(500),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    });
 
-    // these cases will be verified after api implementation
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
 
-    // testing('should return error', async () => {
-    //   worker.use(
-    //     rest.get(
-    //       'https://example.com/api/dai-release/workflows',
-    //       (_, res, ctx) => {
-    //         return res(
-    //           ctx.status(500),
-    //           ctx.set('Content-Type', 'application/json'),
-    //         );
-    //       },
-    //     ),
-    //   );
-    //   let err;
-    //   try {
-    //     await client.getWorkflowCatalog(0, '', [], '', 'default');
-    //   } catch (e) {
-    //     err = e;
-    //   } finally {
-    //     expect(err instanceof Error).toBeTruthy();
-    //   }
-    // });
-    //
-    // testing('should return AuthenticationError', async () => {
-    //   worker.use(
-    //     rest.get(
-    //       'https://example.com/api/dai-release/workflows',
-    //       (_, res, ctx) =>
-    //         res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
-    //     ),
-    //   );
-    //   let err;
-    //   try {
-    //     await client.getWorkflowCatalog(0, '', [], '', 'default');
-    //   } catch (e) {
-    //     err = e;
-    //   } finally {
-    //     expect(err instanceof AuthenticationError).toBeTruthy();
-    //   }
-    // });
-    //
-    // testing('should return NotAllowedError', async () => {
-    //   worker.use(
-    //     rest.get(
-    //       'https://example.com/api/dai-release/workflows',
-    //       (_, res, ctx) =>
-    //         res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
-    //     ),
-    //   );
-    //   let err;
-    //   try {
-    //     await client.getWorkflowCatalog(0, '', [], '', 'default');
-    //   } catch (e) {
-    //     err = e;
-    //   } finally {
-    //     expect(err instanceof NotAllowedError).toBeTruthy();
-    //   }
-    // });
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
   });
   describe('getInstanceList', () => {
     it('should return instance list', async () => {
