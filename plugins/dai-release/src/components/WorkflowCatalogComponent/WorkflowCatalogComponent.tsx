@@ -1,14 +1,14 @@
-import { CssCell, CssGrid, DotTypography, DotDialog } from '@digital-ai/dot-components';
-import React, { useState, useEffect, useRef } from 'react';        
+import { CssCell, CssGrid, DotDialog, DotTypography } from '@digital-ai/dot-components';
+import { Folder, FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
-import { Workflow, Folder, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { calculateCellProps } from '../../utils/helpers';
-import { makeStyles } from '@material-ui/core';
 import isNil from 'lodash/isNil';
+import { makeStyles } from '@material-ui/core';
 import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 
 const useStyles = makeStyles(() => ({
@@ -70,6 +70,35 @@ type WorkflowCatalogComponentProps = {
   resetState: () => void;
 };
 
+const TreeSelectItem: React.FC<{ item: Folder; onItemSelect: (id: string) => void; selectedItemId: string | null }> = ({ item, onItemSelect, selectedItemId }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div>
+<div
+  onClick={toggleDropdown}
+  onKeyDown={(e) => { if (e.key === 'Enter') toggleDropdown(); }}
+  role="button"
+  tabIndex={0}
+  style={{ fontWeight: item.id === selectedItemId ? 'bold' : 'normal' }}
+>
+  {item.title}
+</div>
+      {isOpen && item.children && item.children.length > 0 && (
+        <ul>
+          {item.children.map((child) => (
+            <TreeSelectItem key={child.id} item={child} onItemSelect={onItemSelect} selectedItemId={selectedItemId} />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 export const WorkflowCatalogComponent = ({
   loading,
   loadMoreData,
@@ -81,27 +110,26 @@ export const WorkflowCatalogComponent = ({
   resetState
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
-  const [, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const [workflowDialogOpen, setWorkflowDialogOpen] = useState<string | null>(null);
   const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
-    // Inside the WorkflowCatalogComponent function
-    const [url, setUrl] = useState<string>('');
+  const [url, setUrl] = useState<string>('');
   const [workflowToRun, setWorkflowToRun] = useState<Workflow | null>(null);
 
   useWorkflowRedirect(instance, workflowToRun?.id || '', workflowToRun?.title || '', selectedFolderId || '', setUrl);
 
-    useEffect(() => {
-      if (url) {
-        window.open(url, '_blank');
-      }
-    }, [url]);
+  useEffect(() => {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }, [url]);
 
-    const handleOnRunClick = (workflowFromCategory: Workflow) => {
-        setWorkflowDialogOpen(workflowFromCategory.id);
-      };
+  const handleOnRunClick = (workflowFromCategory: Workflow) => {
+    setWorkflowDialogOpen(workflowFromCategory.id);
+  };
 
-  const handleIntersect: IntersectionObserverCallback = (entries) => {
+  const handleIntersect = useCallback<IntersectionObserverCallback>((entries) => {
     if (entries[0].isIntersecting && !loading) {
       setPage((prevPage) => {
         const nextPage = prevPage + 1;
@@ -109,25 +137,26 @@ export const WorkflowCatalogComponent = ({
         return nextPage;
       });
     }
-  };
+  }, [loading, loadMoreData]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleIntersect, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0,
-    });
+useEffect(() => {
+  const observer = new IntersectionObserver(handleIntersect, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1.0,
+  });
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+  const currentObserverTarget = observerTarget.current;
+  if (currentObserverTarget) {
+    observer.observe(currentObserverTarget);
+  }
+
+  return () => {
+    if (currentObserverTarget) {
+      observer.unobserve(currentObserverTarget);
     }
-
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
-  }, [loading]);
+  };
+}, [loading, handleIntersect]);
 
   useEffect(() => {
     if (workflowDialogOpen) {
@@ -142,55 +171,28 @@ export const WorkflowCatalogComponent = ({
 
   const handleWorkflowRun = (workflow: Workflow) => {
     setWorkflowToRun(workflow);
-    console.log(`Running workflow: ${workflow.title}`);
   };
 
-  const renderDialog = () => {
-    const workflow = data.find((w) => w.id === workflowDialogOpen);
-    if (!workflow) return null;
-    const folderList: Folder[] = folders.folders;
+const renderDialog = () => {
+  const workflow = data.find((w) => w.id === workflowDialogOpen);
+  if (!workflow) return null;
+  const folderList: Folder[] = folders.folders;
 
-    const renderFolderTree = (folders: Folder[], depth = 0) => {
-      return folders.map((folder) => (
-        <li key={folder.id} className={depth > 0 ? classes.subFolder : ''}>
-          <div
-            className={`${classes.folderItem} ${
-              folder.id === selectedFolderId ? classes.selectedFolderItem : ''
-            }`}
-            onClick={() => setSelectedFolderId(folder.id)}
-          >
-            {folder.children && folder.children.length > 0 ? (
-
-              <span className="dot-icon">
-                <i className="icon-arrow-down"></i>
-                <i className="icon-folder"></i>
-              </span>
-            ) : (
-              <span className="dot-icon">
-                <i className="icon-arrow-right"></i>
-                <i className="icon-folder"></i>
-              </span>
-            )}
-            {folder.title}
-          </div>
-          {folder.children && folder.children.length > 0 && (
-            <ul className={classes.folderTree}>
-              {renderFolderTree(folder.children, depth + 1)}
-            </ul>
-          )}
-        </li>
-      ));
-    };
+  const renderFolderTree = () => {
+    return folderList.map((folder) => (
+      <TreeSelectItem key={folder.id} item={folder} onItemSelect={setSelectedFolderId} selectedItemId={selectedFolderId || null} />
+    ));
+  };
 
     return (
       <DotDialog
         cancelButtonProps={{ label: 'Cancel' }}
         className="card-folder-dialog"
-        closeIconVisible={true}
-        closeOnClickAway={true}
-        closeOnSubmit={true}
+        closeIconVisible
+        closeOnClickAway
+        closeOnSubmit
         onSubmit={() => handleWorkflowRun(workflow)}
-        open={true}
+        open
         submitButtonProps={{ label: 'Run workflow', disabled: isNil(selectedFolderId) }}
         title="Choose folder"
       >
@@ -201,25 +203,27 @@ export const WorkflowCatalogComponent = ({
           Folder name
         </DotTypography>
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-          <ul className={classes.folderTree}>{renderFolderTree(folderList)}</ul>
+          <ul className={classes.folderTree}>{renderFolderTree()}</ul>
         </div>
       </DotDialog>
     );
   };
+
   const containerRef = useRef<HTMLDivElement | null>(null);
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
       if (scrollTop + clientHeight >= scrollHeight - 5) {
-        loadMoreData(); // Load the next page of data
+        loadMoreData(page); // Load the next page of data
       }
     }
   };
 
   function handleSearchInput(value: string) {
-        resetState();
-        onSearchInput(value);
+    resetState();
+    onSearchInput(value);
   }
+
   const renderWorkflows = () => {
     return (
       <>
@@ -266,38 +270,40 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
+    <div className={classes.workflowDrawerHeaderSearch}>
+      <DotTypography className={classes.searchHeader} variant="subtitle2">
+        Search Workflows
+      </DotTypography>
+      <Paper
+        component="form"
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+        style={{ height: '40px' }}
+      >
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <span className={`${classes.dotIconSize} dot-icon`}>
+            <i className="icon-search" />
+          </span>
+        </IconButton>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Start typing to filter workflows..."
+          inputProps={{ 'aria-label': 'search google maps' }}
+          value={searchInput}
+          onChange={(e) => handleSearchInput(e.target.value)}
+        />
+      </Paper>
+      <br />
       <div
-          className={classes.workflowDrawerHeaderSearch}>
-        <DotTypography className={classes.searchHeader} variant="subtitle2">
-          Search Workflows
-        </DotTypography>
-        <Paper
-            component="form"
-            sx={{
-              p: '2px 4px',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            style={{height: '40px'}}
-        >
-          <IconButton type="button" sx={{p: '10px'}} aria-label="search">
-            <span className={`${classes.dotIconSize} dot-icon`}>
-              <i className="icon-search" />
-            </span>
-          </IconButton>
-          <InputBase
-              sx={{ml: 1, flex: 1}}
-              placeholder="Start typing to filter workflows..."
-              inputProps={{'aria-label': 'search google maps'}}
-              value={searchInput}
-              onChange={(e) => handleSearchInput(e.target.value)}
-          />
-        </Paper>
-         <br/>
-         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}} ref={containerRef}
-              onScroll={handleScroll}>
-          {renderWorkflows()}
-        </div>
+        className="search-row"
+        style={{ height: 'calc(80vh - 100px)', overflowY: 'scroll' }}
+        ref={containerRef}
+        onScroll={handleScroll}
+      >
+        {renderWorkflows()}
       </div>
       {renderDialog()}
       <div ref={observerTarget} />

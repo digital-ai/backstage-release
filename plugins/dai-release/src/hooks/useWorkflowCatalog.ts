@@ -1,5 +1,5 @@
+import { FolderBackendResponse, ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { useRef, useState } from 'react';
-import { ReleaseInstanceConfig, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
@@ -78,7 +78,7 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            //setLoading(false);
+            // setLoading(false);
           });
         }
 

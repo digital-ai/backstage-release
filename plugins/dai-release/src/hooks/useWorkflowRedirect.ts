@@ -29,7 +29,7 @@ export function useWorkflowRedirect(
         abortControllerRef.current = abortController;
 
         setUrl(undefined as unknown as string);
-        //setMetaInfo(undefined);
+        // setMetaInfo(undefined);
 
         const result = await api.getWorkflowRedirectLink(instance, templateId, releaseTitle, releaseId, {
           signal: abortController.signal,

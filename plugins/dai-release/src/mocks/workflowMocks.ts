@@ -1,4 +1,4 @@
-import { WorkflowsList, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
+import { FolderBackendResponse, WorkflowsList } from '@digital-ai/plugin-dai-release-common';
 
 export const catalogsFromRelease = {
   totalElements: 27,
