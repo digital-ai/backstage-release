@@ -14,6 +14,7 @@ import {
   TemplateGitMetaInfo,
   TemplateList,
   WorkflowsList,
+  FolderBackendResponse
 } from '@digital-ai/plugin-dai-release-common';
 import { DaiReleaseApi } from './DaiReleaseApi';
 import { convertUnixTimestamp } from '../utils/dateTimeUtils';
@@ -116,6 +117,47 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return await this.get<TemplateGitMetaInfo>(urlSegment, options);
   }
 
+  private async post<T>(
+    path: string,
+    body: {},
+    options?: { signal?: AbortSignal },
+  ): Promise<T> {
+    const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
+    const url = new URL(path, baseUrl);
+    const idToken = await this.getToken();
+
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify(body),
+      signal: options?.signal,
+    });
+
+    if (!response.ok) {
+      const data = await parseErrorResponseBody(response);
+      if (response.status === 401) {
+        throw new AuthenticationError(data.error.message);
+      } else if (response.status === 403) {
+        throw new NotAllowedError(data.error.message);
+      } else if (response.status === 404) {
+        throw new NotFoundError(data.error.message);
+      } else if (response.status === 500) {
+        throw new ServiceUnavailableError(`Release Service Unavailable`);
+      } else if (response.status === 400) {
+        throw new InputError(data.error.message);
+      }
+      throw new Error(
+        `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    return (await response.json()) as Promise<T>;
+  }
+
   private async get<T>(
     path: string,
     options?: { signal?: AbortSignal },
@@ -212,5 +254,39 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     });
     const urlSegment = `workflows?${queryString}`;
     return await this.post<WorkflowsList>(urlSegment, options, body);
+  }
+
+  async getFolders(
+    instanceName: string,
+    options?: { signal?: AbortSignal }
+  ): Promise<FolderBackendResponse> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+
+    const urlSegment = `folders?instanceName=${instanceName}`;
+    // will be removed in next PR by implementing the actual API call
+    global.console.log('urlSegment', urlSegment);
+    return await this.get<FolderBackendResponse>(urlSegment, options);
+  }
+
+  async getWorkflowRedirectLink(
+    instanceName: string,
+    templateId: string,
+    releaseTitle: string,
+    folderId: string,
+    options?: { signal?: AbortSignal }
+  ): Promise<{ url: string }> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `workflow/redirect?instanceName=${instanceName}`;
+    // will be removed in next PR by implementing the actual API call
+    global.console.log('urlSegment', urlSegment);
+
+    const body = {
+            templateId: templateId,
+            folderId: folderId,
+            releaseTitle: releaseTitle
+        }
+    return await this.post<{ url: string }>(urlSegment,body, options);
   }
 }

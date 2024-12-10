@@ -4,6 +4,7 @@ import {
   ReleaseList,
   TemplateGitMetaInfo,
   WorkflowsList,
+  FolderBackendResponse
 } from '@digital-ai/plugin-dai-release-common';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
@@ -55,4 +56,16 @@ export interface DaiReleaseApi {
     instanceName: string,
     options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList>;
+
+  getFolders(
+    instanceName: string,
+  ): Promise<FolderBackendResponse>;
+
+  getWorkflowRedirectLink(
+    instanceName: string,
+    templateId: string,
+    releaseTitle: string,
+    folderId: string,
+    options?: { signal?: AbortSignal },
+      ): Promise<{ url: string }>;
 }
