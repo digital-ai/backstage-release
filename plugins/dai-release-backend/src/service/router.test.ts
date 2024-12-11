@@ -284,12 +284,13 @@ describe('router api tests with permissions ALLOW', () => {
         .query({
           pageNumber: '1',
           resultsPerPage: '10',
-          searchInput: '',
-          categories: 'cat1,cat2',
-          author: '',
         })
         .set('authorization', 'Bearer someauthtoken')
-        .send({});
+        .send({
+            searchInput: 'test',
+            categories: ['cat1', 'cat2'],
+            author: 'author1',
+          });
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
         "Couldn't find a release instance '' in the config",
@@ -368,12 +369,13 @@ describe('router api tests - with permissions DENY', () => {
           instanceName: 'Production',
           pageNumber: '1',
           resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
         })
         .set('authorization', 'Bearer someauthtoken')
-        .send({});
+        .send({
+            searchInput: 'test',
+            categories: ['cat1', 'cat2'],
+            author: 'author1',
+          });
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
         'Access Denied: Unauthorized to access the Backstage Release plugin',
@@ -453,12 +455,13 @@ describe('router api tests - without permissions', () => {
           instanceName: 'default',
           pageNumber: '1',
           resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
         })
         .set('authorization', 'Bearer someauthtoken')
-        .send({});
+        .send({
+          searchInput: 'test',
+          categories: ['cat1', 'cat2'],
+          author: 'author1',
+        });
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(workflowsBackendResponse);
     });

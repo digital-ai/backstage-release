@@ -55,6 +55,7 @@ beforeAll(() => {
     disconnect() {}
   };
 });
+
 describe('WorkflowComponent', () => {
   beforeEach(() => {
     mockUseWorkflowCatalog.mockReturnValue({
@@ -283,10 +284,24 @@ describe('WorkflowComponent', () => {
     expect(authorInput.value).toBe('');
 
     fireEvent.change(authorInput, { target: { value: 'Author 1' } });
-    expect(authorInput.value).toBe('Author 1');
     expect(mockUseWorkflowCatalog().setWorkflowSearch).toHaveBeenCalledWith({"author": "Author 1", "categories": ["Category1", "Category2"]});
-
+    expect(authorInput.value).toBe('Author 1');
     expect(screen.getByText('Test Workflow 1')).toBeInTheDocument();
+  });
+
+    it('should update searchInput and call setSearchInput', async () => {
+    await renderContent();
+    // Find the input element by placeholder
+    const inputElement = screen.getByPlaceholderText('Start typing to filter workflows...') as HTMLInputElement;
+
+    expect(inputElement).toBeInTheDocument();
+    expect(inputElement).toHaveValue('');
+
+    fireEvent.change(inputElement, { target: { value: 'Test Workflow' } });
+    expect(screen.getByText('Test Workflow 1')).toBeInTheDocument();
+
+    expect(mockUseWorkflowCatalog().setSearchInput).toHaveBeenCalledWith('Test Workflow');
+    expect(inputElement.value).toBe('Test Workflow');
   });
 
 });
