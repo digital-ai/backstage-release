@@ -1,9 +1,9 @@
 import { Content, Header, Page } from '@backstage/core-components';
 import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
-import React, {useState} from 'react';
-import {CategoriesContentActiveList} from '@digital-ai/plugin-dai-release-common';
-import {ReleaseResponseErrorPanel} from "../ReleaseResponseErrorPanel";
+import React, { useState } from 'react';
+import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
+import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCatalogComponent } from '../WorkflowCatalogComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
@@ -84,15 +84,15 @@ export const WorkflowComponent = () => {
     setLoading(true);
   };
   const filteredData = customSearchQuery
-      ? data.filter((row: { [x: string]: { toString: () => string } }) =>
-          ['title', 'description'].some(key =>
-              row[key]
-                  ?.toString()
-                  .toLowerCase()
-                  .includes(customSearchQuery?.toLowerCase()),
-          ),
+    ? data.filter((row: { [x: string]: { toString: () => string } }) =>
+        ['title', 'description'].some(key =>
+          row[key]
+            ?.toString()
+            .toLowerCase()
+            .includes(customSearchQuery?.toLowerCase()),
+        ),
       )
-      : data;
+    : data;
   const handleCustomSearchChange = (customSearchStr: string) => {
     setCustomSearchQuery(customSearchStr);
   };
@@ -111,79 +111,79 @@ export const WorkflowComponent = () => {
         />
         <Content className={classes.layoutSec}>
           <Grid
-              container
-              spacing={1}
-              direction="column"
-              className={classes.workflowHeaderSec}
+            container
+            spacing={1}
+            direction="column"
+            className={classes.workflowHeaderSec}
           >
             <Grid item>
               <SearchHeaderComponent
-                  displayFilterIcon={false}
-                  displayTableSearchFilter
-                  titleName="Workflow catalog"
-                  instance={instance}
-                  instanceList={instanceList}
-                  customSearch={customSearchQuery}
-                  onCustomSearch={handleCustomSearchChange}
-                  error={error}
-                  onSetInstance={setInstance}
-                  resetState={resetState}
-                  onSetWorkflowSearch={setWorkflowSearch}
+                displayFilterIcon={false}
+                displayTableSearchFilter
+                titleName="Workflow catalog"
+                instance={instance}
+                instanceList={instanceList}
+                customSearch={customSearchQuery}
+                onCustomSearch={handleCustomSearchChange}
+                error={error}
+                onSetInstance={setInstance}
+                resetState={resetState}
+                onSetWorkflowSearch={setWorkflowSearch}
               />
             </Grid>
           </Grid>
-          <div className={classes.horizontalBar}/>
+          <div className={classes.horizontalBar} />
           {error && !loading ? (
-              <ReleaseResponseErrorPanel error={error} />
+            <ReleaseResponseErrorPanel error={error} />
           ) : (
-          <div style={{paddingTop: '12px'}}>
-          <CssGrid className="workflow-catalog">
-            <CssCell
-                center={false}
-                className={classes.workflowDrawerContentLeftCells}
-                lg={{start: 1, span: 4}}
-                md={{start: 1, span: 6}}
-                sm={{start: 1, span: 12}}
-                xl={{start: 1, span: 4}}
-                xxl={{start: 1, span: 3}}
-            >
-              <div className="workflow-drawer-content-left">
-                <WorkflowCategoryComponent
-                    releaseCategories={releaseCategories}
-                    isLoadingCategories={loadingReleaseCategories}
-                    instance={instance}
-                    onSetWorkflowSearch={setWorkflowSearch}
-                    workflowSearch={workflowSearch}
-                    resetState={resetState}
-                />
-              </div>
-            </CssCell>
-            <CssCell
-                center={false}
-                className={classes.workflowCatalogContentCell}
-                lg={{start: 5, span: 10}}
-                md={{start: 7, span: 10}}
-                sm={{start: 1, span: 12}}
-                xl={{start: 5, span: 8}}
-                xs={{start: 1, span: 12}}
-                xxl={{start: 4, span: 9}}
-            >
-              <div className="workflow-cards">
-                <WorkflowCatalogComponent
-                    loading={loading}
-                    loadMoreData={loadMoreData}
-                    data={filteredData}
-                    searchInput={searchInput}
-                    onSearchInput={setSearchInput}
-                    resetState={resetState}
-                    folders={folders}
-                    instance={instance}
-                />
-              </div>
-            </CssCell>
-          </CssGrid>
-          </div>
-              )}
+            <div style={{ paddingTop: '12px' }}>
+              <CssGrid className="workflow-catalog">
+                <CssCell
+                  center={false}
+                  className={classes.workflowDrawerContentLeftCells}
+                  lg={{ start: 1, span: 4 }}
+                  md={{ start: 1, span: 6 }}
+                  sm={{ start: 1, span: 12 }}
+                  xl={{ start: 1, span: 4 }}
+                  xxl={{ start: 1, span: 3 }}
+                >
+                  <div className="workflow-drawer-content-left">
+                    <WorkflowCategoryComponent
+                      releaseCategories={releaseCategories}
+                      isLoadingCategories={loadingReleaseCategories}
+                      instance={instance}
+                      onSetWorkflowSearch={setWorkflowSearch}
+                      workflowSearch={workflowSearch}
+                      resetState={resetState}
+                    />
+                  </div>
+                </CssCell>
+                <CssCell
+                  center={false}
+                  className={classes.workflowCatalogContentCell}
+                  lg={{ start: 5, span: 10 }}
+                  md={{ start: 7, span: 10 }}
+                  sm={{ start: 1, span: 12 }}
+                  xl={{ start: 5, span: 8 }}
+                  xs={{ start: 1, span: 12 }}
+                  xxl={{ start: 4, span: 9 }}
+                >
+                  <div className="workflow-cards">
+                    <WorkflowCatalogComponent
+                      loading={loading}
+                      loadMoreData={loadMoreData}
+                      data={filteredData}
+                      searchInput={searchInput}
+                      onSearchInput={setSearchInput}
+                      resetState={resetState}
+                      folders={folders}
+                      instance={instance}
+                    />
+                  </div>
+                </CssCell>
+              </CssGrid>
+            </div>
+          )}
         </Content>
       </Page>
     </DotThemeProvider>

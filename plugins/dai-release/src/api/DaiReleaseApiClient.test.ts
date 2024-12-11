@@ -286,7 +286,7 @@ describe('ReleaseApiClient', () => {
           (req, res, ctx) => {
             if (
               req.url.searchParams.get('pageNumber') === '0' &&
-            /*  req.url.searchParams.get('searchInput') === '' &&
+              /*  req.url.searchParams.get('searchInput') === '' &&
               req.url.searchParams.get('categories') === '' &&
               req.url.searchParams.get('author') === '' &&*/
               req.url.searchParams.get('instanceName') === 'default'
@@ -329,7 +329,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -347,7 +347,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -365,7 +365,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {

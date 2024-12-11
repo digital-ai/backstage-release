@@ -8,7 +8,7 @@ export function useWorkflowRedirect(
   releaseTitle: string,
   releaseId: string,
   setUrl: (url: string) => void,
-  setErrorMessage: (message: string) => void
+  setErrorMessage: (message: string) => void,
 ) {
   const api = useApi(daiReleaseApiRef);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -30,9 +30,15 @@ export function useWorkflowRedirect(
 
         setUrl(undefined as unknown as string);
 
-        const result = await api.getWorkflowRedirectLink(instance, templateId, releaseTitle, releaseId, {
-          signal: abortController.signal
-        });
+        const result = await api.getWorkflowRedirectLink(
+          instance,
+          templateId,
+          releaseTitle,
+          releaseId,
+          {
+            signal: abortController.signal,
+          },
+        );
 
         // Only proceed if the request was not aborted
         if (isMounted && !abortController.signal.aborted) {
@@ -63,5 +69,13 @@ export function useWorkflowRedirect(
         abortControllerRef.current.abort();
       }
     };
-  }, [templateId, api, releaseTitle, releaseId, setUrl, instance, setErrorMessage]);
+  }, [
+    templateId,
+    api,
+    releaseTitle,
+    releaseId,
+    setUrl,
+    instance,
+    setErrorMessage,
+  ]);
 }

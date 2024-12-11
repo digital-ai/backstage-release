@@ -1,11 +1,11 @@
 import {
-    FolderBackendResponse,
+  FolderBackendResponse,
   ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
   TemplateList,
-  WorkflowsList
+  WorkflowsList,
 } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 import dayjs from 'dayjs';
@@ -57,9 +57,7 @@ export interface DaiReleaseApi {
     options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList>;
 
-  getFolders(
-    instanceName: string,
-  ): Promise<FolderBackendResponse>;
+  getFolders(instanceName: string): Promise<FolderBackendResponse>;
 
   getWorkflowRedirectLink(
     instanceName: string,
@@ -67,5 +65,5 @@ export interface DaiReleaseApi {
     releaseTitle: string,
     folderId: string,
     options?: { signal?: AbortSignal },
-      ): Promise<{ url: string }>;
+  ): Promise<{ url: string }>;
 }

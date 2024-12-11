@@ -1,9 +1,12 @@
-import { FolderBackendResponse, ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+import {
+  FolderBackendResponse,
+  ReleaseInstanceConfig,
+} from '@digital-ai/plugin-dai-release-common';
 import { useRef, useState } from 'react';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
-import {useDebouncedValue} from "../utils/helpers";
+import { useDebouncedValue } from '../utils/helpers';
 
 export function useWorkflowCatalog(): {
   loading: boolean;
@@ -17,7 +20,10 @@ export function useWorkflowCatalog(): {
   searchInput: string;
   setSearchInput: (searchInput: string) => void;
   workflowSearch: { categories: string[]; author: string };
-  setWorkflowSearch: (workflowSearch: { categories: string[]; author: string }) => void;
+  setWorkflowSearch: (workflowSearch: {
+    categories: string[];
+    author: string;
+  }) => void;
   setPage: (page: (prevPage: number) => number) => void;
   setRowsPerPage: (pageSize: number) => void;
   setInstance: (instance: string) => void;
@@ -27,7 +33,9 @@ export function useWorkflowCatalog(): {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const [instance, setInstance] = useState('');
-  const [instanceList, setInstanceList] = useState<ReleaseInstanceConfig[] | undefined>([]);
+  const [instanceList, setInstanceList] = useState<
+    ReleaseInstanceConfig[] | undefined
+  >([]);
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -53,7 +61,10 @@ export function useWorkflowCatalog(): {
   const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
 
   // Use the debounced value of searchCatefories, it will update the state after 1 second
-  const debouncedSearchCategories = useDebouncedValue(workflowSearch.categories, 500);
+  const debouncedSearchCategories = useDebouncedValue(
+    workflowSearch.categories,
+    500,
+  );
 
   // Use the debounced value of searchTag, it will update the state after 1 second
   const debouncedSearchInput = useDebouncedValue(searchInput, 500);
@@ -101,7 +112,7 @@ export function useWorkflowCatalog(): {
             setHasMore(false);
           }
           setData((prevData: any) => [...prevData, ...result?.workflows]);
-          return result ;
+          return result;
         }
       } catch (err) {
         // Check if error is due to abort, otherwise handle the error
@@ -116,7 +127,14 @@ export function useWorkflowCatalog(): {
     },
     page,
     setPage,
-    [api, rowsPerPage, instance, debouncedSearchCategories, debouncedSearchAuthor, debouncedSearchInput],
+    [
+      api,
+      rowsPerPage,
+      instance,
+      debouncedSearchCategories,
+      debouncedSearchAuthor,
+      debouncedSearchInput,
+    ],
   );
   return {
     loading,

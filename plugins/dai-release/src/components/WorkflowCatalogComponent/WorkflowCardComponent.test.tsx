@@ -17,7 +17,8 @@ const mockWorkflow: Workflow = {
   },
   description: 'Test Description',
   categories: ['Category1', 'Category2'],
-  defaultTargetFolder: 'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
+  defaultTargetFolder:
+    'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9',
 };
 beforeAll(() => {
   global.ResizeObserver = class {

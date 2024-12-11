@@ -4,7 +4,10 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
+import {
+  FoldersListBackendResponse,
+  workflowCatalogsList,
+} from '../../mocks/workflowMocks';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';

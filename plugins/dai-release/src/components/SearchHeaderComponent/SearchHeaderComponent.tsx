@@ -29,7 +29,10 @@ type SearchHeaderComponentProps = {
   onSearchByTitle?: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
   onShowDrawer?: (showDrawer: boolean) => void;
-  onSetWorkflowSearch?: (workflowSearch: { categories: string[]; author: string }) => void;
+  onSetWorkflowSearch?: (workflowSearch: {
+    categories: string[];
+    author: string;
+  }) => void;
   filterCount?: number;
   resetState?: () => void;
   error: Error | undefined;

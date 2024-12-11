@@ -65,7 +65,6 @@ const useStyles = makeStyles(() => ({
     },
     '& .dot-card-title-font': {
       fontSize: '17px',
-
     },
   },
 }));

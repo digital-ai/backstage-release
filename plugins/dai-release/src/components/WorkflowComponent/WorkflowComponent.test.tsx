@@ -97,7 +97,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse
+      folders: FoldersListBackendResponse,
     });
   });
 
@@ -128,7 +128,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse
+      folders: FoldersListBackendResponse,
     });
     await renderContent();
 

@@ -111,7 +111,10 @@ type workflowCategoryComponentProps = {
   releaseCategories: CategoriesContentActiveList[] | [];
   isLoadingCategories: boolean;
   instance: string;
-  onSetWorkflowSearch: (workflowSearch: { categories: string[]; author: string }) => void;
+  onSetWorkflowSearch: (workflowSearch: {
+    categories: string[];
+    author: string;
+  }) => void;
   workflowSearch: { categories: string[]; author: string };
   resetState: () => void;
 };
@@ -121,7 +124,7 @@ export function WorkflowCategoryComponent({
   isLoadingCategories,
   onSetWorkflowSearch,
   workflowSearch,
-  resetState
+  resetState,
 }: workflowCategoryComponentProps) {
   const classes = useStyles();
   const checkboxOptions: CheckboxProps[] = releaseCategories.map(category => ({
@@ -139,7 +142,7 @@ export function WorkflowCategoryComponent({
   }
 
   function onCategoryFilterChange(options: CheckboxProps[]) {
-    const categories = options.map((cat) => cat.label as string);
+    const categories = options.map(cat => cat.label as string);
     resetState();
     onSetWorkflowSearch({
       ...workflowSearch,

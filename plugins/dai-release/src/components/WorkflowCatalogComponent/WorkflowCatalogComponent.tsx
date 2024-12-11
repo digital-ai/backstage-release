@@ -3,9 +3,13 @@ import {
   CssGrid,
   DotAlertBanner,
   DotDialog,
-  DotTypography
+  DotTypography,
 } from '@digital-ai/dot-components';
-import { Folder, FolderBackendResponse, Workflow } from "@digital-ai/plugin-dai-release-common";
+import {
+  Folder,
+  FolderBackendResponse,
+  Workflow,
+} from '@digital-ai/plugin-dai-release-common';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
 import { useEffect, useRef, useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -21,7 +25,6 @@ import { calculateCellProps } from '../../utils/helpers';
 import isNil from 'lodash/isNil';
 import { makeStyles } from '@material-ui/core';
 import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
-
 
 const useStyles = makeStyles(() => ({
   searchHeader: {
@@ -51,8 +54,7 @@ const useStyles = makeStyles(() => ({
   },
   customAutocomplete: {
     zIndex: 3000,
-  }
-
+  },
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -74,11 +76,15 @@ export const WorkflowCatalogComponent = ({
   onSearchInput,
   resetState,
   folders,
-  instance
+  instance,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
-  const [workflowDialogOpen, setWorkflowDialogOpen] = useState<string | null>(null);
-  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
+  const [workflowDialogOpen, setWorkflowDialogOpen] = useState<string | null>(
+    null,
+  );
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
+    undefined,
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const [url, setUrl] = useState<string>('');
@@ -95,7 +101,7 @@ export const WorkflowCatalogComponent = ({
     workflowParams?.title || '',
     workflowParams?.folderId || '',
     setUrl,
-    setErrorMessage
+    setErrorMessage,
   );
 
   const handleOnRunClick = (workflowFromCategory: Workflow) => {
@@ -103,9 +109,8 @@ export const WorkflowCatalogComponent = ({
   };
 
   const handleRunWorkflow = () => {
-
     if (!workflowDialogOpen) return;
-    const selectedWorkflow = data.find((w) => w.id === workflowDialogOpen);
+    const selectedWorkflow = data.find(w => w.id === workflowDialogOpen);
     if (!selectedWorkflow) return;
 
     setWorkflowParams({
@@ -135,8 +140,6 @@ export const WorkflowCatalogComponent = ({
     onSearchInput(value);
   }
 
-
-
   const renderTree = (nodes: any) => (
     <TreeItem key={nodes.key} nodeId={nodes.key} label={nodes.title}>
       {Array.isArray(nodes.children)
@@ -146,30 +149,30 @@ export const WorkflowCatalogComponent = ({
   );
 
   const renderDialog = () => {
-    const workflow = data.find((w) => w.id === workflowDialogOpen);
+    const workflow = data.find(w => w.id === workflowDialogOpen);
     if (!workflow) return null;
 
-  const renderError = (message: string) => {
-    return (
-      <DotAlertBanner severity="error">
-        <DotTypography>{message}</DotTypography>
-      </DotAlertBanner>
-    );
-  };
+    const renderError = (message: string) => {
+      return (
+        <DotAlertBanner severity="error">
+          <DotTypography>{message}</DotTypography>
+        </DotAlertBanner>
+      );
+    };
 
-const renderFolderTree = () => {
-  const folderList: Folder[] = folders.folders;
+    const renderFolderTree = () => {
+      const folderList: Folder[] = folders.folders;
 
-  const convertToTreeNodes = (folderArray: Folder[]): any[] => {
-    return folderArray.map((folder) => ({
-      key: folder.id,
-      title: folder.title,
-      children: folder.children ? convertToTreeNodes(folder.children) : []
-    }));
-  };
+      const convertToTreeNodes = (folderArray: Folder[]): any[] => {
+        return folderArray.map(folder => ({
+          key: folder.id,
+          title: folder.title,
+          children: folder.children ? convertToTreeNodes(folder.children) : [],
+        }));
+      };
 
-  return convertToTreeNodes(folderList);
-};
+      return convertToTreeNodes(folderList);
+    };
 
     const options = renderFolderTree();
 
@@ -182,36 +185,44 @@ const renderFolderTree = () => {
         closeOnSubmit={!!errorMessage}
         onSubmit={handleRunWorkflow}
         open={!!workflowDialogOpen}
-        submitButtonProps={{ label: 'Run workflow', disabled: isNil(selectedFolderId) || !!errorMessage}}
+        submitButtonProps={{
+          label: 'Run workflow',
+          disabled: isNil(selectedFolderId) || !!errorMessage,
+        }}
         title="Choose folder"
       >
         {errorMessage && renderError(errorMessage)}
         <DotTypography>
-          Select the folder where workflow <strong>{workflow.title}</strong> will be run.
+          Select the folder where workflow <strong>{workflow.title}</strong>{' '}
+          will be run.
         </DotTypography>
         <br />
         <DotTypography className="persistent-label" variant="subtitle2">
           Folder name
         </DotTypography>
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-<TreeView
-  defaultCollapseIcon={
-
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                 <ArrowDropDownIcon/>
-                                 <FolderOpenIcon style={{ marginRight: '8px' }} />
-                               </div>}
-  defaultExpandIcon={<div style={{ display: 'flex', alignItems: 'center' }}>
-                         <ArrowRightIcon/>
-                         <FolderOpenIcon style={{ marginRight: '8px' }} />
-                       </div>}
-  defaultExpanded={[workflow.defaultTargetFolder]}
-  defaultSelected={workflow.defaultTargetFolder}
-  selected={selectedFolderId}
-  onNodeSelect={(_: unknown, nodeId: string) => setSelectedFolderId(nodeId)}
->
-  {options.map((option) => renderTree(option))}
-</TreeView>
+          <TreeView
+            defaultCollapseIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowDropDownIcon />
+                <FolderOpenIcon style={{ marginRight: '8px' }} />
+              </div>
+            }
+            defaultExpandIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowRightIcon />
+                <FolderOpenIcon style={{ marginRight: '8px' }} />
+              </div>
+            }
+            defaultExpanded={[workflow.defaultTargetFolder]}
+            defaultSelected={workflow.defaultTargetFolder}
+            selected={selectedFolderId}
+            onNodeSelect={(_: unknown, nodeId: string) =>
+              setSelectedFolderId(nodeId)
+            }
+          >
+            {options.map(option => renderTree(option))}
+          </TreeView>
         </div>
       </DotDialog>
     );
@@ -287,7 +298,7 @@ const renderFolderTree = () => {
           placeholder="Start typing to filter workflows..."
           inputProps={{ 'aria-label': 'search google maps' }}
           value={searchInput}
-          onChange={(e) => handleSearchInput(e.target.value)}
+          onChange={e => handleSearchInput(e.target.value)}
         />
       </Paper>
       <br />
