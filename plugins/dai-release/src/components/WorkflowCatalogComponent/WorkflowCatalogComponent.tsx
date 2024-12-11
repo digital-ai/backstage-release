@@ -3,7 +3,6 @@ import {
   CssGrid,
   DotAlertBanner,
   DotDialog,
-  DotIconButton,
   DotTypography
 } from '@digital-ai/dot-components';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,9 +14,12 @@ import { Folder, FolderBackendResponse, Workflow } from "@digital-ai/plugin-dai-
 import { WorkflowCard } from './WorkflowCardComponent';
 import { calculateCellProps } from '../../utils/helpers';
 import { makeStyles } from '@material-ui/core';
-import { Autocomplete, TextField } from '@mui/material';
 import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 import isNil from 'lodash/isNil';
+import { TreeView, TreeItem } from '@mui/x-tree-view';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
 const useStyles = makeStyles(() => ({
   searchHeader: {
@@ -48,6 +50,17 @@ const useStyles = makeStyles(() => ({
   customAutocomplete: {
     zIndex: 3000,
   },
+//   cardFolderDialog: {
+//     '& .MuiDialogTitle-root, & .dot-dialog-title': {
+//       alignItems: 'center',
+//       display: 'flex',
+//       flexWrap: 'nowrap',
+//       padding: '16px 24px',
+//       '& h2': {
+//         flexGrow: 0,
+//       },
+//     },
+//   },
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -78,7 +91,6 @@ export const WorkflowCatalogComponent = ({
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const [url, setUrl] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showErrorDetails, setShowErrorDetails] = useState<boolean>(false);
   const [workflowParams, setWorkflowParams] = useState<{
     templateId: string;
     title: string;
@@ -99,6 +111,7 @@ export const WorkflowCatalogComponent = ({
   };
 
   const handleRunWorkflow = () => {
+
     if (!workflowDialogOpen) return;
     const selectedWorkflow = data.find((w) => w.id === workflowDialogOpen);
     if (!selectedWorkflow) return;
@@ -130,25 +143,27 @@ export const WorkflowCatalogComponent = ({
     onSearchInput(value);
   }
 
-  const handleNodeSelect = (_: any, value: any) => {
-    setSelectedFolderId(value ? value.key : null);
-  };
 
-  const handleShowDetails = () => {
-    setShowErrorDetails(!showErrorDetails);
-  };
 
-  const renderError = (message: string) => {
-    return (
-      <DotAlertBanner action={<DotIconButton iconId={showErrorDetails ? 'arrow-up' : 'arrow-down'} onClick={handleShowDetails} />} severity="error">
-        <DotTypography>{message}</DotTypography>
-      </DotAlertBanner>
-    );
-  };
+  const renderTree = (nodes: any) => (
+    <TreeItem key={nodes.key} nodeId={nodes.key} label={nodes.title}>
+      {Array.isArray(nodes.children)
+        ? nodes.children.map((node: any) => renderTree(node))
+        : null}
+    </TreeItem>
+  );
 
   const renderDialog = () => {
     const workflow = data.find((w) => w.id === workflowDialogOpen);
     if (!workflow) return null;
+
+  const renderError = (message: string) => {
+    return (
+      <DotAlertBanner severity="error">
+        <DotTypography>{message}</DotTypography>
+      </DotAlertBanner>
+    );
+  };
 
     const renderFolderTree = () => {
       const folderList: Folder[] = folders.folders;
@@ -162,10 +177,7 @@ export const WorkflowCatalogComponent = ({
       return convertToTreeNodes(folderList);
     };
 
-    const options = renderFolderTree().flatMap(folder => [
-      folder,
-      ...folder.children.map((child: Folder) => ({ ...child, title: `-- ${child.title}` })),
-    ]);
+    const options = renderFolderTree();
 
     return (
       <DotDialog
@@ -173,9 +185,9 @@ export const WorkflowCatalogComponent = ({
         className="card-folder-dialog"
         closeIconVisible
         closeOnClickAway
-        closeOnSubmit
+        closeOnSubmit={!!errorMessage}
         onSubmit={handleRunWorkflow}
-        open
+        open={!!workflowDialogOpen}
         submitButtonProps={{ label: 'Run workflow', disabled: isNil(selectedFolderId) || !!errorMessage}}
         title="Choose folder"
       >
@@ -183,18 +195,29 @@ export const WorkflowCatalogComponent = ({
         <DotTypography>
           Select the folder where workflow <strong>{workflow.title}</strong> will be run.
         </DotTypography>
+        <br />
         <DotTypography className="persistent-label" variant="subtitle2">
           Folder name
         </DotTypography>
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-          <Autocomplete
-            value={options.find(option => option.key === selectedFolderId) || null}
-            onChange={handleNodeSelect}
-            options={options}
-            getOptionLabel={(option) => option.title}
-            renderInput={(params) => <TextField {...params} />}
-            className={classes.customAutocomplete}
-          />
+<TreeView
+  defaultCollapseIcon={
+
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                 <ArrowDropDownIcon/>
+                                 <FolderOpenIcon style={{ marginRight: '8px' }} />
+                               </div>}
+  defaultExpandIcon={<div style={{ display: 'flex', alignItems: 'center' }}>
+                         <ArrowRightIcon/>
+                         <FolderOpenIcon style={{ marginRight: '8px' }} />
+                       </div>}
+  defaultExpanded={[workflow.defaultTargetFolder]}
+  defaultSelected={workflow.defaultTargetFolder}
+  selected={selectedFolderId}
+  onNodeSelect={(_: unknown, nodeId: string) => setSelectedFolderId(nodeId)}
+>
+  {options.map((option) => renderTree(option))}
+</TreeView>
         </div>
       </DotDialog>
     );
