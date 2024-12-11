@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 
@@ -9,6 +8,7 @@ export function useWorkflowRedirect(
   releaseTitle: string,
   releaseId: string,
   setUrl: (url: string) => void,
+  setErrorMessage: (message: string) => void
 ) {
   const api = useApi(daiReleaseApiRef);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -29,19 +29,16 @@ export function useWorkflowRedirect(
         abortControllerRef.current = abortController;
 
         setUrl(undefined as unknown as string);
-        // setMetaInfo(undefined);
 
         const result = await api.getWorkflowRedirectLink(instance, templateId, releaseTitle, releaseId, {
-          signal: abortController.signal,
+          signal: abortController.signal
         });
 
         // Only proceed if the request was not aborted
         if (isMounted && !abortController.signal.aborted) {
           if (
-            result
-             &&
-             JSON.stringify(result) !==
-               JSON.stringify(previousUrl.current)
+            result &&
+            JSON.stringify(result) !== JSON.stringify(previousUrl.current)
           ) {
             previousUrl.current = result;
             setUrl(result.url);
@@ -50,6 +47,7 @@ export function useWorkflowRedirect(
       } catch (err) {
         // Check if error is due to abort, otherwise handle the error
         const abortError = err as Error;
+        setErrorMessage(abortError.message);
         if (abortError.name !== 'AbortError') {
           setUrl('');
         }

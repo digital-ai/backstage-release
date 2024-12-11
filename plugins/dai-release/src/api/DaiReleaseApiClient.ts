@@ -168,7 +168,12 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   }
 
   private async errorResponse(response: Response) {
+      console.log("-----------response--------------")
+
+
     const data = await parseErrorResponseBody(response);
+
+      console.log(data.error.message)
     if (response.status === 401) {
       throw new AuthenticationError(data.error.message);
     } else if (response.status === 403) {
