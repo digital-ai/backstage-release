@@ -4,13 +4,13 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
+import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { Workflow } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
 import { screen } from '@testing-library/react';
-import { workflowCatalogsList } from '../../mocks/workflowMocks';
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
@@ -42,11 +42,14 @@ async function renderContent(args: {
           searchInput=""
           onSearchInput={jest.fn()}
           resetState={jest.fn()}
+          folders={FoldersListBackendResponse}
+          instance="test-instance"
         />
       </DotThemeProvider>
     </TestApiProvider>,
   );
 }
+
 beforeAll(() => {
   global.ResizeObserver = class {
     observe() {}
@@ -54,6 +57,7 @@ beforeAll(() => {
     disconnect() {}
   };
 });
+
 describe('WorkflowCatalogComponent', () => {
   it('should render the search header and workflows', async () => {
     await renderContent({

@@ -63,6 +63,7 @@ export type Workflow = {
   folderTitle: string;
   categories: string[];
   git: GitInfo;
+  defaultTargetFolder: string;
 };
 
 // Backend API Response - workflow/redirect

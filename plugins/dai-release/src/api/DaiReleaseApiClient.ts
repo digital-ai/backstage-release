@@ -8,6 +8,7 @@ import {
 } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import {
+  FolderBackendResponse,
   ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
@@ -33,7 +34,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   private async getToken() {
     const { token } = await this.identityApi.getCredentials();
-    return '6HqrCFFDme/3WcC0SFdpaunTu8g2WY+/' ?? token;
+    return token;
   }
 
   private isStatusChecked(statusTags: string[], tag: string) {
@@ -212,5 +213,39 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     });
     const urlSegment = `workflows?${queryString}`;
     return await this.post<WorkflowsList>(urlSegment, options, body);
+  }
+
+  async getFolders(
+    instanceName: string,
+    options?: { signal?: AbortSignal }
+  ): Promise<FolderBackendResponse> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+
+    const urlSegment = `folders?instanceName=${instanceName}`;
+    // will be removed in next PR by implementing the actual API call
+    global.console.log('urlSegment', urlSegment);
+    return await this.get<FolderBackendResponse>(urlSegment, options);
+  }
+
+  async getWorkflowRedirectLink(
+    instanceName: string,
+    templateId: string,
+    releaseTitle: string,
+    folderId: string,
+    options?: { signal?: AbortSignal }
+  ): Promise<{ url: string }> {
+    const queryString = new URLSearchParams();
+    queryString.append('instanceName', instanceName.toString());
+    const urlSegment = `workflow/redirect?instanceName=${instanceName}`;
+    // will be removed in next PR by implementing the actual API call
+    global.console.log('urlSegment', urlSegment);
+
+    const body = JSON.stringify({
+      ...(templateId && { templateId }),
+      ...(folderId && { folderId }),
+      ...(releaseTitle && { releaseTitle }),
+    });
+    return await this.post<{ url: string }>(urlSegment, options, body);
   }
 }
