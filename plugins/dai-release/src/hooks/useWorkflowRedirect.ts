@@ -63,5 +63,5 @@ export function useWorkflowRedirect(
         abortControllerRef.current.abort();
       }
     };
-  }, [templateId, api, releaseTitle, releaseId, setUrl, instance]);
+  }, [templateId, api, releaseTitle, releaseId, setUrl, instance, setErrorMessage]);
 }

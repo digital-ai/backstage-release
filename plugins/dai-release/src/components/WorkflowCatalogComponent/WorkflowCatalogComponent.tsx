@@ -5,21 +5,23 @@ import {
   DotDialog,
   DotTypography
 } from '@digital-ai/dot-components';
-import React, { useEffect, useRef, useState } from 'react';
-import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
-import Paper from '@mui/material/Paper';
-import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { Folder, FolderBackendResponse, Workflow } from "@digital-ai/plugin-dai-release-common";
-import { WorkflowCard } from './WorkflowCardComponent';
-import { calculateCellProps } from '../../utils/helpers';
-import { makeStyles } from '@material-ui/core';
-import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
-import isNil from 'lodash/isNil';
-import { TreeView, TreeItem } from '@mui/x-tree-view';
+import { TreeItem, TreeView } from '@mui/x-tree-view';
+import { useEffect, useRef, useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
+import Paper from '@mui/material/Paper';
+import React from 'react';
+import { WorkflowCard } from './WorkflowCardComponent';
+import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
+import { calculateCellProps } from '../../utils/helpers';
+import isNil from 'lodash/isNil';
+import { makeStyles } from '@material-ui/core';
+import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
+
 
 const useStyles = makeStyles(() => ({
   searchHeader: {
@@ -49,18 +51,8 @@ const useStyles = makeStyles(() => ({
   },
   customAutocomplete: {
     zIndex: 3000,
-  },
-//   cardFolderDialog: {
-//     '& .MuiDialogTitle-root, & .dot-dialog-title': {
-//       alignItems: 'center',
-//       display: 'flex',
-//       flexWrap: 'nowrap',
-//       padding: '16px 24px',
-//       '& h2': {
-//         flexGrow: 0,
-//       },
-//     },
-//   },
+  }
+
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -165,17 +157,19 @@ export const WorkflowCatalogComponent = ({
     );
   };
 
-    const renderFolderTree = () => {
-      const folderList: Folder[] = folders.folders;
-      const convertToTreeNodes = (folders: Folder[]): any[] => {
-        return folders.map(folder => ({
-          key: folder.id,
-          title: folder.title,
-          children: folder.children ? convertToTreeNodes(folder.children) : []
-        }));
-      };
-      return convertToTreeNodes(folderList);
-    };
+const renderFolderTree = () => {
+  const folderList: Folder[] = folders.folders;
+
+  const convertToTreeNodes = (folderArray: Folder[]): any[] => {
+    return folderArray.map((folder) => ({
+      key: folder.id,
+      title: folder.title,
+      children: folder.children ? convertToTreeNodes(folder.children) : []
+    }));
+  };
+
+  return convertToTreeNodes(folderList);
+};
 
     const options = renderFolderTree();
 
