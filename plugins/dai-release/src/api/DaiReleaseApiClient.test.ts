@@ -1,17 +1,19 @@
+
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
+import {
+  workflowCatalogsFilterCategoriesList,
+  workflowCatalogsFilterList,
+  workflowCatalogsList
+} from '../mocks/workflowMocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { mockReleaseCategories } from '../mocks/categoriesMocks';
 import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';
-import {
-  workflowCatalogsFilterCategoriesList,
-  workflowCatalogsFilterList,
-  workflowCatalogsList
-} from '../mocks/workflowMocks';
+
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'https://example.com/api/dai-release',

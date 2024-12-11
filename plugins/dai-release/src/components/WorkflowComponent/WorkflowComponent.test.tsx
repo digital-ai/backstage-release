@@ -5,12 +5,13 @@ import {
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+import {fireEvent, screen} from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { WorkflowComponent } from './WorkflowComponent';
-import {fireEvent, screen, waitFor} from '@testing-library/react';
-import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
+import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
+
 jest.mock('../../hooks/useWorkflowCatalog');
 jest.mock('../../hooks/useReleaseCategories');
 
@@ -181,7 +182,7 @@ describe('WorkflowComponent', () => {
           {id: '4', title: 'Category4'},
         ]);
         setLoadingReleaseCategories(false);
-      }, []);
+      }, [setLoadingReleaseCategories, setReleaseCategories ]);
     });
     await renderContent();
 
@@ -255,7 +256,7 @@ describe('WorkflowComponent', () => {
           {id: '4', title: 'Category4'},
         ]);
         setLoadingReleaseCategories(false);
-      }, []);
+      },[setLoadingReleaseCategories, setReleaseCategories ] );
     });
     await renderContent();
 
@@ -288,24 +289,4 @@ describe('WorkflowComponent', () => {
     expect(screen.getByText('Test Workflow 1')).toBeInTheDocument();
   });
 
-/*  it('should update searchInput and call setSearchInput', async () => {
-    await renderContent();
-    // Find the input element by placeholder
-    const inputElement = screen.getByPlaceholderText('Start typing to filter workflows...') as HTMLInputElement;
-
-    expect(inputElement).toBeInTheDocument();
-    expect(inputElement).toHaveValue('');
-
-    fireEvent.change(inputElement, { target: { value: 'Test Input' } });
-
-    expect(mockUseWorkflowCatalog().setSearchInput).toHaveBeenCalledWith('Test Input');
-
-
-    // Wait for the change to be applied and re-rendered
-    await waitFor(() => {
-      console.log(mockUseWorkflowCatalog().searchInput);
-     /!* expect(mockUseWorkflowCatalog().searchInput).toBe('Test Input');*!/
-      expect(inputElement.value).toBe('Test Input');
-    });
-  });*/
 });
