@@ -79,26 +79,42 @@ export const WorkflowCatalogComponent = ({
   const [url, setUrl] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showErrorDetails, setShowErrorDetails] = useState<boolean>(false);
+  const [workflowParams, setWorkflowParams] = useState<{
+    templateId: string;
+    title: string;
+    folderId: string;
+  } | null>(null);
 
-  // Trigger the workflow redirect hook
   useWorkflowRedirect(
     instance,
-    workflowDialogOpen || '',
-    data.find((w) => w.id === workflowDialogOpen)?.title || '',
-    selectedFolderId || '',
+    workflowParams?.templateId || '',
+    workflowParams?.title || '',
+    workflowParams?.folderId || '',
     setUrl,
     setErrorMessage
   );
+
+  const handleOnRunClick = (workflowFromCategory: Workflow) => {
+    setWorkflowDialogOpen(workflowFromCategory.id);
+  };
+
+  const handleRunWorkflow = () => {
+    if (!workflowDialogOpen) return;
+    const selectedWorkflow = data.find((w) => w.id === workflowDialogOpen);
+    if (!selectedWorkflow) return;
+
+    setWorkflowParams({
+      templateId: workflowDialogOpen,
+      title: selectedWorkflow.title,
+      folderId: selectedFolderId || '',
+    });
+  };
 
   useEffect(() => {
     if (url) {
       window.open(url, '_blank');
     }
   }, [url]);
-
-  const handleOnRunClick = (workflowFromCategory: Workflow) => {
-    setWorkflowDialogOpen(workflowFromCategory.id);
-  };
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -158,7 +174,7 @@ export const WorkflowCatalogComponent = ({
         closeIconVisible
         closeOnClickAway
         closeOnSubmit
-        onSubmit={() => setWorkflowDialogOpen(null)}
+        onSubmit={handleRunWorkflow}
         open
         submitButtonProps={{ label: 'Run workflow', disabled: isNil(selectedFolderId) || !!errorMessage}}
         title="Choose folder"
@@ -271,5 +287,3 @@ export const WorkflowCatalogComponent = ({
     </div>
   );
 };
-
-
