@@ -47,7 +47,7 @@ export function useWorkflowCatalog(): {
   // Use the debounced value of searchAuthor, it will update the state after 1 second
   const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
 
-  // Use the debounced value of searchCatefories, it will update the state after 1 second
+  // Use the debounced value of searchCategories, it will update the state after 1 second
   const debouncedSearchCategories = useDebouncedValue(workflowSearch.categories, 500);
 
   // Use the debounced value of searchTag, it will update the state after 1 second

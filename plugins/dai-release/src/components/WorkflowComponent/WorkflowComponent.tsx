@@ -36,10 +36,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export type WorkFlowSearch = {
-  categories: string[];
-  author: string;
-};
 export const WorkflowComponent = () => {
   const classes = useStyles();
   const [loadingReleaseCategories, setLoadingReleaseCategories] =
