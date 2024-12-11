@@ -58,7 +58,7 @@ export const mockTestHandlers = [
     return new HttpResponse(JSON.stringify(workflowsResponse));
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
     },
@@ -121,7 +121,7 @@ export const error404ResponseHandler = [
     });
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(JSON.stringify('[]'), {
         status: 404,
@@ -188,7 +188,7 @@ export const error403ResponseHandler = [
     });
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse('You do not have release#view permission', {
         status: 403,
@@ -256,7 +256,7 @@ export const error500ResponseHandler = [
   }),
 
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(null, {
         status: 500,
