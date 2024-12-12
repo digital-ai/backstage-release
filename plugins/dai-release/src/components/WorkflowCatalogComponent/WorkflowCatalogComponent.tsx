@@ -118,8 +118,8 @@ export const WorkflowCatalogComponent = ({
       title: selectedWorkflow.title,
       folderId: selectedFolderId || '',
     });
-          setWorkflowDialogOpen(undefined);
-          setSelectedFolderId(undefined);
+    setWorkflowDialogOpen(null);
+    setSelectedFolderId(undefined);
   };
 
   useEffect(() => {
@@ -143,8 +143,8 @@ export const WorkflowCatalogComponent = ({
   }
 
   const handleOnCancel = () => {
-      setWorkflowDialogOpen(undefined);
-      setSelectedFolderId(undefined);
+    setWorkflowDialogOpen(null);
+    setSelectedFolderId(undefined);
   };
 
   const renderTree = (nodes: any) => (
@@ -168,11 +168,12 @@ export const WorkflowCatalogComponent = ({
     const workflow = data.find(w => w.id === workflowDialogOpen);
     if (!workflow) return null;
     const renderError = (message: string) => {
-      return (<>
-        <DotAlertBanner severity="error">
-          <DotTypography>{message}</DotTypography>
-        </DotAlertBanner>
-        <br />
+      return (
+        <>
+          <DotAlertBanner severity="error">
+            <DotTypography>{message}</DotTypography>
+          </DotAlertBanner>
+          <br />
         </>
       );
     };
@@ -221,19 +222,19 @@ export const WorkflowCatalogComponent = ({
         </DotTypography>
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
           <TreeView
-              sx={{
-                padding: '8px',
-                margin: '8px',
-                '& .MuiTreeItem-root': {
-                  marginBottom: '8px', // Space between TreeItems
-                },
-                '& .MuiTreeItem-content': {
-                  padding: '4px 8px', // Space around the TreeItem content
-                },
-                '& .MuiTreeItem-label': {
-                  fontSize: '12px', // Customize label size
-                },
-              } }
+            sx={{
+              padding: '8px',
+              margin: '8px',
+              '& .MuiTreeItem-root': {
+                marginBottom: '8px', // Space between TreeItems
+              },
+              '& .MuiTreeItem-content': {
+                padding: '4px 8px', // Space around the TreeItem content
+              },
+              '& .MuiTreeItem-label': {
+                fontSize: '12px', // Customize label size
+              },
+            }}
             defaultCollapseIcon={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ArrowDropDownIcon />
@@ -244,9 +245,11 @@ export const WorkflowCatalogComponent = ({
                 <ArrowRightIcon />
               </div>
             }
-
-            defaultExpanded={["Applications/FolderDefaultReleaseContent","Applications/"+workflow.defaultTargetFolder]}
-            defaultSelected={"Applications/"+workflow.defaultTargetFolder}
+            defaultExpanded={[
+              `Applications/FolderDefaultReleaseContent`,
+              `Applications/${workflow.defaultTargetFolder}`,
+            ]}
+            defaultSelected={`Applications/${workflow.defaultTargetFolder}`}
             selected={selectedFolderId}
             onNodeSelect={(_: unknown, nodeId: string) =>
               setSelectedFolderId(nodeId)
