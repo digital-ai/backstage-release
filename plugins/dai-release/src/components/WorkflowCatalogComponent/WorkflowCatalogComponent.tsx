@@ -109,6 +109,7 @@ export const WorkflowCatalogComponent = ({
   };
 
   const handleRunWorkflow = () => {
+
     if (!workflowDialogOpen) return;
     const selectedWorkflow = data.find(w => w.id === workflowDialogOpen);
     if (!selectedWorkflow) return;
@@ -118,8 +119,6 @@ export const WorkflowCatalogComponent = ({
       title: selectedWorkflow.title,
       folderId: selectedFolderId || '',
     });
-    setWorkflowDialogOpen(null);
-    setSelectedFolderId(undefined);
   };
 
   useEffect(() => {
@@ -145,6 +144,7 @@ export const WorkflowCatalogComponent = ({
   const handleOnCancel = () => {
     setWorkflowDialogOpen(null);
     setSelectedFolderId(undefined);
+    setErrorMessage(null);
   };
 
   const renderTree = (nodes: any) => (
@@ -202,7 +202,7 @@ export const WorkflowCatalogComponent = ({
         closeOnClickAway
         closeOnSubmit={!!errorMessage}
         onSubmit={handleRunWorkflow}
-        open={true}
+        open
         onCancel={handleOnCancel}
         submitButtonProps={{
           label: 'Run workflow',
