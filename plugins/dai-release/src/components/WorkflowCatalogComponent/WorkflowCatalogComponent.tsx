@@ -141,7 +141,16 @@ export const WorkflowCatalogComponent = ({
   }
 
   const renderTree = (nodes: any) => (
-    <TreeItem key={nodes.key} nodeId={nodes.key} label={nodes.title}>
+    <TreeItem
+      key={nodes.key}
+      nodeId={nodes.key}
+      label={
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <FolderOpenIcon style={{ marginRight: '8px' }} />
+          {nodes.title}
+        </div>
+      }
+    >
       {Array.isArray(nodes.children)
         ? nodes.children.map((node: any) => renderTree(node))
         : null}
@@ -151,12 +160,13 @@ export const WorkflowCatalogComponent = ({
   const renderDialog = () => {
     const workflow = data.find(w => w.id === workflowDialogOpen);
     if (!workflow) return null;
-
     const renderError = (message: string) => {
-      return (
+      return (<>
         <DotAlertBanner severity="error">
           <DotTypography>{message}</DotTypography>
         </DotAlertBanner>
+        <br />
+        </>
       );
     };
 
@@ -192,6 +202,7 @@ export const WorkflowCatalogComponent = ({
         title="Choose folder"
       >
         {errorMessage && renderError(errorMessage)}
+
         <DotTypography>
           Select the folder where workflow <strong>{workflow.title}</strong>{' '}
           will be run.
@@ -202,20 +213,32 @@ export const WorkflowCatalogComponent = ({
         </DotTypography>
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
           <TreeView
+              sx={{
+                padding: '8px',
+                margin: '8px',
+                '& .MuiTreeItem-root': {
+                  marginBottom: '8px', // Space between TreeItems
+                },
+                '& .MuiTreeItem-content': {
+                  padding: '4px 8px', // Space around the TreeItem content
+                },
+                '& .MuiTreeItem-label': {
+                  fontSize: '12px', // Customize label size
+                },
+              } }
             defaultCollapseIcon={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ArrowDropDownIcon />
-                <FolderOpenIcon style={{ marginRight: '8px' }} />
               </div>
             }
             defaultExpandIcon={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ArrowRightIcon />
-                <FolderOpenIcon style={{ marginRight: '8px' }} />
               </div>
             }
-            defaultExpanded={[workflow.defaultTargetFolder]}
-            defaultSelected={workflow.defaultTargetFolder}
+
+            defaultExpanded={["Applications/FolderDefaultReleaseContent","Applications/"+workflow.defaultTargetFolder]}
+            defaultSelected={"Applications/"+workflow.defaultTargetFolder}
             selected={selectedFolderId}
             onNodeSelect={(_: unknown, nodeId: string) =>
               setSelectedFolderId(nodeId)
