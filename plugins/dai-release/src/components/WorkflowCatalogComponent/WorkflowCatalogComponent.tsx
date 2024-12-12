@@ -118,6 +118,8 @@ export const WorkflowCatalogComponent = ({
       title: selectedWorkflow.title,
       folderId: selectedFolderId || '',
     });
+          setWorkflowDialogOpen(undefined);
+          setSelectedFolderId(undefined);
   };
 
   useEffect(() => {
@@ -139,6 +141,11 @@ export const WorkflowCatalogComponent = ({
     resetState();
     onSearchInput(value);
   }
+
+  const handleOnCancel = () => {
+      setWorkflowDialogOpen(undefined);
+      setSelectedFolderId(undefined);
+  };
 
   const renderTree = (nodes: any) => (
     <TreeItem
@@ -194,7 +201,8 @@ export const WorkflowCatalogComponent = ({
         closeOnClickAway
         closeOnSubmit={!!errorMessage}
         onSubmit={handleRunWorkflow}
-        open={!!workflowDialogOpen}
+        open={true}
+        onCancel={handleOnCancel}
         submitButtonProps={{
           label: 'Run workflow',
           disabled: isNil(selectedFolderId) || !!errorMessage,
