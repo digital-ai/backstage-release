@@ -136,7 +136,6 @@ export class WorkflowsOverviewApi {
       ...(categories.length && { categories }),
       ...(author && { author }),
     });
-    this.logger.info(body)
     const response = await fetch(
       `${apiUrl}${RELEASE_WORKFLOW_LIST_API_PATH}?page=${pageNumber}&resultsPerPage=${resultsPerPage}`,
       {
