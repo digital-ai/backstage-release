@@ -1,6 +1,9 @@
 # Changelog
+
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.1) (08/11/2024)
+
 ### Library upgrade
+
 - Replaced winston logger with LoggerService
 - Replaced PermissionEvaluator to PermissionService
 - Removed permission support for old backend system
@@ -22,6 +25,7 @@
   - yn@^5.0.0
 
 ### Features
+
 - API to get release templates.
 - API to get configured release instances.
 - API to get metadata information based on folder for each templates.

@@ -237,7 +237,7 @@ export async function createRouter(
       req.query.resultsPerPage?.toString(),
     );
     const searchInput = req.body.searchInput?.toString() || '';
-    const categories: string[] = req.body.categories ||  [];
+    const categories: string[] = req.body.categories || [];
     const author = req.body.author?.toString() || '';
     const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(
       instanceName,

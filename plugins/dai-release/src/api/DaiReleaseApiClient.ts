@@ -142,9 +142,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   }
 
   private async post<T>(
-      path: string,
-      options: { signal?: AbortSignal } | undefined,
-      body: string): Promise<T> {
+    path: string,
+    options: { signal?: AbortSignal } | undefined,
+    body: string,
+  ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
     const idToken = await this.getToken();
@@ -157,7 +158,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
         Authorization: `Bearer ${idToken}`,
       },
       signal: options?.signal,
-      body: body
+      body: body,
     });
 
     if (!response.ok) {
@@ -180,7 +181,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       throw new InputError(data.error.message);
     }
     throw new Error(
-        `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
+      `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
     );
   }
 
@@ -193,7 +194,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   async getWorkflowCatalog(
     page: number,
-    resultsPerPage : number,
+    resultsPerPage: number,
     searchInput: string,
     categories: string[],
     author: string,

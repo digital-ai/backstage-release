@@ -66,8 +66,8 @@ export class WorkflowsOverviewApi {
 
   async getWorkflowsOverviewApi(
     instanceName: string,
-    pageNumber: string ,
-    resultsPerPage: string ,
+    pageNumber: string,
+    resultsPerPage: string,
     searchInput: string,
     categories: string[],
     author: string,
@@ -93,16 +93,16 @@ export class WorkflowsOverviewApi {
     }
 
     function getImageLink(logo: Logo): string {
-      if(logo?.id)
-      return `${apiUrl}${RELEASE_WORKFLOW_LOGO_API_PATH}/${logo?.id}`;
-   return  '';
+      if (logo?.id)
+        return `${apiUrl}${RELEASE_WORKFLOW_LOGO_API_PATH}/${logo?.id}`;
+      return '';
     }
 
     const workflowDetails = workflows.content.map(d => ({
       title: d.title,
       id: d.id,
       description: d.description,
-      logoLink:  getImageLink(d.logo),
+      logoLink: getImageLink(d.logo),
       author: d.author,
       folderTitle: d.folderTitle,
       categories: Array.isArray(d.categories) ? d.categories : [d.categories],

@@ -797,9 +797,9 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       title: 'AWS Lamba setup function with Digital.ai Deploy',
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
       description:
-          'Easily create an application in Digital.ai Deploy that can be deployed to AWS Lambda, including its respective environment and infrastructure setup.',
+        'Easily create an application in Digital.ai Deploy that can be deployed to AWS Lambda, including its respective environment and infrastructure setup.',
       logoLink:
-          'http://xl-release-nightly.xebialabs.com:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder22212ee5d12e4f9e875ca69bc0e2285e/Folderb1fde4f828dd4df9bb8afee3232326c5/Release7df72eb833d74d2baf470fb617572115/TemplateLogo88fe866e14844eb79952e3412f4d78a7',
+        'http://xl-release-nightly.xebialabs.com:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder22212ee5d12e4f9e875ca69bc0e2285e/Folderb1fde4f828dd4df9bb8afee3232326c5/Release7df72eb833d74d2baf470fb617572115/TemplateLogo88fe866e14844eb79952e3412f4d78a7',
       author: 'Digital.ai',
       folderTitle: 'Digital.ai Deploy',
       categories: [
@@ -811,7 +811,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
     {
@@ -819,14 +819,14 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release3f5811d4df0449b5971e8fd077b5f1ac',
       description: 'Install Argo Rollouts to Kubernetes cluster.',
       logoLink:
-          'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release3f5811d4df0449b5971e8fd077b5f1ac/TemplateLogob5e84a3e872e4713afadd70cd0ba9cad',
+        'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release3f5811d4df0449b5971e8fd077b5f1ac/TemplateLogob5e84a3e872e4713afadd70cd0ba9cad',
       author: 'Digital.ai',
       folderTitle: 'ArgoCD',
       categories: ['Application onboarding'],
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
     {
@@ -834,14 +834,14 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasea8a675e4fbba46f9b08fd4bad10bc410',
       description: 'Delete Application in ArgoCD.',
       logoLink:
-          'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasea8a675e4fbba46f9b08fd4bad10bc410/TemplateLogo87aed9d88efe40e4b7cb812a375a7e7e',
+        'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasea8a675e4fbba46f9b08fd4bad10bc410/TemplateLogo87aed9d88efe40e4b7cb812a375a7e7e',
       author: 'Digital.ai',
       folderTitle: 'ArgoCD',
       categories: ['Application onboarding'],
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
     {
@@ -849,23 +849,23 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release44b03bb9f24649a7a1d0d7f365161103',
       description: 'Delete ArgoCD live deployment configuration',
       logoLink:
-          'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release44b03bb9f24649a7a1d0d7f365161103/TemplateLogo6c0a3bec70e44c7397c626e2d9469e80',
+        'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release44b03bb9f24649a7a1d0d7f365161103/TemplateLogo6c0a3bec70e44c7397c626e2d9469e80',
       author: 'Digital.ai',
       folderTitle: 'ArgoCD',
       categories: ['Application onboarding'],
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
     {
       title: 'ArgoCD install',
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasef877a7d2d9b0485ba728ee6e74611d0a',
       description:
-          'Install ArgoCD on Kubernetes cluster for deploying an Application in no time.',
+        'Install ArgoCD on Kubernetes cluster for deploying an Application in no time.',
       logoLink:
-          'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasef877a7d2d9b0485ba728ee6e74611d0a/TemplateLogo9cd9ce8c3b5c46a9a274c2b32de047e3',
+        'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Releasef877a7d2d9b0485ba728ee6e74611d0a/TemplateLogo9cd9ce8c3b5c46a9a274c2b32de047e3',
       author: 'Digital.ai',
       folderTitle: 'ArgoCD',
       categories: [
@@ -876,23 +876,23 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
     {
       title: 'ArgoCD setup application',
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release027df3eaa5234739800fad96049664a9',
       description:
-          'Create an application in ArgoCD that can be deployed to Kubernetes cluster, with initial deployment',
+        'Create an application in ArgoCD that can be deployed to Kubernetes cluster, with initial deployment',
       logoLink:
-          'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release027df3eaa5234739800fad96049664a9/TemplateLogoc3e7331166d4496baf22b87c673307bc',
+        'http://localhost:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folderc85572c8de294edb9538539539319b75/Release027df3eaa5234739800fad96049664a9/TemplateLogoc3e7331166d4496baf22b87c673307bc',
       author: 'Digital.ai',
       folderTitle: 'ArgoCD',
       categories: ['Application onboarding'],
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
   ],
@@ -900,16 +900,15 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
   totalElements: 33,
 };
 
-
 export const workflowCatalogsFilterList: WorkflowsList = {
   workflows: [
     {
       title: 'AWS Lamba setup function with Digital.ai Deploy',
       id: 'Applications/FolderDefaultReleaseContent/Folder4a343064f8df4d1196e99144b4f43ae6/Folder3aa7f619722240b9aac118502adb48a7/Releasef6c2bb8acb3f4b3892ae36cf3b2f798b',
       description:
-          'Easily create an application in Digital.ai Deploy that can be deployed to AWS Lambda, including its respective environment and infrastructure setup.',
+        'Easily create an application in Digital.ai Deploy that can be deployed to AWS Lambda, including its respective environment and infrastructure setup.',
       logoLink:
-          'http://xl-release-nightly.xebialabs.com:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder22212ee5d12e4f9e875ca69bc0e2285e/Folderb1fde4f828dd4df9bb8afee3232326c5/Release7df72eb833d74d2baf470fb617572115/TemplateLogo88fe866e14844eb79952e3412f4d78a7',
+        'http://xl-release-nightly.xebialabs.com:5516/api/v1/templates/logo/Applications/FolderDefaultReleaseContent/Folder22212ee5d12e4f9e875ca69bc0e2285e/Folderb1fde4f828dd4df9bb8afee3232326c5/Release7df72eb833d74d2baf470fb617572115/TemplateLogo88fe866e14844eb79952e3412f4d78a7',
       author: 'Digital.ai',
       folderTitle: 'Digital.ai Deploy',
       categories: [
@@ -921,7 +920,7 @@ export const workflowCatalogsFilterList: WorkflowsList = {
       git: {
         commitId: 'ab542eb5',
         repoLink:
-            'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
+          'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
     },
   ],

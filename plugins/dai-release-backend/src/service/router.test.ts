@@ -287,10 +287,10 @@ describe('router api tests with permissions ALLOW', () => {
         })
         .set('authorization', 'Bearer someauthtoken')
         .send({
-            searchInput: 'test',
-            categories: ['cat1', 'cat2'],
-            author: 'author1',
-          });
+          searchInput: 'test',
+          categories: ['cat1', 'cat2'],
+          author: 'author1',
+        });
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
         "Couldn't find a release instance '' in the config",
@@ -372,10 +372,10 @@ describe('router api tests - with permissions DENY', () => {
         })
         .set('authorization', 'Bearer someauthtoken')
         .send({
-            searchInput: 'test',
-            categories: ['cat1', 'cat2'],
-            author: 'author1',
-          });
+          searchInput: 'test',
+          categories: ['cat1', 'cat2'],
+          author: 'author1',
+        });
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
         'Access Denied: Unauthorized to access the Backstage Release plugin',

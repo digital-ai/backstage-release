@@ -1,7 +1,12 @@
-import {CssCell, CssGrid, DotInputText, DotTypography} from '@digital-ai/dot-components';
+import {
+  CssCell,
+  CssGrid,
+  DotInputText,
+  DotTypography,
+} from '@digital-ai/dot-components';
 import React, { useRef } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { Workflow } from "@digital-ai/plugin-dai-release-common";
+import { Workflow } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { calculateCellProps } from '../../utils/helpers';
@@ -50,7 +55,7 @@ export const WorkflowCatalogComponent = ({
   data,
   searchInput,
   onSearchInput,
-  resetState
+  resetState,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
   const handleOnRunClick = (workflowFromCategory: Workflow) => {
@@ -68,8 +73,8 @@ export const WorkflowCatalogComponent = ({
   };
 
   function handleSearchInput(value: string) {
-        resetState();
-        onSearchInput(value);
+    resetState();
+    onSearchInput(value);
   }
   const renderWorkflows = () => {
     return (
@@ -118,29 +123,37 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
+    <div className={classes.workflowDrawerHeaderSearch}>
+      <DotTypography className={classes.searchHeader} variant="subtitle2">
+        Search Workflows
+      </DotTypography>
+      <DotInputText
+        id="search-input"
+        name="search-input"
+        onChange={e => handleSearchInput(e.target.value)}
+        persistentLabel
+        placeholder="Start typing to filter workflows..."
+        value={searchInput}
+        endIcon={
+          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+            <span
+              className={`${classes.dotIconSize} dot-icon`}
+              style={{ height: '20px', fontSize: '20px' }}
+            >
+              <i className="icon-search" />
+            </span>
+          </IconButton>
+        }
+      />
+      <br />
       <div
-          className={classes.workflowDrawerHeaderSearch}>
-        <DotTypography className={classes.searchHeader} variant="subtitle2">
-          Search Workflows
-        </DotTypography>
-        <DotInputText
-                id="search-input"
-                name="search-input"
-                onChange={e => handleSearchInput(e.target.value)}
-                persistentLabel
-                placeholder="Start typing to filter workflows..."
-                value={searchInput}
-                endIcon={<IconButton type="button" sx={{p: '10px'}} aria-label="search" >
-                        <span className={`${classes.dotIconSize} dot-icon`} style={{height: '20px', fontSize: '20px'}}>
-                          <i className="icon-search" />
-                        </span>
-                </IconButton>}
-            />
-         <br/>
-         <div className="search-row" style={{height: 'calc(80vh - 100px)', overflowY: 'scroll'}} ref={containerRef}
-              onScroll={handleScroll}>
-          {renderWorkflows()}
-        </div>
+        className="search-row"
+        style={{ height: 'calc(80vh - 100px)', overflowY: 'scroll' }}
+        ref={containerRef}
+        onScroll={handleScroll}
+      >
+        {renderWorkflows()}
       </div>
+    </div>
   );
 };

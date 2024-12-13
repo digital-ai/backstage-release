@@ -1,11 +1,10 @@
-
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
 import {
   workflowCatalogsFilterCategoriesList,
   workflowCatalogsFilterList,
-  workflowCatalogsList
+  workflowCatalogsList,
 } from '../mocks/workflowMocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
 import { mockReleaseCategories } from '../mocks/categoriesMocks';
@@ -13,7 +12,6 @@ import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
 import { setupServer } from 'msw/node';
-
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'https://example.com/api/dai-release',
@@ -320,78 +318,87 @@ describe('ReleaseApiClient', () => {
     });
     it('should return valid response with categories filter', async () => {
       worker.use(
-          rest.post(
-              'https://example.com/api/dai-release/workflows',
-              (req, res, ctx) => {
-                const body = req.body as { categories?: string[] };
-                if (body?.categories && Array.isArray(body.categories)) {
-                if (
-                    req.url.searchParams.get('pageNumber') === '0' &&
-                    req.url.searchParams.get('instanceName') === 'default' &&
-                    body.categories[0] === 'Application onboarding'
-                ) {
-                  return res(
-                      ctx.status(200),
-                      ctx.set('Content-Type', 'application/json'),
-                      ctx.json(workflowCatalogsFilterCategoriesList),
-                  );
-                }
-                }
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (req, res, ctx) => {
+            const body = req.body as { categories?: string[] };
+            if (body?.categories && Array.isArray(body.categories)) {
+              if (
+                req.url.searchParams.get('pageNumber') === '0' &&
+                req.url.searchParams.get('instanceName') === 'default' &&
+                body.categories[0] === 'Application onboarding'
+              ) {
                 return res(
-                    ctx.status(400),
-                    ctx.set('Content-Type', 'application/json'),
+                  ctx.status(200),
+                  ctx.set('Content-Type', 'application/json'),
+                  ctx.json(workflowCatalogsFilterCategoriesList),
                 );
-              },
-          ),
+              }
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
       );
 
       const response = await client.getWorkflowCatalog(
-          0,
-          10,
-          '',
-          ['Application onboarding'],
-          '',
-          'default',
+        0,
+        10,
+        '',
+        ['Application onboarding'],
+        '',
+        'default',
       );
       expect(response).toEqual(workflowCatalogsFilterCategoriesList);
     });
     it('should return valid response with filter', async () => {
       worker.use(
-          rest.post(
-              'https://example.com/api/dai-release/workflows',
-              (req, res, ctx) => {
-                const body = req.body as { categories?: string[], author?: string , searchInput?: string};
-                if (body?.categories && Array.isArray(body.categories) && body?.author && body?.searchInput) {
-                  if (
-                      req.url.searchParams.get('pageNumber') === '0' &&
-                      req.url.searchParams.get('instanceName') === 'default' &&
-                      body.categories[0] === 'Application onboarding' &&
-                      body.categories[1] === 'Application Life Cycle Management' &&
-                      body.author === 'Digital.ai' &&
-                      body.searchInput === 'aws'
-                  ) {
-                    return res(
-                        ctx.status(200),
-                        ctx.set('Content-Type', 'application/json'),
-                        ctx.json(workflowCatalogsFilterList),
-                    );
-                  }
-                }
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (req, res, ctx) => {
+            const body = req.body as {
+              categories?: string[];
+              author?: string;
+              searchInput?: string;
+            };
+            if (
+              body?.categories &&
+              Array.isArray(body.categories) &&
+              body?.author &&
+              body?.searchInput
+            ) {
+              if (
+                req.url.searchParams.get('pageNumber') === '0' &&
+                req.url.searchParams.get('instanceName') === 'default' &&
+                body.categories[0] === 'Application onboarding' &&
+                body.categories[1] === 'Application Life Cycle Management' &&
+                body.author === 'Digital.ai' &&
+                body.searchInput === 'aws'
+              ) {
                 return res(
-                    ctx.status(400),
-                    ctx.set('Content-Type', 'application/json'),
+                  ctx.status(200),
+                  ctx.set('Content-Type', 'application/json'),
+                  ctx.json(workflowCatalogsFilterList),
                 );
-              },
-          ),
+              }
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
       );
 
       const response = await client.getWorkflowCatalog(
-          0,
-          10,
-          'aws',
-          ['Application onboarding', 'Application Life Cycle Management'],
-          'Digital.ai',
-          'default',
+        0,
+        10,
+        'aws',
+        ['Application onboarding', 'Application Life Cycle Management'],
+        'Digital.ai',
+        'default',
       );
       expect(response).toEqual(workflowCatalogsFilterList);
     });
@@ -409,7 +416,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -427,7 +434,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
@@ -445,7 +452,7 @@ describe('ReleaseApiClient', () => {
       );
       let err;
       try {
-        await client.getWorkflowCatalog(0,15, '', [], '', 'default');
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
