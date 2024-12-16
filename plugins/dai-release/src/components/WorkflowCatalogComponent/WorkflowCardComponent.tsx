@@ -120,7 +120,7 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
         <DotCardContent>
           <div className="dot-card-bottom-spacing">
             <DotTypography variant="body1"  className="dot-card-description">
-              {workflow.description.split('\n\n').map((paragraph, index) => (
+              {workflow?.description?.split('\n\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
               ))}
             </DotTypography>

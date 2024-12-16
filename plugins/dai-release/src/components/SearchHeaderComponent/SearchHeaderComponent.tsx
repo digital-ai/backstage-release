@@ -121,12 +121,6 @@ export const SearchHeaderComponent = ({
                   onChange={(event: SelectChangeEvent) => {
                     onSetInstance(event.target.value);
                     resetState?.();
-                    if (onSetWorkflowSearch) {
-                      onSetWorkflowSearch({
-                        categories: [],
-                        author: '',
-                      });
-                    }
                   }}
                   input={
                     <OutlinedInput
