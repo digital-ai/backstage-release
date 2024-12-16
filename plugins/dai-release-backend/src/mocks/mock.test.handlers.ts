@@ -19,7 +19,6 @@ import {
 
 import { categoriesReleaseApiResponse } from './mockCategories';
 
-
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search', () => {
     return new HttpResponse(JSON.stringify(releasesOverviewReleaseApiResponse));
@@ -112,7 +111,6 @@ export const error404ResponseHandler = [
     });
   }),
   http.post('http://localhost/api/v1/workflows/search', () => {
-
     return new HttpResponse(JSON.stringify('[]'), {
       status: 404,
       statusText: 'Not found',
@@ -174,7 +172,6 @@ export const error403ResponseHandler = [
     });
   }),
   http.post('http://localhost/api/v1/workflows/search', () => {
-
     return new HttpResponse('You do not have release#view permission', {
       status: 403,
       statusText: 'forbidden',
@@ -236,7 +233,6 @@ export const error500ResponseHandler = [
     });
   }),
   http.post('http://localhost/api/v1/workflows/search', () => {
-
     return new HttpResponse(null, {
       status: 500,
       statusText: 'Unexpected error',
@@ -299,7 +295,6 @@ export const error401ResponseHandler = [
     });
   }),
   http.post('http://localhost/api/v1/workflows/search', () => {
-
     return new HttpResponse(null, {
       status: 401,
       statusText: 'Unauthorized',

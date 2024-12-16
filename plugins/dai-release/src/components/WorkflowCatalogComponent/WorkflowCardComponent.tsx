@@ -34,8 +34,8 @@ const useStyles = makeStyles(() => ({
     },
     '& .dot-card-bottom-spacing': {
       padding: '0 0 16px 0',
-      '& .markdown-viewer, & .markdown-wrapper': {
-        padding: 0,
+      '& .dot-card-description': {
+        fontSize: '14px',
       },
     },
     '& .dot-card-top-bottom-spacing': {
@@ -62,6 +62,10 @@ const useStyles = makeStyles(() => ({
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
       overflowWrap: 'break-word',
+      fontSize: '17px',
+    },
+    '& .dot-card-title-font': {
+      fontSize: '17px',
     },
   },
 }));
@@ -88,7 +92,7 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
     return (
       <div className="dot-card-bottom-spacing">
         <DotTypography variant="body1">
-          <strong>Git version: </strong>
+          <strong style={{fontSize: '14px'}}>Git version: </strong>
           {gitLink ? (
             <DotLink href={gitLink} target="_blank">
               {commitHash}
@@ -107,20 +111,25 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
         <DotCardHeader
           avatar={cardLogo}
           subheader={author ? `by ${author}` : undefined}
-          subheaderSize="large"
+          subheaderSize="small"
           title={title}
-          titleSize="medium"
+          titleSize="small"
+          titleMaxLines={10}
+          className="dot-card-title-font"
         />
         <DotCardContent>
           <div className="dot-card-bottom-spacing">
-            <DotTypography variant="body1">
-              {workflow.description}
+            <DotTypography variant="body1"  className="dot-card-description">
+              {workflow.description.split('\n\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+              ))}
             </DotTypography>
           </div>
         </DotCardContent>
       </div>
 
       <DotCardFooter>
+        {renderCommitLink()}
         <div className="dot-card-top-bottom-spacing folder-chip-section">
           <DotTypography variant="subtitle2">Folder:</DotTypography>
           <DotChip
@@ -131,7 +140,7 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
             charactersLimit={18}
           />
         </div>
-        {renderCommitLink()}
+
         <div className="categories-chip-section">
           <ChipGroup labels={workflow.categories} />
         </div>

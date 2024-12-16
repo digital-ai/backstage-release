@@ -12,7 +12,6 @@ export function useReleaseCategories(
   const abortControllerRef = useRef<AbortController | null>(null);
   useEffect(() => {
     let isMounted = true;
-
     const getReleaseCategories = async () => {
       if (!isMounted) return;
       setLoadingReleaseCategories(true);

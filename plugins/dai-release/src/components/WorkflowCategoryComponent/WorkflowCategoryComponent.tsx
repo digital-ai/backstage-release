@@ -5,9 +5,9 @@ import {
   DotSkeleton,
   DotTypography,
 } from '@digital-ai/dot-components';
-import React, { useEffect, useState } from 'react';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
+import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
@@ -111,44 +111,43 @@ type workflowCategoryComponentProps = {
   releaseCategories: CategoriesContentActiveList[] | [];
   isLoadingCategories: boolean;
   instance: string;
+  onSetWorkflowSearch: (workflowSearch: {
+    categories: string[];
+    author: string;
+  }) => void;
+  workflowSearch: { categories: string[]; author: string };
+  resetState: () => void;
 };
 
 export function WorkflowCategoryComponent({
   releaseCategories,
   isLoadingCategories,
-  instance,
+  onSetWorkflowSearch,
+  workflowSearch,
+  resetState,
 }: workflowCategoryComponentProps) {
   const classes = useStyles();
-  const [workflowSearch, setWorkflowSearch] = useState<{
-    categories: string[];
-    author: string;
-  }>({
-    categories: [],
-    author: '',
-  });
   const checkboxOptions: CheckboxProps[] = releaseCategories.map(category => ({
     label: category.title,
     value: category.id,
     checked: workflowSearch?.categories?.includes(category.title),
   }));
 
-  useEffect(() => {
-    // Reset workflowSearch when instance changes
-    setWorkflowSearch({
-      categories: [],
-      author: '',
-    });
-  }, [instance]);
-
   function handleAuthorChange(value: string) {
-    workflowSearch.author = value;
+    resetState();
+    onSetWorkflowSearch({
+      ...workflowSearch,
+      author: value,
+    });
   }
 
   function onCategoryFilterChange(options: CheckboxProps[]) {
-    workflowSearch.categories = options
-      .filter(option => option.checked)
-      .map(option => option.value)
-      .filter((value): value is string => value !== undefined);
+    const categories = options.map(cat => cat.label as string);
+    resetState();
+    onSetWorkflowSearch({
+      ...workflowSearch,
+      categories: categories,
+    });
   }
   return (
     <div className={classes.workflowCatalog}>

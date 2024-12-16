@@ -236,11 +236,9 @@ export async function createRouter(
     const resultsPerPage = getEncodedQueryVal(
       req.query.resultsPerPage?.toString(),
     );
-    const searchInput = req.query.searchInput?.toString() || '';
-    const categories: string[] = req.query.categories
-      ? req.query.categories.toString().split(',')
-      : [];
-    const author = req.query.author?.toString() || '';
+    const searchInput = req.body.searchInput?.toString() || '';
+    const categories: string[] = req.body.categories || [];
+    const author = req.body.author?.toString() || '';
     const workflows = await workflowsOverviewApi.getWorkflowsOverviewApi(
       instanceName,
       pageNumber,
