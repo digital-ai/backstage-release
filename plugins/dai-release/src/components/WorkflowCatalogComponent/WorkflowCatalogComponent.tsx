@@ -250,7 +250,7 @@ export const WorkflowCatalogComponent = ({
               `Applications/${workflow.defaultTargetFolder}`,
             ]}
             defaultSelected={`Applications/${workflow.defaultTargetFolder}`}
-            selected={selectedFolderId}
+            selected={selectedFolderId || ''}
             onNodeSelect={(_: unknown, nodeId: string) =>
               setSelectedFolderId(nodeId)
             }
