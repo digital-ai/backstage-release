@@ -123,7 +123,6 @@ export const WorkflowComponent = () => {
                 error={error}
                 onSetInstance={setInstance}
                 resetState={resetState}
-                onSetWorkflowSearch={setWorkflowSearch}
               />
             </Grid>
           </Grid>

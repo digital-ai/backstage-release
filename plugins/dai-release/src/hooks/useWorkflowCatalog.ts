@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import {useRef, useState} from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
@@ -61,6 +61,7 @@ export function useWorkflowCatalog(): {
 
   // AbortController reference to cancel the ongoing request
   const abortControllerRef = useRef<AbortController | null>(null);
+
   const { error } = useAsyncRetryWithSelectiveDeps(
     // eslint-disable-next-line consistent-return
     async () => {
