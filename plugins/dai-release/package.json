@@ -63,6 +63,8 @@
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
     "@mui/material": "^6.0.2",
+    "@mui/x-tree-view": "^6.17.0",
+    "@mui/icons-material": "6.2.0",
     "@mui/styled-engine-sc": "^6.0.2",
     "@mui/x-date-pickers": "^7.16.0",
     "@types/lodash": "^4.17.7",
@@ -118,5 +120,6 @@
       "@digital-ai/dot-icons": "<rootDir>/testing-utils/style-mock.ts",
       "@digital-ai/dot-illustrations": "<rootDir>/testing-utils/style-mock.ts"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
