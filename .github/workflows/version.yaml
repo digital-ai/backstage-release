@@ -38,42 +38,7 @@ jobs:
           major-wording: 'MAJOR'
           minor-wording: 'MINOR'
           preid: 'alpha'
-          target-branch: ${{ github.ref_name }}
-      - name: Extract Pull Request Description
-        id: extract-pr-description
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const prNumber = context.payload.workflow_run.pull_requests[0].number;
-            const { data: pullRequest } = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-            return pullRequest.body;
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract Module Changelog Sections from PR Description
-        id: update-changelog
-        run: |
-          PR_BODY=$(echo "${{ steps.extract-pr-description.outputs.result }}")
-          echo "$PR_BODY" > pr_body.txt
-          
-          CHANGELOG=$(sed -n '/### ${{ inputs.plugin }} Changelog Begin/,/^### dai-/p' pr_body.txt | sed '1d;$d')
-          echo -e "Captured Changelog Sections:\n$CHANGELOG"
-          
-          NEW_ENTRY="## [${{ steps.version-bump.outputs.newTag }}](https://github.com/digital-ai/backstage-release/tree/${{ steps.version-bump.outputs.newTag }}) ($(date +'%Y-%m-%d'))\n$CHANGELOG"
-          echo -e "$NEW_ENTRY" | cat - ${{ inputs.plugin-path }}/CHANGE_LOG.md > temp_CHANGELOG.md && mv temp_CHANGELOG.md ${{ inputs.plugin-path }}/CHANGE_LOG.md
-      - name: Commit and Push Updated Changelogs
-        id: commit-changelog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add ${{ inputs.plugin-path }}/CHANGE_LOG.md
-          git commit -m "Update ${{ inputs.plugin }}CHANGE_LOG.md files"
-          git push origin ${{ github.ref_name }}       
+          target-branch: ${{ github.ref_name }} # need to map it to main branch
 
   create-release:
     name: Create GitHub Release
