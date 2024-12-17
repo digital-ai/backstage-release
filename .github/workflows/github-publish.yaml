@@ -24,7 +24,7 @@ jobs:
         with:
           always-auth: true
           node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org/' 
+          registry-url: 'https://registry.npmjs.org/'
       - name: Install dependencies
         working-directory: ${{ inputs.plugin-path }}
         run: yarn install
@@ -39,4 +39,4 @@ jobs:
         run: yarn test
       - name: Publish to registry
         working-directory: ${{ inputs.plugin-path }}
-        run: yarn publish --registry https://npm.pkg.github.com
+        run: yarn publish --registry https://npm.pkg.github.com --token ${{ secrets.GITHUB_TOKEN }}
