@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';

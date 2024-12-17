@@ -92,7 +92,7 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
     return (
       <div className="dot-card-bottom-spacing">
         <DotTypography variant="body1">
-          <strong style={{fontSize: '14px'}}>Git version: </strong>
+          <strong style={{ fontSize: '14px' }}>Git version: </strong>
           {gitLink ? (
             <DotLink href={gitLink} target="_blank">
               {commitHash}
@@ -119,10 +119,10 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
         />
         <DotCardContent>
           <div className="dot-card-bottom-spacing">
-            <DotTypography variant="body1"  className="dot-card-description">
-              {workflow?.description?.split('\n\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-              ))}
+            <DotTypography variant="body1" className="dot-card-description">
+              {workflow?.description
+                ?.split('\n\n')
+                .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
             </DotTypography>
           </div>
         </DotCardContent>

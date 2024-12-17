@@ -123,7 +123,7 @@ export const WorkflowCatalogComponent = ({
   };
 
   return (
-    <div className={classes.workflowDrawerHeaderSearch} >
+    <div className={classes.workflowDrawerHeaderSearch}>
       <DotTypography className={classes.searchHeader} variant="subtitle2">
         Search Workflows
       </DotTypography>
