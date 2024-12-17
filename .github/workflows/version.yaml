@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       new-version: ${{ steps.version-bump.outputs.newTag }}
+    env:
+      PR_BODY: ${{ github.event.pull_request.body }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
