@@ -1,7 +1,9 @@
 import {
+  ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
+  WorkflowsList,
 } from '@digital-ai/plugin-dai-release-common';
 import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
@@ -41,4 +43,16 @@ export interface DaiReleaseApi {
     folderId: string,
     options?: { signal?: AbortSignal },
   ): Promise<TemplateGitMetaInfo>;
+
+  getReleaseCategories(instanceName: string): Promise<ReleaseCategories>;
+
+  getWorkflowCatalog(
+    page: number,
+    resultsPerPage: number,
+    searchInput: string,
+    categories: string[],
+    author: string,
+    instanceName: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<WorkflowsList>;
 }

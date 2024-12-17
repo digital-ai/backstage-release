@@ -1,7 +1,13 @@
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
+import {
+  workflowCatalogsFilterCategoriesList,
+  workflowCatalogsFilterList,
+  workflowCatalogsList,
+} from '../mocks/workflowMocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
+import { mockReleaseCategories } from '../mocks/categoriesMocks';
 import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
 import { setupRequestMockHandlers } from '@backstage/test-utils';
@@ -197,6 +203,256 @@ describe('ReleaseApiClient', () => {
       let err;
       try {
         await client.getTemplates(0, 15, '', 'default', []);
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+  });
+  describe('getReleaseCategories', () => {
+    it('should return valid response', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) => {
+            return res(
+              ctx.status(200),
+              ctx.set('Content-Type', 'application/json'),
+              ctx.json(mockReleaseCategories),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getReleaseCategories('default');
+      expect(response !== undefined).toBeTruthy();
+      expect(response.activeCategory.length).toBeGreaterThan(0);
+    });
+    it('should return error', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) => {
+            res(ctx.status(500), ctx.set('Content-Type', 'application/json'));
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    }, 10000); // Increase timeout for this test
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/categories',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getReleaseCategories('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
+      }
+    });
+  });
+  describe('getWorkflowCatalog', () => {
+    it('should return valid response', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (req, res, ctx) => {
+            if (
+              req.url.searchParams.get('pageNumber') === '0' &&
+              req.url.searchParams.get('instanceName') === 'default'
+            ) {
+              return res(
+                ctx.status(200),
+                ctx.set('Content-Type', 'application/json'),
+                ctx.json(workflowCatalogsList),
+              );
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getWorkflowCatalog(
+        0,
+        10,
+        '',
+        [],
+        '',
+        'default',
+      );
+      expect(response).toEqual(workflowCatalogsList);
+    });
+    it('should return valid response with categories filter', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (req, res, ctx) => {
+            const body = req.body as { categories?: string[] };
+            if (body?.categories && Array.isArray(body.categories)) {
+              if (
+                req.url.searchParams.get('pageNumber') === '0' &&
+                req.url.searchParams.get('instanceName') === 'default' &&
+                body.categories[0] === 'Application onboarding'
+              ) {
+                return res(
+                  ctx.status(200),
+                  ctx.set('Content-Type', 'application/json'),
+                  ctx.json(workflowCatalogsFilterCategoriesList),
+                );
+              }
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getWorkflowCatalog(
+        0,
+        10,
+        '',
+        ['Application onboarding'],
+        '',
+        'default',
+      );
+      expect(response).toEqual(workflowCatalogsFilterCategoriesList);
+    });
+    it('should return valid response with filter', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (req, res, ctx) => {
+            const body = req.body as {
+              categories?: string[];
+              author?: string;
+              searchInput?: string;
+            };
+            if (
+              body?.categories &&
+              Array.isArray(body.categories) &&
+              body?.author &&
+              body?.searchInput
+            ) {
+              if (
+                req.url.searchParams.get('pageNumber') === '0' &&
+                req.url.searchParams.get('instanceName') === 'default' &&
+                body.categories[0] === 'Application onboarding' &&
+                body.categories[1] === 'Application Life Cycle Management' &&
+                body.author === 'Digital.ai' &&
+                body.searchInput === 'aws'
+              ) {
+                return res(
+                  ctx.status(200),
+                  ctx.set('Content-Type', 'application/json'),
+                  ctx.json(workflowCatalogsFilterList),
+                );
+              }
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getWorkflowCatalog(
+        0,
+        10,
+        'aws',
+        ['Application onboarding', 'Application Life Cycle Management'],
+        'Digital.ai',
+        'default',
+      );
+      expect(response).toEqual(workflowCatalogsFilterList);
+    });
+    it('should return error', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) => {
+            return res(
+              ctx.status(500),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    });
+
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) =>
+            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
+
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.post(
+          'https://example.com/api/dai-release/workflows',
+          (_, res, ctx) =>
+            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getWorkflowCatalog(0, 15, '', [], '', 'default');
       } catch (e) {
         err = e;
       } finally {
