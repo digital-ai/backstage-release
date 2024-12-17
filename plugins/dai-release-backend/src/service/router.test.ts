@@ -1,12 +1,13 @@
 import {
-  HttpAuthService,
-  PermissionsService,
-} from '@backstage/backend-plugin-api';
-import {
+  FoldersListBackendResponse,
   config,
   releaseInstanceConfigResponse,
   releasesBackendApiResponse,
 } from '../mocks/mockData';
+import {
+  HttpAuthService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 import {
   error403ResponseHandler,
   error404ResponseHandler,
@@ -298,17 +299,10 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('POST /workflow/redirect with instance name', () => {
+  describe('POST /workflow/redirect without instance name', () => {
     it('POST 500 from release for /workflow/redirect', async () => {
       const response = await request(app)
         .post('/workflow/redirect')
-        .query({
-          pageNumber: '1',
-          resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
-        })
         .set('authorization', 'Bearer someauthtoken')
         .send(workflowsRedirectRequest);
       expect(response.status).toEqual(500);
@@ -387,12 +381,7 @@ describe('router api tests - with permissions DENY', () => {
       const response = await request(app)
         .post('/workflow/redirect')
         .query({
-          instanceName: 'default',
-          pageNumber: '1',
-          resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
+          instanceName: 'default'
         })
         .set('authorization', 'Bearer someauthtoken')
         .send(workflowsRedirectRequest);

@@ -33,6 +33,7 @@ export class WorkflowsOverviewApi {
     instanceName: string,
     templateId: string,
     releaseTitle: string,
+    folderId: string
   ) {
     this.logger?.debug(
       `Redirecting to Workflows Run Page, instance: ${instanceName}`,
@@ -52,7 +53,7 @@ export class WorkflowsOverviewApi {
       return parts[parts.length - 1];
     }
 
-    const workflow: WorkflowContent = await this.createRelease(
+    const workflow: WorkflowContent = await this.startRelease(
       accessToken,
       apiUrl,
       getReleaseId(templateId),
@@ -105,6 +106,7 @@ export class WorkflowsOverviewApi {
       logoLink: getImageLink(d.logo),
       author: d.author,
       folderTitle: d.folderTitle,
+      defaultTargetFolder: d.defaultTargetFolder ? d.defaultTargetFolder : '',
       categories: Array.isArray(d.categories) ? d.categories : [d.categories],
       git: {
         commitId: d.scmTraceabilityData.commit.substring(0, 8),
@@ -154,18 +156,20 @@ export class WorkflowsOverviewApi {
     return await response.json();
   }
 
-  private async createRelease(
+  private async startRelease(
     accessToken: string,
     apiUrl: string,
     templateId: string,
     releaseTitle: string,
+    folderId: string
   ) {
     const body = JSON.stringify({
       ...(releaseTitle && { releaseTitle }),
+      ...(folderId && { folderId }),
     });
 
     const response = await fetch(
-      `${apiUrl}${RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH}/${templateId}/create`,
+      `${apiUrl}${RELEASE_WORKFLOW_CREATE_RELEASE_API_PATH}/${templateId}/start`,
       {
         method: 'POST',
         headers: {
