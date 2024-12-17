@@ -311,6 +311,33 @@ describe('router api tests with permissions ALLOW', () => {
       );
     });
   });
+
+  describe('GET /folders', () => {
+    it('returns ok', async () => {
+      server.resetHandlers(...mockTestHandlers);
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(FoldersListBackendResponse);
+    });
+  });
+
+  describe('GET /folders and emulate 500 Error', () => {
+    it('GET 500 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
 });
 
 describe('router api tests - with permissions DENY', () => {
@@ -385,6 +412,20 @@ describe('router api tests - with permissions DENY', () => {
         })
         .set('authorization', 'Bearer someauthtoken')
         .send(workflowsRedirectRequest);
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+  describe('GET /folders', () => {
+    it('GET 403 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
         'Access Denied: Unauthorized to access the Backstage Release plugin',
@@ -467,6 +508,19 @@ describe('router api tests - without permissions', () => {
         .send(workflowsRedirectRequest);
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(workflowsTriggerBackendResponse);
+    });
+  });
+
+  describe('GET /folders without permissions', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(FoldersListBackendResponse);
     });
   });
 });
