@@ -50,6 +50,7 @@ export const WorkflowComponent = () => {
     error,
     instance,
     instanceList,
+    folders,
     loading,
     hasMore,
     searchInput,
@@ -170,6 +171,8 @@ export const WorkflowComponent = () => {
                       searchInput={searchInput}
                       onSearchInput={setSearchInput}
                       resetState={resetState}
+                      folders={folders}
+                      instance={instance}                      
                     />
                   </div>
                 </CssCell>

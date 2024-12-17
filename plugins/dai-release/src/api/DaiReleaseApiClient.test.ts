@@ -1,5 +1,6 @@
 import { AuthenticationError, NotAllowedError } from '@backstage/errors';
 import { DiscoveryApi, IdentityApi } from '@backstage/core-plugin-api';
+import { FoldersListBackendResponse, workflowCatalogsList } from '../mocks/workflowMocks';
 import { releaseInstanceConfigResponse, releases } from '../mocks/mocks';
 import {
   workflowCatalogsFilterCategoriesList,

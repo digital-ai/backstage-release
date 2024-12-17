@@ -55,4 +55,6 @@ export interface DaiReleaseApi {
     instanceName: string,
     options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList>;
+
+  
 }

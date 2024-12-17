@@ -4,13 +4,13 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
+import { FoldersListBackendResponse, useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { WorkflowComponent } from './WorkflowComponent';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
-import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 
 jest.mock('../../hooks/useWorkflowCatalog');
 jest.mock('../../hooks/useReleaseCategories');
@@ -102,6 +102,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
+      folders: FoldersListBackendResponse,      
     });
   });
 
@@ -132,6 +133,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
+      folders: FoldersListBackendResponse,      
     });
     await renderContent();
 
@@ -172,6 +174,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
+      folders: FoldersListBackendResponse,      
     });
     mockUseReleaseCategories.mockImplementation(
       (_instance, setReleaseCategories, setLoadingReleaseCategories) => {
@@ -257,6 +260,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
+      folders: FoldersListBackendResponse,      
     });
     mockUseReleaseCategories.mockImplementation(
       (_instance, setReleaseCategories, setLoadingReleaseCategories) => {

@@ -1,16 +1,31 @@
 import {
   CssCell,
   CssGrid,
+  DotAlertBanner,
+  DotDialog,
   DotInputText,
   DotTypography,
 } from '@digital-ai/dot-components';
-import React, { useRef } from 'react';
+import {
+  Folder,
+  FolderBackendResponse,
+  Workflow,
+} from '@digital-ai/plugin-dai-release-common';
+import { TreeItem, TreeView } from '@mui/x-tree-view';
+import { useEffect, useRef, useState } from 'react';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import IconButton from '@mui/material/IconButton';
-import { Workflow } from '@digital-ai/plugin-dai-release-common';
+import InputBase from '@mui/material/InputBase';
+import Paper from '@mui/material/Paper';
+import React from 'react';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { calculateCellProps } from '../../utils/helpers';
+import isNil from 'lodash/isNil';
 import { makeStyles } from '@material-ui/core';
+import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 
 const useStyles = makeStyles(() => ({
   searchHeader: {
@@ -47,6 +62,8 @@ type WorkflowCatalogComponentProps = {
   searchInput: string;
   onSearchInput: (searchInput: string) => void;
   resetState: () => void;
+  folders: FolderBackendResponse;
+  instance: string;
 };
 
 export const WorkflowCatalogComponent = ({
@@ -56,13 +73,62 @@ export const WorkflowCatalogComponent = ({
   searchInput,
   onSearchInput,
   resetState,
+  folders,
+  instance,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
-  const handleOnRunClick = (workflowFromCategory: Workflow) => {
-    // need to add the logic to run the workflow
-    global.console.log(workflowFromCategory, loadMoreData);
-  };
+  const [workflowDialogOpen, setWorkflowDialogOpen] = useState<string | null>(
+    null,
+  );
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
+    undefined,
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const observerTarget = useRef<HTMLDivElement | null>(null);
+  const [url, setUrl] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+  const [workflowParams, setWorkflowParams] = useState<{
+    templateId: string;
+    title: string;
+    folderId: string;
+  } | null>(null);
+
+
+  useWorkflowRedirect(
+    instance,
+    workflowParams?.templateId || '',
+    workflowParams?.title || '',
+    workflowParams?.folderId || '',
+    setUrl,
+    setErrorMessage,
+  );
+
+  const handleOnRunClick = (workflowFromCategory: Workflow) => {
+    setWorkflowDialogOpen(workflowFromCategory.id);
+  };
+
+  const handleRunWorkflow = () => {
+
+    if (!workflowDialogOpen) return;
+    const selectedWorkflow = data.find(w => w.id === workflowDialogOpen);
+    if (!selectedWorkflow) return;
+
+    setWorkflowParams({
+      templateId: workflowDialogOpen,
+      title: selectedWorkflow.title,
+      folderId: selectedFolderId || '',
+    });
+  };
+
+  useEffect(() => {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }, [url]);
+
+
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
@@ -76,6 +142,129 @@ export const WorkflowCatalogComponent = ({
     resetState();
     onSearchInput(value);
   }
+
+
+  const handleOnCancel = () => {
+    setWorkflowDialogOpen(null);
+    setSelectedFolderId(undefined);
+    setErrorMessage(null);
+  };
+
+  const renderTree = (nodes: any) => (
+    <TreeItem
+      key={nodes.key}
+      nodeId={nodes.key}
+      label={
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <FolderOpenIcon style={{ marginRight: '8px' }} />
+          {nodes.title}
+        </div>
+      }
+    >
+      {Array.isArray(nodes.children)
+        ? nodes.children.map((node: any) => renderTree(node))
+        : null}
+    </TreeItem>
+  );
+
+  const renderDialog = () => {
+    const workflow = data.find(w => w.id === workflowDialogOpen);
+    if (!workflow) return null;
+    const renderError = (message: string) => {
+      return (
+        <>
+          <DotAlertBanner severity="error">
+            <DotTypography>{message}</DotTypography>
+          </DotAlertBanner>
+          <br />
+        </>
+      );
+    };
+
+    const renderFolderTree = () => {
+      const folderList: Folder[] = folders.folders;
+
+      const convertToTreeNodes = (folderArray: Folder[]): any[] => {
+        return folderArray.map(folder => ({
+          key: folder.id,
+          title: folder.title,
+          children: folder.children ? convertToTreeNodes(folder.children) : [],
+        }));
+      };
+
+      return convertToTreeNodes(folderList);
+    };
+
+    const options = renderFolderTree();
+
+    return (
+      <DotDialog
+        cancelButtonProps={{ label: 'Cancel' }}
+        className="card-folder-dialog"
+        closeIconVisible
+        closeOnClickAway
+        closeOnSubmit={!!errorMessage}
+        onSubmit={handleRunWorkflow}
+        open
+        onCancel={handleOnCancel}
+        submitButtonProps={{
+          label: 'Run workflow',
+          disabled: isNil(selectedFolderId) || !!errorMessage,
+        }}
+        title="Choose folder"
+      >
+        {errorMessage && renderError(errorMessage)}
+
+        <DotTypography>
+          Select the folder where workflow <strong>{workflow.title}</strong>{' '}
+          will be run.
+        </DotTypography>
+        <br />
+        <DotTypography className="persistent-label" variant="subtitle2">
+          Folder name
+        </DotTypography>
+        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          <TreeView
+            sx={{
+              padding: '8px',
+              margin: '8px',
+              '& .MuiTreeItem-root': {
+                marginBottom: '8px', // Space between TreeItems
+              },
+              '& .MuiTreeItem-content': {
+                padding: '4px 8px', // Space around the TreeItem content
+              },
+              '& .MuiTreeItem-label': {
+                fontSize: '12px', // Customize label size
+              },
+            }}
+            defaultCollapseIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowDropDownIcon />
+              </div>
+            }
+            defaultExpandIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowRightIcon />
+              </div>
+            }
+            defaultExpanded={[
+              `Applications/FolderDefaultReleaseContent`,
+              `Applications/${workflow.defaultTargetFolder}`,
+            ]}
+            defaultSelected={`Applications/${workflow.defaultTargetFolder}`}
+            selected={selectedFolderId || ''}
+            onNodeSelect={(_: unknown, nodeId: string) =>
+              setSelectedFolderId(nodeId)
+            }
+          >
+            {options.map(option => renderTree(option))}
+          </TreeView>
+        </div>
+      </DotDialog>
+    );
+  };       
+
   const renderWorkflows = () => {
     return (
       <>
@@ -154,6 +343,8 @@ export const WorkflowCatalogComponent = ({
       >
         {renderWorkflows()}
       </div>
+        {renderDialog()}
+      <div ref={observerTarget} />
     </div>
   );
 };
