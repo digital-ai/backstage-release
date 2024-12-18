@@ -182,8 +182,15 @@ export class WorkflowsOverviewApi {
       },
     );
     if (!response.ok) {
-      await parseErrorResponse(this.logger, response);
-    }
+        if (response.status === 403) {
+          throw new Error(
+              `You do not have enough permissions to run a workflow in the selected folder.\n
+              Please choose another folder or contact your Release Administrator for further assistance.`,
+            );
+        } else {
+          await parseErrorResponse(this.logger, response);
+        }
     return await response.json();
   }
+}
 }

@@ -51,6 +51,62 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  dotDialog: {
+    '& .card-folder-dialog': {
+      '& .MuiDialog-paper': {
+        overflowY: 'visible',
+
+        '& .dot-dialog-content': {
+          overflowY: 'visible',
+
+          '& .persistent-label': {
+            margin: '2px 0 0 0',
+          },
+
+          '& .dot-alert-banner': {
+            wordBreak: 'break-word',
+            marginBottom: '2px',
+          },
+
+          '& .xl-select': {
+            '& .xl__control': {
+              boxShadow: 'none',
+              borderWidth: '1px',
+
+              '& .xl__control--is-focused': {
+                borderColor: 'blue',
+                borderWidth: '1px',
+              },
+
+              '& .xl__value-container': {
+                height: '40px',
+                paddingTop: 'margin-dot',
+                paddingBottom: 'margin-dot',
+
+                '& .xl__placeholder': {
+                  marginLeft: 'margin-dot',
+                },
+
+                '& .xl__single-value': {
+                  fontSize: '14px',
+                  marginLeft: 'margin-dot',
+                  color: 'black',
+                },
+
+                '& .xl__input input': {
+                  marginLeft: 'margin-dot',
+                  color: 'black',
+                },
+              },
+            },
+            '& .xl__menu': {
+              zIndex: 1500, // dot dialog has 1300
+            },
+          },
+        },
+      },
+    },
+  },
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -86,13 +142,11 @@ export const WorkflowCatalogComponent = ({
   const [url, setUrl] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
   const [workflowParams, setWorkflowParams] = useState<{
     templateId: string;
     title: string;
     folderId: string;
   } | null>(null);
-
 
   useWorkflowRedirect(
     instance,
@@ -171,7 +225,7 @@ export const WorkflowCatalogComponent = ({
     const renderError = (message: string) => {
       return (
         <>
-          <DotAlertBanner severity="error">
+          <DotAlertBanner severity="error" className="dot-alert-banner">
             <DotTypography>{message}</DotTypography>
           </DotAlertBanner>
           <br />
@@ -198,7 +252,7 @@ export const WorkflowCatalogComponent = ({
     return (
       <DotDialog
         cancelButtonProps={{ label: 'Cancel' }}
-        className="card-folder-dialog"
+        className={classes.dotDialog}
         closeIconVisible
         closeOnClickAway
         closeOnSubmit={!!errorMessage}
