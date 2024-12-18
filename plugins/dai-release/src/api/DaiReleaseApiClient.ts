@@ -177,11 +177,11 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       throw new NotAllowedError(data.error.message);
     } else if (response.status === 404) {
       throw new NotFoundError(data.error.message);
-    } else if (response.status === 500 && errorKey != 'startReleaseError') {
+    } else if (response.status === 500 && errorKey !== 'startReleaseError') {
       throw new ServiceUnavailableError(`Release Service Unavailable`);
     } else if (response.status === 400) {
       throw new InputError(data.error.message);
-    } else if ('startReleaseError') {
+    } else if (errorKey === 'startReleaseError') {
       throw new Error(data.error.message);
     }
     throw new Error(
