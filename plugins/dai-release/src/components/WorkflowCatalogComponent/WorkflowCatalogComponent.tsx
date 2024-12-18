@@ -252,7 +252,7 @@ export const WorkflowCatalogComponent = ({
     return (
       <DotDialog
         cancelButtonProps={{ label: 'Cancel' }}
-        className={classes.dotDialog}
+        className="card-folder-dialog"
         closeIconVisible
         closeOnClickAway
         closeOnSubmit={!!errorMessage}
