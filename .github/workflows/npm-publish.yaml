@@ -38,10 +38,15 @@ jobs:
       - name: Run tests
         working-directory: ${{ inputs.plugin-path }}
         run: yarn test
-      - name: Configure .npmrc for npm Publish
-        run: |         
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+      - name:
+          Debug: Check NPM_TOKEN
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+          echo "NPM_TOKEN is empty!"
+          else
+          echo "::add-mask::${{ secrets.NPM_TOKEN }}"
+          echo "NPM_TOKEN is set."
+          fi
       - name: Publish to registry
         working-directory: ${{ inputs.plugin-path }}
         run: yarn publish --access public

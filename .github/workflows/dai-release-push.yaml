@@ -22,5 +22,6 @@ jobs:
   npm-publish:
     needs: [ call-ci-workflow, version-tag, github-publish ]
     uses: ./.github/workflows/npm-publish.yaml
+    secrets: inherit
     with:
       plugin-path: ./plugins/dai-release
