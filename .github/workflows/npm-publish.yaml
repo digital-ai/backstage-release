@@ -38,8 +38,7 @@ jobs:
       - name: Run tests
         working-directory: ${{ inputs.plugin-path }}
         run: yarn test
-      - name:
-          Debug: Check NPM_TOKEN
+      - name: Check NPM_TOKEN
         run: |
           if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
           echo "NPM_TOKEN is empty!"
