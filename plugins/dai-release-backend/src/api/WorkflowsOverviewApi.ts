@@ -190,7 +190,7 @@ export class WorkflowsOverviewApi {
         } else {
           await parseErrorResponse(this.logger, response);
         }
+    }
     return await response.json();
-  }
-}
+    }
 }
