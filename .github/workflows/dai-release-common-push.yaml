@@ -37,18 +37,18 @@ jobs:
     with:
       plugin-path: ./plugins/dai-release-common
       plugin: dai-release-common
-  npm-publish:
-    needs: [ call-ci-workflow, version-tag ]
-    uses: ./.github/workflows/npm-publish.yaml
-    with:
-      plugin-path: ./plugins/dai-release-common
   github-publish:
     needs: [ call-ci-workflow, version-tag ]
     uses: ./.github/workflows/github-publish.yaml
     with:
       plugin-path: ./plugins/dai-release-common
-  update-dependencies:
+  npm-publish:
     needs: [ call-ci-workflow, version-tag, github-publish ]
+    uses: ./.github/workflows/npm-publish.yaml
+    with:
+      plugin-path: ./plugins/dai-release-common
+  update-dependencies:
+    needs: [ call-ci-workflow, version-tag, npm-publish, github-publish ]
     uses: ./.github/workflows/update-dependency.yaml
 
   frontend-ci-workflow:
