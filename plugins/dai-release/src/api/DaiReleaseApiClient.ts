@@ -233,9 +233,9 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
 
   async getWorkflowRedirectLink(
     instanceName: string,
-    templateId: string,
-    releaseTitle: string,
-    folderId: string,
+    templateId?: string,
+    releaseTitle?: string,
+    folderId?: string,
     options?: { signal?: AbortSignal },
   ): Promise<{ url: string }> {
     const queryString = new URLSearchParams();

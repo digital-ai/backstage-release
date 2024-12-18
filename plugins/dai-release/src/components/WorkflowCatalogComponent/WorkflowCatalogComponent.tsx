@@ -46,67 +46,42 @@ const useStyles = makeStyles(() => ({
   catalogGrid: {
     marginTop: '24px',
   },
+  customDialogWidth: {
+      '& .dot-dialog-content': {
+        width: '600px', // Set your desired width
+      },
+    },
+  dotDialogTitle: {
+    '& h2': {
+      flexGrow: 1,
+      fontSize: '20px',
+      fontFamily: 'Lato, sans-serif', // Set your desired font size
+      marginBottom: '0px'
+    },
+  },
+dotTypography: {
+    '& .MuiTypography-body1': {
+      fontSize: '14px',
+      fontFamily: 'Lato, sans-serif'
+    },
+    '& .MuiTypography-subtitle2': {
+      fontSize: '14px',
+      fontWeight: '700',
+      fontFamily: 'Lato, sans-serif'
+    }
+  },
+  dotButton: {
+      '& .MuiButtonBase-root':{
+            fontSize: '14px',
+            fontFamily: 'Lato, sans-serif'
+          }
+      },
   noWorkflow: {
     display: 'flex !important',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  dotDialog: {
-    '& .card-folder-dialog': {
-      '& .MuiDialog-paper': {
-        overflowY: 'visible',
 
-        '& .dot-dialog-content': {
-          overflowY: 'visible',
-
-          '& .persistent-label': {
-            margin: '2px 0 0 0',
-          },
-
-          '& .dot-alert-banner': {
-            wordBreak: 'break-word',
-            marginBottom: '2px',
-          },
-
-          '& .xl-select': {
-            '& .xl__control': {
-              boxShadow: 'none',
-              borderWidth: '1px',
-
-              '& .xl__control--is-focused': {
-                borderColor: 'blue',
-                borderWidth: '1px',
-              },
-
-              '& .xl__value-container': {
-                height: '40px',
-                paddingTop: 'margin-dot',
-                paddingBottom: 'margin-dot',
-
-                '& .xl__placeholder': {
-                  marginLeft: 'margin-dot',
-                },
-
-                '& .xl__single-value': {
-                  fontSize: '14px',
-                  marginLeft: 'margin-dot',
-                  color: 'black',
-                },
-
-                '& .xl__input input': {
-                  marginLeft: 'margin-dot',
-                  color: 'black',
-                },
-              },
-            },
-            '& .xl__menu': {
-              zIndex: 1500, // dot dialog has 1300
-            },
-          },
-        },
-      },
-    },
-  },
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -252,7 +227,7 @@ export const WorkflowCatalogComponent = ({
     return (
       <DotDialog
         cancelButtonProps={{ label: 'Cancel' }}
-        className="card-folder-dialog"
+        className={`card-folder-dialog ${classes.customDialogWidth} ${classes.dotDialogTitle} ${classes.dotTypography} ${classes.dotButton}`}
         closeIconVisible
         closeOnClickAway
         closeOnSubmit={!!errorMessage}
@@ -275,43 +250,34 @@ export const WorkflowCatalogComponent = ({
         <DotTypography className="persistent-label" variant="subtitle2">
           Folder name
         </DotTypography>
-        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-          <TreeView
-            sx={{
-              padding: '8px',
-              margin: '8px',
-              '& .MuiTreeItem-root': {
-                marginBottom: '8px', // Space between TreeItems
-              },
-              '& .MuiTreeItem-content': {
-                padding: '4px 8px', // Space around the TreeItem content
-              },
-              '& .MuiTreeItem-label': {
-                fontSize: '12px', // Customize label size
-              },
-            }}
-            defaultCollapseIcon={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowDropDownIcon />
-              </div>
-            }
-            defaultExpandIcon={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowRightIcon />
-              </div>
-            }
-            defaultExpanded={[
-              `Applications/FolderDefaultReleaseContent`,
-              `Applications/${workflow.defaultTargetFolder}`,
-            ]}
-            defaultSelected={`Applications/${workflow.defaultTargetFolder}`}
-            selected={selectedFolderId || ''}
-            onNodeSelect={(_: unknown, nodeId: string) =>
-              setSelectedFolderId(nodeId)
-            }
-          >
-            {options.map(option => renderTree(option))}
-          </TreeView>
+        <div style={{ maxHeight: '264px', overflowY: 'auto' }}>
+<TreeView
+  sx={{
+    '& .MuiTreeItem-root': {
+      marginBottom: '8px', // Space between TreeItems
+    },
+    '& .MuiTreeItem-content': {
+      padding: '4px 8px', // Space around the TreeItem content
+    },
+    '& .MuiTreeItem-label': {
+      fontSize: '12px', // Customize label size
+    },
+  }}
+  defaultCollapseIcon={
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ArrowDropDownIcon />
+    </div>
+  }
+  defaultExpandIcon={
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ArrowRightIcon />
+    </div>
+  }
+  selected={selectedFolderId || `Applications/${workflow.defaultTargetFolder}`}
+  onNodeSelect={(_: unknown, nodeId: string) => setSelectedFolderId(nodeId)}
+>
+  {options.map(option => renderTree(option))}
+</TreeView>
         </div>
       </DotDialog>
     );
