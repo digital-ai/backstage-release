@@ -1,4 +1,4 @@
-import { WorkflowsList } from '@digital-ai/plugin-dai-release-common';
+import { FolderBackendResponse, WorkflowsList } from '@digital-ai/plugin-dai-release-common';
 
 export const catalogsFromRelease = {
   totalElements: 27,
@@ -641,6 +641,7 @@ export const workflowCatalogsList: WorkflowsList = {
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
+      defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS Lambda create function using S3 zip file',
@@ -657,6 +658,7 @@ export const workflowCatalogsList: WorkflowsList = {
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
+      defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager create secret',
@@ -673,6 +675,7 @@ export const workflowCatalogsList: WorkflowsList = {
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
       },
+      defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager delete secret',
@@ -687,7 +690,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'AWS SecretsManager update secret',
@@ -703,7 +706,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'Argo Rollouts install',
@@ -718,7 +721,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete application',
@@ -733,7 +736,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete live deployment configuration',
@@ -748,7 +751,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD install',
@@ -768,7 +771,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD setup application',
@@ -784,7 +787,7 @@ export const workflowCatalogsList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
   ],
   totalPages: 4,
@@ -812,7 +815,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'Argo Rollouts install',
@@ -827,7 +830,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete application',
@@ -842,7 +845,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD delete live deployment configuration',
@@ -857,7 +860,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD install',
@@ -877,7 +880,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
     {
       title: 'ArgoCD setup application',
@@ -893,7 +896,7 @@ export const workflowCatalogsFilterCategoriesList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
   ],
   totalPages: 4,
@@ -921,7 +924,7 @@ export const workflowCatalogsFilterList: WorkflowsList = {
         commitId: 'ab542eb5',
         repoLink:
           'https://github.com/Kevin-Daniel-P/release-content/commit/ab542eb5077f0f33c4498873fae7ae91d0a6c355',
-      },
+      }, defaultTargetFolder:'FolderDefaultReleaseContent/Folder4ba59f494e064f5eb7c861d31ec423c9'
     },
   ],
   totalPages: 4,

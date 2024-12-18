@@ -3,7 +3,6 @@ import {
   ReleaseInstanceConfig,
 } from '@digital-ai/plugin-dai-release-common';
 import { useRef, useState } from 'react';
-import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
 import { daiReleaseApiRef } from '../api';
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';

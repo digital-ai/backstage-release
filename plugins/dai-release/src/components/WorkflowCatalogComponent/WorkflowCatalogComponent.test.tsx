@@ -4,14 +4,14 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { FolderBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
+import { FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
+import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+import { cleanup, fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
-import { FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
-import { cleanup, fireEvent, screen, useEffect, userEvent } from '@testing-library/react';
-import { screen } from '@testing-library/react';
+
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
@@ -24,11 +24,16 @@ async function renderContent(args: {
   loading: boolean;
   loadMoreData: () => void;
   data: Workflow[];
-  errorMessage?: string;
-  folders?: typeof FolderBackendResponse;
+  folders?: FolderBackendResponse;
   instance?: string;
-  url?: string;  
+  url?: string;
 }) {
+  const defaultFolders: FolderBackendResponse = {
+    folders: [],
+    totalPages: 0,
+    totalElements: 0,
+  };
+
   return await renderInTestApp(
     <TestApiProvider
       apis={[
@@ -47,10 +52,8 @@ async function renderContent(args: {
           searchInput=""
           onSearchInput={jest.fn()}
           resetState={jest.fn()}
-          folders={args.folders}
-          instance={args.instance}
-          errorMessage={args.errorMessage}
-          url={args.url}          
+          folders={args.folders || defaultFolders}
+          instance={args.instance || ''}
         />
       </DotThemeProvider>
     </TestApiProvider>,
@@ -64,7 +67,7 @@ beforeAll(() => {
   };
 });
 
-let openSpy;
+let openSpy: jest.SpyInstance;
 
 beforeEach(() => {
   openSpy = jest.spyOn(window, 'open').mockImplementation(() => null);

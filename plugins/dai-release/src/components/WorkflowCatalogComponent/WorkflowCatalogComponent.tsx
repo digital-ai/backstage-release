@@ -17,8 +17,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
-import Paper from '@mui/material/Paper';
 import React from 'react';
 import { WorkflowCard } from './WorkflowCardComponent';
 import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';

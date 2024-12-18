@@ -4,13 +4,17 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { FoldersListBackendResponse, useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
-import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+
 import { fireEvent, screen } from '@testing-library/react';
+
 import { DotThemeProvider } from '@digital-ai/dot-components';
+import { FoldersListBackendResponse } from '../../mocks/workflowMocks';
 import React from 'react';
+import { TestApiProvider } from '@backstage/test-utils';
 import { WorkflowComponent } from './WorkflowComponent';
+import { renderInTestApp } from '@backstage/test-utils';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
+import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 
 jest.mock('../../hooks/useWorkflowCatalog');
 jest.mock('../../hooks/useReleaseCategories');
@@ -102,7 +106,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse,      
+      folders: FoldersListBackendResponse
     });
   });
 
