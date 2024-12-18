@@ -66,4 +66,3 @@
 - Apply filters on title, status, start and end dates
 - Sort releases by start and end dates
 
-
