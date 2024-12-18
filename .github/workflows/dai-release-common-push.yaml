@@ -57,21 +57,25 @@ jobs:
     if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'false'}}
     name: Run dai-release plugin without dai-release-common changes.
     uses: ./.github/workflows/dai-release-push.yaml
+    secrets: inherit
 
   frontend-common-ci-workflow:
     needs: [changes, update-dependencies]
     if: ${{ needs.changes.outputs.frontend == 'true' &&  needs.changes.outputs.common == 'true' }}
     name: Run dai-release plugin with dai-release-common changes.
     uses: ./.github/workflows/dai-release-push.yaml
+    secrets: inherit
 
   backend-ci-workflow:
     needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'false'}}
     name: Run dai-release-backend plugin without dai-release-common changes.
     uses: ./.github/workflows/dai-release-backend-push.yaml
+    secrets: inherit
 
   backend-common-ci-workflow:
     needs: [changes, update-dependencies]
     if: ${{ needs.changes.outputs.backend == 'true' &&  needs.changes.outputs.common == 'true' }}
     name: Run dai-release-backend plugin with dai-release-common changes.
     uses: ./.github/workflows/dai-release-backend-push.yaml
+    secrets: inherit
