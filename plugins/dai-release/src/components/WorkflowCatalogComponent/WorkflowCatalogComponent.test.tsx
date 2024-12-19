@@ -17,13 +17,6 @@ import { fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
-import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
-
-jest.mock('../../hooks/useWorkflowRedirect');
-
-const mockUseWorkflowRedirect = useWorkflowRedirect as jest.MockedFunction<
-  typeof useWorkflowRedirect
->;
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
