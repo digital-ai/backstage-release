@@ -20,6 +20,7 @@ import {
 import { Template, TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { getEndOrDueDate, getStartOrScheduledDate } from './date-service';
 import { Folder } from '@digital-ai/plugin-dai-release-common';
+import { FoldersApi } from './FoldersApi';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { ReleaseList } from '@digital-ai/plugin-dai-release-common';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
@@ -28,10 +29,12 @@ import { parseErrorResponse } from './responseUtil';
 export class ReleaseOverviewApi {
   private readonly logger: RootLoggerService;
   private readonly config: ReleaseConfig;
+  private readonly foldersApi: FoldersApi;
 
   private constructor(logger: RootLoggerService, config: ReleaseConfig) {
     this.logger = logger;
     this.config = config;
+    this.foldersApi = FoldersApi.fromConfig(config, logger);
   }
 
   static fromConfig(config: ReleaseConfig, logger: RootLoggerService) {
@@ -226,7 +229,7 @@ export class ReleaseOverviewApi {
     apiUrl: string,
     authCredentials: string,
   ): Promise<Map<string, string>> {
-    const foldersList: Folder[] = await this.getFoldersList(
+    const foldersList: Folder[] = await this.foldersApi.getFoldersList(
       apiUrl,
       authCredentials,
     );

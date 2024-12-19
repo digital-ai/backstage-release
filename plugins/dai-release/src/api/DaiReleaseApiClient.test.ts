@@ -7,6 +7,7 @@ import {
   workflowCatalogsList,
 } from '../mocks/workflowMocks';
 import { DaiReleaseApiClient } from './DaiReleaseApiClient';
+import { FoldersListBackendResponse } from '../mocks/workflowMocks';
 import { mockReleaseCategories } from '../mocks/categoriesMocks';
 import { mockTemplateList } from '../mocks/templatesMocks';
 import { rest } from 'msw';
@@ -497,6 +498,85 @@ describe('ReleaseApiClient', () => {
         err = e;
       } finally {
         expect(err instanceof Error).toBeTruthy();
+      }
+    });
+  });
+
+  describe('getFolders', () => {
+    it('should return valid response', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/folders',
+          (req, res, ctx) => {
+            if (req.url.searchParams.get('instanceName') === 'default') {
+              return res(
+                ctx.status(200),
+                ctx.set('Content-Type', 'application/json'),
+                ctx.json(FoldersListBackendResponse),
+              );
+            }
+            return res(
+              ctx.status(400),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+
+      const response = await client.getFolders('default');
+      expect(response).toEqual(FoldersListBackendResponse);
+    });
+    it('should return error', async () => {
+      worker.use(
+        rest.get(
+          'https://example.com/api/dai-release/folders',
+          (_, res, ctx) => {
+            return res(
+              ctx.status(500),
+              ctx.set('Content-Type', 'application/json'),
+            );
+          },
+        ),
+      );
+      let err;
+      try {
+        await client.getFolders('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof Error).toBeTruthy();
+      }
+    });
+
+    it('should return AuthenticationError', async () => {
+      worker.use(
+        rest.get('https://example.com/api/dai-release/folders', (_, res, ctx) =>
+          res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getFolders('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof AuthenticationError).toBeTruthy();
+      }
+    });
+
+    it('should return NotAllowedError', async () => {
+      worker.use(
+        rest.get('https://example.com/api/dai-release/folders', (_, res, ctx) =>
+          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        ),
+      );
+      let err;
+      try {
+        await client.getFolders('default');
+      } catch (e) {
+        err = e;
+      } finally {
+        expect(err instanceof NotAllowedError).toBeTruthy();
       }
     });
   });

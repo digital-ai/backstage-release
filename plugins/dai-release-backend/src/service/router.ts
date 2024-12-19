@@ -12,6 +12,7 @@ import { getDecodedQueryVal, getEncodedQueryVal } from '../api/apiConfig';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import { CategoriesApi } from '../api/CategoriesApi';
 import { Config } from '@backstage/config';
+import { FoldersApi } from '../api/FoldersApi';
 import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 import { ReleaseConfig } from './releaseInstanceConfig';
 import { ReleaseOverviewApi } from '../api';
@@ -52,6 +53,12 @@ export async function createRouter(
     ReleaseConfig.fromConfig(config),
     logger,
   );
+
+  const foldersApi = FoldersApi.fromConfig(
+    ReleaseConfig.fromConfig(config),
+    logger,
+  );
+
   if (config.subscribe) {
     //  check for live yaml config change
     config.subscribe(() => {
@@ -264,13 +271,32 @@ export async function createRouter(
       }
     }
     const instanceName = req.query.instanceName?.toString() || '';
-    const { templateId, releaseTitle } = req.body;
+    const { templateId, folderId, releaseTitle } = req.body;
     const redirectUrl = await workflowsOverviewApi.redirectToWorkflowRunPage(
       instanceName,
       templateId,
       releaseTitle,
+      folderId
     );
     res.status(200).json({ url: redirectUrl });
+  });
+
+  router.get('/folders', async (req, res) => {
+    if (permissions && httpAuth) {
+      const decision = await permissions.authorize(
+        [{ permission: daiReleaseViewPermission }],
+        { credentials: await httpAuth.credentials(req) },
+      );
+      const { result } = decision[0];
+      if (result === AuthorizeResult.DENY) {
+        throw new NotAllowedError(
+          'Access Denied: Unauthorized to access the Backstage Release plugin',
+        );
+      }
+    }
+    const instanceName = req.query.instanceName?.toString() || '';
+    const folderList = await foldersApi.getFoldersListApi(instanceName);
+    res.status(200).json(folderList);
   });
 
   const middleware = MiddlewareFactory.create({ logger, config });
