@@ -508,9 +508,7 @@ describe('ReleaseApiClient', () => {
         rest.get(
           'https://example.com/api/dai-release/folders',
           (req, res, ctx) => {
-            if (
-              req.url.searchParams.get('instanceName') === 'default'
-            ) {
+            if (req.url.searchParams.get('instanceName') === 'default') {
               return res(
                 ctx.status(200),
                 ctx.set('Content-Type', 'application/json'),
@@ -525,9 +523,7 @@ describe('ReleaseApiClient', () => {
         ),
       );
 
-      const response = await client.getFolders(
-        'default',
-      );
+      const response = await client.getFolders('default');
       expect(response).toEqual(FoldersListBackendResponse);
     });
     it('should return error', async () => {
@@ -554,10 +550,8 @@ describe('ReleaseApiClient', () => {
 
     it('should return AuthenticationError', async () => {
       worker.use(
-        rest.get(
-          'https://example.com/api/dai-release/folders',
-          (_, res, ctx) =>
-            res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
+        rest.get('https://example.com/api/dai-release/folders', (_, res, ctx) =>
+          res(ctx.status(401), ctx.set('Content-Type', 'application/json')),
         ),
       );
       let err;
@@ -572,10 +566,8 @@ describe('ReleaseApiClient', () => {
 
     it('should return NotAllowedError', async () => {
       worker.use(
-        rest.get(
-          'https://example.com/api/dai-release/folders',
-          (_, res, ctx) =>
-            res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
+        rest.get('https://example.com/api/dai-release/folders', (_, res, ctx) =>
+          res(ctx.status(403), ctx.set('Content-Type', 'application/json')),
         ),
       );
       let err;

@@ -47,41 +47,40 @@ const useStyles = makeStyles(() => ({
     marginTop: '24px',
   },
   customDialogWidth: {
-      '& .dot-dialog-content': {
-        width: '600px', // Set your desired width
-      },
+    '& .dot-dialog-content': {
+      width: '600px', // Set your desired width
     },
+  },
   dotDialogTitle: {
     '& h2': {
       flexGrow: 1,
       fontSize: '20px',
       fontFamily: 'Lato, sans-serif', // Set your desired font size
-      marginBottom: '0px'
+      marginBottom: '0px',
     },
   },
-dotTypography: {
+  dotTypography: {
     '& .MuiTypography-body1': {
       fontSize: '14px',
-      fontFamily: 'Lato, sans-serif'
+      fontFamily: 'Lato, sans-serif',
     },
     '& .MuiTypography-subtitle2': {
       fontSize: '14px',
       fontWeight: '700',
-      fontFamily: 'Lato, sans-serif'
-    }
+      fontFamily: 'Lato, sans-serif',
+    },
   },
   dotButton: {
-      '& .MuiButtonBase-root':{
-            fontSize: '14px',
-            fontFamily: 'Lato, sans-serif'
-          }
-      },
+    '& .MuiButtonBase-root': {
+      fontSize: '14px',
+      fontFamily: 'Lato, sans-serif',
+    },
+  },
   noWorkflow: {
     display: 'flex !important',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
 }));
 
 type WorkflowCatalogComponentProps = {
@@ -137,7 +136,6 @@ export const WorkflowCatalogComponent = ({
   };
 
   const handleRunWorkflow = () => {
-
     if (!workflowDialogOpen) return;
     const selectedWorkflow = data.find(w => w.id === workflowDialogOpen);
     if (!selectedWorkflow) return;
@@ -155,7 +153,6 @@ export const WorkflowCatalogComponent = ({
     }
   }, [url]);
 
-
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
@@ -169,7 +166,6 @@ export const WorkflowCatalogComponent = ({
     resetState();
     onSearchInput(value);
   }
-
 
   const handleOnCancel = () => {
     setWorkflowDialogOpen(null);
@@ -251,37 +247,41 @@ export const WorkflowCatalogComponent = ({
           Folder name
         </DotTypography>
         <div style={{ maxHeight: '264px', overflowY: 'auto' }}>
-<TreeView
-  sx={{
-    '& .MuiTreeItem-root': {
-      marginBottom: '8px', // Space between TreeItems
-    },
-    '& .MuiTreeItem-content': {
-      padding: '4px 8px', // Space around the TreeItem content
-    },
-    '& .MuiTreeItem-label': {
-      fontSize: '12px', // Customize label size
-    },
-  }}
-  defaultCollapseIcon={
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <ArrowDropDownIcon />
-    </div>
-  }
-  defaultExpandIcon={
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <ArrowRightIcon />
-    </div>
-  }
-  selected={selectedFolderId || `Applications/${workflow.defaultTargetFolder}`}
-  onNodeSelect={(_: unknown, nodeId: string) => setSelectedFolderId(nodeId)}
->
-  {options.map(option => renderTree(option))}
-</TreeView>
+          <TreeView
+            sx={{
+              '& .MuiTreeItem-root': {
+                marginBottom: '8px', // Space between TreeItems
+              },
+              '& .MuiTreeItem-content': {
+                padding: '4px 8px', // Space around the TreeItem content
+              },
+              '& .MuiTreeItem-label': {
+                fontSize: '12px', // Customize label size
+              },
+            }}
+            defaultCollapseIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowDropDownIcon />
+              </div>
+            }
+            defaultExpandIcon={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ArrowRightIcon />
+              </div>
+            }
+            selected={
+              selectedFolderId || `Applications/${workflow.defaultTargetFolder}`
+            }
+            onNodeSelect={(_: unknown, nodeId: string) =>
+              setSelectedFolderId(nodeId)
+            }
+          >
+            {options.map(option => renderTree(option))}
+          </TreeView>
         </div>
       </DotDialog>
     );
-  };       
+  };
 
   const renderWorkflows = () => {
     return (
@@ -361,7 +361,7 @@ export const WorkflowCatalogComponent = ({
       >
         {renderWorkflows()}
       </div>
-        {renderDialog()}
+      {renderDialog()}
       <div ref={observerTarget} />
     </div>
   );

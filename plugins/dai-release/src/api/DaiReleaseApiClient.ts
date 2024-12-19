@@ -247,6 +247,11 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       ...(folderId && { folderId }),
       ...(releaseTitle && { releaseTitle }),
     });
-    return await this.post<{ url: string }>(urlSegment, options, body, 'startReleaseError');
-  }  
+    return await this.post<{ url: string }>(
+      urlSegment,
+      options,
+      body,
+      'startReleaseError',
+    );
+  }
 }

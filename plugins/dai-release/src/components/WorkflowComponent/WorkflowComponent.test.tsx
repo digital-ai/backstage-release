@@ -106,7 +106,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse
+      folders: FoldersListBackendResponse,
     });
   });
 
@@ -137,7 +137,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse,      
+      folders: FoldersListBackendResponse,
     });
     await renderContent();
 
@@ -178,7 +178,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse,      
+      folders: FoldersListBackendResponse,
     });
     mockUseReleaseCategories.mockImplementation(
       (_instance, setReleaseCategories, setLoadingReleaseCategories) => {
@@ -264,7 +264,7 @@ describe('WorkflowComponent', () => {
       setWorkflowSearch: jest.fn(),
       searchInput: '',
       setSearchInput: jest.fn(),
-      folders: FoldersListBackendResponse,      
+      folders: FoldersListBackendResponse,
     });
     mockUseReleaseCategories.mockImplementation(
       (_instance, setReleaseCategories, setLoadingReleaseCategories) => {

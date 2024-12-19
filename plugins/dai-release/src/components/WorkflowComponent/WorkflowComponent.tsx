@@ -172,7 +172,7 @@ export const WorkflowComponent = () => {
                       onSearchInput={setSearchInput}
                       resetState={resetState}
                       folders={folders}
-                      instance={instance}                      
+                      instance={instance}
                     />
                   </div>
                 </CssCell>

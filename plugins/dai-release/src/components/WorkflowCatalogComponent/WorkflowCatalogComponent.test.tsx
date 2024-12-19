@@ -4,8 +4,14 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
-import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
+import {
+  FolderBackendResponse,
+  Workflow,
+} from '@digital-ai/plugin-dai-release-common';
+import {
+  FoldersListBackendResponse,
+  workflowCatalogsList,
+} from '../../mocks/workflowMocks';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
@@ -15,7 +21,9 @@ import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 
 jest.mock('../../hooks/useWorkflowRedirect');
 
-const mockUseWorkflowRedirect = useWorkflowRedirect as jest.MockedFunction<typeof useWorkflowRedirect>;
+const mockUseWorkflowRedirect = useWorkflowRedirect as jest.MockedFunction<
+  typeof useWorkflowRedirect
+>;
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
@@ -107,18 +115,18 @@ describe('WorkflowCatalogComponent', () => {
     });
     expect(screen.getAllByTestId('title-skeleton')).toHaveLength(3);
   });
-    it('should render the dialog when the "Run workflow" button is clicked', async () => {
-        await renderContent({
-          loading: false,
-          loadMoreData: jest.fn(),
-          data: workflowCatalogsList.workflows,
-          folders: FoldersListBackendResponse,
-          instance: 'test-instance',
-        });
+  it('should render the dialog when the "Run workflow" button is clicked', async () => {
+    await renderContent({
+      loading: false,
+      loadMoreData: jest.fn(),
+      data: workflowCatalogsList.workflows,
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
+    });
 
-        fireEvent.click(screen.getAllByText('Run workflow')[0]);
-        expect(screen.getByText('Choose folder')).toBeInTheDocument();
-      });
+    fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    expect(screen.getByText('Choose folder')).toBeInTheDocument();
+  });
 
   it('should not render the dialog when no workflow is selected', async () => {
     await renderContent({
@@ -127,7 +135,9 @@ describe('WorkflowCatalogComponent', () => {
       data: workflowCatalogsList.workflows,
     });
 
-    expect(screen.queryByText('Select the folder where workflow')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Select the folder where workflow'),
+    ).not.toBeInTheDocument();
   });
 
   it('should close the dialog when cancel button is clicked', async () => {
@@ -135,36 +145,38 @@ describe('WorkflowCatalogComponent', () => {
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-          folders: FoldersListBackendResponse,
-          instance: 'test-instance',
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
     fireEvent.click(screen.getByText('Cancel'));
 
-    expect(screen.queryByText('Select the folder where workflow')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Select the folder where workflow'),
+    ).not.toBeInTheDocument();
   });
 
-it('should disable the submit button when no folder is clicked', async () => {
-  await renderContent({
-    loading: false,
-    loadMoreData: jest.fn(),
-    data: workflowCatalogsList.workflows,
-          folders: FoldersListBackendResponse,
-          instance: 'test-instance'
-  });
+  it('should disable the submit button when no folder is clicked', async () => {
+    await renderContent({
+      loading: false,
+      loadMoreData: jest.fn(),
+      data: workflowCatalogsList.workflows,
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
+    });
 
-  fireEvent.click(screen.getAllByText('Run workflow')[0]);
-  expect(screen.getAllByText('Run workflow')[10]).toBeDisabled();
-});
+    fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    expect(screen.getAllByText('Run workflow')[10]).toBeDisabled();
+  });
 
   it('should enable the submit button when a folder is selected', async () => {
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-                folders: FoldersListBackendResponse,
-                instance: 'test-instance'
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -178,8 +190,8 @@ it('should disable the submit button when no folder is clicked', async () => {
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-                folders: FoldersListBackendResponse,
-                instance: 'test-instance'
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -195,7 +207,7 @@ it('should disable the submit button when no folder is clicked', async () => {
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
       folders: FoldersListBackendResponse,
-                      instance: 'test-instance'
+      instance: 'test-instance',
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -204,37 +216,31 @@ it('should disable the submit button when no folder is clicked', async () => {
     expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
   });
 
-    it('should open a new window with the correct URL when url state changes', async () => {
-      const setUrlMock = jest.fn();
+  it('should open a new window with the correct URL when url state changes', async () => {
+    const setUrlMock = jest.fn();
 
-        mockUseWorkflowRedirect.mockImplementation((
-          _instance,
-          _templateId,
-          _title,
-          _folderId,
-          setUrl,
-          setErrorMessage
-        ) => {
-          setUrl('http://example.com');
-          setErrorMessage('Simulated error');
-        });
-      await renderContent({
-        loading: false,
-        loadMoreData: jest.fn(),
-        data: workflowCatalogsList.workflows,
-        folders: FoldersListBackendResponse,
-        instance: 'test-instance'
-      });
-
-      fireEvent.click(screen.getAllByText('Run workflow')[0]);
-      fireEvent.click(screen.getByText('Digital.ai - Official'));
-      fireEvent.click(screen.getAllByText('Run workflow')[10]);
-
-      setUrlMock.mockImplementation((url: string) => {
-        window.open(url, '_blank');
-      });
-      setUrlMock('http://example.com');
-      expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank');
+    mockUseWorkflowRedirect.mockImplementation(
+      (_instance, _templateId, _title, _folderId, setUrl, setErrorMessage) => {
+        setUrl('http://example.com');
+        setErrorMessage('Simulated error');
+      },
+    );
+    await renderContent({
+      loading: false,
+      loadMoreData: jest.fn(),
+      data: workflowCatalogsList.workflows,
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
     });
 
+    fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    fireEvent.click(screen.getByText('Digital.ai - Official'));
+    fireEvent.click(screen.getAllByText('Run workflow')[10]);
+
+    setUrlMock.mockImplementation((url: string) => {
+      window.open(url, '_blank');
+    });
+    setUrlMock('http://example.com');
+    expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank');
+  });
 });
