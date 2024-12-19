@@ -219,12 +219,6 @@ describe('WorkflowCatalogComponent', () => {
   it('should open a new window with the correct URL when url state changes', async () => {
     const setUrlMock = jest.fn();
 
-    mockUseWorkflowRedirect.mockImplementation(
-      (_instance, _templateId, _title, _folderId, setUrl, setErrorMessage) => {
-        setUrl('http://example.com');
-        setErrorMessage('Simulated error');
-      },
-    );
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
