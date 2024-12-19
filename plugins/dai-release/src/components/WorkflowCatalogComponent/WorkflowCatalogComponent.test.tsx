@@ -6,12 +6,16 @@ import {
 } from '@backstage/core-plugin-api';
 import { FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
 import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
-import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { cleanup, fireEvent, screen } from '@testing-library/react';
+import { TestApiProvider, renderInTestApp, setupRequestMockHandlers } from '@backstage/test-utils';
+import { act, cleanup, fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
+import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
 
+jest.mock('../../hooks/useWorkflowRedirect');
+
+const mockUseWorkflowRedirect = useWorkflowRedirect as jest.MockedFunction<typeof useWorkflowRedirect>;
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
@@ -26,7 +30,7 @@ async function renderContent(args: {
   data: Workflow[];
   folders?: FolderBackendResponse;
   instance?: string;
-  url?: string;
+  setUrl?: (url: string) => void;
 }) {
   const defaultFolders: FolderBackendResponse = {
     folders: [],
@@ -54,6 +58,7 @@ async function renderContent(args: {
           resetState={jest.fn()}
           folders={args.folders || defaultFolders}
           instance={args.instance || ''}
+          setUrl={args.setUrl || jest.fn()}
         />
       </DotThemeProvider>
     </TestApiProvider>,
@@ -75,9 +80,8 @@ beforeEach(() => {
 
 afterEach(() => {
   openSpy.mockRestore();
-  cleanup();
+  jest.clearAllMocks();
 });
-
 
 describe('WorkflowCatalogComponent', () => {
   it('should render the search header and workflows', async () => {
@@ -169,6 +173,23 @@ it('should disable the submit button when no folder is clicked', async () => {
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    fireEvent.click(screen.getByText('Digital.ai - Official'));
+
+    expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
+  });
+
+  it('should enable the submit button when a folder is selected from drop down', async () => {
+    await renderContent({
+      loading: false,
+      loadMoreData: jest.fn(),
+      data: workflowCatalogsList.workflows,
+                folders: FoldersListBackendResponse,
+                instance: 'test-instance',
+                url: 'http://example.com'
+    });
+
+    fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    fireEvent.click(screen.getByText('Digital.ai - Official'));
     fireEvent.click(screen.getByText('Workflow Executions'));
 
     expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
@@ -185,9 +206,41 @@ it('should disable the submit button when no folder is clicked', async () => {
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
-    fireEvent.click(screen.getByText('Workflow Executions'));
+    fireEvent.click(screen.getByText('Digital.ai - Official'));
 
     expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
   });
+
+    it('should open a new window with the correct URL when url state changes', async () => {
+      const setUrlMock = jest.fn();
+      const setErrorMessageMock = jest.fn();
+
+      mockUseWorkflowRedirect.mockReturnValue({
+        instance: 'test-instance',
+        templateId: 'test-template-id',
+        title: 'test-title',
+        folderId: 'test-folder-id',
+        setUrl: setUrlMock,
+        setErrorMessage: setErrorMessageMock,
+      });
+
+      await renderContent({
+        loading: false,
+        loadMoreData: jest.fn(),
+        data: workflowCatalogsList.workflows,
+        folders: FoldersListBackendResponse,
+        instance: 'test-instance'
+      });
+
+      fireEvent.click(screen.getAllByText('Run workflow')[0]);
+      fireEvent.click(screen.getByText('Digital.ai - Official'));
+      fireEvent.click(screen.getAllByText('Run workflow')[10]);
+
+      setUrlMock.mockImplementation((url: string) => {
+        window.open(url, '_blank');
+      });
+      setUrlMock('http://example.com');
+      expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank');
+    });
 
 });
