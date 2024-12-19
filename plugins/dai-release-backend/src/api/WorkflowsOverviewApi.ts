@@ -107,7 +107,7 @@ export class WorkflowsOverviewApi {
       folderTitle: d.folderTitle,
       categories: Array.isArray(d.categories) ? d.categories : [d.categories],
       git: {
-        commitId: d.scmTraceabilityData.commit.substring(0, 8),
+        commitId: d.scmTraceabilityData?.commit?.substring(0, 8),
         repoLink: getRepoLink(
           d.scmTraceabilityData.remote,
           d.scmTraceabilityData.commit,
