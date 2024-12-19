@@ -6,12 +6,12 @@ import {
 } from '@backstage/core-plugin-api';
 import { FolderBackendResponse, Workflow } from '@digital-ai/plugin-dai-release-common';
 import { FoldersListBackendResponse, workflowCatalogsList } from '../../mocks/workflowMocks';
-import { TestApiProvider, renderInTestApp, setupRequestMockHandlers } from '@backstage/test-utils';
-import { act, cleanup, fireEvent, screen } from '@testing-library/react';
+import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+import { fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
-import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
+import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 
 jest.mock('../../hooks/useWorkflowRedirect');
 
@@ -58,7 +58,6 @@ async function renderContent(args: {
           resetState={jest.fn()}
           folders={args.folders || defaultFolders}
           instance={args.instance || ''}
-          setUrl={args.setUrl || jest.fn()}
         />
       </DotThemeProvider>
     </TestApiProvider>,
@@ -115,7 +114,6 @@ describe('WorkflowCatalogComponent', () => {
           data: workflowCatalogsList.workflows,
           folders: FoldersListBackendResponse,
           instance: 'test-instance',
-          url: 'http://example.com'
         });
 
         fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -139,7 +137,6 @@ describe('WorkflowCatalogComponent', () => {
       data: workflowCatalogsList.workflows,
           folders: FoldersListBackendResponse,
           instance: 'test-instance',
-          url: 'http://example.com'
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -154,8 +151,7 @@ it('should disable the submit button when no folder is clicked', async () => {
     loadMoreData: jest.fn(),
     data: workflowCatalogsList.workflows,
           folders: FoldersListBackendResponse,
-          instance: 'test-instance',
-          url: 'http://example.com'
+          instance: 'test-instance'
   });
 
   fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -168,8 +164,7 @@ it('should disable the submit button when no folder is clicked', async () => {
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
                 folders: FoldersListBackendResponse,
-                instance: 'test-instance',
-                url: 'http://example.com'
+                instance: 'test-instance'
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -184,8 +179,7 @@ it('should disable the submit button when no folder is clicked', async () => {
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
                 folders: FoldersListBackendResponse,
-                instance: 'test-instance',
-                url: 'http://example.com'
+                instance: 'test-instance'
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -201,8 +195,7 @@ it('should disable the submit button when no folder is clicked', async () => {
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
       folders: FoldersListBackendResponse,
-                      instance: 'test-instance',
-                      url: 'http://example.com'
+                      instance: 'test-instance'
     });
 
     fireEvent.click(screen.getAllByText('Run workflow')[0]);
@@ -213,17 +206,18 @@ it('should disable the submit button when no folder is clicked', async () => {
 
     it('should open a new window with the correct URL when url state changes', async () => {
       const setUrlMock = jest.fn();
-      const setErrorMessageMock = jest.fn();
 
-      mockUseWorkflowRedirect.mockReturnValue({
-        instance: 'test-instance',
-        templateId: 'test-template-id',
-        title: 'test-title',
-        folderId: 'test-folder-id',
-        setUrl: setUrlMock,
-        setErrorMessage: setErrorMessageMock,
-      });
-
+        mockUseWorkflowRedirect.mockImplementation((
+          _instance,
+          _templateId,
+          _title,
+          _folderId,
+          setUrl,
+          setErrorMessage
+        ) => {
+          setUrl('http://example.com');
+          setErrorMessage('Simulated error');
+        });
       await renderContent({
         loading: false,
         loadMoreData: jest.fn(),
