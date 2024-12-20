@@ -30,7 +30,7 @@ export function useWorkflowRedirect(
 
         setRedirectUrl(undefined as unknown as string);
 
-        const result = await api.getWorkflowRedirectLink(
+        const result = await api.generateWorkflowRedirect(
           instance,
           templateId,
           releaseTitle,

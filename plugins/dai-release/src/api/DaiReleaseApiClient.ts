@@ -231,7 +231,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return await this.get<FolderBackendResponse>(urlSegment, options);
   }
 
-  async getWorkflowRedirectLink(
+  async generateWorkflowRedirect(
     instanceName: string,
     templateId?: string,
     releaseTitle?: string,

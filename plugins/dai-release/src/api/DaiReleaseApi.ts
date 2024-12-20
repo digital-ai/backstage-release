@@ -59,7 +59,7 @@ export interface DaiReleaseApi {
 
   getFolders(instanceName: string): Promise<FolderBackendResponse>;
 
-  getWorkflowRedirectLink(
+  generateWorkflowRedirect(
     instanceName: string,
     templateId: string,
     releaseTitle: string,
