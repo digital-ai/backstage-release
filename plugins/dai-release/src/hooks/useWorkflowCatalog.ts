@@ -48,10 +48,10 @@ export function useWorkflowCatalog(): {
 
   const api = useApi(daiReleaseApiRef);
   // Use the debounced value of instance, it will update the state after 1 second
-  const debouncedInstance = useDebouncedValue(instance, 500);
+  const debouncedInstance = useDebouncedValue(instance, 800);
 
   // Use the debounced value of searchAuthor, it will update the state after 1 second
-  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
+  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 800);
 
   // Use the debounced value of searchCategories, it will update the state after 1 second
   const debouncedSearchCategories = useDebouncedValue(

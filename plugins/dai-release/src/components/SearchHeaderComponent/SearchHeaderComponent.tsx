@@ -117,11 +117,11 @@ export const SearchHeaderComponent = ({
                   label="Choose Instance"
                   onChange={(event: SelectChangeEvent) => {
                     resetState?.();
-                    onSetInstance(event.target.value);
                     onSetWorkflowSearch?.({
-                          categories: [],
-                            author: '',
-                         });
+                      categories: [],
+                      author: '',
+                    });
+                    onSetInstance(event.target.value);
                   }}
                   input={
                     <OutlinedInput
