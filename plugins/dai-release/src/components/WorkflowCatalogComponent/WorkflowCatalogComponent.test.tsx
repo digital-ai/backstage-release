@@ -13,7 +13,7 @@ import {
   workflowCatalogsList,
 } from '../../mocks/workflowMocks';
 import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
@@ -230,4 +230,27 @@ describe('WorkflowCatalogComponent', () => {
     setRedirectUrlMock('http://example.com');
     expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank');
   });
+
+  it('should close the dialog when clicking outside of it', async () => {
+    await renderContent({
+      loading: false,
+      loadMoreData: jest.fn(),
+      data: workflowCatalogsList.workflows,
+      folders: FoldersListBackendResponse,
+      instance: 'test-instance',
+    });
+
+    // Open the dialog
+    fireEvent.click(screen.getAllByText('Run workflow')[0]);
+    expect(screen.getByText('Choose folder')).toBeInTheDocument();
+
+    // Simulate a click outside the dialog
+    fireEvent.mouseDown(document.body);
+
+    // Verify the dialog is closed
+    await act(async () => {
+      fireEvent.mouseDown(document.body);
+    });
+  });
+
 });
