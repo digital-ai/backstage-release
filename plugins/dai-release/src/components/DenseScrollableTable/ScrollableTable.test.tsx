@@ -24,7 +24,7 @@ const defaultColumnsWithLinkButton: ScrollableTableColumn[] = [
         variant="outlined"
         style={{ width: '150px', height: '40px', textTransform: 'none' }}
       >
-        New Releases
+        New Release
       </LinkButton>
     ),
   },
@@ -97,7 +97,7 @@ describe('DenseScrollableTable', () => {
       expect(rendered.getByText(d.title)).toBeInTheDocument();
       // @ts-ignore
       expect(rendered.getByText(d.folder)).toBeInTheDocument();
-      const linkButtons = rendered.getAllByText('New Releases');
+      const linkButtons = rendered.getAllByText('New Release');
       linkButtons.forEach((linkButton, index) => {
         expect(linkButton).toBeInTheDocument(); // Validate LinkButton
         expect(linkButton.closest('a')).toHaveAttribute(

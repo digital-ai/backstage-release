@@ -7,17 +7,17 @@ export function useWorkflowRedirect(
   templateId: string,
   releaseTitle: string,
   releaseId: string,
-  setUrl: (url: string) => void,
+  setRedirectUrl: (redirectUrl: string) => void,
   setErrorMessage: (message: string) => void,
 ) {
   const api = useApi(daiReleaseApiRef);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const previousUrl = useRef<{ url: string } | undefined>(undefined);
+  const previousRedirectUrl = useRef<{ url: string } | undefined>(undefined);
 
   useEffect(() => {
     let isMounted = true;
 
-    const fetchUrl = async () => {
+    const fetchRedirectUrl = async () => {
       try {
         // Cancel the previous request
         if (abortControllerRef.current) {
@@ -28,7 +28,7 @@ export function useWorkflowRedirect(
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
 
-        setUrl(undefined as unknown as string);
+        setRedirectUrl(undefined as unknown as string);
 
         const result = await api.getWorkflowRedirectLink(
           instance,
@@ -44,10 +44,11 @@ export function useWorkflowRedirect(
         if (isMounted && !abortController.signal.aborted) {
           if (
             result &&
-            JSON.stringify(result) !== JSON.stringify(previousUrl.current)
+            JSON.stringify(result) !==
+              JSON.stringify(previousRedirectUrl.current)
           ) {
-            previousUrl.current = result;
-            setUrl(result.url);
+            previousRedirectUrl.current = result;
+            setRedirectUrl(result.url);
           }
         }
       } catch (err) {
@@ -55,13 +56,13 @@ export function useWorkflowRedirect(
         const abortError = err as Error;
         setErrorMessage(abortError.message);
         if (abortError.name !== 'AbortError') {
-          setUrl('');
+          setRedirectUrl('');
         }
       }
     };
 
     if (templateId && releaseTitle && releaseId) {
-      fetchUrl();
+      fetchRedirectUrl();
     }
     return () => {
       isMounted = false;
@@ -74,7 +75,7 @@ export function useWorkflowRedirect(
     api,
     releaseTitle,
     releaseId,
-    setUrl,
+    setRedirectUrl,
     instance,
     setErrorMessage,
   ]);

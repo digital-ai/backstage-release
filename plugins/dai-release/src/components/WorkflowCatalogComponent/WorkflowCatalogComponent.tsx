@@ -47,8 +47,13 @@ const useStyles = makeStyles(() => ({
     marginTop: '24px',
   },
   customDialogWidth: {
+    '& .MuiDialogContent-root': {
+      overflowY: 'hidden', // Ensure the dialog does not have a scroll bar
+    },
     '& .dot-dialog-content': {
-      width: '600px', // Set your desired width
+      width: '600px',
+      maxHeight: '264px',
+      overflowY: 'hidden',
     },
   },
   dotDialogTitle: {
@@ -75,11 +80,17 @@ const useStyles = makeStyles(() => ({
       fontSize: '14px',
       fontFamily: 'Lato, sans-serif',
     },
+    '& .MuiButton-root': {
+      textTransform: 'none',
+    },
   },
   noWorkflow: {
     display: 'flex !important',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  folderContainer: {
+    maxHeight: '200px', // Adjust the height as needed
   },
 }));
 
@@ -113,7 +124,8 @@ export const WorkflowCatalogComponent = ({
   );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const observerTarget = useRef<HTMLDivElement | null>(null);
-  const [url, setUrl] = useState<string>('');
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [workflowParams, setWorkflowParams] = useState<{
@@ -127,7 +139,7 @@ export const WorkflowCatalogComponent = ({
     workflowParams?.templateId || '',
     workflowParams?.title || '',
     workflowParams?.folderId || '',
-    setUrl,
+    setRedirectUrl,
     setErrorMessage,
   );
 
@@ -145,13 +157,15 @@ export const WorkflowCatalogComponent = ({
       title: selectedWorkflow.title,
       folderId: selectedFolderId || '',
     });
+    setShouldRedirect(true);
   };
 
   useEffect(() => {
-    if (url) {
-      window.open(url, '_blank');
+    if (redirectUrl && shouldRedirect) {
+      window.open(redirectUrl, '_blank');
+      setShouldRedirect(false);
     }
-  }, [url]);
+  }, [redirectUrl, shouldRedirect]);
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -214,8 +228,8 @@ export const WorkflowCatalogComponent = ({
           children: folder.children ? convertToTreeNodes(folder.children) : [],
         }));
       };
-
-      return convertToTreeNodes(folderList);
+      const limitedFolders = folderList.slice(0, 5); // Limit to 5 folders
+      return convertToTreeNodes(limitedFolders);
     };
 
     const options = renderFolderTree();
@@ -246,7 +260,7 @@ export const WorkflowCatalogComponent = ({
         <DotTypography className="persistent-label" variant="subtitle2">
           Folder name
         </DotTypography>
-        <div style={{ maxHeight: '264px', overflowY: 'auto' }}>
+        <div className={classes.folderContainer}>
           <TreeView
             sx={{
               '& .MuiTreeItem-root': {

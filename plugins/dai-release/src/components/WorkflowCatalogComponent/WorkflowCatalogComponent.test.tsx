@@ -31,7 +31,7 @@ async function renderContent(args: {
   data: Workflow[];
   folders?: FolderBackendResponse;
   instance?: string;
-  setUrl?: (url: string) => void;
+  setRedirectUrl?: (redirectUrl: string) => void;
 }) {
   const defaultFolders: FolderBackendResponse = {
     folders: [],
@@ -210,7 +210,7 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should open a new window with the correct URL when url state changes', async () => {
-    const setUrlMock = jest.fn();
+    const setRedirectUrlMock = jest.fn();
 
     await renderContent({
       loading: false,
@@ -224,10 +224,10 @@ describe('WorkflowCatalogComponent', () => {
     fireEvent.click(screen.getByText('Digital.ai - Official'));
     fireEvent.click(screen.getAllByText('Run workflow')[10]);
 
-    setUrlMock.mockImplementation((url: string) => {
-      window.open(url, '_blank');
+    setRedirectUrlMock.mockImplementation((redirectUrl: string) => {
+      window.open(redirectUrl, '_blank');
     });
-    setUrlMock('http://example.com');
+    setRedirectUrlMock('http://example.com');
     expect(openSpy).toHaveBeenCalledWith('http://example.com', '_blank');
   });
 });
