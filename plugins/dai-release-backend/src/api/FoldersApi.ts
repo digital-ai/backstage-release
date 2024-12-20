@@ -1,8 +1,11 @@
-import { Folder, FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
+import {
+  Folder,
+  FolderBackendResponse,
+} from '@digital-ai/plugin-dai-release-common';
 import {
   RELEASE_FOLDERS_LIST_API_PATH,
   getCredentials,
-  getReleaseApiHost
+  getReleaseApiHost,
 } from './apiConfig';
 import { ReleaseConfig } from '../service/releaseInstanceConfig';
 import { RootLoggerService } from '@backstage/backend-plugin-api';
@@ -47,18 +50,18 @@ export class FoldersApi {
     };
   }
 
-async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
-  const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
-    method: 'GET',
-    headers: {
-      'x-release-personal-token': `${accessToken}`,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  });
-  if (!response.ok) {
-    await parseErrorResponse(this.logger, response);
+  async getFoldersList(apiUrl: string, accessToken: string): Promise<Folder[]> {
+    const response = await fetch(`${apiUrl}${RELEASE_FOLDERS_LIST_API_PATH}`, {
+      method: 'GET',
+      headers: {
+        'x-release-personal-token': `${accessToken}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+      await parseErrorResponse(this.logger, response);
+    }
+    return await response.json();
   }
-  return await response.json();
-}
 }

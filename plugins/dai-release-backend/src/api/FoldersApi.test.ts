@@ -4,7 +4,7 @@ import {
   error403ResponseHandler,
   error404ResponseHandler,
   error500ResponseHandler,
-  mockTestHandlers
+  mockTestHandlers,
 } from '../mocks/mock.test.handlers';
 import { FolderBackendResponse } from '@digital-ai/plugin-dai-release-common';
 import { FoldersApi } from './FoldersApi';
@@ -102,9 +102,7 @@ describe('Backend API tests for Folders in Release', () => {
     );
 
     await expect(
-      async () =>
-        await foldersApi.getFoldersListApi('default'),
+      async () => await foldersApi.getFoldersListApi('default'),
     ).rejects.toThrow('failed to fetch data, status 500 Unexpected error');
   });
-
 });

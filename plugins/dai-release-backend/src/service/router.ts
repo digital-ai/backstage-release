@@ -276,7 +276,7 @@ export async function createRouter(
       instanceName,
       templateId,
       releaseTitle,
-      folderId
+      folderId,
     );
     res.status(200).json({ url: redirectUrl });
   });

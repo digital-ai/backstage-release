@@ -33,7 +33,7 @@ export class WorkflowsOverviewApi {
     instanceName: string,
     templateId: string,
     releaseTitle: string,
-    folderId: string
+    folderId: string,
   ) {
     this.logger?.debug(
       `Redirecting to Workflows Run Page, instance: ${instanceName}`,
@@ -58,7 +58,7 @@ export class WorkflowsOverviewApi {
       apiUrl,
       getReleaseId(templateId),
       releaseTitle,
-      folderId
+      folderId,
     );
     const templateIdConverted = convertIdPath(workflow?.id);
     const redirectUrl = `${apiUrl}${RELEASE_WORKFLOW_TRIGGER_WORKFLOW_PATH}/${templateIdConverted}`;
@@ -162,7 +162,7 @@ export class WorkflowsOverviewApi {
     apiUrl: string,
     templateId: string,
     releaseTitle: string,
-    folderId: string
+    folderId: string,
   ) {
     const body = JSON.stringify({
       ...(releaseTitle && { releaseTitle }),
@@ -182,15 +182,15 @@ export class WorkflowsOverviewApi {
       },
     );
     if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error(
-              `You do not have enough permissions to run a workflow in the selected folder.\n
+      if (response.status === 403) {
+        throw new Error(
+          `You do not have enough permissions to run a workflow in the selected folder.
               Please choose another folder or contact your Release Administrator for further assistance.`,
-            );
-        } else {
-          await parseErrorResponse(this.logger, response);
-        }
+        );
+      } else {
+        await parseErrorResponse(this.logger, response);
+      }
     }
     return await response.json();
-    }
+  }
 }
