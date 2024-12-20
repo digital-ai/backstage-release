@@ -4,7 +4,7 @@ import {
   DotInputText,
   DotTypography,
 } from '@digital-ai/dot-components';
-import React, { useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import IconButton from '@mui/material/IconButton';
 import { Workflow } from '@digital-ai/plugin-dai-release-common';
 import { WorkflowCard } from './WorkflowCardComponent';
@@ -47,6 +47,7 @@ type WorkflowCatalogComponentProps = {
   searchInput: string;
   onSearchInput: (searchInput: string) => void;
   resetState: () => void;
+  instance: string;
 };
 
 export const WorkflowCatalogComponent = ({
@@ -56,6 +57,7 @@ export const WorkflowCatalogComponent = ({
   searchInput,
   onSearchInput,
   resetState,
+  instance,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
   const handleOnRunClick = (workflowFromCategory: Workflow) => {
@@ -63,6 +65,11 @@ export const WorkflowCatalogComponent = ({
     global.console.log(workflowFromCategory, loadMoreData);
   };
   const containerRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [instance]);
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;

@@ -123,6 +123,7 @@ export const WorkflowComponent = () => {
                 error={error}
                 onSetInstance={setInstance}
                 resetState={resetState}
+                onSetWorkflowSearch={setWorkflowSearch}
               />
             </Grid>
           </Grid>
@@ -170,6 +171,7 @@ export const WorkflowComponent = () => {
                       searchInput={searchInput}
                       onSearchInput={setSearchInput}
                       resetState={resetState}
+                      instance={instance}
                     />
                   </div>
                 </CssCell>

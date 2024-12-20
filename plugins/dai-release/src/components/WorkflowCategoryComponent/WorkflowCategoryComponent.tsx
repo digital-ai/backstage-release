@@ -142,8 +142,8 @@ export function WorkflowCategoryComponent({
   }
 
   function onCategoryFilterChange(options: CheckboxProps[]) {
-    const categories = options.map(cat => cat.label as string);
     resetState();
+    const categories = options.map(cat => cat.label as string);
     onSetWorkflowSearch({
       ...workflowSearch,
       categories: categories,
