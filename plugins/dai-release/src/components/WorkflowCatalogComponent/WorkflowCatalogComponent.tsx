@@ -52,7 +52,7 @@ const useStyles = makeStyles(() => ({
     },
     '& .dot-dialog-content': {
       width: '600px',
-      maxHeight: '264px',
+      maxHeight: '196px',
       overflowY: 'hidden',
     },
   },
@@ -197,36 +197,35 @@ export const WorkflowCatalogComponent = ({
     setErrorMessage(null);
   };
 
-  const renderTree = (nodes: any) => (
-    <TreeItem
-      key={nodes.key}
-      nodeId={nodes.key}
-      label={
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <FolderOpenIcon style={{ marginRight: '8px' }} />
-          {nodes.title}
-        </div>
-      }
-    >
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node: any) => renderTree(node))
-        : null}
-    </TreeItem>
-  );
-
   const renderDialog = () => {
     const workflow = data.find(w => w.id === workflowDialogOpen);
     if (!workflow) return null;
-    const renderError = (message: string) => {
-      return (
-        <>
-          <DotAlertBanner severity="error" className="dot-alert-banner">
-            <DotTypography>{message}</DotTypography>
-          </DotAlertBanner>
-          <br />
-        </>
-      );
-    };
+
+    const renderError = (message: string) => (
+      <>
+        <DotAlertBanner severity="error" className="dot-alert-banner">
+          <DotTypography>{message}</DotTypography>
+        </DotAlertBanner>
+        <br />
+      </>
+    );
+
+    const renderTree = (nodes: any) => (
+      <TreeItem
+        key={nodes.key}
+        nodeId={nodes.key}
+        label={
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <FolderOpenIcon style={{ marginRight: '8px' }} />
+            {nodes.title}
+          </div>
+        }
+      >
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node: any) => renderTree(node))
+          : null}
+      </TreeItem>
+    );
 
     const renderFolderTree = () => {
       const folderList: Folder[] = folders.folders;
@@ -238,7 +237,7 @@ export const WorkflowCatalogComponent = ({
           children: folder.children ? convertToTreeNodes(folder.children) : [],
         }));
       };
-      const limitedFolders = folderList.slice(0, 5); // Limit to 5 folders
+      const limitedFolders = folderList.slice(0, 3); // Limit to 3 folders
       return convertToTreeNodes(limitedFolders);
     };
 
