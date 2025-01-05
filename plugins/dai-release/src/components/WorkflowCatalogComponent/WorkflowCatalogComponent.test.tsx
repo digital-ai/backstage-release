@@ -252,5 +252,4 @@ describe('WorkflowCatalogComponent', () => {
       fireEvent.mouseDown(document.body);
     });
   });
-
 });

@@ -157,15 +157,25 @@ export const WorkflowCatalogComponent = ({
       title: selectedWorkflow.title,
       folderId: selectedFolderId || '',
     });
-    setShouldRedirect(true);
   };
 
   useEffect(() => {
-    if (redirectUrl && shouldRedirect) {
+    if (workflowParams) {
+      if (errorMessage) {
+        setShouldRedirect(false);
+      } else {
+        setShouldRedirect(true);
+      }
+    }
+  }, [errorMessage, workflowParams]);
+
+  useEffect(() => {
+    if (shouldRedirect && redirectUrl) {
       window.open(redirectUrl, '_blank');
       setShouldRedirect(false);
+      setWorkflowDialogOpen(null);
     }
-  }, [redirectUrl, shouldRedirect]);
+  }, [shouldRedirect, redirectUrl]);
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -240,7 +250,7 @@ export const WorkflowCatalogComponent = ({
         className={`card-folder-dialog ${classes.customDialogWidth} ${classes.dotDialogTitle} ${classes.dotTypography} ${classes.dotButton}`}
         closeIconVisible
         closeOnClickAway
-        closeOnSubmit={!!errorMessage}
+        closeOnSubmit={shouldRedirect}
         onSubmit={handleRunWorkflow}
         open
         onCancel={handleOnCancel}
