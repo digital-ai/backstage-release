@@ -38,6 +38,14 @@ jobs:
       - name: Run tests
         working-directory: ${{ inputs.plugin-path }}
         run: yarn test
+      - name: Check NPM_TOKEN
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+          echo "NPM_TOKEN is empty!"
+          else
+          echo "::add-mask::${{ secrets.NPM_TOKEN }}"
+          echo "NPM_TOKEN is set."
+          fi
       - name: Publish to registry
         working-directory: ${{ inputs.plugin-path }}
         run: yarn publish --access public

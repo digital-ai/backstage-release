@@ -64,4 +64,6 @@
 - Permissions feature to view plugin
 - Multiple Instance support
 - Apply filters on title, status, start and end dates
-- Sort releases by start and end dates 
+- Sort releases by start and end dates
+
+

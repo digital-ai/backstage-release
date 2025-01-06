@@ -14,13 +14,14 @@ jobs:
     with:
       plugin-path: ./plugins/dai-release
       plugin: dai-release
-  npm-publish:
-    needs: [ call-ci-workflow, version-tag ]
-    uses: ./.github/workflows/npm-publish.yaml
+  github-publish:
+    needs: [ call-ci-workflow, version-tag]
+    uses: ./.github/workflows/github-publish.yaml
     with:
       plugin-path: ./plugins/dai-release
-  github-publish:
-    needs: [ call-ci-workflow, version-tag ]
-    uses: ./.github/workflows/github-publish.yaml
+  npm-publish:
+    needs: [ call-ci-workflow, version-tag, github-publish ]
+    uses: ./.github/workflows/npm-publish.yaml
+    secrets: inherit
     with:
       plugin-path: ./plugins/dai-release

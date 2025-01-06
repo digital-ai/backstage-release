@@ -180,6 +180,7 @@ useEffect(() => {
     setWorkflowParams(null);
   }
 }, [shouldRedirect, redirectUrl]);
+
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
