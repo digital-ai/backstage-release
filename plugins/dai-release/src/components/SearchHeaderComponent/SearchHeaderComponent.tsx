@@ -29,6 +29,7 @@ type SearchHeaderComponentProps = {
   onSearchByTitle?: (title: string) => void;
   onSetInstance: (instanceKey: string) => void;
   onShowDrawer?: (showDrawer: boolean) => void;
+  onSetWorkflowSearch?: (workflowSearch: { categories: string[]; author: string }) => void;
   filterCount?: number;
   resetState?: () => void;
   error: Error | undefined;
@@ -53,6 +54,7 @@ export const SearchHeaderComponent = ({
   onCustomSearch,
   onSearchByTitle,
   onSetInstance,
+  onSetWorkflowSearch,
   onShowDrawer,
   resetState,
 }: SearchHeaderComponentProps) => {
@@ -114,8 +116,12 @@ export const SearchHeaderComponent = ({
                   value={instance}
                   label="Choose Instance"
                   onChange={(event: SelectChangeEvent) => {
-                    onSetInstance(event.target.value);
                     resetState?.();
+                    onSetWorkflowSearch?.({
+                      categories: [],
+                      author: '',
+                    });
+                    onSetInstance(event.target.value);
                   }}
                   input={
                     <OutlinedInput

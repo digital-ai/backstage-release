@@ -42,6 +42,7 @@ async function renderContent(args: {
           searchInput=""
           onSearchInput={jest.fn()}
           resetState={jest.fn()}
+          instance="default"
         />
       </DotThemeProvider>
     </TestApiProvider>,

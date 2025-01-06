@@ -47,13 +47,16 @@ export function useWorkflowCatalog(): {
   const [searchInput, setSearchInput] = useState('');
 
   const api = useApi(daiReleaseApiRef);
+  // Use the debounced value of instance, it will update the state after 1 second
+  const debouncedInstance = useDebouncedValue(instance, 800);
+
   // Use the debounced value of searchAuthor, it will update the state after 1 second
-  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 500);
+  const debouncedSearchAuthor = useDebouncedValue(workflowSearch.author, 800);
 
   // Use the debounced value of searchCategories, it will update the state after 1 second
   const debouncedSearchCategories = useDebouncedValue(
     workflowSearch.categories,
-    500,
+    800,
   );
 
   // Use the debounced value of searchTag, it will update the state after 1 second
@@ -76,10 +79,11 @@ export function useWorkflowCatalog(): {
         const abortController = new AbortController();
         abortControllerRef.current = abortController;
 
-        if (instance.trim() === '') {
+        if (debouncedInstance.trim() === '') {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
+            setData([])
             setLoading(false);
           });
         }
@@ -90,7 +94,7 @@ export function useWorkflowCatalog(): {
           debouncedSearchInput,
           debouncedSearchCategories,
           debouncedSearchAuthor,
-          instance,
+          debouncedInstance,
           { signal: abortController.signal },
         );
 
@@ -100,7 +104,10 @@ export function useWorkflowCatalog(): {
           if (result?.workflows?.length < rowsPerPage) {
             setHasMore(false);
           }
-          setData((prevData: any) => [...prevData, ...result?.workflows]);
+          setData((prevData: any) => [
+            ...prevData,
+            ...result?.workflows.filter((wf: any) => !prevData.some((p: any) => p.id === wf.id)),
+          ]);
           return result;
         }
       } catch (err) {
@@ -119,7 +126,7 @@ export function useWorkflowCatalog(): {
     [
       api,
       rowsPerPage,
-      instance,
+      debouncedInstance,
       debouncedSearchCategories,
       debouncedSearchAuthor,
       debouncedSearchInput,
