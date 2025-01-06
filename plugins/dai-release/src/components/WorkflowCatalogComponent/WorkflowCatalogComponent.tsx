@@ -254,7 +254,7 @@ const handleOnCancel = () => {
         cancelButtonProps={{ label: 'Cancel' }}
         className={`card-folder-dialog ${classes.customDialogWidth} ${classes.dotDialogTitle} ${classes.dotTypography} ${classes.dotButton}`}
         closeIconVisible
-        closeOnClickAway={handleOnCancel}
+        closeOnClickAway
         closeOnSubmit={shouldRedirect}
         onSubmit={handleRunWorkflow}
         open

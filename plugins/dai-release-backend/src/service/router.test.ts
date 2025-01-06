@@ -173,11 +173,11 @@ describe('router api tests with permissions ALLOW', () => {
     it('GET 404 from release for /folders', async () => {
       server.resetHandlers(...error404ResponseHandler);
       const response = await request(app)
-          .get('/folders')
-          .query({
-            instanceName: 'default',
-          })
-          .set('authorization', 'Bearer someauthtoken');
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
       expect(response.body.error.message).toEqual(
         'Release service request not found',
       );
