@@ -209,7 +209,7 @@ describe('WorkflowCatalogComponent', () => {
     expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
   });
 
-  it('should open a new window with the correct URL when url state changes', async () => {
+  it('should open a new window with the correct URL when we click on "Run Workflow" button', async () => {
     const setRedirectUrlMock = jest.fn();
 
     await renderContent({
