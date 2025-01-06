@@ -235,7 +235,7 @@ describe('WorkflowsOverviewApi', () => {
           'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0',
         ),
     ).rejects.toThrow(
-      'You do not have enough permissions to run a workflow in the selected folder.',
+      'Permission denied or the requested functionality is not supported',
     );
   });
 

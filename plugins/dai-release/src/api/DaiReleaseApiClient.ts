@@ -145,8 +145,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   private async post<T>(
     path: string,
     options: { signal?: AbortSignal } | undefined,
-    body: string,
-    errorKey: string,
+    body: string
   ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
@@ -164,12 +163,12 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     });
 
     if (!response.ok) {
-      await this.errorResponse(response, errorKey);
+      await this.errorResponse(response);
     }
     return (await response.json()) as Promise<T>;
   }
 
-  private async errorResponse(response: Response, errorKey?: string) {
+  private async errorResponse(response: Response) {
     const data = await parseErrorResponseBody(response);
     if (response.status === 401) {
       throw new AuthenticationError(data.error.message);
@@ -177,12 +176,10 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       throw new NotAllowedError(data.error.message);
     } else if (response.status === 404) {
       throw new NotFoundError(data.error.message);
-    } else if (response.status === 500 && errorKey !== 'startReleaseError') {
+    } else if (response.status === 500) {
       throw new ServiceUnavailableError(`Release Service Unavailable`);
     } else if (response.status === 400) {
       throw new InputError(data.error.message);
-    } else if (errorKey === 'startReleaseError') {
-      throw new Error(data.error.message);
     }
     throw new Error(
       `Unexpected error: failed to fetch data, status ${response.status}: ${response.statusText}`,
@@ -216,7 +213,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       ...(author && { author }),
     });
     const urlSegment = `workflows?${queryString}`;
-    return await this.post<WorkflowsList>(urlSegment, options, body, '');
+    return await this.post<WorkflowsList>(urlSegment, options, body);
   }
 
   async getFolders(
@@ -250,8 +247,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
     return await this.post<{ url: string }>(
       urlSegment,
       options,
-      body,
-      'startReleaseError',
+      body
     );
   }
 }

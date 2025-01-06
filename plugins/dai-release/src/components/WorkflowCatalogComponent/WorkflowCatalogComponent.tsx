@@ -169,14 +169,17 @@ export const WorkflowCatalogComponent = ({
     }
   }, [errorMessage, workflowParams]);
 
-  useEffect(() => {
-    if (shouldRedirect && redirectUrl) {
-      window.open(redirectUrl, '_blank');
-      setShouldRedirect(false);
-      setWorkflowDialogOpen(null);
-    }
-  }, [shouldRedirect, redirectUrl]);
-
+// After
+useEffect(() => {
+  if (shouldRedirect && redirectUrl) {
+    window.open(redirectUrl, '_blank');
+    setShouldRedirect(false);
+    setWorkflowDialogOpen(null);
+    setSelectedFolderId(undefined);
+    setErrorMessage(null);
+    setWorkflowParams(null);
+  }
+}, [shouldRedirect, redirectUrl]);
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
@@ -191,11 +194,13 @@ export const WorkflowCatalogComponent = ({
     onSearchInput(value);
   }
 
-  const handleOnCancel = () => {
-    setWorkflowDialogOpen(null);
-    setSelectedFolderId(undefined);
-    setErrorMessage(null);
-  };
+const handleOnCancel = () => {
+  setWorkflowDialogOpen(null);
+  setSelectedFolderId(undefined);
+  setErrorMessage(null);
+  setWorkflowParams(null);
+  setShouldRedirect(false);
+};
 
   const renderDialog = () => {
     const workflow = data.find(w => w.id === workflowDialogOpen);
@@ -248,7 +253,7 @@ export const WorkflowCatalogComponent = ({
         cancelButtonProps={{ label: 'Cancel' }}
         className={`card-folder-dialog ${classes.customDialogWidth} ${classes.dotDialogTitle} ${classes.dotTypography} ${classes.dotButton}`}
         closeIconVisible
-        closeOnClickAway
+        closeOnClickAway={handleOnCancel}
         closeOnSubmit={shouldRedirect}
         onSubmit={handleRunWorkflow}
         open
