@@ -6,11 +6,7 @@ import {
   DotInputText,
   DotTypography,
 } from '@digital-ai/dot-components';
-import {
-  Folder,
-  FolderBackendResponse,
-  Workflow,
-} from '@digital-ai/plugin-dai-release-common';
+import { Folder, Workflow } from '@digital-ai/plugin-dai-release-common';
 import { TreeItem, TreeView } from '@mui/x-tree-view';
 import { useEffect, useRef, useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -23,6 +19,7 @@ import { WorkflowCardSkeleton } from './Skeleton/WorkflowCardSkeletonComponent';
 import { calculateCellProps } from '../../utils/helpers';
 import isNil from 'lodash/isNil';
 import { makeStyles } from '@material-ui/core';
+import { useFolders } from '../../hooks/useFolders';
 import { useWorkflowRedirect } from '../../hooks/useWorkflowRedirect';
 
 const useStyles = makeStyles(() => ({
@@ -101,7 +98,6 @@ type WorkflowCatalogComponentProps = {
   searchInput: string;
   onSearchInput: (searchInput: string) => void;
   resetState: () => void;
-  folders: FolderBackendResponse;
   instance: string;
 };
 
@@ -112,7 +108,6 @@ export const WorkflowCatalogComponent = ({
   searchInput,
   onSearchInput,
   resetState,
-  folders,
   instance,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
@@ -127,7 +122,6 @@ export const WorkflowCatalogComponent = ({
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const [workflowParams, setWorkflowParams] = useState<{
     templateId: string;
     title: string;
@@ -143,7 +137,10 @@ export const WorkflowCatalogComponent = ({
     setErrorMessage,
   );
 
+  const { folders, triggerFetch } = useFolders();
+
   const handleOnRunClick = (workflowFromCategory: Workflow) => {
+    triggerFetch(instance, workflowFromCategory.id);
     setWorkflowDialogOpen(workflowFromCategory.id);
   };
 
@@ -169,17 +166,17 @@ export const WorkflowCatalogComponent = ({
     }
   }, [errorMessage, workflowParams]);
 
-// After
-useEffect(() => {
-  if (shouldRedirect && redirectUrl) {
-    window.open(redirectUrl, '_blank');
-    setShouldRedirect(false);
-    setWorkflowDialogOpen(null);
-    setSelectedFolderId(undefined);
-    setErrorMessage(null);
-    setWorkflowParams(null);
-  }
-}, [shouldRedirect, redirectUrl]);
+  // After
+  useEffect(() => {
+    if (shouldRedirect && redirectUrl) {
+      window.open(redirectUrl, '_blank');
+      setShouldRedirect(false);
+      setWorkflowDialogOpen(null);
+      setSelectedFolderId(undefined);
+      setErrorMessage(null);
+      setWorkflowParams(null);
+    }
+  }, [shouldRedirect, redirectUrl]);
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -195,13 +192,13 @@ useEffect(() => {
     onSearchInput(value);
   }
 
-const handleOnCancel = () => {
-  setWorkflowDialogOpen(null);
-  setSelectedFolderId(undefined);
-  setErrorMessage(null);
-  setWorkflowParams(null);
-  setShouldRedirect(false);
-};
+  const handleOnCancel = () => {
+    setWorkflowDialogOpen(null);
+    setSelectedFolderId(undefined);
+    setErrorMessage(null);
+    setWorkflowParams(null);
+    setShouldRedirect(false);
+  };
 
   const renderDialog = () => {
     const workflow = data.find(w => w.id === workflowDialogOpen);
@@ -243,7 +240,7 @@ const handleOnCancel = () => {
           children: folder.children ? convertToTreeNodes(folder.children) : [],
         }));
       };
-      const limitedFolders = folderList.slice(0, 3); // Limit to 3 folders
+      const limitedFolders = folderList; // Limit to 3 folders
       return convertToTreeNodes(limitedFolders);
     };
 

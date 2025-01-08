@@ -17,6 +17,9 @@ import { act, fireEvent, screen } from '@testing-library/react';
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
 import { WorkflowCatalogComponent } from './WorkflowCatalogComponent';
+import { useFolders } from '../../hooks/useFolders';
+
+jest.mock('../../hooks/useFolders');
 
 const discoveryApi: DiscoveryApi = {
   getBaseUrl: async () => 'http://example.com/api/dai-release',
@@ -33,12 +36,6 @@ async function renderContent(args: {
   instance?: string;
   setRedirectUrl?: (redirectUrl: string) => void;
 }) {
-  const defaultFolders: FolderBackendResponse = {
-    folders: [],
-    totalPages: 0,
-    totalElements: 0,
-  };
-
   return await renderInTestApp(
     <TestApiProvider
       apis={[
@@ -57,13 +54,13 @@ async function renderContent(args: {
           searchInput=""
           onSearchInput={jest.fn()}
           resetState={jest.fn()}
-          folders={args.folders || defaultFolders}
           instance={args.instance || ''}
         />
       </DotThemeProvider>
     </TestApiProvider>,
   );
 }
+
 beforeAll(() => {
   global.ResizeObserver = class {
     observe() {}
@@ -85,6 +82,11 @@ afterEach(() => {
 
 describe('WorkflowCatalogComponent', () => {
   it('should render the search header and workflows', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
@@ -101,6 +103,11 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should render loading skeletons when loading is true', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: true,
       loadMoreData: jest.fn(),
@@ -109,11 +116,15 @@ describe('WorkflowCatalogComponent', () => {
     expect(screen.getAllByTestId('title-skeleton')).toHaveLength(3);
   });
   it('should render the dialog when the "Run workflow" button is clicked', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -122,6 +133,11 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should not render the dialog when no workflow is selected', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
@@ -134,11 +150,15 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should close the dialog when cancel button is clicked', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -151,11 +171,15 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should disable the submit button when no folder is clicked', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -164,11 +188,42 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should enable the submit button when a folder is selected', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
+
+    await act(async () => {
+      await renderContent({
+        loading: false,
+        loadMoreData: jest.fn(),
+        data: workflowCatalogsList.workflows,
+        instance: 'test-instance',
+      });
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getAllByText('Run workflow')[1]);
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getAllByText('Digital.ai - Official')[0]);
+    });
+
+    expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
+  });
+
+  it('should set selected folder id when a folder is selected', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -179,11 +234,15 @@ describe('WorkflowCatalogComponent', () => {
   });
 
   it('should enable the submit button when a folder is selected from drop down', async () => {
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -194,29 +253,18 @@ describe('WorkflowCatalogComponent', () => {
     expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
   });
 
-  it('should set selected folder id when a folder is selected', async () => {
-    await renderContent({
-      loading: false,
-      loadMoreData: jest.fn(),
-      data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
-      instance: 'test-instance',
-    });
-
-    fireEvent.click(screen.getAllByText('Run workflow')[0]);
-    fireEvent.click(screen.getByText('Digital.ai - Official'));
-
-    expect(screen.getAllByText('Run workflow')[10]).not.toBeDisabled();
-  });
-
   it('should open a new window with the correct URL when we click on "Run Workflow" button', async () => {
     const setRedirectUrlMock = jest.fn();
+    (useFolders as jest.Mock).mockReturnValue({
+      folders: FoldersListBackendResponse,
+      error: null,
+      triggerFetch: jest.fn(),
+    });
 
     await renderContent({
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 
@@ -236,7 +284,6 @@ describe('WorkflowCatalogComponent', () => {
       loading: false,
       loadMoreData: jest.fn(),
       data: workflowCatalogsList.workflows,
-      folders: FoldersListBackendResponse,
       instance: 'test-instance',
     });
 

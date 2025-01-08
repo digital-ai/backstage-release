@@ -1,9 +1,8 @@
-import {
-  FolderBackendResponse,
-  ReleaseInstanceConfig,
-} from '@digital-ai/plugin-dai-release-common';
 import { useRef, useState } from 'react';
+import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+
 import { daiReleaseApiRef } from '../api';
+
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
@@ -16,7 +15,6 @@ export function useWorkflowCatalog(): {
   hasMore: Boolean;
   instance: string;
   instanceList: ReleaseInstanceConfig[] | undefined;
-  folders: FolderBackendResponse;
   searchInput: string;
   setSearchInput: (searchInput: string) => void;
   workflowSearch: { categories: string[]; author: string };
@@ -39,12 +37,6 @@ export function useWorkflowCatalog(): {
   const [data, setData] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const [folders, setFolders] = useState<FolderBackendResponse>({
-    folders: [],
-    totalPages: 0,
-    totalElements: 0,
-  });
 
   const [workflowSearch, setWorkflowSearch] = useState<{
     categories: string[];
@@ -93,13 +85,11 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            setData([])
+            setData([]);
             setLoading(false);
           });
         }
 
-        const folderResults = await api.getFolders(instance);
-        setFolders(folderResults);
         const result = await api.getWorkflowCatalog(
           page,
           rowsPerPage,
@@ -118,7 +108,9 @@ export function useWorkflowCatalog(): {
           }
           setData((prevData: any) => [
             ...prevData,
-            ...result?.workflows.filter((wf: any) => !prevData.some((p: any) => p.id === wf.id)),
+            ...result?.workflows.filter(
+              (wf: any) => !prevData.some((p: any) => p.id === wf.id),
+            ),
           ]);
           return result;
         }
@@ -152,7 +144,6 @@ export function useWorkflowCatalog(): {
     error,
     instance,
     instanceList,
-    folders,
     searchInput,
     setSearchInput,
     workflowSearch,

@@ -145,7 +145,7 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
   private async post<T>(
     path: string,
     options: { signal?: AbortSignal } | undefined,
-    body: string
+    body: string,
   ): Promise<T> {
     const baseUrl = `${await this.discoveryApi.getBaseUrl('dai-release')}/`;
     const url = new URL(path, baseUrl);
@@ -244,10 +244,6 @@ export class DaiReleaseApiClient implements DaiReleaseApi {
       ...(folderId && { folderId }),
       ...(releaseTitle && { releaseTitle }),
     });
-    return await this.post<{ url: string }>(
-      urlSegment,
-      options,
-      body
-    );
+    return await this.post<{ url: string }>(urlSegment, options, body);
   }
 }
