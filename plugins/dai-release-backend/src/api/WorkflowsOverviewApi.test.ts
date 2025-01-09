@@ -230,12 +230,12 @@ describe('WorkflowsOverviewApi', () => {
       async () =>
         await workflowsOverviewApi.redirectToWorkflowRunPage(
           'default',
-          'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acdf',
+          'Applications/FolderDefaultReleaseContent/Folder0a5f467c12cf41ce967092077b2138e5/Folder303182ca1d5443b2b63a0ff04eec5878/Release2bb84833587a48bf8af3943006e1acde',
           'AWS Lambda setup function with Digital.ai Deploy',
           'Applications/FolderDefaultReleaseContent/Folder809a2fcb78964de1bf9a5760413727d0',
         ),
     ).rejects.toThrow(
-      'Permission denied or the requested functionality is not supported',
+      'You do not have enough permissions to run a workflow in the selected folder',
     );
   });
 

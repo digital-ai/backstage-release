@@ -185,6 +185,18 @@ export const error403ResponseHandler = [
       });
     },
   ),
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acde/start',
+    () => {
+      return new HttpResponse(
+        "You do not have 'Start workflow execution' privilege",
+        {
+          status: 403,
+          statusText: 'forbidden',
+        },
+      );
+    },
+  ),
 ];
 
 export const error500ResponseHandler = [
