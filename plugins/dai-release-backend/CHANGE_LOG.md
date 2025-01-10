@@ -1,5 +1,27 @@
 # Changelog
 
+## [v0.1.2-alpha.2](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.2-alpha.2) (10/01/2025)
+
+### Features
+
+- API to get release workflow folders
+- API to get release workflow redirect url for workflow execution
+- Added new field "defaultTargetFolder" in the list workflows API
+
+## [v0.1.2-alpha.1](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.2-alpha.1) (06/01/2025)
+
+### Bug Fixes
+
+- Fix the exception in the backend API when the data returned from the release doesn't have a commit ID.
+
+## [v0.1.2-alpha.0](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.2-alpha.0) (17/12/2024)
+
+### Features
+
+- API to get release workflow catalog
+- API to get release workflow categories
+- Backend API Support for Filters on SearchBy, AuthoredBy and Categories
+
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.1) (08/11/2024)
 
 ### Library upgrade
