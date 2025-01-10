@@ -1,3 +1,31 @@
+## [v0.1.2-alpha.2](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2-alpha.2) (10/01/2025)
+
+### Features
+
+- Added a DotDialog popup on clicking "Run workflow" from catalog page.
+- The Dialog Box showcases the List of folders in which the workflow execution can be done.
+- Once the Folder is selected and When "Run workflow" button is clicked it redirects to release workflow start page.
+
+## [v0.1.2-alpha.1](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2-alpha.1) (06/01/2025)
+
+### Bug Fixes
+
+- Reset the categories and author when there is a change in instances.
+- Avoid duplicate calls when there is a change in instances.
+- Removed duplicate data.
+- Reset the scroll to the top when there is a change in the instances.
+
+## [v0.1.2-alpha.0](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2-alpha.0) (17/12/2024)
+
+### Features
+
+- Listing workflow catalog
+- Listing categories
+- Permissions feature to view plugin
+- Multiple Instance support
+- Apply filters based on categories, Authored by, and Search input
+- Free text search on title and description
+
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.1) (08/11/2024)
 
 ### Library upgrade
