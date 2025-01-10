@@ -18,9 +18,12 @@
 
 ### Features
 
-- API to get release workflow catalog
-- API to get release workflow categories
-- Backend API Support for Filters on SearchBy, AuthoredBy and Categories
+- API to get release workflow catalog.
+- API to get configured release instances.
+- API to get release categories
+- Support for DAI release 23.3, 24.1 and 24.3 versions.
+- Permissions feature to access backend API's
+- Backend API support to apply filters on categories, authored by, and search input.
 
 ## [v0.1.1](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.1) (08/11/2024)
 
