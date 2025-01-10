@@ -1,11 +1,11 @@
-## [v0.1.2-alpha.1](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.2-alpha.1) (10/01/2025)
+## [v0.1.2-alpha.1](https://github.com/digital-ai/backstage-release/tree/dai-release-common/v0.1.2-alpha.1) (10/01/2025)
 
 ### Features
 
 - Created new const FolderBackendResponse in Folder file.
 - Added new field "defaultTargetFolder" in the WorkflowList file.
 
-## [v0.1.2-alpha.0](https://github.com/digital-ai/backstage-release/tree/dai-release-backend/v0.1.2-alpha.0) (17/12/2024)
+## [v0.1.2-alpha.0](https://github.com/digital-ai/backstage-release/tree/dai-release-common/v0.1.2-alpha.0) (17/12/2024)
 
 ### Features
 
