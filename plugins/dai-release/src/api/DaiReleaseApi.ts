@@ -1,11 +1,12 @@
 import {
+  FolderBackendResponse,
   ReleaseCategories,
   ReleaseInstanceConfig,
   ReleaseList,
   TemplateGitMetaInfo,
+  TemplateList,
   WorkflowsList,
 } from '@digital-ai/plugin-dai-release-common';
-import { TemplateList } from '@digital-ai/plugin-dai-release-common';
 import { createApiRef } from '@backstage/core-plugin-api';
 import dayjs from 'dayjs';
 
@@ -55,4 +56,14 @@ export interface DaiReleaseApi {
     instanceName: string,
     options?: { signal?: AbortSignal },
   ): Promise<WorkflowsList>;
+
+  getFolders(instanceName: string): Promise<FolderBackendResponse>;
+
+  generateWorkflowRedirect(
+    instanceName: string,
+    templateId: string,
+    releaseTitle: string,
+    folderId: string,
+    options?: { signal?: AbortSignal },
+  ): Promise<{ url: string }>;
 }

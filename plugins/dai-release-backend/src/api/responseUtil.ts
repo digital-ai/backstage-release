@@ -24,9 +24,20 @@ export async function parseErrorResponse(
       `Access Denied: Missing or invalid release Token. Unauthorized to Use Digital.ai Release`,
     );
   } else if (response.status === 403) {
-    throw new NotAllowedError(
-      `Permission denied or the requested functionality is not supported`,
-    );
+    if (
+      !responseText.includes(
+        "You do not have 'Start workflow execution' privilege",
+      )
+    ) {
+      throw new NotAllowedError(
+        `Permission denied or the requested functionality is not supported`,
+      );
+    } else {
+      throw new NotAllowedError(
+        `You do not have enough permissions to run a workflow in the selected folder.
+                        Please choose another folder or contact your Release Administrator for further assistance.`,
+      );
+    }
   } else if (response.status === 404) {
     throw new NotFoundError(`Release service request not found`);
   }

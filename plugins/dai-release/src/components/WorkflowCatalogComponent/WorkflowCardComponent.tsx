@@ -67,6 +67,9 @@ const useStyles = makeStyles(() => ({
     '& .dot-card-title-font': {
       fontSize: '17px',
     },
+    '& .MuiButton-root': {
+      textTransform: 'none',
+    },
   },
 }));
 export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {

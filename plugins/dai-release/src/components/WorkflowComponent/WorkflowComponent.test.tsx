@@ -4,11 +4,14 @@ import {
   IdentityApi,
   discoveryApiRef,
 } from '@backstage/core-plugin-api';
-import { TestApiProvider, renderInTestApp } from '@backstage/test-utils';
+
 import { fireEvent, screen } from '@testing-library/react';
+
 import { DotThemeProvider } from '@digital-ai/dot-components';
 import React from 'react';
+import { TestApiProvider } from '@backstage/test-utils';
 import { WorkflowComponent } from './WorkflowComponent';
+import { renderInTestApp } from '@backstage/test-utils';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
 import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 

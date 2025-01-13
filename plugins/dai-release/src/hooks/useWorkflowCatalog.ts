@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { ReleaseInstanceConfig } from '@digital-ai/plugin-dai-release-common';
+
 import { daiReleaseApiRef } from '../api';
+
 import { useApi } from '@backstage/core-plugin-api';
 import useAsyncRetryWithSelectiveDeps from './stateSelectiveDeps';
 import { useDebouncedValue } from '../utils/helpers';
@@ -83,7 +85,7 @@ export function useWorkflowCatalog(): {
           return api.getInstanceList().then(dataVal => {
             setInstance(dataVal[0].name);
             setInstanceList(dataVal);
-            setData([])
+            setData([]);
             setLoading(false);
           });
         }
@@ -106,7 +108,9 @@ export function useWorkflowCatalog(): {
           }
           setData((prevData: any) => [
             ...prevData,
-            ...result?.workflows.filter((wf: any) => !prevData.some((p: any) => p.id === wf.id)),
+            ...result?.workflows.filter(
+              (wf: any) => !prevData.some((p: any) => p.id === wf.id),
+            ),
           ]);
           return result;
         }

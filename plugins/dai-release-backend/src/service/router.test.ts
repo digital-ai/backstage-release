@@ -1,12 +1,13 @@
 import {
-  HttpAuthService,
-  PermissionsService,
-} from '@backstage/backend-plugin-api';
-import {
+  FoldersListBackendResponse,
   config,
   releaseInstanceConfigResponse,
   releasesBackendApiResponse,
 } from '../mocks/mockData';
+import {
+  HttpAuthService,
+  PermissionsService,
+} from '@backstage/backend-plugin-api';
 import {
   error403ResponseHandler,
   error404ResponseHandler,
@@ -20,6 +21,7 @@ import {
 import {
   workflowsBackendResponse,
   workflowsRedirectRequest,
+  workflowsRedirectRequestError,
   workflowsTriggerBackendResponse,
 } from '../mocks/mockWorkflowsData';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
@@ -154,6 +156,33 @@ describe('router api tests with permissions ALLOW', () => {
       expect(response.body).toEqual(templateBackendPluginApiResponse);
     });
 
+    describe('GET /folders with instance name input', () => {
+      it('returns ok', async () => {
+        server.resetHandlers(...mockTestHandlers);
+        const response = await request(app)
+          .get('/folders')
+          .query({
+            instanceName: 'default',
+          })
+          .set('authorization', 'Bearer someauthtoken');
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(FoldersListBackendResponse);
+      });
+    });
+
+    it('GET 404 from release for /folders', async () => {
+      server.resetHandlers(...error404ResponseHandler);
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.body.error.message).toEqual(
+        'Release service request not found',
+      );
+    });
+
     it('GET 404 from release for /templates', async () => {
       server.resetHandlers(...error404ResponseHandler);
       const response = await request(app)
@@ -277,6 +306,18 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
+  describe('GET /folders without instance name input', () => {
+    it('returns error for no instance name', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
   describe('POST /workflows without instance name input', () => {
     it('POST 500 from release for /workflows', async () => {
       const response = await request(app)
@@ -298,19 +339,37 @@ describe('router api tests with permissions ALLOW', () => {
     });
   });
 
-  describe('POST /workflow/redirect with instance name', () => {
+  describe('POST /workflow/redirect without instance name', () => {
     it('POST 500 from release for /workflow/redirect', async () => {
       const response = await request(app)
         .post('/workflow/redirect')
-        .query({
-          pageNumber: '1',
-          resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
-        })
         .set('authorization', 'Bearer someauthtoken')
         .send(workflowsRedirectRequest);
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
+  describe('POST /workflow/redirect', () => {
+    it('POST 500 from release for /workflow/redirect due to User permission', async () => {
+      const response = await request(app)
+        .post('/workflow/redirect')
+        .set('authorization', 'Bearer someauthtoken')
+        .send(workflowsRedirectRequestError);
+      expect(response.status).toEqual(500);
+      expect(response.body.error.message).toContain(
+        "Couldn't find a release instance '' in the config",
+      );
+    });
+  });
+
+  describe('GET /folders and emulate 500 Error', () => {
+    it('GET 500 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(500);
       expect(response.body.error.message).toContain(
         "Couldn't find a release instance '' in the config",
@@ -388,14 +447,23 @@ describe('router api tests - with permissions DENY', () => {
         .post('/workflow/redirect')
         .query({
           instanceName: 'default',
-          pageNumber: '1',
-          resultsPerPage: '10',
-          searchInput: 'test',
-          categories: 'cat1,cat2',
-          author: 'author1',
         })
         .set('authorization', 'Bearer someauthtoken')
         .send(workflowsRedirectRequest);
+      expect(response.status).toEqual(403);
+      expect(response.body.error.message).toContain(
+        'Access Denied: Unauthorized to access the Backstage Release plugin',
+      );
+    });
+  });
+  describe('GET /folders', () => {
+    it('GET 403 from Get Folders Data', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
       expect(response.status).toEqual(403);
       expect(response.body.error.message).toContain(
         'Access Denied: Unauthorized to access the Backstage Release plugin',
@@ -478,6 +546,19 @@ describe('router api tests - without permissions', () => {
         .send(workflowsRedirectRequest);
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(workflowsTriggerBackendResponse);
+    });
+  });
+
+  describe('GET /folders', () => {
+    it('returns ok', async () => {
+      const response = await request(app)
+        .get('/folders')
+        .query({
+          instanceName: 'default',
+        })
+        .set('authorization', 'Bearer someauthtoken');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(FoldersListBackendResponse);
     });
   });
 });

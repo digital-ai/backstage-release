@@ -232,7 +232,7 @@ export const TemplateHomePageComponent = () => {
                             }}
                             startIcon={<PlusIcon />}
                           >
-                            New Releases
+                            New Release
                           </LinkButton>
                         </div>
                       ),

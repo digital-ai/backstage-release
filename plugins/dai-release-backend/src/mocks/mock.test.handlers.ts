@@ -1,6 +1,5 @@
 import { HttpResponse, http } from 'msw';
 import {
-  folderListReleaseApiResponse,
   releaseInstanceConfigResponse,
   releasesCountReleaseApiResponse,
   releasesOverviewFallbackReleaseApiResponse,
@@ -16,8 +15,8 @@ import {
   workflowsResponse,
   workflowsTriggerResponse,
 } from './mockWorkflowsData';
-
 import { categoriesReleaseApiResponse } from './mockCategories';
+import { folderListReleaseApiResponse } from './mockFolderData';
 
 export const mockTestHandlers = [
   http.post('http://localhost/api/v1/releases/search', () => {
@@ -57,7 +56,7 @@ export const mockTestHandlers = [
     return new HttpResponse(JSON.stringify(workflowsResponse));
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(JSON.stringify(workflowsTriggerResponse));
     },
@@ -117,7 +116,7 @@ export const error404ResponseHandler = [
     });
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(JSON.stringify('[]'), {
         status: 404,
@@ -178,12 +177,24 @@ export const error403ResponseHandler = [
     });
   }),
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse('You do not have release#view permission', {
         status: 403,
         statusText: 'forbidden',
       });
+    },
+  ),
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acde/start',
+    () => {
+      return new HttpResponse(
+        "You do not have 'Start workflow execution' privilege",
+        {
+          status: 403,
+          statusText: 'forbidden',
+        },
+      );
     },
   ),
 ];
@@ -240,7 +251,7 @@ export const error500ResponseHandler = [
   }),
 
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(null, {
         status: 500,
@@ -248,6 +259,23 @@ export const error500ResponseHandler = [
       });
     },
   ),
+
+  http.post(
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
+    () => {
+      return new HttpResponse(null, {
+        status: 500,
+        statusText: 'Unexpected error',
+      });
+    },
+  ),
+  http.post('http://localhost/api/v1/templates/ErrorRelease/start', () => {
+    return new HttpResponse(null, {
+      status: 500,
+      statusText: `You do not have enough permissions to run a workflow in the selected folder.
+        Please choose another folder or contact your Release Administrator for further assistance.`,
+    });
+  }),
 ];
 
 export const error401ResponseHandler = [
@@ -302,7 +330,7 @@ export const error401ResponseHandler = [
   }),
 
   http.post(
-    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/create',
+    'http://localhost/api/v1/templates/Release2bb84833587a48bf8af3943006e1acdf/start',
     () => {
       return new HttpResponse(null, {
         status: 401,
