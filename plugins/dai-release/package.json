@@ -56,7 +56,7 @@
     "@backstage/plugin-permission-react": "^0.4.25",
     "@backstage/theme": "^0.5.6",
     "@digital-ai/dot-components": "4.3.4",
-    "@digital-ai/plugin-dai-release-common": "0.1.2-alpha.0",
+    "@digital-ai/plugin-dai-release-common": "0.1.2-alpha.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@material-ui/core": "^4.12.4",
