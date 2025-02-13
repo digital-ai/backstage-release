@@ -1,3 +1,25 @@
+## [v0.1.2](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2) (13/02/2025)
+
+### Library upgrade
+
+- Updated dependencies
+  - @backstage/backend-common@^0.25.0
+  - @backstage/backend-defaults@^0.7.0
+  - @backstage/backend-plugin-api@^1.1.1
+  - @backstage/catalog-model@^1.7.3
+  - @backstage/config@^1.3.2
+  - @backstage/errors@^1.2.7
+  - @backstage/plugin-auth-node@^0.5.6
+  - @backstage/plugin-permission-common@^0.8.4
+  - @backstage/plugin-permission-node@^0.8.7
+  - @backstage/backend-test-utils@^1.2.1
+  - node-fetch@^3.3.2
+  - @backstage/cli@^0.29.6
+  - husky@^9.1.7
+  - lint-staged@^15.4.3
+  - msw@^2.7.0
+  - prettier@3.4.2
+
 ## [v0.1.2-alpha.2](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2-alpha.2) (10/01/2025)
 
 ### Features
