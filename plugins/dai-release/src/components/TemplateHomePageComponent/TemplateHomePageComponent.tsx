@@ -122,6 +122,7 @@ export const TemplateHomePageComponent = () => {
         <Grid container spacing={3} direction="column">
           <Grid item>
             <SearchHeaderComponent
+              displayFilterIcon              
               displaySearchFilter={false}
               displayTableSearchFilter
               searchTitleTextField="Search by name"

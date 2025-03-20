@@ -83,6 +83,7 @@ export const HomePageComponent = () => {
         <Grid container spacing={3} direction="column">
           <Grid item>
             <SearchHeaderComponent
+              displayFilterIcon              
               displaySearchFilter
               titleName="Active Releases"
               searchTitleTextField="Title"
