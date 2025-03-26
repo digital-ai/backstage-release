@@ -32,7 +32,11 @@ describe('WorkflowCard', () => {
   it('renders the workflow card with all details', () => {
     render(
       <DotThemeProvider>
-        <WorkflowCard onClick={jest.fn} workflow={mockWorkflow} />
+        <WorkflowCard
+          onClick={jest.fn}
+          workflow={mockWorkflow}
+          backstageTheme="light"
+        />
       </DotThemeProvider>,
     );
     expect(screen.getByText('Test Workflow')).toBeInTheDocument();
@@ -50,7 +54,11 @@ describe('WorkflowCard', () => {
     const handleClick = jest.fn();
     render(
       <DotThemeProvider>
-        <WorkflowCard workflow={mockWorkflow} onClick={handleClick} />
+        <WorkflowCard
+          workflow={mockWorkflow}
+          onClick={handleClick}
+          backstageTheme="light"
+        />
       </DotThemeProvider>,
     );
     fireEvent.click(screen.getByText('Run workflow'));
@@ -60,7 +68,11 @@ describe('WorkflowCard', () => {
   it('renders the default avatar when logoLink is not provided', () => {
     render(
       <DotThemeProvider>
-        <WorkflowCard onClick={jest.fn} workflow={mockWorkflow} />
+        <WorkflowCard
+          onClick={jest.fn}
+          workflow={mockWorkflow}
+          backstageTheme="light"
+        />
       </DotThemeProvider>,
     );
     expect(
@@ -75,7 +87,11 @@ describe('WorkflowCard', () => {
     };
     render(
       <DotThemeProvider>
-        <WorkflowCard workflow={workflowWithoutCommitId} onClick={jest.fn()} />
+        <WorkflowCard
+          workflow={workflowWithoutCommitId}
+          onClick={jest.fn()}
+          backstageTheme="light"
+        />
       </DotThemeProvider>,
     );
     expect(screen.queryByText('Git version:')).not.toBeInTheDocument();

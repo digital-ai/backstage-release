@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core';
 interface WorkflowCardProps {
   onClick: (id: string) => void;
   workflow: Workflow;
+  backstageTheme: string;
 }
 
 const useStyles = makeStyles(() => ({
@@ -51,10 +52,16 @@ const useStyles = makeStyles(() => ({
     },
     '& .run-workflow-btn': {
       margin: 0,
-      backgroundColor: 'rgb(255, 255, 255) !important',
       borderColor: 'rgb(164, 172, 182) !important',
       width: '97%',
       marginTop: '30px !important',
+    },
+    '& .run-workflow-btn-dark': {
+      backgroundColor: 'rgb(158, 182, 207) !important',
+      color: 'rgb(0, 0, 0) !important',
+    },
+    '& .run-workflow-btn-light': {
+      backgroundColor: 'rgb(255, 255, 255) !important',
     },
     '& .dot-card-header-title': {
       display: '-webkit-box',
@@ -72,7 +79,11 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
-export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
+export const WorkflowCard = ({
+  workflow,
+  onClick,
+  backstageTheme,
+}: WorkflowCardProps) => {
   const { id, title, author, folderTitle, logoLink, git } = workflow;
   const classes = useStyles();
 
@@ -148,7 +159,8 @@ export const WorkflowCard = ({ workflow, onClick }: WorkflowCardProps) => {
           <ChipGroup labels={workflow.categories} />
         </div>
         <DotButton
-          className="run-workflow-btn"
+          className={`run-workflow-btn
+          ${backstageTheme === 'dark' ? 'run-workflow-btn-dark' : 'run-workflow-btn-light'}`}
           onClick={handleOnOpen}
           type="outlined"
         >
