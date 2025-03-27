@@ -1,3 +1,16 @@
+## [v0.1.4](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.4) (27/03/2025)
+
+### Bug Fixes
+
+- Workflow using DotThemeProvider component which need theme details. 
+  So used appThemeApiRef to get active theme name and passed it to DotThemeProvider.
+
+## [v0.1.3](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.3) (20/03/2025)
+
+### Bug Fixes
+
+- Filter changes for Templates and Releases
+
 ## [v0.1.2](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.2) (13/02/2025)
 
 ### Library upgrade

@@ -99,6 +99,7 @@ type WorkflowCatalogComponentProps = {
   onSearchInput: (searchInput: string) => void;
   resetState: () => void;
   instance: string;
+  backstageTheme: string;
 };
 
 export const WorkflowCatalogComponent = ({
@@ -109,6 +110,7 @@ export const WorkflowCatalogComponent = ({
   onSearchInput,
   resetState,
   instance,
+  backstageTheme,
 }: WorkflowCatalogComponentProps) => {
   const classes = useStyles();
   const [workflowDialogOpen, setWorkflowDialogOpen] = useState<string | null>(
@@ -324,6 +326,7 @@ export const WorkflowCatalogComponent = ({
                 <WorkflowCard
                   onClick={() => handleOnRunClick(currentWorkflow)}
                   workflow={currentWorkflow}
+                  backstageTheme={backstageTheme}
                 />
               </CssCell>
             );

@@ -2,12 +2,14 @@ import { Content, Header, Page } from '@backstage/core-components';
 import { CssCell, CssGrid, DotThemeProvider } from '@digital-ai/dot-components';
 import { Grid, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
+import { appThemeApiRef, useApi } from '@backstage/core-plugin-api';
 import { CategoriesContentActiveList } from '@digital-ai/plugin-dai-release-common';
 import { ReleaseResponseErrorPanel } from '../ReleaseResponseErrorPanel';
 import { SearchHeaderComponent } from '../SearchHeaderComponent';
 import { WorkflowCatalogComponent } from '../WorkflowCatalogComponent';
 import { WorkflowCategoryComponent } from '../WorkflowCategoryComponent';
 import releaseLogoWhite from '../../assets/releaseLogoWhite.png';
+import { useObservable } from 'react-use';
 import { useReleaseCategories } from '../../hooks/useReleaseCategories';
 import { useWorkflowCatalog } from '../../hooks/useWorkflowCatalog';
 
@@ -38,6 +40,12 @@ const useStyles = makeStyles(() => ({
 
 export const WorkflowComponent = () => {
   const classes = useStyles();
+  const appThemeApi = useApi(appThemeApiRef);
+  const themeId = useObservable(
+    appThemeApi.activeThemeId$(),
+    appThemeApi.getActiveThemeId(),
+  );
+  const backstageTheme = themeId === 'dark' ? 'dark' : 'light';
   const [loadingReleaseCategories, setLoadingReleaseCategories] =
     useState(true);
 
@@ -92,7 +100,7 @@ export const WorkflowComponent = () => {
     setCustomSearchQuery(customSearchStr);
   };
   return (
-    <DotThemeProvider>
+    <DotThemeProvider theme={backstageTheme}>
       <Page themeId="home">
         <Header
           title={
@@ -172,6 +180,7 @@ export const WorkflowComponent = () => {
                       onSearchInput={setSearchInput}
                       resetState={resetState}
                       instance={instance}
+                      backstageTheme={backstageTheme}
                     />
                   </div>
                 </CssCell>

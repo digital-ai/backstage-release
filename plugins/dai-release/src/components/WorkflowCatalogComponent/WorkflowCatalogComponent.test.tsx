@@ -55,6 +55,7 @@ async function renderContent(args: {
           onSearchInput={jest.fn()}
           resetState={jest.fn()}
           instance={args.instance || ''}
+          backstageTheme="light"
         />
       </DotThemeProvider>
     </TestApiProvider>,
