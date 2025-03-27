@@ -7,7 +7,7 @@
 
 ## [v0.1.3](https://github.com/digital-ai/backstage-release/tree/dai-release/v0.1.3) (20/03/2025)
 
-### Features
+### Bug Fixes
 
 - Filter changes for Templates and Releases
 
